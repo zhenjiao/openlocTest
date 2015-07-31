@@ -1,0 +1,6 @@
+"files": {
+        "md": "articles/**/*.md; includes/**/*.md"]
+    }
+"locales": [ "zh-cn", "de", "fr", "ja" ]
+"branch": "master"
+"quality": "machine"

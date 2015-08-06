@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="API implementation guidance | Microsoft Azure"
    description="Guidance upon how to implement an API."
    services=""
@@ -17,26 +17,26 @@
    ms.date="05/13/2015"
    ms.author="masashin"/>
 
-# API 执行指导
+# API implementation guidance
 
 ![](media/best-practices-api-implementation/pnp-logo.png)
 
 
-在本指南中的某些主题可能在将来会改变，并根据讨论。我们欢迎您的反馈!
+Some topics in this guidance are under discussion and may change in the future. We welcome your feedback!
 
-## 概述
-精心设计 rest 风格的 web API 定义资源、 关系和可访问的客户端应用程序的导航方案。当您实施和部署 web API 时，你应考虑环境承载 web API 和方式对物理需求在 web API 构造而不是数据的逻辑结构。本指南集中在执行 web API 和发布它，使其可用于客户端应用程序的最佳做法。安全问题是在 API 安全指导文件中分别介绍了。在 API 设计指导文件中，可以找到有关 web API 设计的详细的信息。
+## Overview
+A carefully-designed RESTful web API defines the resources, relationships, and navigation schemes that are accessible to client applications. When you implement and deploy a web API, you should consider the physical requirements of the environment hosting the web API and the way in which the web API is constructed rather than the logical structure of the data. This guidance focusses on best practices for implementing a web API and publishing it to make it available to client applications. Security concerns are described separately in the API Security Guidance document. You can find detailed information about web API design in the API Design Guidance document.
 
-## 实现 rest 风格的 web API 的注意事项
-以下各节说明了使用 ASP.NET Web API 模板生成 rest 风格的 web API 的最佳实践。关于使用 Web API 模板的详细信息，请访问 [了解 ASP.NET Web API](http://www.asp.net/web-api) 在 Microsoft 网站上的页面。
+## Considerations for implementing a RESTful web API
+The following sections illustrate best practice for using the ASP.NET Web API template to build a RESTful web API. For detailed information on using the Web API template, visit the [Learn About ASP.NET Web API](http://www.asp.net/web-api) page on the Microsoft website.
 
-## 实现请求路由的注意事项
+## Considerations for implementing request routing
 
-通过使用 ASP.NET Web API 实现的服务，在每个请求路由到一种方法 _控制器_ 类。Web API 框架提供了两个主要选项执行路由; _根据公约 》_ 路由和 _基于属性的_ 路由。当你确定将请求路由的最佳方式在您的 web API 时，请考虑以下几点:
+In a service implemented by using the ASP.NET Web API, each request is routed to a method in a _controller_ class. The Web API framework provides two primary options for implementing routing; _convention-based_ routing and _attribute-based_ routing. Consider the following points when you determine the best way to route requests in your web API:
 
-- **了解的限制和要求的公约基于路由**.
+- **Understand the limitations and requirements of convention-based routing**.
 
-	默认情况下，Web API 框架使用基于公约的路由。Web API 框架创建初始的路由表，其中包含以下项:
+	By default, the Web API framework uses convention-based routing. The Web API framework creates an initial routing table that contains the following entry:
 
 	```C#
 	config.Routes.MapHttpRoute(
@@ -46,11 +46,11 @@
 	);
 	```
 
-	路线可以为泛型，如包括文本 _api_ 和变量如 _{控制器}_ 和 _{} id_.基于公约的路由允许一些元素路线是可选。Web API 框架可以确定要调用控制器中，通过匹配请求在 API 中，方法名称的开头部分中的 HTTP 方法，然后通过匹配任何可选参数的方法。例如，如果指定控制器 _订单_ 包含的方法 _GetAllOrders()_ 或 _GetOrderByInt (int id)_ 然后 GET 请求 _http://www.adventure-works.com/api/orders/_ 将被定向到的方法 _GetAlllOrders()_ 和 GET 请求 _http://www.adventure-works.com/api/orders/99_ 将路由到该方法 _GetOrderByInt (int id)_.如果没有匹配的方法始于 Get 前缀在控制器中，Web API 框架用 HTTP 405 (不允许使用此方法) 消息进行答复。另外，路由表中指定的参数 (id) 的名称必须为参数的名称相同 _GetOrderById_ 方法，否则 Web API 框架将回复 HTTP 404 (未找到) 响应。
+	Routes can be generic, comprising literals such as _api_ and variables such as _{controller}_ and _{id}_. Convention-based routing allows some elements of the route to be optional. The Web API framework determines which method to invoke in the controller by matching the HTTP method in the request to the initial part of the method name in the API, and then by matching any optional parameters. For example, if a controller named _orders_ contains the methods _GetAllOrders()_ or _GetOrderByInt(int id)_ then the GET request _http://www.adventure-works.com/api/orders/_ will be directed to the method _GetAlllOrders()_ and the GET request _http://www.adventure-works.com/api/orders/99_ will be routed to the method _GetOrderByInt(int id)_. If there is no matching method available that begins with the prefix Get in the controller, the Web API framework replies with an HTTP 405 (Method Not Allowed) message. Additionally, name of the parameter (id) specified in the routing table must be the same as the name of the parameter for the _GetOrderById_ method, otherwise the Web API framework will reply with an HTTP 404 (Not Found) response.
 
-	同样的规则适用于邮政、 付诸表决和删除 HTTP 请求;更新订单 101 的细节 PUT 请求将定向到的 URI _http://www.adventure-works.com/api/orders/101_邮件正文中的将包含的命令，新的详细信息，此信息将作为参数传递给命令控制器以前缀开头的名称与中的方法 _付诸表决_如 _PutOrder_.
+	The same rules apply to POST, PUT, and DELETE HTTP requests; a PUT request that updates the details of order 101 would be directed to the URI _http://www.adventure-works.com/api/orders/101_, the body of the message will contain the new details of the order, and this information will be passed as a parameter to a method in the orders controller with a name that starts with the prefix _Put_, such as _PutOrder_.
 
-	默认路由表将不匹配的请求，如引用子资源在 rest 风格的 web API， _http://www.adventure-works.com/api/customers/1/orders_ (找到客户 1 的所有订单的细节)。若要处理这种情况下，可以将自定义路由添加到路由表:
+	The default routing table will not match a request that references child resources in a RESTful web API, such as _http://www.adventure-works.com/api/customers/1/orders_ (find the details of all orders placed by customer 1). To handle these cases, you can add custom routes to the routing table:
 
 	```C#
 	config.Routes.MapHttpRoute(
@@ -60,7 +60,7 @@
 	);
 	```
 
-	这条路线指示匹配到 URI 的请求 _GetOrdersForCustomer_ 中的方法 _客户_ 控制器。此方法必须采取一个名为的单个参数 _养狗场_:
+	This route directs requests that match the URI to the _GetOrdersForCustomer_ method in the _Customers_ controller. This method must take a single parameter named _custI_:
 
 	```C#
 	public class CustomersController : ApiController
@@ -76,17 +76,17 @@
 	}
 	```
 
-	> [AZURE。小贴士] 利用默认路由，尽可能和避免定义许多复杂的自定义路由因为这可能导致的脆性 (它是很容易将方法添加到结果中含糊不清的路线控制器) 和性能 (越大的路由表，更多的工作 Web API 框架已做工作出哪条路线匹配给定的 URI) 降低。保持简单的 API 和路线。有关详细信息，请参阅 Web API 设计指导资源 API 周围组织。如果你必须定义自定义路由，较为可取的办法是使用基于属性的路由此部分后面所述。
+	> [AZURE.TIP] Utilize the default routing wherever possible and avoid defining many complicated custom routes as this can result in brittleness (it is very easy to add methods to a controller that result in ambiguous routes) and reduced performance (the bigger the routing table, the more work the Web API framework has to do to work out which route matches a given URI). Keep the API and routes simple. For more information, see the section Organizing the Web API Around Resources in the API Design Guidance. If you must define custom routes, a preferable approach is to use attribute-based routing described later in this section.
 
-	关于公约 》 基于路由的详细信息，请参阅页 [ASP.NET Web API 中的路由](http://www.asp.net/web-api/overview/web-api-routing-and-actions/routing-in-aspnet-web-api) 在微软的网站。
+	For more information about convention-based routing, see the page [Routing in ASP.NET Web API](http://www.asp.net/web-api/overview/web-api-routing-and-actions/routing-in-aspnet-web-api) on the Microsoft website.
 
-- **歧义的路由**.
+- **Avoid ambiguity in routing**.
 
-	如果控制器中的多个方法匹配相同的路线，则将公约基于路由可以导致含糊不清的通路。在这些情况下，Web API 框架用包含文本"多个操作被找到相匹配的请求"HTTP 500 (内部服务器错误) 响应消息进行响应。
+	Convention-based routing can result in ambiguous pathways if multiple methods in a controller match the same route. In these situations, the Web API framework responds with an HTTP 500 (Internal Server Error) response message containing the text "Multiple actions were found that match the request".
 
-- **更喜欢基于属性的路由**.
+- **Prefer attribute-based routing**.
 
-	基于属性的路由提供一种方式连接到控制器中的方法的路线。而不是依赖公约基于路由的模式匹配功能，您可以显式注释中详细的路线，他们应该是相关联的控制器的方法。方法有助于清除可能含糊之处。此外，如在设计时定义显式路由这种方法是比公约基于路由在运行时效率更高。下面的代码演示如何将应用 _路线_ 归因于客户控制器中的方法。这些方法还使用公共属性来指示他们应对 _HTTP GET_ 请求。此属性使您可以命名你使用任何方便的命名方案，而不是所预期的公约基于路由的方法。你也可以注释方法 _HttpPost_, _HttpPut_和 _HttpDelete_ 属性定义响应其他类型的 HTTP 请求的方法。
+	Attribute-based routing provides an alternative means for connecting routes to methods in a controller. Rather than relying on the pattern-matching features of convention-based routing, you can explicitly annotate methods in a controller with the details of the route to which they should be associated. This approach help to remove possible ambiguities. Furthermore, as explicit routes are defined at design time this approach is more efficient than convention-based routing at runtime. The following code shows how to apply the _Route_ attribute to methods in the Customers controller. These methods also use the HttpGet attribute to indicate that they should respond to _HTTP GET_ requests. This attribute enables you to name your methods using any convenient naming scheme rather than that expected by convention-based routing. You can also annotate methods with the _HttpPost_, _HttpPut_, and _HttpDelete_ attributes to define methods that respond to other types of HTTP requests.
 
 	```C#
 	public class CustomersController : ApiController
@@ -113,9 +113,9 @@
 	}
 	```
 
-	基于属性的路由还具有作为开发人员需要在未来; 维护代码的文档的有用的副作用它是立即清楚哪种方法属于哪条路线，和 _公共_ 属性澄清方法响应的 HTTP 请求的类型。
+	Attribute-based routing also has the useful side-effect of acting as documentation for developers needing to maintain the code in the future; it is immediately clear which method belongs to which route, and the _HttpGet_ attribute clarifies the type of HTTP request to which the method responds.
 
-	基于属性的路由使您能够定义约束限制匹配参数的方式。约束可以指定参数的类型和在某些情况下，他们还可以指示参数值的可接受范围。在以下示例中的 id 参数 _FindCustomerByID_ 方法必须是一个非负整数。如果应用程序提交与负面的客户数量的 HTTP GET 请求，Web API 框架将以 HTTP 405 (不允许使用此方法) 消息响应:
+	Attribute-based routing enables you to define constraints which restrict how the parameters are matched. Constraints can specify the type of the parameter, and in some cases they can also indicate the acceptable range of parameter values. In the following example, the id parameter to the _FindCustomerByID_ method must be a non-negative integer. If an application submits an HTTP GET request with a negative customer number, the Web API framework will respond with an HTTP 405 (Method Not Allowed) message:
 
 	```C#
 	public class CustomersController : ApiController
@@ -133,45 +133,45 @@
 	}
 	```
 
-	基于属性的路由的详细信息，请参阅页 [属性在 Web API 2 路由](http://www.asp.net/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2) 在微软的网站。
+	For more information on attribute-based routing, see the page [Attribute Routing in Web API 2](http://www.asp.net/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2) on the Microsoft website.
 
-- **在路由支持 Unicode 字符**.
+- **Support Unicode characters in routes**.
 
-	用于标识资源在 GET 请求中的密钥可以是字符串。因此，在全球化应用程序，您可能需要支持包含非英文字符的 Uri。
+	The keys used to identify resources in GET requests could be strings. Therefore, in a global application, you may need to support URIs that contain non-English characters.
 
-- **区分应该不会被路由的方法**.
+- **Distinguish methods that should not be routed**.
 
-	如果您正在使用基于公约的路由，表明不对应的装饰他们与 HTTP 操作的方法 _侵权_ 属性。这通常适用于由其他控制器中的方法的帮助器方法用于定义，此属性将防止这些方法匹配和错误的 HTTP 请求所调用。
+	If you are using convention-based routing, indicate methods that do not correspond to HTTP actions by decorating them with the _NonAction_ attribute. This typically applies to helper methods defined for use by other methods within a controller, and this attribute will prevent these methods from being matched and invoked by an errant HTTP request.
 
-- **在利弊权衡的子域中放置的 API**.
+- **Consider the benefits and tradeoffs of placing the API in a subdomain**.
 
-	默认情况下，ASP.NET web API 组织成的 Api _/api_ 目录中的域，如 _http://www.adventure-works.com/api/orders_.此目录驻留在相同的域公开的同一主机的任何其他服务。它可能有利于拆分 web API 出来到其自身运行在单独的主机，如 Uri 的子域 _http://api.adventure-works.com/orders_.这种分离使您能够进行分区和更有效地扩展 web API，而不会影响任何其他 web 应用程序或服务在运行 _www.adventure-works.com_ 域。
+	By default, the ASP.NET web API organizes APIs into the _/api_ directory in a domain, such as _http://www.adventure-works.com/api/orders_. This directory resides in the same domain as any other services exposed by the same host. It may be beneficial to split the web API out into its own subdomain running on a separate host, with URIs such as _http://api.adventure-works.com/orders_. This separation enables you to partition and scale the web API more effectively without affecting any other web applications or services running in the _www.adventure-works.com_ domain.
 
-	然而，不同的子域中放置 web API 也可以导致安全问题。任何 web 应用程序或在托管服务 _www.adventure-works.com_ 那调用运行在其他地方可能违反许多 web 浏览器的同源策略的 web API。在这种情况，它将需要启用跨源资源在主机之间共享 (CORS)。更多的信息，请参阅 API 安全指导文件。
+	However, placing a web API in a different subdomain can also lead to security concerns. Any web applications or services hosted at _www.adventure-works.com_ that invoke a web API running elsewhere may violate the same-origin policy of many web browsers. In this situation, it will be necessary to enable cross-origin resource sharing (CORS) between the hosts. For more information, see the API Security Guidance document.
 
-## 处理请求时的注意事项
+## Considerations for processing requests
 
-一旦请求从客户端应用程序中的 web API 的方法已成功传送，必须尽可能有效的方式在处理该请求。当您实现的代码来处理请求时，请考虑以下几点:
+Once a request from a client application has been successfully routed to a method in a web API, the request must be processed in as efficient manner as possible. Consider the following points when you implement the code to handle requests:
 
-- **得到，放，删除、 头和修补程序的行动应该是幂等元**.
+- **GET, PUT, DELETE, HEAD, and PATCH actions should be idempotent**.
 
-	实现这些要求的代码，不应施加任何的副作用。同样的要求，反复相同的资源应该导致相同的状态。例如，将删除的多个请求发送到相同的 URI 应该有同样的效果，虽然响应消息中的 HTTP 状态代码可能不同 (第一次的删除请求可能返回状态代码 204 (无内容)，而随后删除请求可能返回统计代码 404 (未找到))。
+	The code that implements these requests should not impose any side-effects. The same request repeated over the same resource should result in the same state. For example, sending multiple DELETE requests to the same URI should have the same effect, although the HTTP status code in the response messages may be different (the first DELETE request might return status code 204 (No Content) while a subsequent DELETE request might return statis code 404 (Not Found)).
 
-> [AZURE。注意] 这篇文章 [幂等性模式](http://blog.jonathanoliver.com/idempotency-patterns/) Jonathan Oliver 博客上概述的幂等性和它如何与数据管理操作。
+> [AZURE.NOTE] The article [Idempotency Patterns](http://blog.jonathanoliver.com/idempotency-patterns/) on Jonathan Oliver’s blog provides an overview of idempotency and how it relates to data management operations.
 
-- **创建新的资源的发布操作应该这样做，没有不相关的副作用**.
+- **POST actions that create new resources should do so without unrelated side-effects**.
 
-	如果一个 POST 请求打算创建一个新的资源，请求的影响应该是有限的新资源 (和可能任何直接相关资源如果某种形式的联系) 例如，在电子商务系统中，创建客户的新订单的 POST 请求可能也修订库存水平和生成计费信息但它不应该修改为订单不直接相关的信息或有任何其他副作用对系统的整体状态。
+	If a POST request is intended to create a new resource, the effects of the request should be limited to the new resource (and possibly any directly related resources if there is some sort of linkage involved) For example, in an ecommerce system, a POST request that creates a new order for a customer might also amend inventory levels and generate billing information, but it should not modify information not directly related to the order or have any other side-effects on the overall state of the system.
 
-- **避免实施健谈的帖子，付诸表决和删除操作**.
+- **Avoid implementing chatty POST, PUT, and DELETE operations**.
 
-	支持后，把和删除请求对资源集合。POST 请求可以包含多个新资源的详细信息并将它们添加到同一集合、 PUT 请求可以替换整个集的资源的集合，和删除请求可以删除整个集合。
+	Support POST, PUT and DELETE requests over resource collections. A POST request can contain the details for multiple new resources and add them all to the same collection, a PUT request can replace the entire set of resources in a collection, and a DELETE request can remove an entire collection.
 
-	请注意，在 ASP.NET Web API 2 中所包括的 OData 支持提供批处理请求的能力。客户端应用程序可以打包几个 web API 请求并发送到一个单独的 HTTP 请求，在服务器和接收单一的 HTTP 响应，其中包含对每个请求的答复。有关详细信息，请参见页 [介绍 Web API 和 Web API OData 批处理支持](http://blogs.msdn.com/b/webdev/archive/2013/11/01/introducing-batch-support-in-web-api-and-web-api-odata.aspx) 在微软的网站。
+	Note that the OData support included in ASP.NET Web API 2 provides the ability to batch requests. A client application can package up several web API requests and send them to the server in a single HTTP request, and receive a single HTTP response that contains the replies to each request. For more information, see the page [Introducing Batch Support in Web API and Web API OData](http://blogs.msdn.com/b/webdev/archive/2013/11/01/introducing-batch-support-in-web-api-and-web-api-odata.aspx) on the Microsoft website.
 
-- **遵守 HTTP 协议发送响应发送回客户端应用程序时**.
+- **Abide by the HTTP protocol when sending a response back to a client application**.
 
-	Web API 必须返回包含正确的 HTTP 状态代码，使客户端来确定如何处理的结果，适当的 HTTP 标头，以便客户能够理解的结果和适当格式化的机构，以便使客户端能够解析结果性质的邮件。如果您使用的是资源的 ASP.NET Web API 模板，默认策略为实现响应 HTTP POST 请求的方法是资源的简单地返回新创建，一个拷贝下面的示例所示:
+	A web API must return messages that contain the correct HTTP status code to enable the client to determine how to handle the result, the appropriate HTTP headers so that the client understands the nature of the result, and a suitably formatted body to enable the client to parse the result. If you are using the ASP.NET Web API template, the default strategy for implementing methods that respond to HTTP POST requests is simply to return a copy of the newly created resource, as illustrated by the following example:
 
 	```C#
 	public class CustomersController : ApiController
@@ -192,9 +192,9 @@
 	}
 	```
 
-	如果 POST 操作成功，Web API 框架将创建与消息正文的 HTTP 响应状态代码 200 (OK) 和客户的详细信息。然而，在这种情况下，根据 HTTP 协议，术后应返回状态码 201 (Created) 响应消息应包括新创建的资源的 URI 位置的标头中的响应消息。
+	If the POST operation is successful, the Web API framework creates an HTTP response with status code 200 (OK) and the details of the customer as the message body. However, in this case, according to the HTTP protocol, a POST operation should return status code 201 (Created) and the response message should include the URI of the newly created resource in the Location header of the response message.
 
-	为了提供这些功能，通过使用返回您自己的 HTTP 响应消息 `IHttpActionResult` 界面。这种方法给你精细控制的 HTTP 状态代码，响应消息，甚至数据和格式中的标题在答复邮件正文中，如下面的代码示例所示。此版本的 `CreateNewCustomer` 方法更密切地符合客户以下 HTTP 协议的期望。的 `Created` 方法 `ApiController` 类构造响应消息从指定的数据，并将位置标头添加到结果:
+	To provide these features, return your own HTTP response message by using the `IHttpActionResult` interface. This approach gives you fine control over the HTTP status code, the headers in the response message, and even the format of the data in the response message body, as shown in the following code example. This version of the `CreateNewCustomer` method conforms more closely to the expectations of client following the HTTP protocol. The `Created` method of the `ApiController` class constructs the response message from the specified data, and adds the Location header to the results:
 
 	```C#
 	public class CustomersController : ApiController
@@ -220,19 +220,19 @@
 	}
 	```
 
-- **支持内容协商**.
+- **Support content negotiation**.
 
-	响应消息的正文可能包含各种格式的数据。例如，HTTP GET 请求在 JSON，就可以返回数据或 XML 格式。当客户端提交请求时，它可以包括 Accept 标头，指定它可以处理的数据格式。这些格式被指定的媒体类型。例如，一个问题检索图像的 GET 请求的客户端可以指定列出的媒体类型，客户端可以处理，如"图像/jpeg、 gif 图像/图像/png"Accept 标头。 当 web API 返回的结果时，它应该通过使用其中一种媒体类型设置数据的格式和响应的内容类型标头中指定的格式。
+	The body of a response message may contain data in a variety of formats. For example, an HTTP GET request could return data in JSON, or XML format. When the client submits a request, it can include an Accept header that specifies the data formats that it can handle. These formats are specified as media types. For example, a client that issues a GET request that retrieves an image can specify an Accept header that lists the media types that the client can handle, such as "image/jpeg, image/gif, image/png".  When the web API returns the result, it should format the data by using one of these media types and specify the format in the Content-Type header of the response.
 
-	如果客户端没有指定 Accept 标头，然后使用适当的默认格式为响应正文。例如，ASP.NET Web API 框架默认为 JSON 为基于文本的数据。
+	If the client does not specify an Accept header, then use a sensible default format for the response body. As an example, the ASP.NET Web API framework defaults to JSON for text-based data.
 
-	> [AZURE。注意] ASP.NET Web API 框架执行 Accept 头一些自动检测和处理它们本身基于响应消息的正文中的数据的类型。例如，如果响应消息的正文包含 CLR (公共语言运行库) 对象，ASP.NET Web API 自动设置格式的响应以 json 格式与内容类型标头中设置为"应用程序/json"，除非客户端指示它需要结果作为 XML，案例的 ASP.NET Web API 框架格式为 XML 响应和设置为"text/xml"响应的内容类型标头的反应。然而，它可能需要处理操作的执行代码中显式指定不同的媒体类型的 Accept 头。
+	> [AZURE.NOTE] The ASP.NET Web API framework performs some automatic detection of Accept headers and handles them itself based on the type of the data in the body of the response message. For example, if the body of a response message contains a CLR (common language runtime) object, the ASP.NET Web API automatically formats the response as JSON with the Content-Type header of the response set to "application/json" unless the client indicates that it requires the results as XML, in which case the ASP.NET Web API framework formats the response as XML and sets the Content-Type header of the response to "text/xml". However, it may be necessary to handle Accept headers that specify different media types explicitly in the implementation code for an operation.
 
-- **提供链接，以支持 HATEOAS 样式的导航和资源发现**.
+- **Provide links to support HATEOAS-style navigation and discovery of resources**.
 
 	The API Design Guidance describes how following the HATEOAS approach enables a client to navigate and discover resources from an initial starting point. This is achieved by using links containing URIs; when a client issues an HTTP GET request to obtain a resource, the response should contain URIs that enable a client application to quickly locate any directly related resources. For example, in a web API that supports an e-commerce solution, a customer may have placed many orders. When a client application retrieves the details for a customer, the response should include links that enable the client application to send HTTP GET requests that can retrieve these orders. Additionally, HATEOAS-style links should describe the other operations (POST, PUT, DELETE, and so on) that each linked resource supports together with the corresponding URI to perform each request. This approach is described in more detail in the API Design Guidance document.
 
-	目前有没有指导 HATEOAS，执行的标准，但下面的示例演示一种可能的方法。在此示例中，查找客户的详细信息的 HTTP GET 请求返回一个包括 HATEOAS 链接引用该客户订单的响应:
+	Currently there are no standards that govern the implementation of HATEOAS, but the following example illustrates one possible approach. In this example, an HTTP GET request that finds the details for a customer returns a response that include HATEOAS links that reference the orders for that customer:
 
 	```HTTP
 	GET http://adventure-works.com/customers/2 HTTP/1.1
@@ -270,7 +270,7 @@
 	]}
 	```
 
-	在此示例中，客户数据由 `Customer` 下面的代码片断所示的类。HATEOAS 链接在举行 `Links` 集合属性:
+	In this example, the customer data is represented by the `Customer` class shown in the following code snippet. The HATEOAS links are held in the `Links` collection property:
 
 	```C#
 	public class Customer
@@ -290,36 +290,36 @@
 	}
 	```
 
-	HTTP GET 操作检索客户数据从存储和构造 `Customer` 对象，并随后填充 `Links` 集合。结果格式化为 JSON 响应消息。每个环节包括以下字段:
+	The HTTP GET operation retrieves the customer data from storage and constructs a `Customer` object, and then populates the `Links` collection. The result is formatted as a JSON response message. Each link comprises the following fields:
 
-	- 被返回的对象和链接所描述的对象之间的关系。在这种情况下，"自我"指示链接是回对象本身的引用 (类似于 `this` 许多面向对象语言中的指针)，和"订单"是一个集合，包含相关的订单信息的名称。
+	- The relationship between the object being returned and the object described by the link. In this case "self" indicates that the link is a reference back to the object itself (similar to a `this` pointer in many object-oriented languages), and "orders" is the name of a collection containing the related order information.
 
-	- 超链接 (`HRef`) 对于被链接的 URI 形式所描述的对象。
+	- The hyperlink (`HRef`) for the object being described by the link in the form of a URI.
 
-	- 类型的 HTTP 请求 (`Action`)，可以被发送到此 URI。
+	- The type of HTTP request (`Action`) that can be sent to this URI.
 
-	- 任何数据 (格式`LinkedResourceMIMETypes`)，应提供在 HTTP 请求或，可以将响应中返回，根据请求的类型。
+	- The format of any data (`LinkedResourceMIMETypes`) that should be provided in the HTTP request or that can be returned in the response, depending on the type of the request.
 
-	HTTP 响应示例中所示的 HATEOAS 链接指示客户端应用程序可以执行以下操作:
+	The HATEOAS links shown in the example HTTP response indicate that a client application can perform the following operations:
 
-	- HTTP GET 请求的 uri _http://adventure-works.com/customers/2_ 获取客户 (再次) 的详细信息。可以为 XML 或 JSON 返回的数据。
+	- An HTTP GET request to the URI _http://adventure-works.com/customers/2_ to fetch the details of the customer (again). The data can be returned as XML or JSON.
 
-	- HTTP 请求的 uri _http://adventure-works.com/customers/2_ 要修改的客户详细信息。新的数据必须在请求消息中 x-www-窗体-urlencoded 格式提供。
+	- An HTTP PUT request to the URI _http://adventure-works.com/customers/2_ to modify the details of the customer. The new data must be provided in the request message in x-www-form-urlencoded format.
 
-	- 删除 HTTP 请求的 uri _http://adventure-works.com/customers/2_ 若要删除客户。请求不期望任何额外的信息或不返回响应消息正文中的数据。
+	- An HTTP DELETE request to the URI _http://adventure-works.com/customers/2_ to delete the customer. The request does not expect any additional information or return data in the response message body.
 
-	- HTTP GET 请求的 uri _http://adventure-works.com/customers/2/orders_ 查找客户的所有订单。可以为 XML 或 JSON 返回的数据。
+	- An HTTP GET request to the URI _http://adventure-works.com/customers/2/orders_ to find all the orders for the customer. The data can be returned as XML or JSON.
 
-	- HTTP 请求的 uri _http://adventure-works.com/customers/2/orders_ 若要创建此客户的新订单。必须在 x-www-窗体-urlencoded 格式的请求消息中提供的数据。
+	- An HTTP PUT request to the URI _http://adventure-works.com/customers/2/orders_ to create a new order for this customer. The data must be provided in the request message in x-www-form-urlencoded format.
 
-## 处理异常时的注意事项
-默认情况下，在 ASP.NET Web API 框架，如果操作引发未捕获的异常框架返回 HTTP 状态代码 500 (内部服务器错误) 的响应消息。在许多情况下，这种简单的方法不是孤立的有用和使确定异常困难的原因。因此你应该采取更全面的方法对处理异常，考虑以下各点:
+## Considerations for handling exceptions
+By default, in the ASP.NET Web API framework, if an operation throws an uncaught exception the framework returns a response message with HTTP status code 500 (Internal Server Error). In many cases, this simplistic approach is not useful in isolation, and makes determining the cause of the exception difficult. Therefore you should adopt a more comprehensive approach to handling exceptions, considering the following points:
 
-- **捕获异常和有意义将响应返回到客户端**.
+- **Capture exceptions and return a meaningful response to clients**.
 
-	The code that implements an HTTP operation should provide comprehensive exception handling rather than letting uncaught exceptions propagate to the Web API framework. If an exception makes it impossible to complete the operation successfully, the exception can be passed back in the response message, but it should include a meaningful description of the error that caused the exception. The exception should also include the appropriate HTTP status code rather than simply returning status code 500 for every situation. For example, if a user request causes a database update that violates a constraint (such as attempting to delete a customer that has outstanding orders), you should return status code 409 (Conflict) and a message body indicating the reason for the conflict. If some other condition renders the request unachievable, you can return status code 400 (Bad Request). You can find a full list of HTTP status codes on the [状态代码定义](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) 在 W3C 网站上的页面。
+	The code that implements an HTTP operation should provide comprehensive exception handling rather than letting uncaught exceptions propagate to the Web API framework. If an exception makes it impossible to complete the operation successfully, the exception can be passed back in the response message, but it should include a meaningful description of the error that caused the exception. The exception should also include the appropriate HTTP status code rather than simply returning status code 500 for every situation. For example, if a user request causes a database update that violates a constraint (such as attempting to delete a customer that has outstanding orders), you should return status code 409 (Conflict) and a message body indicating the reason for the conflict. If some other condition renders the request unachievable, you can return status code 400 (Bad Request). You can find a full list of HTTP status codes on the [Status Code Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) page on the W3C website.
 
-	下面的代码演示一个示例，陷阱不同条件并返回适当的响应。
+	The following code shows an example that traps different conditions and returns an appropriate response.
 
 	```C#
 	[HttpDelete]
@@ -362,38 +362,38 @@
 	}
 	```
 
-	> [AZURE。小贴士] 不包括对攻击者试图穿透你的 web API 可能有用的信息。有关进一步信息，请访问 [异常处理在 ASP.NET Web API](http://www.asp.net/web-api/overview/error-handling/exception-handling) 在 Microsoft 网站上的页面。
+	> [AZURE.TIP] Do not include information that could be useful to an attacker attempting to penetrate your web API.For further information, visit the [Exception Handling in ASP.NET Web API](http://www.asp.net/web-api/overview/error-handling/exception-handling) page on the Microsoft website.
 
-	> [AZURE。注意] 许多 web 服务器陷阱错误条件本身，在他们到达 web API 之前。例如，如果您配置一个 web 站点的身份验证和用户无法提供正确的身份验证信息，web 服务器应该响应状态代码 401 (未经授权)。一旦客户端已经过身份验证，您的代码可以执行自己的检查，以验证客户端应能够访问所请求的资源。如果这种授权失败，您应该返回状态代码 403 (禁止)。
+	> [AZURE.NOTE] Many web servers trap error conditions themselves before they reach the web API. For example, if you configure authentication for a web site and the user fails to provide the correct authentication information, the web server should respond with status code 401 (Unauthorized). Once a client has been authenticated, your code can perform its own checks to verify that the client should be able access the requested resource. If this authorization fails, you should return status code 403 (Forbidden).
 
-- **在有关错误的一致方式和日志信息中处理异常**.
+- **Handle exceptions in a consistent manner and log information about errors**.
 
-	以一致的方式处理异常，请考虑实现一个全局错误处理策略在整个网络 API。您可以通过创建运行每当控制器扔不是任何未处理的异常的异常筛选器实现的这一部分 `HttpResponseException` 异常。这种方法描述 [异常处理在 ASP.NET Web API](http://www.asp.net/web-api/overview/error-handling/exception-handling) 在 Microsoft 网站上的页面。
+	To handle exceptions in a consistent manner, consider implementing a global error handling strategy across the entire web API. You can achieve part of this by creating an exception filter that runs whenever a controller throws any unhandled exception that is not an `HttpResponseException` exception. This approach is described on the [Exception Handling in ASP.NET Web API](http://www.asp.net/web-api/overview/error-handling/exception-handling) page on the Microsoft website.
 
-	然而，有几种情况下，在异常筛选器不会捕获异常，包括:
+	However, there are several situations where an exception filter will not catch an exception, including:
 
-	- 从控制器的构造函数引发的异常。
+	- Exceptions thrown from controller constructors.
 
-	- 从消息处理程序引发的异常。
+	- Exceptions thrown from message handlers.
 
-	- 在路由过程中引发的异常。
+	- Exceptions thrown during routing.
 
-	- 序列化的响应消息的内容时引发的异常。
+	- Exceptions thrown while serializing the content for a response message.
 
-	若要处理这种情况下，你可能需要执行更多自定义的方法。你还应包含错误日志记录可捕获详细介绍每个异常;此错误日志可以包含详细的信息，只要它不是可通过 web 向客户端。这篇文章 [Web API 全局错误处理](http://www.asp.net/web-api/overview/error-handling/web-api-global-error-handling) 在微软网站显示表演这一任务的方式之一。
+	To handle these cases, you may need to implement a more customized approach. You should also incorporate error logging which captures the full details of each exception; this error log can contain detailed information as long as it is not made accessible over the web to clients. The article [Web API Global Error Handling](http://www.asp.net/web-api/overview/error-handling/web-api-global-error-handling) on the Microsoft website shows one way of performing this task.
 
-- **区分错误客户端和服务器端错误**.
+- **Distinguish between client-side errors and server-side errors**.
 
-	HTTP 协议 (HTTP 4xx 状态代码)，客户端应用程序所发生的错误和造成的事故 (HTTP 5xx 状态代码) 服务器上的错误进行了区分。请确保你尊重本公约中任何错误响应消息。
+	The HTTP protocol distinguishes between errors that occur due to the client application (the HTTP 4xx status codes), and errors that are caused by a mishap on the server (the HTTP 5xx status codes). Make sure that you respect this convention in any error response messages.
 
 <a name="considerations-for-optimizing"></a>
-## 优化客户端数据访问的注意事项
+## Considerations for optimizing client-side data access
 
-在分布式环境等，涉及 web 服务器和客户端应用程序中，关注的主要来源之一就是网络。这可以作为一个很大的瓶颈，尤其是如果一个客户端应用程序频繁地发送请求或接收数据。因此你应该旨在尽量减少流经网络的通信量。在实现检索和维护数据的代码时，请考虑以下几点:
+In a distributed environment such as that involving a web server and client applications, one of the primary sources of concern is the network. This can act as a considerable bottleneck, especially if a client application is frequently sending requests or receiving data. Therefore you should aim to minimize the amount of traffic that flows across the network. Consider the following points when you implement the code to retrieve and maintain data:
 
-- **支持客户端缓存**.
+- **Support client-side caching**.
 
-	HTTP 1.1 协议支持缓存在客户端和中间服务器通过请求将被路由，利用高速缓存控制标头。当一个客户端应用程序发送的 HTTP GET 请求 web api，反应可以在很久以前包括缓存控制标头，该值指示是否由客户端或中间服务器通过请求被路由，并为如何可以安全地缓存响应的正文中的数据时它应该过期并被认为已经过时。下面的示例演示一个 HTTP GET 请求和相应的响应包含一个缓存控制标头:
+	The HTTP 1.1 protocol supports caching in clients and intermediate servers through which a request is routed by the use of the Cache-Control header. When a client application sends an HTTP GET request to the web API, the response can include a Cache-Control header that indicates whether the data in the body of the response can be safely cached by the client or an intermediate server through which the request has been routed, and for how long before it should expire and be considered out-of-date. The following example shows an HTTP GET request and the corresponding response that includes a Cache-Control header:
 
 	```HTTP
 	GET http://adventure-works.com/orders/2 HTTP/1.1
@@ -409,7 +409,7 @@
 	{"OrderID":2,"ProductID":4,"Quantity":2,"OrderValue":10.00}
 	```
 
-	在此示例中，缓存控制标头指定返回的数据应该在 600 秒后过期，只适用于单个客户端和不必须存储在其他客户端 (这是使用的共享缓存 _私人_).可以指定缓存控制标头 _公共_ 而不是 _私人_ 在这种情况下的数据可以存储在一个共享的缓存，或者它可以指定 _没有商店_ 在这种情况下的数据必须 **不** 由客户端缓存。下面的代码示例演示如何构建响应消息中的缓存控制标头:
+	In this example, the Cache-Control header specifies that the data returned should be expired after 600 seconds, and is only suitable for a single client and must not be stored in a shared cache used by other clients (it is _private_). The Cache-Control header could specify _public_ rather than _private_ in which case the data can be stored in a shared cache, or it could specify _no-store_ in which case the data must **not** be cached by the client. The following code example shows how to construct a Cache-Control header in a response message:
 
 	```C#
 	public class OrdersController : ApiController
@@ -439,7 +439,7 @@
 	}
 	```
 
-	此代码使用的自定义 `IHttpActionResult` 名为的类 `OkResultWithCaching`.此类使控制器来设置高速缓存标头内容:
+	This code makes use of a custom `IHttpActionResult` class named `OkResultWithCaching`. This class enables the controller to set the cache header contents:
 
 	```C#
 	public class OkResultWithCaching<T> : OkNegotiatedContentResult<T>
@@ -465,19 +465,19 @@
     }
 	```
 
-	> [AZURE。注意] 此外定义了 HTTP 协议 _无缓存_ 指令缓存控制标头。而令人困惑的是，该指令并不意味着"不缓存"但相当"重新验证与服务器之前返回它的缓存的信息";数据仍然可以被缓存，但它检查每次它用来确保它是目前仍然。
+	> [AZURE.NOTE] The HTTP protocol also defines the _no-cache_ directive for the Cache-Control header. Rather confusingly, this directive does not mean "do not cache" but rather "revalidate the cached information with the server before returning it"; the data can still be cached, but it is checked each time it is used to ensure that it is still current.
 
-	高速缓存管理负责的客户端应用程序或中间服务器，但是如果正确执行它可以节省带宽，并且通过删除需要已经被最近的检索的获取数据来提高性能。
+	Cache management is the responsibility of the client application or intermediate server, but if properly implemented it can save bandwidth and improve performance by removing the need to fetch data that has already been recently retrieved.
 
-	的 _最大年龄_ 高速缓存控制标头中的值是仅指南并不是相应的数据在指定的时间不会改变的保证。Web API 应该设置为合适的值，具体取决于数据的预期波动的最大年龄。在此期限届满后，客户端应该丢弃缓存中的对象。
+	The _max-age_ value in the Cache-Control header is only a guide and not a guarantee that the corresponding data won't change during the specified time. The web API should set the max-age to a suitable value depending on the expected volatility of the data. When this period expires, the client should discard the object from the cache.
 
-	> [AZURE。注意] 大多数现代 web 浏览器支持客户端缓存通过将适当的缓存控制标头添加到请求和检查的结果，头如所述。但是，一些较旧的浏览器会缓存返回从 URL 包含查询字符串的值。这通常不是自定义客户端应用程序执行基于议定书 》 在这里讨论自己缓存管理策略的一个问题。
+	> [AZURE.NOTE] Most modern web browsers support client-side caching by adding the appropriate cache-control headers to requests and examining the headers of the results, as described. However, some older browsers will not cache the values returned from a URL that includes a query string. This is not usually an issue for custom client applications which implement their own cache management strategy based on the protocol discussed here.
 	>
-	> 某些较旧的代理表现出相同的行为和可能不缓存请求基于 Url 的查询字符串。这可能是自定义客户端应用程序连接到 web 服务器通过这类代理的一个问题。
+	> Some older proxies exhibit the same behavior and might not cache requests based on URLs with query strings. This could be an issue for custom client applications that connect to a web server through such a proxy.
 
-- **提供 ETags 优化查询处理**.
+- **Provide ETags to Optimize Query Processing**.
 
-	当一个客户端应用程序中检索对象时，响应消息还可以包括 _ETag_ (实体标签)。一个 ETag 是不透明的字符串，该值指示版本的资源;每次一个资源更改 Etag 时也会修改。这个 ETag 应由客户端应用程序缓存作为数据的一部分。下面的代码示例演示如何添加一个 ETag 作为 HTTP GET 请求的响应的一部分。此代码使用 `GetHashCode` 对象方法来生成一个数字值，标识对象 (您可以重写此方法，如有必要并生成您自己使用 MD5 算法的哈希值):
+	When a client application retrieves an object, the response message can also include an _ETag_ (Entity Tag). An ETag is an opaque string that indicates the version of a resource; each time a resource changes the Etag is also modified. This ETag should be cached as part of the data by the client application. The following code example shows how to add an ETag as part of the response to an HTTP GET request. This code uses the `GetHashCode` method of an object to generate a numeric value that identifies the object (you can override this method if necessary and generate your own hash using an algorithm such as MD5) :
 
 	```C#
 	public class OrdersController : ApiController
@@ -505,7 +505,7 @@
     }
 	```
 
-	由 web API 张贴的响应邮件看起来像这样:
+	The response message posted by the web API looks like this:
 
 	```HTTP
 	HTTP/1.1 200 OK
@@ -517,11 +517,11 @@
 	{"OrderID":2,"ProductID":4,"Quantity":2,"OrderValue":10.00}
 	```
 
-	> [AZURE。小贴士] 出于安全方面的考虑，不允许敏感数据或返回经过身份验证的 (HTTPS) 连接要缓存的数据。
+	> [AZURE.TIP] For security reasons, do not allow sensitive data or data returned over an authenticated (HTTPS) connection to be cached.
 
-	客户端应用程序可以发出后续的 GET 请求来检索相同的资源，在任何时候，如果资源已发生更改 (它有不同的 ETag) 应丢弃缓存的版本和新版本添加到缓存中。如果资源很大，需要大量的带宽传输回客户端，一再的要求取相同的数据可以变得低效。要解决这个问题，HTTP 协议定义优化你应该支持在 web API 的 GET 请求的以下过程:
+	A client application can issue a subsequent GET request to retrieve the same resource at any time, and if the resource has changed (it has a different ETag) the cached version should be discarded and the new version added to the cache. If a resource is large and requires a significant amount of bandwidth to transmit back to the client, repeated requests to fetch the same data can become inefficient. To combat this, the HTTP protocol defines the following process for optimizing GET requests that you should support in a web API:
 
-	- 客户端构造包含如果没有匹配 HTTP 标头中引用的资源的当前缓存版本 ETag 的 GET 请求:
+	- The client constructs a GET request containing the ETag for the currently cached version of the resource referenced in an If-None-Match HTTP header:
 
 	```HTTP
 	GET http://adventure-works.com/orders/2 HTTP/1.1
@@ -529,19 +529,19 @@
 	...
 	```
 
-	- GET 操作在 web API 获取当前 ETag 为所请求的数据 (在上面的示例订单 2)，并把它比作中如果没有匹配的标头的值。
+	- The GET operation in the web API obtains the current ETag for the requested data (order 2 in the above example), and compares it to the value in the If-None-Match header.
 
-	- 如果当前 ETag 为所请求的数据匹配所请求提供的 ETag，资源并没有改变和 web API 应该返回 HTTP 响应与空邮件正文和 304 (未修改) 状态代码。
+	- If the current ETag for the requested data matches the ETag provided by the request, the resource has not changed and the web API should return an HTTP response with an empty message body and a status code of 304 (Not Modified).
 
-	- 如果当前 ETag 为所请求的数据不匹配所请求提供的 ETag，然后数据已更改，web API 应该在邮件正文和 200 (OK) 状态代码返回 HTTP 响应的新数据。
+	- If the current ETag for the requested data does not match the ETag provided by the request, then the data has changed and the web API should return an HTTP response with the new data in the message body and a status code of 200 (OK).
 
-	- 如果所请求的数据不再存在然后 web API 应该返回 HTTP 响应状态代码为 404 (未找到)。
+	- If the requested data no longer exists then the web API should return an HTTP response with the status code of 404 (Not Found).
 
-	- 客户端使用的状态代码来维护缓存。如果数据不发生 (状态代码 304)，然后该对象可以保持缓存，客户端应用程序应该继续使用此对象的版本。如果数据已更改 (状态代码 200)，那么应该丢弃缓存的对象和新插入。如果不再有可用的数据 (状态代码 404) 然后应从缓存中移除该对象。
+	- The client uses the status code to maintain the cache. If the data has not changed (status code 304) then the object can remain cached and the client application should continue to use this version of the object. If the data has changed (status code 200) then the cached object should be discarded and the new one inserted. If the data is no longer available (status code 404) then the object should be removed from the cache.
 
-	> [AZURE。注意] 如果响应标头包含缓存控制标头不存储区，则对象应该总是会从缓存中删除无关的 HTTP 状态代码。
+	> [AZURE.NOTE] If the response header contains the Cache-Control header no-store then the object should always be removed from the cache regardless of the HTTP status code.
 
-	下面的代码显示 `FindOrderByID` 扩展以支持如果没有匹配标题的方法。请注意，是否省略了如果没有匹配标题，总是检索指定的顺序:
+	The code below shows the `FindOrderByID` method extended to support the If-None-Match header. Notice that if the If-None-Match header is omitted, the specified order is always retrieved:
 
 	```C#
 	public class OrdersController : ApiController
@@ -610,7 +610,7 @@
     }
 	```
 
-	此示例包含一个附加的自定义 `IHttpActionResult` 名为的类 `EmptyResultWithCaching`.此类只是充当周围的包装 `HttpResponseMessage` 对象不包含响应正文:
+	This example incorporates an additional custom `IHttpActionResult` class named `EmptyResultWithCaching`. This class simply acts as a wrapper around an `HttpResponseMessage` object that does not contain a response body:
 
 	```C#
     public class EmptyResultWithCaching : IHttpActionResult
@@ -631,13 +631,13 @@
     }
 	```
 
-	> [AZURE。小贴士] 在此示例中，数据 ETag 生成通过散列从基础数据源检索的数据。如果 ETag 可以以某种其他方式计算，那么可以进一步优化这个过程，只需要将数据从数据源提取，如果它已经改变了。 这种方法是特别有用的如果数据量很大，或访问数据源会导致明显的延迟 (例如，如果数据源是一个远程的数据库)。
+	> [AZURE.TIP] In this example, the ETag for the data is generated by hashing the data retrieved from the underlying data source. If the ETag can be computed in some other way, then the process can be optimized further and the data only needs to be fetched from the data source if it has changed.  This approach is especially useful if the data is large or accessing the data source can result in significant latency (for example, if the data source is a remote database).
 
-- **使用 Etag 要支持开放式并发**.
+- **Use ETags to Support Optimistic Concurrency**.
 
-	为了启用先前缓存的数据更新，HTTP 协议支持乐观并发策略。如果后获取和缓存的资源，客户端应用程序随后发送放或删除请求更改或删除的资源，它应该包括引用 ETag 的如果匹配标题中。然后，web API 可以使用此信息来确定是否资源已由另一个用户因为它被检索并适当将响应发送回客户端应用程序，如下所示:
+	To enable updates over previously cached data, the HTTP protocol supports an optimistic concurrency strategy. If, after fetching and caching a resource, the client application subsequently sends a PUT or DELETE request to change or remove the resource, it should include in If-Match header that references the ETag. The web API can then use this information to determine whether the resource has already been changed by another user since it was retrieved and send an appropriate response back to the client application as follows:
 
-	- 客户端构造包含该资源的新细节，如果匹配 HTTP 标头中引用的资源的当前缓存版本 ETag PUT 请求。下面的示例演示更新订单 PUT 请求:
+	- The client constructs a PUT request containing the new details for the resource and the ETag for the currently cached version of the resource referenced in an If-Match HTTP header. The following example shows a PUT request that updates an order:
 
 	```HTTP
 	PUT http://adventure-works.com/orders/1 HTTP/1.1
@@ -649,17 +649,17 @@
 	ProductID=3&Quantity=5&OrderValue=250
 	```
 
-	- PUT 操作在 web API 获取当前 ETag 为所请求的数据 (在上面的示例订单 1)，并把它比作中如果比赛标头的值。
+	- The PUT operation in the web API obtains the current ETag for the requested data (order 1 in the above example), and compares it to the value in the If-Match header.
 
-	- 如果当前 ETag 为所请求的数据匹配所请求提供的 ETag，资源并没有改变和 web API 应该执行更新，返回 HTTP 状态代码 204 (没有内容) 的消息，如果它是成功。响应可以包含缓存控制和资源的更新版本 etag。答复应始终包括引用新更新的资源的 URI 位置标头。
+	- If the current ETag for the requested data matches the ETag provided by the request, the resource has not changed and the web API should perform the update, returning a message with HTTP status code 204 (No Content) if it is successful. The response can include Cache-Control and ETag headers for the updated version of the resource. The response should always include the Location header that references the URI of the newly updated resource.
 
-	- 如果当前 ETag 为所请求的数据不匹配所请求提供的 ETag，然后数据已被另一用户更改因为它取自和 web API 应该返回 HTTP 响应与空邮件正文和 412 (前提条件失败) 状态代码。
+	- If the current ETag for the requested data does not match the ETag provided by the request, then the data has been changed by another user since it was fetched and the web API should return an HTTP response with an empty message body and a status code of 412 (Precondition Failed).
 
-	- 如果要更新的资源不再存在然后 web API 应该返回 HTTP 响应状态代码为 404 (未找到)。
+	- If the resource to be updated no longer exists then the web API should return an HTTP response with the status code of 404 (Not Found).
 
-	- 客户端使用的状态代码和响应标头来维护缓存。如果数据已更新 (状态代码 204)，然后该对象可以保持缓存 (只要缓存控制标头不指定无店) 但是应该更新 ETag。如果数据已被另一个用户已更改 (状态代码 412) 或未找到 (状态代码 404)，那么应该丢弃缓存的对象。
+	- The client uses the status code and response headers to maintain the cache. If the data has been updated (status code 204) then the object can remain cached (as long as the Cache-Control header does not specify no-store) but the ETag should be updated. If the data was changed by another user changed (status code 412) or not found (status code 404) then the cached object should be discarded.
 
-	下面的代码示例演示订单控制器 PUT 操作实现:
+	The next code example shows an implementation of the PUT operation for the Orders controller:
 
 	```C#
 	public class OrdersController : ApiController
@@ -732,20 +732,20 @@
     }
 	```
 
-	> [AZURE。小贴士] 如果匹配标题的使用是完全可选的如果它是省略的 web API 将始终尝试更新指定的顺序，可能会盲目地覆盖其他用户所做的更新。若要避免丢失更新问题，总是提供如果匹配标题。
+	> [AZURE.TIP] Use of the If-Match header is entirely optional, and if it is omitted the web API will always attempt to update the specified order, possibly blindly overwriting an update made by another user. To avoid problems due to lost updates, always provide an If-Match header.
 
 <a name="considerations-for-handling-large"></a>
-## 处理大量的请求和响应的注意事项
+## Considerations for handling large requests and responses
 
-可能有的场合当一个客户端应用程序需要发出请求，发送或接收可能是几兆字节的数据 (或更大) 的大小。等待传输此数量的数据时，可能导致客户端应用程序停止响应。当您需要处理包含大量数据的请求时，请考虑以下几点:
+There may be occasions when a client application needs to issue requests that send or receive data that may be several megabytes (or bigger) in size. Waiting while this amount of data is transmitted could cause the client application to become unresponsive. Consider the following points when you need to handle requests that include significant amounts of data:
 
-- **优化的请求和响应涉及大型对象**.
+- **Optimize requests and responses that involve large objects**.
 
-	有些资源可能是大型对象或包括大的领域，如图形的图像或其他类型的二进制数据。Web API 应该支持流，使优化的上传和下载这些资源。
+	Some resources may be large objects or include large fields, such as graphics images or other types of binary data. A web API should support streaming to enable optimized uploading and downloading of these resources.
 
-	HTTP 协议提供分块的传输编码机制以流式传输大数据对象返回到客户端。当客户端发送 HTTP GET 请求以获得一个庞大的物体时，web API 可以发送答复，回来在零敲碎打 _大块_ 通过 HTTP 连接。在答复中数据的长度可能不知道最初 (它可能生成)，所以服务器托管 web API 应该发送响应消息与每个指定的传输编码的块: 分块标题，而不是内容长度标头。客户端应用程序可以接收每个块反过来要建立完整的响应。在数据传输完成时该服务器发送回最后的块大小为零。	您可以实现在 ASP.NET Web API 使用分块 `PushStreamContent` 类。
+	The HTTP protocol provides the chunked transfer encoding mechanism to stream large data objects back to a client. When the client sends an HTTP GET request for a large object, the web API can send the reply back in piecemeal _chunks_ over an HTTP connection. The length of the data in the reply may not be known initially (it might be generated), so the server hosting the web API should send a response message with each chunk that specifies the Transfer-Encoding: Chunked header rather than a Content-Length header. The client application can receive each chunk in turn to build up the complete response. The data transfer completes when the server sends back a final chunk with zero size.	You can implement chunking in the ASP.NET Web API by using the `PushStreamContent` class.
 
-	下面的示例显示了一个响应 HTTP GET 请求的产品图像的操作:
+	The following example shows an operation that responds to HTTP GET requests for product images:
 
 	```C#
 	public class ProductImagesController : ApiController
@@ -781,9 +781,9 @@
 	}
 	```
 
-	在此示例中， `ConnectBlobToContainer` 在 Azure Blob 存储是一个连接到指定的容器 (不显示名称) 的帮助器方法。 `BlobExists` 是另一个 helper 方法，返回一个布尔值，该值指示 blob 存储容器中是否存在具有指定名称的 blob。
+	In this example, `ConnectBlobToContainer` is a helper method that connects to a specified container (name not shown) in Azure Blob storage. `BlobExists` is another helper method that returns a Boolean value that indicates whether a blob with the specified name exists in the blob storage container.
 
-	每个产品都举行 blob 存储自身形象。的 `FileDownloadResult` 类是一个自定义 `IHttpActionResult` 使用的类 `PushStreamContent` 要从适当的 blob 中读取图像数据和异步传输它作为响应消息的内容的对象:
+	Each product has its own image held in blob storage. The `FileDownloadResult` class is a custom `IHttpActionResult` class that uses a `PushStreamContent` object to read the image data from appropriate blob and transmit it asynchronously as the content of the response message:
 
 	```C#
 	public class FileDownloadResult : IHttpActionResult
@@ -814,7 +814,7 @@
     }
 	```
 
-	您还可以应用流来上载操作，如果客户端需要发布一个新的资源，其中包括一个大型对象。下面的示例演示为 Post 方法 `ProductImages` 控制器。此方法允许客户端上传一个新的产品形象:
+	You can also apply streaming to upload operations if a client needs to POST a new resource that includes a large object. The next example shows the Post method for the `ProductImages` controller. This method enables the client to upload a new product image:
 
 	```C#
 	public class ProductImagesController : ApiController
@@ -851,7 +851,7 @@
 	}
 	```
 
-	此代码使用另一个自定义 `IHttpActionResult` 名为的类 `FileUploadResult`.此类包含用于异步上载数据的逻辑:
+	This code uses another custom `IHttpActionResult` class called `FileUploadResult`. This class contains the logic for uploading the data asynchronously:
 
 	```C#
     public class FileUploadResult : IHttpActionResult
@@ -873,25 +873,25 @@
     }
 	```
 
-	> [AZURE。小贴士] 你可以上传到 web 服务的数据量不受流，和单个请求可以想象可能导致一个巨大的物体，耗费大量的资源。如果在流的过程中，web API 决定中请求的数据量已超过一些可接受的范围，它可以中止操作并返回状态代码 413 (请求实体太大) 的响应消息。
+	> [AZURE.TIP] The volume of data that you can upload to a web service is not constrained by streaming, and a single request could conceivably result in a massive object that consumes considerable resources. If, during the streaming process, the web API determines that the amount of data in a request has exceeded some acceptable bounds, it can abort the operation and return a response message with status code 413 (Request Entity Too Large).
 
-	你可以尽量减少使用 HTTP 压缩在网络上传输的大对象的大小。这种做法有助于减少网络通信量和关联的网络延迟，但需要额外的处理在客户端和服务器托管 web API。例如，一个客户端应用程序，预计接收压缩的数据可以包括接受编码: gzip 已请求标头 (算法还可以指定其他数据压缩)。如果服务器支持压缩应对举行 gzip 格式邮件正文和内容编码中的内容: gzip 已响应标头。
+	You can minimize the size of large objects transmitted over the network by using HTTP compression. This approach helps to reduce the amount of network traffic and the associated network latency, but at the cost of requiring additional processing at the client and the server hosting the web API. For example, a client application that expects to receive compressed data can include an Accept-Encoding: gzip request header (other data compression algorithms can also be specified). If the server supports compression it should respond with the content held in gzip format in the message body and the Content-Encoding: gzip response header.
 
-	> [AZURE。小贴士] 您可以将组合编码的压缩与流;压缩数据首先之前流，并指定 gzip 内容编码和分块的传输编码在邮件头中。此外注意到，一些 web 服务器 (如 Internet 信息服务器) 可以配置为自动压缩 HTTP 响应无论 web API 将不压缩的数据。
+	> [AZURE.TIP] You can combine encoded compression with streaming; compress the data first before streaming it, and specify the gzip content encoding and chunked transfer encoding in the message headers. Also note that some web servers (such as Internet Information Server) can be configured to automatically compress HTTP responses regardless of whether the web API compresses the data or not.
 
-- **不支持异步操作的客户端执行部分响应**.
+- **Implement partial responses for clients that do not support asynchronous operations**.
 
 	As an alternative to asynchronous streaming, a client application can explicitly request data for large objects in chunks, known as partial responses. The client application sends an HTTP HEAD request to obtain information about the object. If the web API supports partial responses if should respond to the HEAD request with a response message that contains an Accept-Ranges header and a Content-Length header that indicates the total size of the object, but the body of the message should be empty. The client application can use this information to construct a series of GET requests that specify a range of bytes to receive. The web API should return a response message with HTTP status 206 (Partial Content), a Content-Length header that specifies the actual amount of data included in the body of the response message, and a Content-Range header that indicates which part (such as bytes 4000 to 8000) of the object this data represents.
 
-	在 API 设计指导文件中详细介绍了 HTTP HEAD 请求和部分响应。
+	HTTP HEAD requests and partial responses are described in more detail in the API Design Guidance document.
 
-- **避免在客户端应用程序发送不必要继续状态消息**.
+- **Avoid sending unnecessary Continue status messages in client applications**.
 
-	是要将大量的数据发送到服务器的客户端应用程序可能会首先确定该服务器是否真的愿意接受这一要求。发送数据，在客户端应用程序可以提交 HTTP 请求与一个期望: 100-继续标题，内容长度标头指示的数据，但空消息正文的大小。如果该服务器是愿意处理该请求，它应以指定的 HTTP 状态 100 (继续) 的消息响应。客户端应用程序可以继续执行，然后发送完整的请求在邮件正文中包括的数据。
+	A client application that is about to send a large amount of data to a server may determine first whether the server is actually willing to accept the request. Prior to sending the data, the client application can submit an HTTP request with an Expect: 100-Continue header, a Content-Length header that indicates the size of the data, but an empty message body. If the server is willing to handle the request, it should respond with a message that specifies the HTTP status 100 (Continue). The client application can then proceed and send the complete request including the data in the message body.
 
-	如果您通过使用 IIS 承载服务，HTTP.sys 驱动程序会自动检测并处理期望: 100-继续之前将请求传递给 web 应用程序的标题。这意味着你很难看到这些头文件在应用程序代码中，您可以假定 IIS 技术已渗入它认为是不适宜或太大的任何消息。
+	If you are hosting a service by using IIS, the HTTP.sys driver automatically detects and handles Expect: 100-Continue headers before passing requests to your web application. This means that you are unlikely to see these headers in your application code, and you can assume that IIS has already filtered any messages that it deems to be unfit or too large.
 
-	如果您正在构建客户端应用程序通过使用.NET Framework 中，然后开机自检和付诸表决的所有邮件将首先寄都发消息与期望: 100-默认情况下继续标头。与服务器端进程是由.NET 框架透明地处理。然而，这一过程结果在每个岗位和付诸表决的请求，2 往返过程导致的服务器，甚至小的请求。如果您的应用程序不发送请求处理大量的数据，您可以禁用此功能，通过使用 `ServicePointManager` 要创建类 `ServicePoint` 客户端应用程序中的对象。A `ServicePoint` 对象处理客户端到服务器的基础确定服务器上的资源的方案和主机 Uri 片段的连接。然后，您可以设置 `Expect100Continue` 属性的 `ServicePoint` 对象为 false。随后的所有员额和付诸表决请求由客户端通过一个 URI，它匹配的方案和主机的碎片 `ServicePoint` 没有预期的情况下将发送对象: 100-继续标头。下面的代码演示如何配置 `ServicePoint` 配置发送到 Uri 的计划的所有请求的对象 `http` 与主机的 `www.contoso.com`.
+	If you are building client applications by using the .NET Framework, then all POST and PUT messages will first send messages with Expect: 100-Continue headers by default. As with the server-side, the process is handled transparently by the .NET Framework. However, this process results in each POST and PUT request causing 2 round-trips to the server, even for small requests. If your application is not sending requests with large amounts of data, you can disable this feature by using the `ServicePointManager` class to create `ServicePoint` objects in the client application. A `ServicePoint` object handles the connections that the client makes to a server based on the scheme and host fragments of URIs that identify resources on the server. You can then set the `Expect100Continue` property of the `ServicePoint` object to false. All subsequent POST and PUT requests made by the client through a URI that matches the scheme and host fragments of the `ServicePoint` object will be sent without Expect: 100-Continue headers. The following code shows how to configure a `ServicePoint` object that configures all requests sent to URIs with a scheme of `http` and a host of `www.contoso.com`.
 
 	```C#
 	Uri uri = new Uri("http://www.contoso.com/");
@@ -899,13 +899,13 @@
 	sp.Expect100Continue = false;
 	```
 
-	您还可以设置静态 `Expect100Continue` 属性的 `ServicePointManager` 类为所有随后创建指定此属性的默认值 `ServicePoint` 对象。有关更多信息，请参见 [ServicePoint 类](https://msdn.microsoft.com/library/system.net.servicepoint.aspx) 在 Microsoft 网站上的页面。
+	You can also set the static `Expect100Continue` property of the `ServicePointManager` class to specify the default value of this property for all subsequently created `ServicePoint` objects. For more information, see the [ServicePoint Class](https://msdn.microsoft.com/library/system.net.servicepoint.aspx) page on the Microsoft website.
 
-- **支持分页的请求可能会返回大量的对象**.
+- **Support pagination for requests that may return large numbers of objects**.
 
-	如果集合包含大量的资源，向相应的 URI 发出 GET 请求显著承载 web API 影响性能，服务器上的处理，也会造成生成大量的网络流量，从而增加延迟。
+	If a collection contains a large number of resources, issuing a GET request to the corresponding URI could result in significant processing on the server hosting the web API affecting performance, and generate a significant amount of network traffic resulting in increased latency.
 
-	若要处理这种情况下，web API 应该支持启用客户端应用程序来优化请求或获取数据更易于管理，离散块 (或页面) 中的查询字符串。ASP.NET Web API 框架分析查询字符串并分成一系列的参数/值对传递给适当的方法，按照前面所述的路由规则。应实现方法以接受使用相同的名称在查询字符串中指定这些参数。此外，这些参数应该是可选的 (在情况下客户端忽略来自一个请求的查询字符串) 并具有有意义的默认值。下面的代码显示 `GetAllOrders` 中的方法 `Orders` 控制器。此方法检索订单的详细信息。如果此方法不受约束，它可以想象返回大量数据。的 `limit` 和 `offset` 默认情况下，参数意欲以减少数据量较小的子集，在本例中只有第一次 10 的订单:
+	To handle these cases, the web API should support query strings that enable the client application to refine requests or fetch data in more manageable, discrete blocks (or pages). The ASP.NET Web API framework parses query strings and splits them up into a series of parameter/value pairs which are passed to the appropriate method, following the routing rules described earlier. The method should be implemented to accept these parameters using the same names specified in the query string. Additionally, these parameters should be optional (in case the client omits the query string from a request) and have meaningful default values. The code below shows the `GetAllOrders` method in the `Orders` controller. This method retrieves the details of orders. If this method was unconstrained, it could conceivably return a large amount of data. The `limit` and `offset` parameters are intended to reduce the volume of data to a smaller subset, in this case only the first 10 orders by default:
 
 	```C#
 	public class OrdersController : ApiController
@@ -924,230 +924,230 @@
 	}
 	```
 
-	客户端应用程序可以发出请求来检索 30 订单从偏移量 50 开始使用 URI _http://www.adventure-works.com/api/orders?limit=30&偏移量 = 50_.
+	A client application can issue a request to retrieve 30 orders starting at offset 50 by using the URI _http://www.adventure-works.com/api/orders?limit=30&offset=50_.
 
-	> [AZURE。小贴士] 避免使客户端应用程序可以指定结果中有超过 2000年个字符长的 URI 的查询字符串。很多 web 客户端和服务器不能处理这长的 Uri。
+	> [AZURE.TIP] Avoid enabling client applications to specify query strings that result in a URI that is more than 2000 characters long. Many web clients and servers cannot handle URIs that are this long.
 
 <a name="considerations-for-maintaining-responsiveness"></a>
-## 维护响应性、 可扩展性和可用性的注意事项
+## Considerations for maintaining responsiveness, scalability, and availability
 
-相同的 web API 可能利用许多客户端应用程序在世界任何地方运行。它是重要的是确保 web API 实施，以确保负载很重，可缩放以支持高度不同的工作量，并保证可用性对于执行关键业务操作的客户端的响应能力。在确定如何满足这些要求时，请考虑以下几点:
+The same web API might be utilized by many client applications running anywhere in the world. It is important to ensure that the web API is implemented to maintain responsiveness under a heavy load, to be scalable to support a highly varying workload, and to guarantee availability for clients that perform business-critical operations. Consider the following points when determining how to meet these requirements:
 
-- **提供异步支持长时间运行的请求**.
+- **Provide Asynchronous Support for Long-Running Requests**.
 
-	应无阻塞，提交请求的客户端可能需要很长的时间来处理请求。Web API 可以执行一些初始的检查，为验证请求，启动一个单独的任务去执行的工作，然后返回响应消息与 HTTP 代码 202 (接受)。任务可以运行异步 web API 的一部分作为处理，或者它可以卸载到 Azure WebJob (如果 web API 由 Azure 网站) 或工作者角色 (如果 web API 作为 Azure 的云服务实现的)。
+	A request that might take a long time to process should be performed without blocking the client that submitted the request. The web API can perform some initial checking to validate the request, initiate a separate task to perform the work, and then return a response message with HTTP code 202 (Accepted). The task could run asynchronously as part of the web API processing, or it could be offloaded to an Azure WebJob (if the web API is hosted by an Azure Website) or a worker role (if the web API is implemented as an Azure cloud service).
 
-	> [AZURE。注意] 有关使用 WebJobs 与 Azure 网站的详细信息，请访问页面 [使用 WebJobs 在微软 Azure 网站运行后台任务](web-sites-create-web-jobs.md) 在微软的网站。
+	> [AZURE.NOTE] For more information about using WebJobs with Azure Website, visit the page [Use WebJobs to run background tasks in Microsoft Azure Websites](web-sites-create-web-jobs.md) on the Microsoft website.
 
-	Web API 还应提供一种机制，将处理的结果返回到客户端应用程序。你可以达到这目的，提供客户端轮询机制定期查询的应用是否处理完毕，取得结果，或启用 web API 来在操作完成时发送通知。
+	The web API should also provide a mechanism to return the results of the processing to the client application. You can achieve this by providing a polling mechanism for client applications to periodically query whether the processing has finished and obtain the result, or enabling the web API to send a notification when the operation has completed.
 
-	您可以通过提供实现一种简单的轮询机制 _轮询_ 作为使用以下方法虚拟资源的 URI:
+	You can implement a simple polling mechanism by providing a _polling_ URI that acts as a virtual resource using the following approach:
 
-	1. 客户端应用程序将初始请求发送到 web API。
+	1. The client application sends the initial request to the web API.
 
-	2. Web API 在举行表存储或微软 Azure 缓存，在表中存储有关请求的信息并生成此条目的唯一键可能形式的 GUID。
+	2. The web API stores information about the request in a table held in table storage or Microsoft Azure Cache, and generates a unique key for this entry, possibly in the form of a GUID.
 
-	3. Web API 启动作为一个单独的任务处理。Web API 作为表中记录的任务的状态 _运行_.
+	3. The web API initiates the processing as a separate task. The web API records the state of the task in the table as _Running_.
 
-	4. Web API 返回响应消息与 HTTP 状态代码 202 (接受) 和表条目的 GUID 在邮件的正文中。
+	4. The web API returns a response message with HTTP status code 202 (Accepted), and the GUID of the table entry in the body of the message.
 
-	5. 当任务已经完成时，web API 将结果存储在表中，并设置该任务的状态 _完成_.注意是否任务失败，web API 都可以存储有关失败的信息并将状态设置为 _失败_.
+	5. When the task has completed, the web API stores the results in the table, and sets the state of the task to _Complete_. Note that if the task fails, the web API could also store information about the failure and set the status to _Failed_.
 
-	6. 在任务运行时，客户端可以继续执行它自己的处理。它可以定期发送请求的 uri _/polling/ {guid}_ 在哪里 _{} guid_ GUID 返回 202 响应消息中的 web API。
+	6. While the task is running, the client can continue performing its own processing. It can periodically send a request to the URI _/polling/{guid}_ where _{guid}_ is the GUID returned in the 202 response message by the web API.
 
-	7. Web API 在 _/polling {guid}_ URI 查询表中的相应任务的状态，并返回包含此状态 (HTTP 状态代码 200 (OK) 响应消息_运行_, _完成_或 _失败_).如果任务已完成，或失败，响应消息还可以包括处理或失败的原因有关的任何可用的信息的结果。
+	7. The web API at the _/polling{guid}_ URI queries the state of the corresponding task in the table and returns a response message with HTTP status code 200 (OK) containing this state (_Running_, _Complete_, or _Failed_). If the task has completed or failed, the response message can also include the results of the processing or any information available about the reason for the failure.
 
-	如果您希望执行的通知，可用的选项包括:
+	If you prefer to implement notifications, the options available include:
 
-	- 使用 Azure 通知集线器推异步响应到客户端应用程序。页面 [蔚蓝的通知中心通知用户](notification-hubs-aspnet-backend-windows-dotnet-notify-users.md) 在 Microsoft 网站提供进一步细节。
+	- Using an Azure Notification Hub to push asynchronous responses to client applications. The page [Azure Notification Hubs Notify Users](notification-hubs-aspnet-backend-windows-dotnet-notify-users.md) on the Microsoft website provides further details.
 
-	- 用彗星模型保留在客户端与服务器托管 web API，持续的网络连接和使用此连接到推邮件从服务器向客户端。MSDN 杂志文章 [构建一个简单的彗星在 Microsoft.NET 框架应用程序](https://msdn.microsoft.com/magazine/jj891053.aspx) 介绍了一个示例解决方案。
+	- Using the Comet model to retain a persistent network connection between the client and the server hosting the web API, and using this connection to push messages from the server back to the client. The MSDN magazine article [Building a Simple Comet Application in the Microsoft .NET Framework](https://msdn.microsoft.com/magazine/jj891053.aspx) describes an example solution.
 
-	- 使用那么 SignalR 将数据推送实时从 web 服务器到客户端在持续的网络连接。作为一个 NuGet 包，那么 SignalR 是可供 ASP.NET web 应用程序。你可以找到更多的信息关于 [ASP.NET 那么 SignalR](http://signalr.net/) 网站。
+	- Using SignalR to push data in real-time from the web server to the client over a persistent network connection. SignalR is available for ASP.NET web applications as a NuGet package. You can find more information on the [ASP.NET SignalR](http://signalr.net/) website.
 
-	> [AZURE。注意] 彗星和那么 SignalR 都利用 web 服务器和客户端应用程序之间的持久网络连接。这会影响可伸缩性，因为大量的客户端可能需要同样大的并发连接数。
+	> [AZURE.NOTE] Comet and SignalR both utilize persistent network connections between the web server and the client application. This can affect scalability as a large number of clients may require an equally large number of concurrent connections.
 
-- **确保每个请求都无国籍**.
+- **Ensure that each request is stateless**.
 
-	每个请求应视为原子。应该有一个请求由客户端应用程序和提交相同的客户端的任何后续请求之间没有依赖关系。这种方法帮助可扩展性;web 服务的实例可以部署在多个服务器上。客户端请求可以针对任何这些实例，结果总是应该相同。它还提高了可用性出于类似的原因;如果 web 服务器出故障，请求可以被路由到另一个实例 (通过使用 Azure 流量管理器)，而服务器重新启动，客户端应用程序上没有不良影响。
+	Each request should be considered atomic. There should be no dependencies between one request made by a client application and any subsequent requests submitted by the same client. This approach assists in scalability; instances of the web service can be deployed on a number of servers. Client requests can be directed at any of these instances and the results should always be the same. It also improves availability for a similar reason; if a web server fails requests can be routed to another instance (by using Azure Traffic Manager) while the server is restarted with no ill effects on client applications.
 
-- **跟踪客户和实施节流，以减低 DOS 攻击的机会**.
+- **Track clients and implement throttling to reduce the chances of DOS attacks**.
 
-	如果特定客户端进行大量的请求在给定的时间内，它可能垄断服务和影响性能的其他客户端。为了减轻这一问题，web API 可以监视从客户端应用程序调用跟踪所有传入请求的 IP 地址或记录每个经过身份验证的访问。您可以使用此信息来限制资源的访问。如果客户端超过定义的限制，web API 可以返回响应消息与状态 503 (服务不可用)，并包括一个重试后标头，指定当客户端可以发送下一个请求没有它而被拒绝。这种策略可以帮助从一组客户机失速系统减少拒绝服务 (DOS) 攻击的机会。
+	If a specific client makes a large number of requests within a given period of time it might monopolize the service and affect the performance of other clients. To mitigate this issue, a web API can monitor calls from client applications either by tracking the IP address of all incoming requests or by logging each authenticated access. You can use this information to limit resource access. If a client exceeds a defined limit, the web API can return a response message with status 503 (Service Unavailable) and include a Retry-After header that specifies when the client can send the next request without it being declined. This strategy can help to reduce the chances of a Denial Of Service (DOS) attack from a set of clients stalling the system.
 
-- **仔细管理持久性的 HTTP 连接**.
+- **Manage persistent HTTP connections carefully**.
 
-	HTTP 协议支持他们在哪里，可用的持续 HTTP 连接。HTTP 1.0 规范添加连接: 保持-活着的头，使客户端应用程序向服务器表明它可以使用相同的连接来发送后续请求，而不是打开新的。如果客户端不会重用由宿主定义的期间内连接，该连接将自动关闭。此行为是默认的 HTTP 1.1 所用的 Azure 服务，因此您无需在邮件中包括保持页眉中。
+	The HTTP protocol supports persistent HTTP connections where they are available. The HTTP 1.0 specificiation added the Connection:Keep-Alive header that enables a client application to indicate to the server that it can use the same connection to send subsequent requests rather than opening new ones. The connection closes automatically if the client does not reuse the connection within a period defined by the host. This behavior is the default in HTTP 1.1 as used by Azure services, so there is no need to include Keep-Alive headers in messages.
 
 	Keeping a connection open can can help to improve responsiveness by reducing latency and network congestion, but it can be detrimental to scalability by keeping unnecessary connections open for longer than required, limiting the ability of other concurrent clients to connect. It can also affect battery life if the client application is running on a mobile device; if the application only makes occassional requests to the server, maintaining an open connection can cause the battery to drain more quickly. To ensure that a connection is not made persistent with HTTP 1.1, the client can include a Connection:Close header with messages to override the default behavior. Similarly, if a server is handling a very large number of clients it can include a Connection:Close header in response messages which should close the connection and save server resources.
 
-	> [AZURE。注意] 持续的 HTTP 连接是纯粹可选的功能来减少与反复建立一个通信通道相关的网络开销。既不是 web API，也不是客户端应用程序应取决于可用的持久 HTTP 连接。请不要使用持续的 HTTP 连接来执行彗星式通知系统;相反，你应该利用套接字 (或 websocket 如果可用) 在 TCP 层。最后，注意保持标题的有限使用如果代理; 通过与服务器进行通信的客户端应用程序只有与客户端和代理服务器的连接将会持续。
+	> [AZURE.NOTE] Persistent HTTP connections are a purely optional feature to reduce the network overhead associated with repeatedly establishing a communications channel. Neither the web API nor the client application should depend on a persistent HTTP connection being available. Do not use persistent HTTP connections to implement Comet-style notification systems; instead you should utilize sockets (or websockets if available) at the TCP layer. Finally, note Keep-Alive headers are of limited use if a client application communicates with a server via a proxy; only the connection with the client and the proxy will be persistent.
 
-## 发布和管理 web API 时的注意事项
+## Considerations for publishing and managing a web API
 
-要使 web API 可用于客户端应用程序，web API 必须部署到一个主机环境。这种环境通常是 web 服务器，尽管它可能是一些其他类型的主机进程。在发布 web API 时，应考虑以下几点:
+To make a web API available for client applications, the web API must be deployed to a host environment. This environment is typically a web server, although it may be some other type of host process. You should consider the following points when publishing a web API:
 
-- 所有请求必须通过身份验证和授权，并必须执行适当级别的访问控制。
-- 一个商业网络 API 可能会受到各种关于响应时间的质量保证。它是重要的是确保该主机环境是可扩展如果负载随着时间的推移有显著变化。
-- 如果可能需要对米请求为盈利目的。
-- 它可能需要调节到 web API，交通流量和实施节流为已用尽其配额的特定客户。
-- 监管要求可能任务日志记录和审核的所有请求和响应。
-- 为确保可用性，它可能需要监控服务器托管 web API 的健康并重新启动它，如果必要。
+- All requests must be authenticated and authorized, and the appropriate level of access control must be enforced.
+- A commercial web API might be subject to various quality guarantees concerning response times. It is important to ensure that host environment is scalable if the load can vary significantly over time.
+- If may be necessary to meter requests for monetization purposes.
+- It might be necessary to regulate the flow of traffic to the web API, and implement throttling for specific clients that have exhausted their quotas.
+- Regulatory requirements might mandate logging and auditing of all requests and responses.
+- To ensure availability, it may be necessary to monitor the health of the server hosting the web API and restart it if necessary.
 
-它是有用能够解耦这些问题从 web API 执行有关的技术问题。为此，请考虑创建 [立面](http://en.wikipedia.org/wiki/Facade_pattern)作为一个单独的进程运行和路线请求到 web API。立面可以提供管理操作和期待验证对 web API 的请求。使用一个门面也可以带来很多的功能优势，包括:
+It is useful to be able to decouple these issues from the technical issues concerning the implementation of the web API. For this reason, consider creating a [façade](http://en.wikipedia.org/wiki/Facade_pattern), running as a separate process and that routes requests to the web API. The façade can provide the management operations and forward validated requests to the web API. Using a façade can also bring many functional advantages, including:
 
-- 作为多个 web Api 集成点。
-- 翻译为通过使用不同的技术生成的客户端的通信协议和转变为消息。
-- 缓存的请求和响应，减少加载在服务器上承载的 web API。
+- Acting as an integration point for multiple web APIs.
+- Transforming messages and translating communications protocols for clients built by using varying technologies.
+- Caching requests and responses to reduce load on the server hosting the web API.
 
-## 测试 web API 时的注意事项
-Web API 应该彻底作为任何其他的软件测试。你应该考虑创建单元测试来验证每个操作的功能，就像使用任何其他类型的应用程序。有关详细信息，请参见页 [使用单元测试验证代码](https://msdn.microsoft.com/library/dd264975.aspx) 在微软的网站。
+## Considerations for testing a web API
+A web API should be tested as thoroughly as any other piece of software. You should consider creating unit tests to validate the functionality of each operation, as you would with any other type of application. For more information, see the page [Verifying Code by Using Unit Tests](https://msdn.microsoft.com/library/dd264975.aspx) on the Microsoft website.
 
-> [AZURE。注意] 示例 web API 可用本指南包括一个演示如何执行单元测试所选操作的测试项目。
+> [AZURE.NOTE] The sample web API available with this guidance includes a test project that shows how to perform unit testing over selected operations.
 
-Web API 是天性使然自己额外的要求，以验证它正确运行。你应该特别注意以下几个方面:
+The nature of a web API brings its own additional requirements to verify that it operates correctly. You should pay particular attention to the following aspects:
 
-- 测试所有的路线，以验证他们调用正确的操作。特别要注意被返回的 HTTP 状态代码 (不允许使用此方法) 405 竟然因为这可以表明路线和可以派遣到这条路线的 HTTP 方法 (GET，邮政，PUT，删除) 之间的不匹配。
+- Test all routes to verify that they invoke the correct operations. Be especially aware of HTTP status code 405 (Method Not Allowed) being returned unexpectedly as this can indicate a mismatch between a route and the HTTP methods (GET, POST, PUT, DELETE) that can be dispatched to that route.
 
-	将 HTTP 请求发送到不支持它们，如提交 POST 请求对特定资源的路线 (POST 请求应只发送到资源集合)。在这些情况下，只有有效的响应 _应_ 将状态代码 405 (不允许)。
+	Send HTTP requests to routes that do not support them, such as submitting a POST request to a specific resource (POST requests should only be sent to resource collections). In these cases, the only valid response _should_ be status code 405 (Not Allowed).
 
-- 验证所有路线适当保护，并进行适当的身份验证和授权检查。
+- Verify that all routes are protected properly and are subject to the appropriate authentication and authorization checks.
 
-	> [AZURE。注意] 如用户身份验证安全的一些方面是最有可能的宿主环境，而不是 web API，责任却仍然有必要包括安全测试作为部署过程的一部分。
+	> [AZURE.NOTE] Some aspects of security such as user authentication are most likely to be the responsibility of the host environment rather than the web API, but it is still necessary to include security tests as part of the deployment process.
 
-- 测试执行的每个操作的异常处理和验证适当的和有意义的 HTTP 响应被传递回客户端应用程序。
-- 验证请求和响应消息格式良好。例如，如果一个 HTTP POST 请求中包含一个新的资源，在 x-www-窗体-urlencoded 格式的数据，确认相应操作正确解析数据、 创建资源，和返回的响应包含新的资源，包括正确的位置标头的详细信息。
-- 在响应消息中验证所有链接和 Uri。例如，HTTP POST 消息应返回新创建的资源的 URI。所有 HATEOAS 链接应该都是有效的。
+- Test the exception handling performed by each operation and verify that an appropriate and meaningful HTTP response is passed back to the client application.
+- Verify that request and response messages are well-formed. For example, if an HTTP POST request contains the data for a new resource in x-www-form-urlencoded format, confirm that the corresponding operation correctly parses the data, creates the resources, and returns a response containing the details of the new resource, including the correct Location header.
+- Verify all links and URIs in response messages. For example, an HTTP POST message should return the URI of the newly-created resource. All HATEOAS links should be valid.
 
-	> [AZURE。重要] 如果您发布 web API 通过 API 管理服务，这些 Uri 应反映管理服务的 URL 而不是承载 web API 的 web 服务器。
+	> [AZURE.IMPORTANT] If you publish the web API through an API Management Service, then these URIs should reflect the URL of the management service and not that of the web server hosting the web API.
 
-- 确保每个操作返回正确的状态代码的不同组合的输入。例如:
-	- 如果查询是成功的它应该返回状态代码 200 (OK)
-	- 如果未找到资源，操作应 returs HTTP 状态代码 404 (未找到)。
-	- 如果客户端发送一个成功删除资源的请求，状态码应该是 204 (没有内容)。
-	- 如果客户端发送一个请求，创建新的资源，状态码应该是 201 (创建)
+- Ensure that each operation returns the correct status codes for different combinations of input. For example:
+	- If a query is successful, it should return status code 200 (OK)
+	- If a resource is not found, the operation should returs HTTP status code 404 (Not Found).
+	- If the client sends a request that successfully deletes a resource, the status code should be 204 (No Content).
+	- If the client sends a request that creates a new resource, the status code should be 201 (Created)
 
-提防 5xx 范围意外的响应状态代码。主机服务器通常报告这些消息以指示它是不能实现有效的请求。
+Watch out for unexpected response status codes in the 5xx range. These messages are usually reported by the host server to indicate that it was unable to fulfil a valid request.
 
-- 测试不同的请求标头组合，客户端应用程序可以指定并确保 web API 响应消息中返回所期望的信息。
+- Test the different request header combinations that a client application can specify and ensure that the web API returns the expected information in response messages.
 
-- 测试查询字符串。如果操作可以采取可选参数 (例如，分页请求)，测试了不同的组合和参数的顺序。
+- Test query strings. If an operation can take optional parameters (such as pagination requests), test the different combinations and order of parameters.
 
-- 验证异步操作成功完成。如果 web API 支持流返回大型二进制对象 (如视频或音频) 的请求，请确保客户端请求都不阻止，则数据分流。如果 web API 实现轮询为长时间运行的数据修改操作，验证操作报告其状态正确，因为它们着手。
+- Verify that asynchronous operations complete successfully. If the web API supports streaming for requests that return large binary objects (such as video or audio), ensure that client requests are not blocked while the data is streamed. If the web API implements polling for long-running data modification operations, verify that that the operations report their status correctly as they proceed.
 
-你还应该创建并运行性能测试，以检查 web API 操作令人满意地在胁迫之下。您可以通过使用 Visual Studio 最终生成 web 性能测试和负载测试项目。有关详细信息，请参见页 [在前一个版本的应用程序上运行性能测试](https://msdn.microsoft.com/library/dn250793.aspx) 在微软的网站。
+You should also create and run performance tests to check that the web API operates satisfactorily under duress. You can build a web performance and load test project by using Visual Studio Ultimate. For more information, see the page [Run performance tests on an application before a release](https://msdn.microsoft.com/library/dn250793.aspx) on the Microsoft website.
 
-## 发布和管理 web API 使用 Azure API 管理服务
+## Publishing and managing a web API by using the Azure API Management Service
 
-Azure 提供 [API 管理服务](http://azure.microsoft.com/documentation/services/api-management/) 您可以使用发布和管理 web API。使用此功能，您可以生成行为立面为一个或多个 web Api 服务。服务本身就是一个可伸缩的 web 服务，您可以创建和配置通过使用 Azure 管理门户。您可以使用此服务发布和管理 web API，如下所示:
+Azure provides the [API Management Service](http://azure.microsoft.com/documentation/services/api-management/) which you can use to publish and manage a web API. Using this facility, you can generate a service that acts a façade for one or more web APIs. The service is itself a scalable web service that you can create and configure by using the Azure Management portal. You can use this service to publish and manage a web API as follows:
 
-1. 将 web API 部署到网站、 Azure 的云服务或蔚蓝的虚拟机。
+1. Deploy the web API to a website, Azure cloud service, or Azure virtual machine.
 
-2. 连接到 web API API 管理服务。发送到管理 API 的 URL 的请求映射到 Uri 的 web API。相同的 API 管理服务可以将请求路由到多个 web API。这使您可以聚合到一个单一的管理服务的多个 web Api。同样，我们可以从多个 API 管理服务引用相同的 web API，如果你需要限制或分区到不同的应用程序可用的功能。
+2. Connect the API management service to the web API. Requests sent to the URL of the management API are mapped to URIs in the web API. The same API management service can route requests to more than one web API. This enables you to aggregate multiple web APIs into a single management service. Similarly, the same web API can be referenced from more than one API management service if you need to restrict or partition the functionality available to different applications.
 
-	> [AZURE。注意] 在 HATEOAS 链接作为 HTTP GET 请求的响应的一部分生成 Uri 应该参考 API 管理服务和不承载 web API 的 web 服务器的 URL。
+	> [AZURE.NOTE] The URIs in HATEOAS links generated as part of the response for HTTP GET requests should reference the URL of the API management service and not the web server hosting the web API.
 
-3. 对于每个 web API，指定的 HTTP 操作的 web API 公开和操作可能需要的任何可选参数作为输入。您还可以配置是否 API 管理服务应缓存从 web API 来优化重复相同的数据请求对收到的答复。记录每个操作都可以生成的 HTTP 响应的详细信息。此信息用于生成文档的开发人员，所以很重要，它是准确、 完整。
+3. For each web API, specify the HTTP operations that the web API exposes together with any optional parameters that an operation can take as input. You can also configure whether the API management service should cache the response received from the web API to optimize repeated requests for the same data. Record the details of the HTTP responses that each operation can generate. This information is used to generate documentation for developers, so it is important that it is accurate and complete.
 
-	你也可以定义操作手动使用向导提供的 Azure 管理门户，或者你可以从一个包含 WADL 或大摇大摆的格式定义文件导入它们。
+	You can either define operations manually using the wizards provided by the Azure Management portal, or you can import them from a file containing the definitions in WADL or Swagger format.
 
-4. 配置 API 管理服务和承载 web API 的 web 服务器之间的通信的安全设置。API 管理服务目前支持基本身份验证和使用证书和 OAuth 2.0 用户授权的相互身份验证。
+4. Configure the security settings for communications between the API management service and the web server hosting the web API. The API management service currently supports Basic authentication and mutual authentication using certificates, and OAuth 2.0 user authorization.
 
-5. 创建一种产品。产品是出版物的单位;您将添加 web Api，你以前连接到该产品的管理服务。产品发布时，web Api 成为开发人员可用的。
+5. Create a product. A product is the unit of publication; you add the web APIs that you previously connected to the management service to the product. When the product is published, the web APIs become available to developers.
 
-	> [AZURE。注意] 之前发布的产品，您还可以定义用户组可以访问该产品，并将用户添加到这些组。这使您能够控制开发商和应用程序可以使用 web API。如果 web API 是批准，能够访问它之前开发人员必须向发送请求产品管理员。管理员可以授予或拒绝对开发人员的访问。如果情况有变，现有的开发人员也可以被阻止。
+	> [AZURE.NOTE] Prior to publishing a product, you can also define user-groups that can access the product and add users to these groups. This gives you control over the developers and applications that can use the web API. If a web API is subject to approval, prior to being able to access it a developer must send a request to the product administrator. The administrator can grant or deny access to the developer. Existing developers can also be blocked if circumstances change.
 
-6.	为每个 web API 配置策略。政策管理方面是否跨域调用应允许，如何验证客户端，是否 XML 和 JSON 之间进行转换数据格式以透明的方式，是否限制调用从一个给定的 IP 范围，使用配额，以及是否限制通话率。可以在整个产品，为产品中的单个 web API 或 web API 中的各个工序全球应用策略。
+6.	Configure policies for each web API. Policies govern aspects such as whether cross-domain calls should be allowed, how to authenticate clients, whether to convert between XML and JSON data formats transparently, whether to restrict calls from a given IP range, usage quotas, and whether to limit the call rate. Policies can be applied globally across the entire product, for a single web API in a product, or for individual operations in a web API.
 
-你可以找到描述如何执行这些任务的全部细节 [API 管理](http://azure.microsoft.com/services/api-management/) 在 Microsoft 网站上的页面。Azure API 管理服务还提供其自己的 REST 接口，使您可以构建一个自定义的界面，用于简化配置 web API 的过程。有关详细信息，请访问 [蔚蓝的 API 管理其他 API 参考](https://msdn.microsoft.com/library/azure/dn776326.aspx) 在 Microsoft 网站上的页面。
+You can find full details describing how to perform these tasks on the [API Management](http://azure.microsoft.com/services/api-management/) page on the Microsoft website. The Azure API Management Service also provides its own REST interface, enabling you to build a custom interface for simplifying the process of configuring a web API. For more information, visit the [Azure API Management REST API Reference](https://msdn.microsoft.com/library/azure/dn776326.aspx) page on the Microsoft website.
 
-> [AZURE。小贴士] Azure 提供 Azure 流量管理器使您能够执行故障转移和负载平衡，并降低延迟了整个 web 站点承载在不同地理位置的多个实例。你可以使用 Azure 交通管理器 API 管理服务; 结合API 管理服务可以将请求路由到的 web 站点通过 Azure 交通管理器实例。 有关详细信息，请访问 [关于交通经理负载平衡方法](https://msdn.microsoft.com/library/azure/dn339010.aspx) 在 Microsoft 网站上的页面。
+> [AZURE.TIP] Azure provides the Azure Traffic Manager which enables you to implement failover and load-balancing, and reduce latency across multiple instances of a web site hosted in different geographic locations. You can use Azure Traffic Manager in conjunction with the API Management Service; the API Management Service can route requests to instances of a web site through Azure Traffic Manager.  For more information, visit the [About Traffic Manager Load Balancing Methods](https://msdn.microsoft.com/library/azure/dn339010.aspx) page on the Microsoft website.
 
-> 在此结构中，如果你使用的自定义 DNS 名称为您的 web 站点，您应配置适当的 CNAME 记录为每个 web 站点指向 Azure 流量管理器 web 站点的 DNS 名称。
+> In this structure, if you are using custom DNS names for your web sites, you should configure the appropriate CNAME record for each web site to point to the DNS name of the Azure Traffic Manager web site.
 
-## 支持开发人员构建客户端应用程序
-开发人员构建客户端应用程序通常要求信息有关如何访问 web API 和文件有关的参数、 数据类型、 返回类型和描述的不同请求和响应之间的 web 服务和客户端应用程序的返回代码。
+## Supporting developers building client applications
+Developers constructing client applications typically require information on how to access the web API, and documentation concerning the parameters, data types, return types, and return codes that describe the different requests and responses between the web service and the client application.
 
-### 记录的 web API 的其他操作
-Azure API 管理服务包括一个描述了由 web API 公开的其他操作的开发人员门户。当已发布的产品出现在此门户上。开发人员可以使用此门户网站报名参加访问;然后，管理员可以批准或拒绝该请求。如果获得批准，开发人员，他们被分配订阅键，用来验证从客户端开发的应用程序他们的电话。此密钥必须提供与每个 web API 调用否则将被拒绝。
+### Documenting the REST operations for a web API
+The Azure API Management Service includes a developer portal that describes the REST operations exposed by a web API. When a product has been published it appears on this portal. Developers can use this portal to sign up for access; the administrator can then approve or deny the request. If the developer is approved, they are assigned a subscription key that is used to authenticate calls from the client applications that they develop. This key must be provided with each web API call otherwise it will be rejected.
 
-此门户还提供:
+This portal also provides:
 
-- 产品，列出它公开的操作，所需的参数和不同的反应，可以返回文档。请注意，此信息生成从提供的列表中的节中的步骤 3 中的详细信息 [通过使用微软 Azure API 管理服务发布 web API](#publishing-a-web-API).
+- Documentation for the product, listing the operations that it exposes, the parameters required, and the different responses that can be returned. Note that this information is generated from the details provided in step 3 in the list in the section [Publishing a web API by using the Microsoft Azure API Management Service](#publishing-a-web-API).
 
-- 演示如何调用操作从几种语言，包括 JavaScript、 C#、 Java、 Ruby、 Python 和 PHP 的代码片段。
+- Code snippets that show how to invoke operations from several languages, including JavaScript, C#, Java, Ruby, Python, and PHP.
 
-- 使开发人员能够发送一个 HTTP 请求来在产品测试每个操作和查看结果的开发商的控制台。
+- A developers' console that enables a developer to send an HTTP request to test each operation in the product and view the results.
 
-- 网页开发人员可以在这里报告的任何问题或发现的问题。
+- A page where the developer can report any issues or problems found.
 
-Azure 管理门户使您能够自定义开发人员门户网站来更改的样式和布局，以匹配您的组织的品牌。
+The Azure Management portal enables you to customize the developer portal to change the styling and layout to match the branding of your organization.
 
-### 执行客户端 SDK
+### Implementing a client SDK
 Building a client application that invokes REST requests to access a web API requires writing a significant amount of code to construct each request and format it appropriately, send the request to the server hosting the web service, and parse the response to work out whether the request succeeded or failed and extract any data returned. To insulate the client application from these concerns, you can provide an SDK that wraps the REST interface and abstracts these low-level details inside a more functional set of methods. A client application uses these methods, which transparently convert calls into REST requests and then convert the responses back into method return values. This is a common technique that is implemented by many services, including the Azure SDK.
 
-创建客户端 SDK 是相当大的工程，因为它一贯执行并且经过仔细测试。然而，这个过程在很大可机械，和许多供应商提供的工具，可以使许多这些任务自动化。
+Creating a client-side SDK is a considerable undertaking as it has to be implemented consistently and tested carefully. However, much of this process can be made mechanical, and many vendors supply tools that can automate many of these tasks.
 
-## 监视 web API
+## Monitoring a web API
 
-取决于你有如何发布和部署你的 web API，您可以监视 web API 直接，或您可以通过分析通过 API 管理服务传递的通信收集使用率和运行状况的信息。
+Depending on how you have published and deployed your web API you can monitor the web API directly, or you can gather usage and health information by analyzing the traffic that passes through the API Management service.
 
-### 直接监测 web API
-如果您已通过使用 ASP.NET Web API 模板 (或 Web API 项目作为在 Azure 的云服务的 Web 角色) 和视觉工作室 2013年实现您的 web API，你可以通过使用 ASP.NET 应用程序的见解来收集可用性、 性能和使用数据。应用程序的见解是一个包，透明地跟踪和记录的请求和响应信息，当 web API 部署到云;一旦该软件包的安装和配置，你不需要修改任何代码在您的 web API 来使用它。当您部署到 Azure 的 web 站点的 web API 时，检查所有交通和收集以下统计信息:
+### Monitoring a web API directly
+If you have implemented your web API by using the ASP.NET Web API template (either as a Web API project or as a Web role in an Azure cloud service) and Visual Studio 2013, you can gather availability, performance, and usage data by using ASP.NET Application Insights. Application Insights is a package that transparently tracks and records information about requests and responses when the web API is deployed to the cloud; once the package is installed and configured, you don't need to amend any code in your web API to use it. When you deploy the web API to an Azure web site, all traffic is examined and the following statistics are gathered:
 
-- 服务器的响应时间。
+- Server response time.
 
-- 服务器请求数和每个请求的详细信息。
+- Number of server requests and the details of each request.
 
-- 顶尖慢请求的平均响应时间。
+- The top slowest requests in terms of average response time.
 
-- 任何失败的请求的详细信息。
+- The details of any failed requests.
 
-- 由不同的浏览器和用户代理发起的会话的数量。
+- The number of sessions initiated by different browsers and user agents.
 
-- 最频繁查看的网页 (主要用于 web 应用程序，而不是 web Api)。
+- The most frequently viewed pages (primarily useful for web applications rather than web APIs).
 
-- 不同的用户角色访问 web API。
+- The different user roles accessing the web API.
 
-在真正的时间从 Azure 管理门户，您可以查看此数据。您还可以创建监视 web API 的健康的 webtests。Web 测试中将定期请求发送到指定的 URI 的 web API 和捕获响应。您可以指定的定义 (如 HTTP 状态代码 200)，成功的响应，如果请求未返回此响应你可以安排要求向管理员发送警报。如果有必要，管理员可以重新启动承载 web API，如果它发生故障的服务器。
+You can view this data in real time from the Azure Management portal. You can also create webtests that monitor the health of the web API. A webtest sends a periodic request to a specified URI in the web API and captures the response. You can specify the definition of a successful response (such as HTTP status code 200), and if the request does not return this response you can arrange for an alert to be sent to an administrator. If necessary, the administrator can restart the server hosting the web API if it has failed.
 
-的 [应用的见解-开始监视您的应用程序的健康和用法](app-insights-start-monitoring-app-health-usage/) 微软网站的网页上提供更多的信息。
+The [Application Insights - Start monitoring your app's health and usage](app-insights-start-monitoring-app-health-usage/) page on the Microsoft website provides more information.
 
-### 监视 web API 通过 API 管理服务
+### Monitoring a web API through the API Management Service
 
-如果您已经通过使用 API 管理服务发布您的 web API，Azure 管理门户上的 API 管理页面包含的仪表板，使您可以查看服务的整体性能。分析页使您能够向下钻取到的产品如何使用的详细信息。此页包含下列选项卡:
+If you have published your web API by using the API Management service, the API Management page on the Azure Management portal contains a dashboard that enables you to view the overall performance of the service. The Analytics page enables you to drill down into the details of how the product is being used. This page contains the following tabs:
 
-- **使用**.此选项卡提供的 API 调用和处理这些调用，随着时间的推移而使用的带宽数量有关的信息。您可以筛选使用由产品、 API 和操作的细节。
+- **Usage**. This tab provides information about the number of API calls made and the bandwidth used to handle these calls over time. You can filter usage details by product, API, and operation.
 
-- **健康**.此选项卡使您查看 API 请求 (返回的 HTTP 状态代码) 的成果，有效的缓存策略、 API 响应时间和服务响应时间。再次，您可以筛选健康产品、 API 和操作数据。
+- **Health**. This tab enables you view the outcome of API requests (the HTTP status codes returned), the effectiveness of the caching policy, the API response time, and the service response time. Again, you can filter health data by product, API, and operation.
 
-- **活动**.此选项卡提供呼叫数量的成功，失败叫通话阻塞、 平均响应时间和响应时间为每个产品、 web API 和操作文本的摘要。此页还列出了每个开发人员所作的调用次数。
+- **Activity**. This tab provides a text summary of the numbers of successful calls, failed called, blocked calls, average response time, and response times for each product, web API, and operation. This page also lists the number of calls made by each developer.
 
-- **在一瞥**.此选项卡显示的性能数据，包括开发人员负责大部分的 API 调用，和产品、 web Api 和收到这些调用的操作的摘要。
+- **At a glance**. This tab displays a summary of the performance data, including the developers responsible for making the most API calls, and the products, web APIs, and operations that received these calls.
 
-您可以使用此信息来确定是否特定 web API 或操作引起的瓶颈，如果必要的规模的主机环境和添加更多服务器。此外，您还可以确定是否一个或多个应用程序正在使用的资源不成比例的卷和应用适当的策略来设置配额和限制呼叫率。
+You can use this information to determine whether a particular web API or operation is causing a bottleneck, and if necessary scale the host environment and add more servers. You can also ascertain whether one or more applications are using a disproportionate volume of resources and apply the appropriate policies to set quotas and limit call rates.
 
-> [AZURE。注意] 您可以更改已发布的产品，详细信息和所做的更改会立即应用。例如，您可以添加或删除操作从 web API 而不需要你重新发布包含 web API 的产品。
+> [AZURE.NOTE] You can change the details for a published product, and the changes are applied immediately. For example, you can add or remove an operation from a web API without requiring that you republish the product that contains the web API.
 
-## 相关的模式
-- 的 [立面](http://en.wikipedia.org/wiki/Facade_pattern) 模式描述如何提供对 web API 接口。
+## Related patterns
+- The [façade](http://en.wikipedia.org/wiki/Facade_pattern) pattern describes how to provide an interface to a web API.
 
-## 更多的信息
-- 页面 [了解 ASP.NET Web API](http://www.asp.net/web-api) 在 Microsoft 网站提供详细的介绍了构建 rest 风格的 web 服务通过使用 Web API。
-- 页面 [ASP.NET Web API 中的路由](http://www.asp.net/web-api/overview/web-api-routing-and-actions/routing-in-aspnet-web-api) 微软网站描述如何基于公约的路由作品在 ASP.NET Web API 框架。
-- 基于属性的路由的详细信息，请参阅页 [属性在 Web API 2 路由](http://www.asp.net/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2) 在微软的网站。
-- 的 [基本教程](http://www.odata.org/getting-started/basic-tutorial/) OData 网站的网页上提供的功能的 OData 协议介绍。
-- 的 [ASP.NET Web API OData](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api) 在 Microsoft 网站上的页面包含例子和进一步实施 OData web API 通过使用 ASP.NET 的信息。
-- 页面 [介绍 Web API 和 Web API OData 批处理支持](http://blogs.msdn.com/b/webdev/archive/2013/11/01/introducing-batch-support-in-web-api-and-web-api-odata.aspx) 微软网站描述如何通过使用 OData 在 web API 执行批处理操作。
-- 这篇文章 [幂等性模式](http://blog.jonathanoliver.com/idempotency-patterns/) Jonathan Oliver 博客上概述的幂等性和它如何与数据管理操作。
-- 的 [状态代码定义](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) W3C 网站的网页上包含的 HTTP 状态代码的完整列表和它们的描述。
-- 有关处理 HTTP 异常与 ASP.NET Web API 的详细信息，请访问 [异常处理在 ASP.NET Web API](http://www.asp.net/web-api/overview/error-handling/exception-handling) 在 Microsoft 网站上的页面。
-- 这篇文章 [Web API 全局错误处理](http://www.asp.net/web-api/overview/error-handling/web-api-global-error-handling) 微软网站描述了如何实现一个全局错误处理和日志记录策略的 web API。
-- 页面 [使用 WebJobs 在微软 Azure 网站运行后台任务](web-sites-create-web-jobs.md) 在 Microsoft 网站提供了有关使用 WebJobs 来执行后台操作在 Azure 网站信息和示例。
-- 页面 [蔚蓝的通知中心通知用户](notification-hubs-aspnet-backend-windows-dotnet-notify-users/) 微软网站显示如何使用 Azure 通知中心推异步响应到客户端应用程序。
-- 的 [API 管理](http://azure.microsoft.com/services/api-management/) 在 Microsoft 网站上的页面介绍了如何发布产品，提供控制和保护的 web API 访问。
-- 的 [蔚蓝的 API 管理其他 API 参考](https://msdn.microsoft.com/library/azure/dn776326.aspx) 在 Microsoft 网站上的页面介绍了如何使用 API 管理 REST API 来构建自定义管理应用程序。
-- 的 [关于交通经理负载平衡方法](https://msdn.microsoft.com/library/azure/dn339010.aspx) 微软网站的网页上总结了如何 Azure 流量管理器可用于负载平衡请求 web API 的网站的多个实例。
-- 的 [应用的见解-开始监视您的应用程序的健康和用法](app-insights-start-monitoring-app-health-usage.md) 微软网站的网页上提供有关安装和配置应用程序的见解在 ASP.NET Web API 项目的详细的信息。
-- 页面 [使用单元测试验证代码](https://msdn.microsoft.com/library/dd264975.aspx) 在 Microsoft 网站提供了有关创建和管理单元测试通过使用 Visual Studio 的详细的信息。
-- 页面 [在前一个版本的应用程序上运行性能测试](https://msdn.microsoft.com/library/dn250793.aspx) 微软网站描述了如何使用 Visual Studio 最终来创建一个 web 性能和负载测试项目。
+## More information
+- The page [Learn About ASP.NET Web API](http://www.asp.net/web-api) on the Microsoft website provides a detailed introduction to building RESTful web services by using the Web API.
+- The page [Routing in ASP.NET Web API](http://www.asp.net/web-api/overview/web-api-routing-and-actions/routing-in-aspnet-web-api) on the Microsoft website describes how convention-based routing works in the ASP.NET Web API framework.
+- For more information on attribute-based routing, see the page [Attribute Routing in Web API 2](http://www.asp.net/web-api/overview/web-api-routing-and-actions/attribute-routing-in-web-api-2) on the Microsoft website.
+- The [Basic Tutorial](http://www.odata.org/getting-started/basic-tutorial/) page on the OData website provides an introduction to the features of the OData protocol.
+- The [ASP.NET Web API OData](http://www.asp.net/web-api/overview/odata-support-in-aspnet-web-api) page on the Microsoft website contains examples and further information on implementing an OData web API by using ASP.NET.
+- The page [Introducing Batch Support in Web API and Web API OData](http://blogs.msdn.com/b/webdev/archive/2013/11/01/introducing-batch-support-in-web-api-and-web-api-odata.aspx) on the Microsoft website describes how to implement batch operations in a web API by using OData.
+- The article [Idempotency Patterns](http://blog.jonathanoliver.com/idempotency-patterns/) on Jonathan Oliver’s blog provides an overview of idempotency and how it relates to data management operations.
+- The [Status Code Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html) page on the W3C website contains a full list of HTTP status codes and their descriptions.
+- For detailed information on handling HTTP exceptions with the ASP.NET Web API, visit the [Exception Handling in ASP.NET Web API](http://www.asp.net/web-api/overview/error-handling/exception-handling) page on the Microsoft website.
+- The article [Web API Global Error Handling](http://www.asp.net/web-api/overview/error-handling/web-api-global-error-handling) on the Microsoft website describes how to implement a global error handling and logging strategy for a web API.
+- The page [Use WebJobs to run background tasks in Microsoft Azure Websites](web-sites-create-web-jobs.md) on the Microsoft website provides information and examples on using WebJobs to perform background operations on an Azure Website.
+- The page [Azure Notification Hubs Notify Users](notification-hubs-aspnet-backend-windows-dotnet-notify-users/) on the Microsoft website shows how you can use an Azure Notification Hub to push asynchronous responses to client applications.
+- The [API Management](http://azure.microsoft.com/services/api-management/) page on the Microsoft website describes how to publish a product that provides controlled and secure access to a web API.
+- The [Azure API Management REST API Reference](https://msdn.microsoft.com/library/azure/dn776326.aspx) page on the Microsoft website describes how to use the API Management REST API to build custom management applications.
+- The [About Traffic Manager Load Balancing Methods](https://msdn.microsoft.com/library/azure/dn339010.aspx) page on the Microsoft website summarizes how Azure Traffic Manager can be used to load-balance requests across multiple instances of a website hosting a web API.
+- The [Application Insights - Start monitoring your app's health and usage](app-insights-start-monitoring-app-health-usage.md) page on the Microsoft website provides detailed information on installing and configuring Application Insights in an ASP.NET Web API project.
+- The page [Verifying Code by Using Unit Tests](https://msdn.microsoft.com/library/dd264975.aspx) on the Microsoft website provides detailed information on creating and managing unit tests by using Visual Studio.
+- The page [Run performance tests on an application before a release](https://msdn.microsoft.com/library/dn250793.aspx) on the Microsoft website describes how to use Visual Studio Ultimate to create a web performance and load test project.

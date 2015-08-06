@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to secure back-end services using mutual certificate authentication in Azure API Management" 
 	description="Learn how to secure back-end services using mutual certificate authentication in Azure API Management." 
 	services="api-management" 
@@ -22,7 +22,7 @@ API Management provides the capability to secure access to the back-end service 
 
 For information about managing certificates using the API Management REST API, see [Azure API Management REST API Certificate entity][].
 
-## <a name="prerequisites"> </a>Conditions préalables
+## <a name="prerequisites"> </a>Prerequisites
 
 This guide shows you how to configure your API Management service instance to use mutual certificate authentication to access the back-end service for an API. Before following the steps in this topic, you should have your back-end service configured for mutual certificate authentication, and have access to the certificate and the password for the certificate for uploading in the API Management publisher portal.
 
@@ -34,7 +34,7 @@ To get started, click **Manage** in the Azure Portal for your API Management ser
 
 >If you have not yet created an API Management service instance, see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
-Click **Sécurité** de la **Gestion de l'API** menu on the left, and click **Client certificates**.
+Click **Security** from the **API Management** menu on the left, and click **Client certificates**.
 
 ![Client certificates][api-management-security-client-certificates]
 
@@ -72,11 +72,11 @@ If the certificate is in use by an API, then a warning screen is displayed. To d
 
 ## <a name="step2"> </a>Configure an API to use a mutual certificate for proxy authentication
 
-Click **APIs** de la **Gestion de l'API** menu on the left, click the name of the desired API, and click the **Sécurité** tab.
+Click **APIs** from the **API Management** menu on the left, click the name of the desired API, and click the **Security** tab.
 
 ![API security][api-management-api-security]
 
-Select **Mutual certificates** de la **With credentials** drop-down list.
+Select **Mutual certificates** from the **With credentials** drop-down list.
 
 ![Mutual certificates][api-management-mutual-certificates]
 
@@ -94,7 +94,7 @@ Click **Save** to save the configuration change to the API.
 
 ![Certificate policy][api-management-certificate-policy]
 
-## Prochaines étapes
+## Next steps
 
 For more information, see the following video.
 

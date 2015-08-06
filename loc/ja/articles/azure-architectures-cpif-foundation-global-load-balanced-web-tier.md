@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Global Load Balanced Web Tier (Azure Architecture Patterns)" 
    description="The Global Load Balanced Web Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document." 
    services="" 
@@ -16,36 +16,36 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# グローバル ロード バランスの取れた Web 層 (Azure アーキテクチャ パターン)
+# Global Load Balanced Web Tier (Azure Architecture Patterns)
 
-、 [クラウド プラットフォーム統合フレームワーク (CPIF)](azure-architectures-cpif-overview.md) マイクロソフトのクラウド ソリューションにアプリケーションのワークロード統合ガイダンスを提供します。 
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution. 
 
-CPIF では、どのように組織、顧客およびパートナーの設計および Windows Server System Center、Azure のハイブリッド クラウド プラットフォームと管理機能を活用したクラウド向けのワークロードを展開をについて説明します。 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-、 **グローバル ロード バランスの取れた Web 層** パターンの一部である、 **財団** エリア、CPIF アーキテクチャ ドキュメントで詳しく解説されています。 
+The **Global Load Balanced Web Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-##  グローバル ロード バランスの取れた Web 層
+##  Global Load Balanced Web Tier
 
-Azure 機能および地理的な境界の間で予測可能なパフォーマンスと高可用性を提供することができます web 層サービスを提供するために必要なサービス、グローバル負荷分散された Web 層デザイン パターン詳細です。 
+The Global Load Balanced Web Tier design pattern details the Azure features and services required to deliver web tier services that can provide predictable performance and high availability across geographic boundaries. 
 
-このデザイン パターン web の目的のため層は、分離された方法でまたは多階層の web アプリケーションの一部として伝統的な HTTP/HTTPS コンテンツを提供するサービスまたはアプリケーション サービス層として定義されます。 このパターン内で web 層の負荷分散は、共にローカル地域内および地域間で。計算の観点からマイクロソフト Azure バーチャル マシン、web サイトまたは両方の組み合わせを介してこれらのサービスを提供することができます。 Web サービスを提供する仮想マシンは、サポートされている Microsoft Windows または Linux ディストリビューション ゲスト オペレーティング システム Microsoft Azure 内を使用してコンテンツをホストできます。 
+For the purposes of this design pattern a web tier is defined as a tier of service providing traditional HTTP/HTTPS content or application services in either an isolated manner or as part of a multi-tiered web application.  Within this pattern, load balancing of the web tier is provided both locally within the region and across regions. From a compute perspective, these services can be provided through Microsoft Azure virtual machines, web sites or a combination of both.  Virtual machines providing web services can host content using any supported Microsoft Windows or Linux distribution guest operating system within Microsoft Azure. 
 
 
-## アーキテクチャ パターンの概要 
+## Architectural Pattern Overview 
 
-このドキュメントでは、可用性と冗長性のための複数の地域 web サービスまたは web サーバーのコンテンツへのアクセスを提供するためのパターンについて説明します。 Web プラットフォームの制約または web サービス内で開発手法に注意せず重要なサービスを以下に示します。 このパターンは-web コンテンツまたは仮想マシン上のサービスをホストしている 1 つに 2 つのバリエーションがあります (オペレーティング システムおよび家族サポート Azure を使用) と Azure の web サイトを使用するもの。 次の図は、関連サービスと仮想マシンの例を使用してこのパターンの一部としての使用方法を単純な図です。   
+This document describes a pattern for providing access to web services or web server content over multiple geographies for the purposes of availability and redundancy.  Critical services are illustrated below without attention to web platform constraints or development methodology within the web service itself.  There are two variations to this pattern – one which hosts the web content or services on virtual machines (using Azure supported operating systems and families) and one which uses Azure Websites.  The diagram below is a simple illustration of the relevant services and how they are used as part of this pattern using the example of virtual machines.   
 
-##  追加のリソース
-[グローバル負荷分散された Web の層 (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+##  Additional Resources
+[Global Load Balanced Web Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-## また見なさい
-[CPIF アーキテクチャ](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[負荷バランスの取れたデータ層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+[Load Balanced Data Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-[ハイブリッド ネットワーク](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[紺碧検索層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+[Azure Search Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-[バッチ処理層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
 

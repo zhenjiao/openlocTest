@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Multi-Site Data Tier (Azure Architecture Patterns)" 
    description="The Multi-Site Data Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document." 
    services="" 
@@ -16,42 +16,42 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# マルチサイト ・ データ層 (Azure アーキテクチャ パターン)
+# Multi-Site Data Tier (Azure Architecture Patterns)
 
-、 [クラウド プラットフォーム統合フレームワーク (CPIF)](azure-architectures-cpif-overview.md) マイクロソフトのクラウド ソリューションにアプリケーションのワークロード統合ガイダンスを提供します。 
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution. 
 
-CPIF では、どのように組織、顧客およびパートナーの設計および Windows Server System Center、Azure のハイブリッド クラウド プラットフォームと管理機能を活用したクラウド向けのワークロードを展開をについて説明します。 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-、 **マルチサイトのデータ層** パターンの一部である、 **財団** エリア、CPIF アーキテクチャ ドキュメントで詳しく解説されています。 
+The **Multi-Site Data Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-## マルチサイトのデータ層
+## Multi-Site Data Tier
 
-マルチサイトのデータ層は、Azure の機能および地理的な境界の間で予測可能なパフォーマンスと高可用性を提供することができますデータ層サービスを提供するために必要なサービス パターン詳細を設計します。このデザイン パターンのデータ層は分離された方法のいずれかで伝統的なデータ プラットフォーム サービスを提供するサービスの層または多層アプリケーションの一部として定義されています。 このパターン内でデータ層の負荷分散は、共にローカル地域内および地域間で。   
+The Multi-Site Data Tier design pattern details the Azure features and services required to deliver data tier services that can provide predictable performance and high availability across geographic boundaries. For the purposes of this design pattern a data tier is defined as a tier of service providing traditional data platform services in either an isolated manner or as part of a multi-tiered application.  Within this pattern, load balancing of the data tier is provided both locally within the region and across regions.   
 
-SQL Server 2012 で導入された、AlwaysOn 可用性グループは、Azure インフラストラクチャ サービスで完全にサポートされている高可用性と災害復旧機能です。 詳細な情報と Windows Azure インフラストラクチャ サービスの AlwaysOn 可用性グループの公式サポート発表は、AlwaysOn 可用性グループの記事で見つけることが。   
+Introduced with SQL Server 2012, AlwaysOn Availability Groups is a high-availability and disaster-recovery feature that is fully supported on Azure Infrastructure Services.  Detailed information and the official support announcement for AlwaysOn Availability Groups on Windows Azure Infrastructure Service can be found in the article AlwaysOn Availability Groups.   
 
-このドキュメントは、SQL AlwaysOn 可用性グループを利用した Azure でマルチサイトのデータ層のアーキテクチャの概要を提供します。省略可能な読み取り専用セカンダリ ノードに追加機能および災害復旧用の追加 Azure データ センターで。Azure の SQL の AlwaysOn を使用して web アプリケーションまたはアプリケーション階層で使用できる高可用性のデータ層を提供します。  
+This document provides an architectural overview of a Multi-Site Data Tier in Azure utilizing SQL AlwaysOn Availability Groups. With an optional read-only secondary node in an additional Azure datacenter for additional functionality and disaster recovery. Using SQL AlwaysOn in Azure provides a high-availability data tier that can be consumed by web or application tiers.  
 
-このドキュメントはアーキテクチャ パターンとプラクティスに焦点を当てて、フル展開の手引き Azure の AlwaysOn 可用性グループの構成および AlwaysOn 可用性グループ リスナーの構成の概要公式のチュートリアルで見つけることができます。 
+While this document focuses on architectural patterns and practices, full deployment guidance can be found in the official tutorials, which outline the configuration of AlwaysOn Availability Groups in Azure and the configuration of the AlwaysOn Availability Group Listener. 
 
-## アーキテクチャ パターンの概要 
+## Architectural Pattern Overview 
 
-このドキュメントでは、可用性と冗長性のため複数の地域のマイクロソフト SQL サーバーのコンテンツへのアクセスを提供するためのパターンについて説明します。 重要なサービスは、アプリケーションやデータ自体にアクセスする web 層に注意せず次に示します。 次の図は、関連サービスとこのパターンの一部としての使用方法を単純な図です。   
+This document describes a pattern for providing access to Microsoft SQL Server content over multiple geographies for the purposes of availability and redundancy.  Critical services are illustrated below without attention to the application or web tier that will access the data itself.  The diagram below is a simple illustration of the relevant services and how they are used as part of this pattern.   
 
-それぞれの主要なサービス エリアの詳細については次の図のとおりです。 
+Each of the main service areas are outlined in more detail following the diagram. 
  
-![リソースおよびリソース グループのブレードにタグ部分](./media/azure-architectures-cpif-foundation-multi-site-data-tier/overview.png)
+![Tags part on resource and resource group blades](./media/azure-architectures-cpif-foundation-multi-site-data-tier/overview.png)
 
-##  追加のリソース
-[負荷分散されたデータ層 (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+##  Additional Resources
+[Load Balanced Data Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-## また見なさい
-[CPIF アーキテクチャ](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[グローバル ロード バランスの取れた Web 層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+[Global Load Balanced Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-[ハイブリッド ネットワーク](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[紺碧検索層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+[Azure Search Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-[バッチ処理層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)

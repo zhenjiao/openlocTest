@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Autoscaling guidance | Microsoft Azure"
    description="Guidance upon how to autoscale to dynamically allocate resources required by an application."
    services=""
@@ -17,119 +17,119 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# 自动缩放指导
+# Autoscaling guidance
 
 ![](media/best-practices-auto-scaling/pnp-logo.png)
 
-## 概述
-自动缩放是动态分配的应用程序匹配性能要求并满足服务级别协议 (Sla) 同时运行时成本最小化所需的资源的过程。随着工作量的增加，应用程序可能需要额外的资源，使其能够及时地执行其任务。随着需求放缓，资源可以是解除分配，尽量减少成本，同时仍保持足够的性能和满足 sla 要求。
-自动缩放宽松管理开销通过减少需操作人员不断地监视系统的性能和决策有关添加或删除资源时的弹性云托管环境的利用。
-> 自动缩放适用于所有的应用程序，而不仅仅是计算资源使用的资源。例如，如果您的系统使用消息队列来发送和接收信息，它可以创建附加队列，当它的规模。
+## Overview
+Autoscaling is the process of dynamically allocating the resources required by an application to match performance requirements and satisfy service level agreements (SLAs) while minimizing runtime costs. As the volume of work grows, an application may require additional resources to enable it to perform its tasks in a timely manner. As demand slackens, resources can be de-allocated to minimize costs while still maintaining adequate performance and meeting SLAs.
+Autoscaling takes advantage of the elasticity of cloud-hosted environments while easing management overhead by reducing the need for an operator to continually monitor the performance of a system and make decisions about adding or removing resources.
+> Autoscaling applies to all of the resources used by an application, not just the compute resources. For example, if your system uses message queues to send and receive information, it could create additional queues as it scales.
 
-## 类型的缩放
-缩放比例通常采用两种形式之一 — — 垂直和水平缩放:
+## Types of scaling
+Scaling typically takes one of two forms—vertical and horizontal scaling:
 
-- **垂直缩放** (常简称为 _向上和向下缩放_) requires that you modify the hardware (expand or reduce its capacity and performance), or redeploy the solution using alternative hardware that has the appropriate capacity and performance. In a cloud environment, the hardware platform is typically a virtualized environment. Unless the original hardware was substantially overprovisioned, with the consequent upfront capital expense, vertically scaling up in this environment involves provisioning more powerful resources, and then moving the system onto these new resources. Vertical scaling is often a disruptive process that requires making the system temporarily unavailable while it is being redeployed. It may be possible to keep the original system running while the new hardware is provisioned and brought online, but there will likely be some interruption while the processing transitions from the old environment to the new one. It is uncommon to use autoscaling to implement a vertical scaling strategy.
-- **水平方向上缩放** (常简称为 _缩放和在_) 要求部署上额外的解决方案或更少的资源，通常是商品资源，而不是高性能系统。虽然这些资源调配解决方案可以继续运行而不会中断。资源调配过程完成后，元素包含解决方案的副本可以部署在这些额外的资源和提供。如果需求下降，更多的资源可以回收后使用他们的元素已被干净地关闭。许多基于云的系统，包括微软 Azure 支持自动化的这种形式的缩放比例。
+- **Vertical Scaling** (often referred to as _scaling up and down_) requires that you modify the hardware (expand or reduce its capacity and performance), or redeploy the solution using alternative hardware that has the appropriate capacity and performance. In a cloud environment, the hardware platform is typically a virtualized environment. Unless the original hardware was substantially overprovisioned, with the consequent upfront capital expense, vertically scaling up in this environment involves provisioning more powerful resources, and then moving the system onto these new resources. Vertical scaling is often a disruptive process that requires making the system temporarily unavailable while it is being redeployed. It may be possible to keep the original system running while the new hardware is provisioned and brought online, but there will likely be some interruption while the processing transitions from the old environment to the new one. It is uncommon to use autoscaling to implement a vertical scaling strategy.
+- **Horizontal Scaling** (often referred to as _scaling out and in_) requires deploying the solution on additional or fewer resources, which are typically commodity resources rather than high-powered systems. The solution can continue running without interruption while these resources are provisioned. When the provisioning process is complete, copies of the elements that comprise the solution can be deployed on these additional resources and made available. If demand drops, the additional resources can be reclaimed after the elements using them have been shut down cleanly. Many cloud-based systems, including Microsoft Azure, support automation of this form of scaling.
 
-## 自动缩放战略实施
-实现自动缩放策略通常涉及以下组件和流程:
+## Implementing an autoscaling strategy
+Implementing an autoscaling strategy typically involves the following components and processes:
 
-- 仪器仪表和监测系统、 应用程序、 服务和基础设施的水平是捕捉的关键指标，比如响应时间、 队列长度、 CPU 利用率和内存使用情况。
-- 决策的逻辑，可以评估监测缩放比例因子对预定义的系统阈值或时间表并就是否缩放或不做出决定。
-- 负责开展与缩放系统等配置或解除配置资源关联的任务的组件。
-- 测试、 监控和调优的自动缩放战略，以确保它按预期的运行。
+- Instrumentation and monitoring systems at the application, service, and infrastructure levels that capture key metrics such as response times, queue lengths, CPU utilization, and memory usage.
+- Decision-making logic that can evaluate the monitored scaling factors against predefined system thresholds or schedules and make decisions regarding whether to scale or not.
+- Components that are responsible for carrying out tasks associated with scaling the system, such as provisioning or de-provisioning resources.
+- Testing, monitoring, and tuning of the autoscaling strategy to ensure that it functions as expected.
 
-大多数基于云计算的环境中，例如微软 Azure 提供内置的自动缩放机制的地址的常见情况。如果环境或你使用的服务不提供必要的自动缩放功能，或如果您有超出其能力的极端自动缩放要求，一个自定义的实现可能需要收集业务和系统度量，分析它们找出有关数据，并相应然后缩放资源。
+Most cloud-based environments, such as Microsoft Azure, provide built-in autoscaling mechanisms that address common scenarios. If the environment or service you use does not provide the necessary automated scaling functionality, or if you have extreme autoscaling requirements beyond its capabilities, a custom implementation may be necessary to collect operational and system metrics, analyze them to identify relevant data, and then scale resources accordingly.
 
-## 实现自动缩放的注意事项
-自动缩放不是即时的解决方案。只需将资源添加到系统或运行多个实例的过程并不能保证系统的性能将会提高。 设计自动缩放策略时，请考虑以下几点:
+## Considerations for implementing autoscaling
+Autoscaling is not an instant solution. Simply adding resources to a system or running more instances of a process does not guarantee that the performance of the system will improve.  Consider the following points when designing an autoscaling strategy:
 
-- The system must be designed to be horizontally scalable. Avoid making assumptions about instance affinity; do not design solutions that require that the code is always running in a specific instance of a process. When scaling a cloud service or web site horizontally, do not assume that a series of requests from the same source will always be routed to the same instance. For the same reason, design services to be stateless to avoid requiring a series of requests from an application to always be routed to the same instance of a service. When designing a service that reads messages from a queue and processes them, do not make any assumptions about which instance of the service handles a specific message because autoscaling could start additional instances of a service as the queue length grows. The [竞争消费者模式](http://msdn.microsoft.com/library/dn568101.aspx) 描述如何处理这种情况。
-- 如果该解决方案实现了一个长时间运行的任务，设计此任务以支持外扩和结垢。没有适当照顾，这样一项任务可以防止一个流程实例关闭干净时系统扩展的或它可能会丢失数据，如果强行终止该进程。理想情况下，重构一个长时间运行的任务和分解成较小的离散块执行处理。的 [管道和过滤器模式](http://msdn.microsoft.com/library/dn568100.aspx) 提供一个示例的如何你可以做到这一点。或者，你可以实现一个检查点机制记录状态信息的任务按固定时间间隔，并保存此状态中可以访问的任何实例运行任务的进程的持久存储。这种方式，如果这一进程是关机，它正在从事的工作可以恢复从最后一个检查点通过使用另一个实例。
-- 当后台任务运行在单独计算实例，如辅助角色的云服务中承载应用程序时，您可能需要扩展使用不同的缩放策略的应用程序的不同部分。例如，您可能需要部署额外的 UI 计算实例而不增加背景计算实例的数量或相反的这。如果你提供不同级别的服务 (如基本和特优服务包)，你可能需要比那些基本服务包更加积极放大优质服务封装的计算资源，满足 sla 的要求。
-- 请考虑使用的用户界面和后台计算实例交流作为您的自动缩放策略的驱动程序的队列的长度。这是最好的指标的不平衡或当前负载和后台任务的处理能力之间的区别。
-- 如果您将您的自动缩放策略基于衡量业务流程，如每小时或复杂的交易，平均执行时间的订单数目的计数器确保您完全理解这些类型的计数器的结果与实际计算容量需求之间的关系。它可能需要扩展多个组件或计算单元在响应变化业务进程计数器。  
-- 若要防止系统尝试过，向外扩展，避免与运行数以千计的实例相关的成本，考虑限制可以自动添加的实例的最大数目。大多数自动缩放机制允许您指定一个规则的实例的最小值和最大数目。此外，优雅地考虑有辱人格系统提供如果已部署实例的最大数目的功能和系统仍然超载。
-- 保持在心灵那自动缩放可能不是最适当的机制，以处理工作量的突然爆发。它需要时间来提供并启动新实例的服务或将资源添加到系统，和峰值可能通过这些额外的资源已可用的时间。在这种情况下，可能更好，节气门的服务。有关更多信息，请参见 [节流模式](http://msdn.microsoft.com/library/dn589798.aspx).
-- 相反，如果你需要有能力处理所有请求量波动迅速，成本不是一个主要因素的时候，请考虑使用积极的自动缩放策略启动其他实例速度更快，或通过使用启动的实例来满足最大值足够数量的计划的策略加载前负荷预计。
+- The system must be designed to be horizontally scalable. Avoid making assumptions about instance affinity; do not design solutions that require that the code is always running in a specific instance of a process. When scaling a cloud service or web site horizontally, do not assume that a series of requests from the same source will always be routed to the same instance. For the same reason, design services to be stateless to avoid requiring a series of requests from an application to always be routed to the same instance of a service. When designing a service that reads messages from a queue and processes them, do not make any assumptions about which instance of the service handles a specific message because autoscaling could start additional instances of a service as the queue length grows. The [Competing Consumers pattern](http://msdn.microsoft.com/library/dn568101.aspx) describes how to handle this scenario.
+- If the solution implements a long-running task, design this task to support both scaling out and scaling in. Without due care, such a task could prevent an instance of a process from being shutdown cleanly when the system scales in, or it could lose data if the process is forcibly terminated. Ideally, refactor a long-running task and break up the processing that it performs into smaller, discrete chunks. The [Pipes and Filters pattern](http://msdn.microsoft.com/library/dn568100.aspx) provides an example of how you can achieve this. Alternatively, you can implement a checkpoint mechanism that records state information about the task at regular intervals, and save this state in durable storage that can be accessed by any instance of the process running the task. In this way, if the process is shutdown, the work that it was performing can be resumed from the last checkpoint by using another instance.
+- When background tasks run on separate compute instances, such as in worker roles of a Cloud Services hosted application, you may need to scale different parts of the application using different scaling policies. For example, you may need to deploy additional UI compute instances without increasing the number of background compute instances, or the opposite of this. If you offer different levels of service (such as basic and premium service packages), you may need to scale out the compute resources for premium service packages more aggressively than those for basic service packages in order to meet SLAs.
+- Consider using the length of the queue over which UI and background compute instances communicate as a driver for your autoscaling strategy. This is the best indicator of an imbalance or difference between the current load and the processing capacity of the background task.
+- If you base your autoscaling strategy on counters that measure business processes, such as the number of orders placed per hour or the average execution time of a complex transaction, ensure that you fully understand the relationship between the results from these types of counters and the actual compute capacity requirements. It may be necessary to scale more than one component or compute unit in response to changes in business process counters.  
+- To prevent a system from attempting to scale out excessively, and to avoid the costs associated with running many thousands of instances, consider limiting the maximum number of instances that can be automatically added. Most autoscaling mechanisms allow you to specify the minimum and maximum number of instances for a rule. In addition, consider gracefully degrading the functionality that the system provides if the maximum number of instances have been deployed and the system is still overloaded.
+- Keep in mind that autoscaling might not be the most appropriate mechanism to handle a sudden burst in workload. It takes time to provision and start new instances of a service or add resources to a system, and the peak may have passed by the time these additional resources have been made available. In this scenario, it may be better to throttle the service. For more information, see the [Throttling pattern](http://msdn.microsoft.com/library/dn589798.aspx).
+- Conversely, if you do need the capacity to process all requests when the volume fluctuates rapidly, and cost is not a major contributing factor, consider using an aggressive auto-scaling strategy that starts additional instances more quickly, or by using a scheduled policy that starts a sufficient number of instances to meet the maximum load before that load is expected.
 - The autoscaling mechanism should monitor the autoscaling process and log the details of each autoscaling event (what triggered it, what resources were added or removed, and when). If you create a custom autoscaling mechanism, ensure that it incorporates this capability. The information can be analyzed to help measure the effectiveness of the autoscaling strategy, and tune it if necessary—both in the short term as the usage patterns become more obvious, and over the long term as the business expands or the requirements of the application evolve. If an application reaches the upper limit defined for autoscaling, the mechanism might also alert an operator who could manually start additional resources if the situation warrants this. Note that, under these circumstances, the operator may also be responsible for manually removing these resources after the workload eases.
 
-## 在蔚蓝的解决方案自动缩放
-有几个选项用于配置自动缩放为蔚蓝的解决方案:
+## Autoscaling in an Azure solution
+There are several options for configuring autoscaling for your Azure solutions:
 
-- **蔚蓝的自动缩放**.此功能支持最常见的结垢情况根据日程安排，并 (可选) 触发缩放操作基于运行时的标准 (如处理器利用率，队列长度，或建在和自定义计数器)。你可以简单的自动缩放为配置策略的解决方案迅速和容易地通过使用 Azure 管理门户，和你可以使用 Azure 监测服务管理库配置自动缩放的规则与精细的控制。有关详细信息，请参阅 [Azure 监测服务管理库](#the-azure-monitoring-services-management-library).
-- **自定义解决方案** 基于诊断、 监测、 和 Azure 服务管理功能。例如，您可以使用 Azure 的诊断，自定义代码，或 [Azure 系统中心管理包](http://www.microsoft.com/download/details.aspx?id=38414) 持续地监视性能的应用程序;和 [Azure 服务管理其他 API](http://msdn.microsoft.com/library/azure/ee460799.aspx)， [微软 Azure 管理库](https://www.nuget.org/packages/Microsoft.WindowsAzure.Management.Libraries)或 [自动缩放应用程序块](http://msdn.microsoft.com/library/hh680892%28v=pandp.50%29.aspx) 要缩放出和中。触发一个缩放操作的度量值可以是任何内置或自定义的计数器或你在应用程序内执行其他仪器。然而，一个自定义的解决方案不是简单的执行，并应考虑只是否没有以前的办法可以满足你的要求。请注意，自动缩放应用程序块是一个开放的采购的框架，不直接受 Microsoft 支持。
-- **第三方服务** 如 [Paraleap AzureWatch](http://www.paraleap.com/AzureWatch) 这使您能够扩展基于时间表、 服务负载和系统性能指标、 自定义规则和不同类型的规则组合的解决方案。
+- **Azure Autoscaling**. This feature supports the most common scaling scenarios based on a schedule and, optionally, triggered scaling operations based on runtime metrics (such as processor utilization, queue length, or built in and custom counters). You can configure simple autoscaling policies for a solution quickly and easily by using the Azure Management Portal, and you can use the Azure Monitoring Services Management Library to configure autoscaling rules with a finer degree of control. For more information, see the section [The Azure Monitoring Services Management Library](#the-azure-monitoring-services-management-library).
+- **A custom solution** based on the diagnostics, monitoring, and service management features of Azure. For example, you could use Azure diagnostics, custom code, or the [System Center Management Pack for Azure](http://www.microsoft.com/download/details.aspx?id=38414) to continually monitor performance of the application; and the [Azure Service Management REST API](http://msdn.microsoft.com/library/azure/ee460799.aspx), the [Microsoft Azure Management Libraries](https://www.nuget.org/packages/Microsoft.WindowsAzure.Management.Libraries), or the [Autoscaling Application Block](http://msdn.microsoft.com/library/hh680892%28v=pandp.50%29.aspx) to scale out and in. The metrics for triggering a scaling operation can be any built-in or custom counter, or other instrumentation you implement within the application. However, a custom solution is not simple to implement, and should be considered only if none of the previous approaches can fulfil your requirements. Note that the Autoscaling Application Block is an open sourced framework, and is not supported directly by Microsoft.
+- **Third party services** such as [Paraleap AzureWatch](http://www.paraleap.com/AzureWatch) that enable you to scale a solution based on schedules, service load and system performance indicators, custom rules, and combinations of different types of rules.
 
-选择哪种自动缩放解决方案采取时, 请考虑以下几点:
+When choosing which autoscaling solution to adopt, consider the following points:
 
-- 使用内置的自动缩放功能的平台，如果他们可以满足您的要求。如果不是，仔细考虑是否你真的需要更复杂的缩放功能。额外要求以外的内置的自动缩放功能提供一些例子可能包括更多的粒度控制，不同的方法来检测缩放比例、 缩放整个订阅、 缩放其他类型的资源，和更多的触发事件。
+- Use the built in autoscaling features of the platform, if they can meet your requirements. If not, carefully consider whether you really do need more complex scaling features. Some examples of additional requirements beyond those the built-in auto-scaling capability offers may include more granularity of control, different ways to detect trigger events for scaling, scaling across subscriptions, scaling other types of resources, and more.
 - Consider if you can predict the load on the application with sufficient accuracy to depend only on scheduled autoscaling (adding and removing instances to meet anticipated peaks in demand). Where this is not possible, use reactive autoscaling based on metrics collected at runtime to allow the application to handle unpredictable changes in demand. However, it is typically appropriate to combine these approaches. For example, create a strategy that adds resources such as compute, storage, and queues based on a schedule of the times when you know the application is most busy. This helps to ensure that capacity is available when required without the delay encountered when starting new instances. In addition, for each scheduled rule, define metrics that allow reactive autoscaling during that period to ensure that the application can handle sustained but unpredictable peaks in demand.
-- 通常难以理解度量和容量要求，特别是当最初部署应用程序之间的关系。愿意提供一点额外的容量，在开始的时候，然后监视和优化自动缩放规则将能力更接近实际的负载。
+- It is often difficult to understand the relationship between metrics and capacity requirements, especially when an application is initially deployed. Prefer to provision a little extra capacity at the beginning, and then monitor and tune the autoscaling rules to bring the capacity closer to the actual load.
 
-### 使用 Azure 自动缩放
-蔚蓝的自动缩放使您能够配置扩展和扩展解决方案的选项。蔚蓝的自动缩放可以自动添加和删除的 Azure 云服务网站和工作者角色，Azure 移动服务和 Azure 网站应用程序实例。它也可以启用自动缩放的启动和停止实例的 Azure 虚拟机。蔚蓝的自动缩放战略包括两部分的因素:
+### Using Azure Autoscaling
+Azure Autoscaling enables you to configure scale out and scale in options for a solution. Azure Autoscaling can automatically add and remove instances of Azure Cloud Services web and worker roles, Azure Mobile Services, and Azure Web Sites applications. It can also enable automatic scaling by starting and stopping instances of Azure Virtual Machines. An Azure autoscaling strategy comprises two sets of factors:
 
-- 基于时间表的自动缩放，可以确保附加实例可用于用途与预期的峰值相吻合，可以扩展在一旦高峰时间过去。这使您能够确保你有足够的实例已在运行而无需等待系统对负载作出反应。
-- 在最后一小时或积压的解决方案处理 Azure 存储空间或服务总线队列中的消息的平均 CPU 利用率等因素对反应的基于度量的缩放。这允许应用程序分别从定时自动缩放规则，以适应需求计划外或不可预见的变化作出反应。
+- Schedule-based autoscaling that can ensure additional instances are available to coincide with an expected peak in usage, and can scale in once the peak time has passed. This enables you to ensure that you have sufficient instances already running without waiting for the system to react to the load.
+- Metrics-based autoscaling that reacts to factors such as average CPU utilization over the last hour, or the backlog of messages that the solution is processing in an Azure storage or Service Bus queue. This allows the application to react separately from the scheduled autoscaling rules to accommodate unplanned or unforeseen changes in demand.
 
-使用 Azure 自动缩放时，请考虑以下几点:
+Consider the following points when using Azure Autoscaling:
 
-- 你自动缩放策略结合计划和基于度量的缩放。你可以指定两种类型的服务规则，以便应用程序扩展如期和响应负载的变化。
-- 你应该配置 Azure 自动缩放规则，然后监视应用程序随着时间的推移的性能。使用监测的结果来调整系统级表如果必要的方式。但是，请牢记那自动缩放不是瞬时的过程 — — 它需要时间来度量，如平均 CPU 利用率超过 (或低于) 反应指定的阈值。
-- Autoscaling rules that use a detection mechanism based on a measured trigger attribute (such as CPU usage or queue length) use an aggregated value over time, rather than the instantaneous values, to trigger an autoscaling action. By default, the aggregate is an average of the values. This prevents the system from reacting too quickly, or causing rapid oscillation. It also allows time for new instances that are auto-started to settle into running mode, preventing additional autoscaling actions from occurring while the new instances are starting up. For Cloud Services and Virtual Machines, the default period for the aggregation is 45 minutes, so it can take up to this period of time for the metric to trigger autoscaling in response to spikes in demand. You can change the aggregation period by using the SDK, but be aware that periods of less than 25 minutes may cause unpredictable results (see [自动缩放 CPU 百分比与监测服务管理图书馆的 Azure 云服务](http://rickrainey.com/2013/12/15/auto-scaling-cloud-services-on-cpu-percentage-with-the-windows-azure-monitoring-services-management-library/) 更多的信息)。为 Azure 网站，平均的周期短很多，允许新的实例，可在约五分钟后改平均触发措施中。
-- 如果您配置自动缩放使用 SDK，而不是门户网站，您可以指定更详细的时间表，在这期间的规则是积极。你也可以创建您自己的度量标准，并使用它们，有或没有任何现有的自动缩放规则。例如，你可能希望使用替代的计数器，如每秒或平均内存可用性，请求的数量或使用测量特定业务流程的自定义计数器。有关详细信息，请参阅 [Azure 监测服务管理库](#the-azure-monitoring-services-management-library).
-- 时自动缩放 Azure 虚拟机，您必须部署数目等于最大数量的虚拟机的情况下你将允许自动缩放以开始。这些实例必须是相同的可用性设置的一部分。虚拟机自动缩放机制不会创建或删除实例的虚拟机;相反，您配置的自动缩放规则将启动和停止适当数量的这些实例。有关更多信息，请参见 [自动缩放运行 Web 角色、 工作者角色或虚拟机的应用程序](cloud-services-how-to-scale.md#autoscale).
-- 如果不能启动新实例，也许因为订阅的最大值已达到 (如内核使用虚拟机服务时的最大数目)，或者一个错误发生在启动期间，门户网站可能会显示自动缩放操作成功。然而，随后 **ChangeDeploymentConfiguration** 事件显示在门户中将只显示请求服务启动，并将没有事件，以指示它已成功完成。
-- 在 Azure 自动缩放，你可以使用 web 门户 UI 将 SQL 数据库实例和队列的资源链接到计算服务实例。这允许您更轻松地访问单独的手动和自动缩放配置选项为每个链接的资源。有关更多信息，请参见 [如何: 将资源链接到云服务](cloud-services-how-to-manage.md#linkresources) 在页面中如何管理云服务和页 [如何扩展应用程序](cloud-services-how-to-scale.md).
-- 当您配置多项政策和规则时，还有他们可以互相冲突的可能性。蔚蓝的自动缩放使用以下的冲突解决规则来确保始终有足够数量的情况下运行:
-  - 操作规模始终优先于在业务规模。
-  - 当放大操作冲突，启动的实例数的最大升幅的规则优先。
-  - 当缩放操作冲突中，启动的实例数的最小跌幅的规则优先。
+- Your autoscaling strategy combines both scheduled and metrics-based scaling. You can specify both types of rules for a service, so that an application scales both on a schedule and in response to changes in load.
+- You should configure the Azure Autoscaling rules and then monitor the performance of your application over time. Use the results of this monitoring to adjust the way in which the system scales if necessary. However, keep in mind that autoscaling is not an instantaneous process—it takes time to react to a metric such as average CPU utilization exceeding (or falling below) a specified threshold.
+- Autoscaling rules that use a detection mechanism based on a measured trigger attribute (such as CPU usage or queue length) use an aggregated value over time, rather than the instantaneous values, to trigger an autoscaling action. By default, the aggregate is an average of the values. This prevents the system from reacting too quickly, or causing rapid oscillation. It also allows time for new instances that are auto-started to settle into running mode, preventing additional autoscaling actions from occurring while the new instances are starting up. For Cloud Services and Virtual Machines, the default period for the aggregation is 45 minutes, so it can take up to this period of time for the metric to trigger autoscaling in response to spikes in demand. You can change the aggregation period by using the SDK, but be aware that periods of less than 25 minutes may cause unpredictable results (see [Auto Scaling Cloud Services on CPU Percentage with the Azure Monitoring Services Management Library](http://rickrainey.com/2013/12/15/auto-scaling-cloud-services-on-cpu-percentage-with-the-windows-azure-monitoring-services-management-library/) for more information). For Azure Web Sites, the averaging period is much shorter, allowing new instances to be available in around five minutes after a change to the average trigger measure.
+- If you configure autoscaling using the SDK rather than the web portal, you can specify a more detailed schedule during which the rules are active. You can also create your own metrics and use them with or without any of the existing ones in your autoscaling rules. For example, you may wish to use alternative counters such as the number of requests per second or the average memory availability, or use custom counters that measure specific business processes. For more information, see the section [The Azure Monitoring Services Management Library](#the-azure-monitoring-services-management-library).
+- When autoscaling Azure Virtual Machines, you must deploy a number of instances of the virtual machine that is equal to the maximum number you will allow autoscaling to start. These instances must be part of the same Availability Set. The Virtual Machines autoscaling mechanism does not create or delete instances of the virtual machine; instead, the autoscaling rules you configure will start and stop an appropriate number of these instances. For more information, see [Automatically scale an application running Web Roles, Worker Roles, or Virtual Machines](cloud-services-how-to-scale.md#autoscale).
+- If new instances cannot be started, perhaps because the maximum for a subscription has been reached (such as the maximum number of cores when using the Virtual Machines service) or an error occurs during startup, the portal may show that an autoscaling operation succeeded. However, subsequent **ChangeDeploymentConfiguration** events displayed in the portal will show only that a service startup was requested, and there will be no event to indicate it was successfully completed.
+- In Azure Autoscaling, you can use the web portal UI to link resources such as SQL Database instances and queues to a compute service instance. This allows you to more easily access the separate manual and automatic scaling configuration options for each of the linked resources. For more information, see [How to: Link a resource to a cloud service](cloud-services-how-to-manage.md#linkresources) in the page How to Manage Cloud Services and the page [How to Scale an Application](cloud-services-how-to-scale.md).
+- When you configure multiple policies and rules, there is a possibility that they could conflict with each other. Azure Autoscaling uses the following conflict resolution rules to ensure that there is always a sufficient number of instances running:
+  - Scale out operations always take precedence over scale in operations.
+  - When scale out operations conflict, the rule that initiates the largest increase in the number of instances takes precedence.
+  - When scale in operations conflict, the rule that initiates the smallest decrease in the number of instances takes precedence.
 
 <a name="the-azure-monitoring-services-management-library"></a>
 
-### Azure 监测服务管理库
-用来配置 Azure 自动缩放精细的控制和访问不是通过门户网站提供的功能，你可以使用服务管理 API。此 API 被访问作为一个 REST 的 Web API，直接或通过 Azure 监测服务管理库。
+### The Azure Monitoring Services Management Library
+You can use the Service Management API to configure Azure Autoscaling with a finer degree of control and to access capabilities that are not available through the web portal. This API is accessed directly as a REST Web API, or through the Azure Monitoring Services Management Library.
 
-蔚蓝的自动缩放是由指定为云服务角色，虚拟机的可用性集，Azure 网站 (作为服务器农场在网络空间) 或 Azure 移动服务自动缩放配置文件配置的。每个配置文件，其中一个目标可以有达 20，指示:
+Azure Autoscaling is configured by specifying autoscaling profiles for Cloud Services roles, Virtual Machines availability sets, Azure Web Sites (as server farms in a webspace), or Azure Mobile Services. Each profile, of which a target can have up to 20, indicates:
 
-- 当它是用于 (使用复发或某一固定的日期间隔)，
-- 允许的数量的实例 (最小值、 最大值和默认数量)
-- 哪些自动缩放规则实际上处于
+- When it is to be applied (using a recurrence or a fixed date interval),
+- The permitted number of instances (the minimum, maximum, and default number)
+- Which autoscaling rules are in effect
 
-门户网站允许配置的一组固定的型材，本质上区分白天/夜晚和平日和周末型材，用一双的规模规则基于 CPU 利用率或队列长度。通过改用服务管理 API 你可以配置更细粒度的适用性日期对于配置文件，并且指定达十规则与触发器基于任何度量可用到 Azure 监测服务。
+The web portal allows for the configuration of a fixed set of profiles, essentially distinguishing day/night and weekday/weekend profiles, with a single pair of scale rules based on CPU utilization or queue length. By using the Service Management API instead you can configure finer-grained applicability dates for profiles, and specify up to ten rules with triggers based on any metric available to the Azure Monitoring Service.
 
-自动缩放规则由指示时应用的规则，和规模行动，指示要在目标的配置上执行的变更触发器组成。在写作的时候，唯一受支持的操作是增加或减少的实例计数。
+Autoscaling rules are composed of a trigger that indicates when a rule applies, and a scale action that indicates the change to perform on the configuration of the target. At the time of writing, the only supported action was an increase or decrease in the instance count.
 
-自动缩放规则触发器都基于可用的度量。配置度量值是从适当的来源，从周期性地采样，自动缩放配置中定义。从活动的配置文件的每个规则计算时，在触发器中指定的度量值聚合在时间和跨实例 (如果适用)，和此聚合比较阈值，以指示该规则是否适用。随着时间的推移有效聚合是平均 (默认值)，最小值、 最大值，最后，总，和计数。有效聚合了实例是平均 (默认值)，最大值和最小。
+The triggers for autoscaling rules are based on available metrics. Values for the configured metrics are sampled periodically from the appropriate sources, as defined in the autoscaling configuration. When each rule from an active profile is evaluated, the values of the metric specified on the trigger are aggregated in time and across instances (if appropriate), and this aggregate is compared against a threshold to indicate whether the rule applies. Valid aggregates over time are average (the default), minimum, maximum, last, total, and count. Valid aggregates over instances are average (the default), maximum, and minimum.
 
-可用触发器指标是 Azure 存储和服务总线队列长度，标准性能计数器由 Azure 诊断，出版和发表每个角色或虚拟机的任何自定义性能计数器。在云服务解决方案中，默认情况下处理除了那些可用的性能计数器时，您必须更改服务在 UI 中的"最低限度"到"详细"的监控级别设置。
+The metrics available for triggers are Azure storage and Service Bus queue lengths, the standard performance counters published by Azure Diagnostics, and any custom performance counter published by each role or virtual machine. In a Cloud Services solution, when dealing with performance counters other than those available by default, you must change the monitoring level setting in the UI from “Minimum” to “Verbose” for the service.
 
-有关更多信息，请参见:
+For more information, see:
 
-- 监测的 SDK [类库](http://msdn.microsoft.com/library/azure/dn510414.aspx)
-- [如何配置性能计数器](http://msdn.microsoft.com/library/azure/dn535595.aspx)
-- [自动缩放操作](http://msdn.microsoft.com/library/azure/dn510374.aspx)
-- [添加自动缩放设置](http://msdn.microsoft.com/library/azure/dn510372.aspx)
-- [自动缩放 CPU 百分比与监测服务管理图书馆的 Azure 云服务](http://rickrainey.com/2013/12/15/auto-scaling-cloud-services-on-cpu-percentage-with-the-windows-azure-monitoring-services-management-library/)
-- [如何使用 Azure 监测服务管理库来创建自动缩放比例规则](http://blogs.msdn.com/b/cie/archive/2014/02/20/how-to-use-windows-azure-monitoring-services-management-library-to-create-an-autoscale-rule.aspx)
+- Monitoring SDK [Class Library](http://msdn.microsoft.com/library/azure/dn510414.aspx)
+- [How to Configure Performance Counters](http://msdn.microsoft.com/library/azure/dn535595.aspx)
+- [Operations on Autoscaling](http://msdn.microsoft.com/library/azure/dn510374.aspx)
+- [Add Autoscale Settings](http://msdn.microsoft.com/library/azure/dn510372.aspx)
+- [Auto Scaling Cloud Services on CPU Percentage with the Azure Monitoring Services Management Library](http://rickrainey.com/2013/12/15/auto-scaling-cloud-services-on-cpu-percentage-with-the-windows-azure-monitoring-services-management-library/)
+- [How to use Azure Monitoring Services Management Library to create an Autoscale Rule](http://blogs.msdn.com/b/cie/archive/2014/02/20/how-to-use-windows-azure-monitoring-services-management-library-to-create-an-autoscale-rule.aspx)
 
-## 相关的模式和指导
-下面的模式和指导也可能与有关您的应用场景时执行自动缩放:
+## Related patterns and guidance
+The following patterns and guidance may also be relevant to your scenario when implementing autoscaling:
 
-- [节流模式](http://msdn.microsoft.com/library/dn589798.aspx).此模式描述了如何应用程序可以继续运作，满足服务级别协议，当需求增加置于极端负载资源。节流可以用自动缩放防止被淹没系统，虽然系统扩展的出。
-- [竞争消费者模式](http://msdn.microsoft.com/library/dn568101.aspx).此模式描述了如何实现一个可以处理来自任何应用程序实例消息的服务实例池。自动缩放可以用于启动和停止服务实例来匹配预期的工作量。这种方法使系统能够处理多个消息同时优化吞吐量，提高了可扩展性和可用性，并平衡负载。
-- [仪器仪表和遥测指导](http://msdn.microsoft.com/library/dn589775.aspx).仪器仪表及遥测对收集的信息，可以驱动自动缩放过程至关重要。
+- [Throttling Pattern](http://msdn.microsoft.com/library/dn589798.aspx). This pattern describes how an application can continue to function and meet service level agreements when an increase in demand places an extreme load on resources. Throttling can be used with autoscaling to prevent a system from being overwhelmed while the system scales out.
+- [Competing Consumers Pattern](http://msdn.microsoft.com/library/dn568101.aspx). This pattern describes how to implement a pool of service instances that can handle messages from any application instance. Autoscaling can be used to start and stop service instances to match the anticipated workload. This approach enables a system to process multiple messages concurrently to optimize throughput, improve scalability and availability, and balance the workload.
+- [Instrumentation and Telemetry Guidance](http://msdn.microsoft.com/library/dn589775.aspx). Instrumentation and telemetry are vital for gathering the information that can drive the autoscaling process.
 
-## 更多的信息
-- [如何扩展应用程序](cloud-services-how-to-scale.md)
-- [自动缩放运行 Web 角色、 工作者角色或虚拟机的应用程序](cloud-services-how-to-manage.md#linkresources)
-- [如何: 将资源链接到云服务](cloud-services-how-to-manage.md#linkresources)
-- [扩展链接的资源](cloud-services-how-to-scale.md#scalelink)
-- [Azure 监测服务管理库](http://www.nuget.org/packages/Microsoft.WindowsAzure.Management.Monitoring)
-- [Azure 服务管理其他 API](http://msdn.microsoft.com/library/azure/ee460799.aspx)
-- [自动缩放操作](http://msdn.microsoft.com/library/azure/dn510374.aspx)
+## More information
+- [How to Scale an Application](cloud-services-how-to-scale.md)
+- [Automatically scale an application running Web Roles, Worker Roles, or Virtual Machines](cloud-services-how-to-manage.md#linkresources)
+- [How to: Link a resource to a cloud service](cloud-services-how-to-manage.md#linkresources)
+- [Scale linked resources](cloud-services-how-to-scale.md#scalelink)
+- [Azure Monitoring Services Management Library](http://www.nuget.org/packages/Microsoft.WindowsAzure.Management.Monitoring)
+- [Azure Service Management REST API](http://msdn.microsoft.com/library/azure/ee460799.aspx)
+- [Operations on Autoscaling](http://msdn.microsoft.com/library/azure/dn510374.aspx)
 - [Microsoft.WindowsAzure.Management.Monitoring.Autoscale Namespace](http://msdn.microsoft.com/library/azure/microsoft.windowsazure.management.monitoring.autoscale.aspx)
-- 的 [自动缩放应用程序块](http://msdn.microsoft.com/library/hh680892%28v=pandp.50%29.aspx) 在 MSDN 上的文件和关键场景。
+- The [Autoscaling Application Block](http://msdn.microsoft.com/library/hh680892%28v=pandp.50%29.aspx) documentation and key scenarios on MSDN.

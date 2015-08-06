@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Azure Government Image Gallery" 
    description="This article provides an overview of the Azure Government Image Gallery and the images included" 
    services="Azure-Government" 
@@ -17,14 +17,14 @@
    ms.author="john.harvey@microsoft.com"/>
 
 
-#  Galerie d'images de Microsoft Azure gouvernement
+#  Microsoft Azure Government Image Gallery
 
 <p> The Microsoft Azure Government image gallery is a similar experience to public Azure portal.  Customers can choose to deploy pre-built images from Microsoft and our partners, or upload their own VHDs.  This provides flexibility to deploy your own standardized images if needed.
 
-Le ci-dessous fournit une liste des images disponibles dans la Galerie d'images de gouvernement Azure.  Certaines des images prédéfinies ne comprennent pas parlez de licence de logiciel spécifique.  Veuillez consulter le bulletin <a href="http://azure.microsoft.com/pricing/details/virtual-machines/">Prix de la Machine virtuelle</a> page pour plus de conseils et de travailler avec votre équipe de compte Microsoft ou un revendeur pour le gouvernement d'Azur prix spécifique.
+The below provides a list of available images within the Azure Government image gallery.  Some of the prebuilt images do include pay as you go licensing for specific software.  Please review <a href="http://azure.microsoft.com/pricing/details/virtual-machines/">Virtual Machine Pricing</a> page for more guidance and work with your Microsoft account team or reseller for Azure Government specific pricing.
 
 
-## Liste de gouvernement Image bleu azur
+## Azure Government Image list
 
 <table cellspacing="0" border="1">
 <tr>
@@ -106,21 +106,21 @@ Disk Size
 
 <!--Every topic should have next steps and links to the next logical set of content to keep the customer engaged -->
 
-## <a name="next"></a>Prochaines étapes
+## <a name="next"></a>Next steps
 
-Le dessous des ressources devrait fournir plus d'informations sur le déploiement de la Galerie d'images ou de créer votre propre disque dur virtuel.  Veuillez faire référence à la <a href="../azure-government-developer-guide">Guide du développeur gouvernement Azur</a> pour découvrir une programmation des différences avec les points de terminaison lorsque vous travaillez avec Azure gouvernement.
+The below resources should provide more information on deploying from the image gallery or creating your own VHD.  Please reference the <a href="../azure-government-developer-guide">Azure Government Developer Guide</a> to uncover an programmatic differences with endpoints when working with Azure Government.
 
-## #Other ressources : 
+###Other Resources: 
 
-- <a href="virtual-machines/virtual-machines-windows-tutorial.md">Déploiement d'une Machine virtuelle Windows</a>
+- <a href="virtual-machines/virtual-machines-windows-tutorial.md">Deploying a Windows Virtual Machine</a>
 
-- <a href="../virtual-machines-linux-tutorial/">Déploiement d'une Machine virtuelle Linux</a>
+- <a href="../virtual-machines-linux-tutorial/">Deploying a Linux Virtual Machine</a>
 
-- <a href="http://msdn.microsoft.com/library/azure/dn683781.aspx">Machine virtuelle FAQ</A>
+- <a href="http://msdn.microsoft.com/library/azure/dn683781.aspx">Virtual Machine FAQ</A>
 
-- <a href="../virtual-machines-create-upload-vhd-windows-server/">Créer et télécharger votre propre disque dur virtuel</a>
+- <a href="../virtual-machines-create-upload-vhd-windows-server/">Create and upload your own VHD</a>
 
-- <a href="../virtual-machines-linux-capture-image/">Capture d'Image de machine virtuelle Linux</a>
+- <a href="../virtual-machines-linux-capture-image/">Capture Linux VM Image</a>
 
 <!--- **<A href="/azure-government-service-description">Azure Government Service Descriptions</a>**-->
 

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Add Application Insights SDK to monitor your ASP.NET app" 
 	description="Analyze usage, availability and performance of your on-premises or Microsoft Azure web application with Application Insights." 
 	services="application-insights" 
@@ -20,10 +20,10 @@
 
 *Application Insights is in preview.*
 
-[AZURBLAU. ENTHALTEN [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
+[AZURE.INCLUDE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
 
 
-Visual Studio Application Insights monitors your live application to help you [detect and diagnose performance issues and exceptions][detect], und [discover how your app is used][knowUsers]. It can be used with a wide variety of application types. It works for apps that are hosted on your own on-premises IIS servers or on Azure VMs, as well as Azure web apps. ([Device apps and Java servers are also covered][start].)
+Visual Studio Application Insights monitors your live application to help you [detect and diagnose performance issues and exceptions][detect], and [discover how your app is used][knowUsers]. It can be used with a wide variety of application types. It works for apps that are hosted on your own on-premises IIS servers or on Azure VMs, as well as Azure web apps. ([Device apps and Java servers are also covered][start].)
 
 ![Example performance monitoring charts](./media/app-insights-start-monitoring-app-health-usage/10-perf.png)
 

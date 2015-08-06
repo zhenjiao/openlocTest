@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Using New Relic with Azure - Azure feature guides" 
 	description="Learn how to use the New Relic service to manage and monitor your Azure application." 
 	services="" 
@@ -46,7 +46,7 @@ New Relic Pro is offered based on instance size for Azure Cloud Services
 
 For pricing information see the [New Relic page in the Azure Store](http://azure.microsoft.com/marketplace/partners/newrelic/newrelic).
 
-> [AZURBLAU. HINWEIS] Pricing is only listed for up to 10 compute instances. For counts greater than 10 please contact New Relic (sales@newrelic.com) for volume pricing.
+> [AZURE.NOTE] Pricing is only listed for up to 10 compute instances. For counts greater than 10 please contact New Relic (sales@newrelic.com) for volume pricing.
 
 Azure customers receive a 2 week trial subscription of New Relic Pro when they deploy the New Relic agent.
 
@@ -127,17 +127,17 @@ To view your New Relic dashboard:
 2. Sign in with your New Relic account email and password.
 3. From the New Relic menu bar, select **Applications > (application's name)**.
 
-	Die **Monitoring > Overview** dashboard automatically appears.
+	The **Monitoring > Overview** dashboard automatically appears.
 
 	![New Relic monitoring dashboard](./media/store-new-relic-cloud-services-dotnet-application-performce-management/NewRelic_app.png)
 
-	After you select an app from the list on your **Applications** menu, the **Übersicht** dashboard shows current app server and browser information.
+	After you select an app from the list on your **Applications** menu, the **Overview** dashboard shows current app server and browser information.
 
 ### <a id="using-new-relic"></a>Using New Relic
 
-After you select your app from the list on the Applications menu, the Overview dashboard shows current app server and browser information. To toggle between the two views, click the **App server** oder **Browser** button.
+After you select your app from the list on the Applications menu, the Overview dashboard shows current app server and browser information. To toggle between the two views, click the **App server** or **Browser** button.
 
-In addition to the <a href="https://newrelic.com/docs/site/the-new-relic-ui#functions">standard New Relic UI</a> und <a href="https://newrelic.com/docs/site/the-new-relic-ui#drilldown">dashboard drill-down</a> functions, the Applications Overview dashboard has additional functions.
+In addition to the <a href="https://newrelic.com/docs/site/the-new-relic-ui#functions">standard New Relic UI</a> and <a href="https://newrelic.com/docs/site/the-new-relic-ui#drilldown">dashboard drill-down</a> functions, the Applications Overview dashboard has additional functions.
 
 <table border="1">
   <thead>
@@ -185,7 +185,7 @@ Below is an example of the Applications Overview dashboard when you select the B
 
 ![Package manager console](./media/store-new-relic-cloud-services-dotnet-application-performce-management/NewRelic_app_browser.png)
 
-## Die nächsten Schritte
+## Next steps
 
 Check out these additional resources for more information:
 
@@ -194,6 +194,6 @@ Check out these additional resources for more information:
 Overview of the New Relic UI, setting user rights and profiles, using standard functions and dashboard drill-down details
  * [Applications Overview](https://newrelic.com/docs/site/applications-overview): Features and functions when using New Relic's Applications Overview dashboard
  * [Apdex](https://newrelic.com/docs/site/apdex): Overview of how Apdex measures end users' satisfaction with your application
- * [Reale Benutzer überwachen](https://newrelic.com/docs/features/real-user-monitoring): Overview of how RUM details the time it takes for your users' 
+ * [Real User Monitoring](https://newrelic.com/docs/features/real-user-monitoring): Overview of how RUM details the time it takes for your users' 
 browsers to load your webpages, where they come from, and what browsers they use
  * [Finding Help](https://newrelic.com/docs/site/finding-help): Resources available through New Relic's online Help Center

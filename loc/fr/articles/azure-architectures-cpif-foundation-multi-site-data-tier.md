@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Multi-Site Data Tier (Azure Architecture Patterns)" 
    description="The Multi-Site Data Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document." 
    services="" 
@@ -16,42 +16,42 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# Niveau de données multisites (modèles d'Architecture d'Azur)
+# Multi-Site Data Tier (Azure Architecture Patterns)
 
-Le [Cadres d'intégration Cloud plate-forme (FIPC)](azure-architectures-cpif-overview.md) apporte la charge de travail pour l'intégration des applications dans une Solution de Cloud Microsoft intégration. 
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution. 
 
-FIPC décrit comment les organisations, les clients et les partenaires doivent concevoir et déployer des charges de travail axés sur le Cloud grâce aux capacités hybrid cloud plate-forme et de la gestion d'Azure, System Center et Windows Server. 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-Le **Couche données multi-sites** modèle fait partie de la **Fondation** zone, qui est abondamment décrite dans le document Architecture du FIPC. 
+The **Multi-Site Data Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-## Couche données multi-sites
+## Multi-Site Data Tier
 
-La couche de données sur plusieurs sites caractéristiques de conception détails modèle l'azur et services nécessaires à la prestation des services de la couche données pouvant fournir une haute disponibilité et des performances prévisibles au-delà des frontières géographiques. Pour l'application de ce modèle de design, une couche de données est définie comme un niveau de service fournissant services de plate-forme de données traditionnels en soit de manière isolée ou dans le cadre d'une application multi-niveaux.  Dans ce modèle, l'équilibrage de la charge de la couche données est fourni tant localement dans la région et dans toutes les régions.   
+The Multi-Site Data Tier design pattern details the Azure features and services required to deliver data tier services that can provide predictable performance and high availability across geographic boundaries. For the purposes of this design pattern a data tier is defined as a tier of service providing traditional data platform services in either an isolated manner or as part of a multi-tiered application.  Within this pattern, load balancing of the data tier is provided both locally within the region and across regions.   
 
-Introduite avec SQL Server 2012, groupes de disponibilité de AlwaysOn est une fonction haute disponibilité et de reprise après sinistre qui repose entièrement sur les Services d'Infrastructure Azure.  On trouvera des informations détaillées et l'annonce officielle de soutien pour les groupes de disponibilité de AlwaysOn sur Windows Azure Service d'Infrastructure dans l'article de groupes de disponibilité de AlwaysOn.   
+Introduced with SQL Server 2012, AlwaysOn Availability Groups is a high-availability and disaster-recovery feature that is fully supported on Azure Infrastructure Services.  Detailed information and the official support announcement for AlwaysOn Availability Groups on Windows Azure Infrastructure Service can be found in the article AlwaysOn Availability Groups.   
 
-Ce document fournit une vue d'ensemble architectural d'une couche de données multisites dans Azure utilisant les groupes de disponibilité de AlwaysOn SQL. Avec un option lecture seule nœud secondaire dans un datacenter Azur supplémentaire pour d'autre fonctionnalités et la reprise. À l'aide de SQL AlwaysOn dans Azure fournit un niveau de haute disponibilité de données pouvant être consommée par les niveaux web ou application.  
+This document provides an architectural overview of a Multi-Site Data Tier in Azure utilizing SQL AlwaysOn Availability Groups. With an optional read-only secondary node in an additional Azure datacenter for additional functionality and disaster recovery. Using SQL AlwaysOn in Azure provides a high-availability data tier that can be consumed by web or application tiers.  
 
-Alors que ce document met l'accent sur les pratiques et les modèles architecturaux, instructions de déploiement complète se trouvent dans les tutoriels officiels, qui décrivent la configuration des groupes de disponibilité de AlwaysOn dans Azure et la configuration de l'écouteur de groupe de disponibilité de AlwaysOn. 
+While this document focuses on architectural patterns and practices, full deployment guidance can be found in the official tutorials, which outline the configuration of AlwaysOn Availability Groups in Azure and the configuration of the AlwaysOn Availability Group Listener. 
 
-## Modèle architectural Overview 
+## Architectural Pattern Overview 
 
-Ce document décrit un modèle permettant d'accéder au contenu de Microsoft SQL Server entre plusieurs zones géographiques aux fins de redondance et de disponibilité.  Les services essentiels sont illustrées ci-dessous sans attention à l'application ou la couche web qui accède aux données elles-mêmes.  Le diagramme suivant est une illustration simple des services pertinents et comment ils sont utilisés dans le cadre de ce modèle.   
+This document describes a pattern for providing access to Microsoft SQL Server content over multiple geographies for the purposes of availability and redundancy.  Critical services are illustrated below without attention to the application or web tier that will access the data itself.  The diagram below is a simple illustration of the relevant services and how they are used as part of this pattern.   
 
-Chacun des secteurs de service principaux sont décrits plus en détail selon le schéma. 
+Each of the main service areas are outlined in more detail following the diagram. 
  
-![Partie de Tags sur les ressources et lames de groupe de ressources](./media/azure-architectures-cpif-foundation-multi-site-data-tier/overview.png)
+![Tags part on resource and resource group blades](./media/azure-architectures-cpif-foundation-multi-site-data-tier/overview.png)
 
-##  Ressources supplémentaires
-[Couche de données charge équilibrée (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+##  Additional Resources
+[Load Balanced Data Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-## Voir aussi
-[Architecture de la FIPC](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[Charge globale équilibrée Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+[Global Load Balanced Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-[Réseaux hybrides](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[Niveau de recherche Azur](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+[Azure Search Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-[Niveau de traitement par lots](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)

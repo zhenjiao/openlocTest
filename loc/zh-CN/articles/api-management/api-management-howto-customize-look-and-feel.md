@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to customize the look and feel of the developer portal in Azure API Management" 
 	description="How to customize the look and feel of the developer portal in Azure API Management." 
 	services="api-management" 
@@ -20,7 +20,7 @@
 
 The colors, fonts, sizes, spacings and other aspects of the developer portal's look and feel are defined by style rules. Sets of these rules exist for each structural element of a page - the header, the menu, the content body, page title, etc. In this how-to, you will learn how to modify the style rules.
 
-To edit style rules, click on **Appearance** 从 **Developer portal** menu in the Publisher portal. Then click on **Begin customization** to enable the styling editor.
+To edit style rules, click on **Appearance** from the **Developer portal** menu in the Publisher portal. Then click on **Begin customization** to enable the styling editor.
 
 Your browser will switch to a hidden page within the developer portal that contains samples of content, with examples for all styling rules used anywhere on the site. To open the styling editor, move your cursor over the thin gray vertical line on the left-most part of the page. The editor toolbar should appear as below: 
 
@@ -40,7 +40,7 @@ Let's change the color of the heading text now! Select the entry in the **@headi
 
 ![Color picker][api-management-customization-toolbar-color-picker]
 
-When you are done with making changes to the styles of the selected element click on **Preview Changes** to see the results on the screen. At this time they are only visible to Administrators. To make these changes visible to everyone, click on **发布** button in the styling editor and confirm the changes.
+When you are done with making changes to the styles of the selected element click on **Preview Changes** to see the results on the screen. At this time they are only visible to Administrators. To make these changes visible to everyone, click on **Publish** button in the styling editor and confirm the changes.
 
 ![Publish form][api-management-customization-toolbar-publish-form]
 

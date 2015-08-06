@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Python Web and Worker Roles with Python Tools 2.1 for Visual Studio"
 	description="Overview of using Python Tools for Visual Studio to create Azure cloud services including web roles and worker roles."
 	services=""
@@ -19,26 +19,26 @@
 
 
 
-# Python-Web und Worker-Funktionen mit Python Tools 2.1 für Visual Studio
+# Python Web and Worker Roles with Python Tools 2.1 for Visual Studio
 
-Dieses Handbuch enthält eine Übersicht zur Verwendung von Python-Web und Worker-Rollen mit [Python-Tools für Visual Studio][].
+This guide provides an overview of using Python web and worker roles using [Python Tools for Visual Studio][].
 
-## Voraussetzungen
+## Prerequisites
 
- - Visual Studio 2012 oder 2013
- - [2.1 der Python-Tools für Visual Studio][]
- - [Azure SDK-Tools für VS 2013][] oder [Azure SDK-Tools für VS-2012][]
- - [Python 2.7 32-bit][] oder [Python 3.4 32-bit][]
+ - Visual Studio 2012 or 2013
+ - [Python Tools 2.1 for Visual Studio][]
+ - [Azure SDK Tools for VS 2013][] or [Azure SDK Tools for VS 2012][]
+ - [Python 2.7 32-bit][] or [Python 3.4 32-bit][]
 
-[AZURBLAU. ENTHALTEN [Konto-und-Websites-Notiz](../includes/create-account-and-websites-note.md)]
+[AZURE.INCLUDE [create-account-and-websites-note](../includes/create-account-and-websites-note.md)]
 
-## Was sind Python Web und Worker Rollen?
+## What are Python web and worker roles?
 
-Azurblau bietet drei Modelle zum Ausführen von Anwendungen zu berechnen: [Himmelblau-Websites][execution model-web sites], [Azurblaue virtueller Maschinen][execution model-vms], und [Azure Cloud Services][execution model-cloud services]. All three models support Python. Cloud Services, which include web and worker roles, provide *Platform as a Service (PaaS)*. Innerhalb einer Cloud-Service bietet eine Webserverrolle ein dedizierten Webservers für Internet Information Services (IIS) von Host-Front-End-Web-Anwendungen, während eine Arbeiter-Rolle asynchrone, lang andauernde oder unbefristete Aufgaben unabhängig von Benutzerinteraktionen oder Eingabe ausgeführt werden kann.
+Azure provides three compute models for running applications: [Azure Websites][execution model-web sites], [Azure Virtual Machines][execution model-vms], and [Azure Cloud Services][execution model-cloud services]. All three models support Python. Cloud Services, which include web and worker roles, provide *Platform as a Service (PaaS)*. Within a cloud service, a web role provides a dedicated Internet Information Services (IIS) web server to host front-end web applications, while a worker role can run asynchronous, long-running or perpetual tasks independent of user interaction or input.
 
-Weitere Informationen finden Sie unter [Was ist ein Cloud-Service?].
+For more information, see [What is a Cloud Service?].
 
-> [AZURBLAU. HINWEIS] **Looking to build a simple website?**
+> [AZURE.NOTE] **Looking to build a simple website?**
 If your scenario involves just a simple website front-end, consider using a lightweight Azure Website. You can easily upgrade to a Cloud Service as your website grows and your requirements change. See the <a href="/develop/python/">Python Developer Center</a> for articles that cover development of Azure Websites.
 <br />
 
@@ -99,7 +99,7 @@ Some progress will appear in the output window, then you'll see the Microsoft Az
 
 Deployment will take several minutes to complete, then your web and/or worker roles will be running on Azure!
 
-## Die nächsten Schritte
+## Next steps
 
 For more detailed information on working with web and worker roles in Python Tools for Visual Studio, see the PTVS documentation:
 

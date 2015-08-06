@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="NuGet Packages | Microsoft Azure"
    description="Guidance on NuGet Packages for general retry policy work."
    services=""
@@ -17,30 +17,30 @@
    ms.date="04/09/2015"
    ms.author="masashin"/>
 
-# NuGet パッケージ
+# NuGet Packages
 
 <p class="lead">As more components begin to communicate, transient failures become
 more important to smartly handle. The Transient Fault Handling work handled by the
 retry policies NuGet package can help handle retries within a single instance.</p>
 
-> このドキュメントは、コンセプトの証明として草案に基づいていた。それが実際ではないです。
-  見直しの指導。
+> This document was based on a draft as a proof of concept. It is not the actual
+  reviewed guidance.
 
-パターン & プラクティス `TransientFaultHandling` 一般的な再試行ポリシー作業にはコードをお勧めします。
+The Patterns & Practices `TransientFaultHandling` code is recommended for general retry policy work.
 
 ```
 Install-Package EnterpriseLibrary.WindowsAzure.TransientFaultHandling
 ```
 
-## 構成
+## Configuration
 
-セクションには、再試行機能の構成に関する情報が含まれています。
+Section includes the configuration information for the retry feature:
 
-パラメーター |説明
--------------------- |----------------------
-MaximumExecutionTime |すべての再試行回数を含む要求の最大実行時間。
-ServerTimeOut |要求のサーバー タイムアウト間隔
-RetryPolicy |再試行ポリシー。下記を参照してくださいポリシー セクション
+Parameter            | Description
+-------------------- | ----------------------
+MaximumExecutionTime | Maximum execution time for the request, including all potential retry attempts.
+ServerTimeOut        | Server timeout interval for the request
+RetryPolicy          | Retry policy. See Policies section below
 
 ```csharp
 /// <summary>
@@ -56,12 +56,12 @@ public interface IRequestOptions
 }
 ```
 
-プログラム。
+Programmatic:
 
-- クライアントの設定をサポートします。
-- クライアントによって提供される操作のオーバーライドを有効にします。
+- Support for setting on the Client.
+- Enable overriding at operations provided by client
 
-構成ファイル:
+Configuration file:
 
 ```xml
 <RetryPolicyConfiguration defaultRetryStrategy="Fixed Interval Retry Strategy">
@@ -73,9 +73,9 @@ public interface IRequestOptions
 </RetryPolicyConfiguration>
 ```
 
-## ポリシー
+## Policies
 
-### 指数
+### Exponential
 
 Used for spacing out repeated attempts of service invocations exponentially to avoid service throttling.
 
@@ -85,7 +85,7 @@ Exponentially increase the backoff interval between subsequent attempts. Add ran
 
 __Configuration:__
 
-パラメーター |説明
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 maxAttempt           | Number of retry attempts.
 deltaBackoff         | Back-off interval between retries. Multiples of this timespan will be used for subsequent retry attempts.
@@ -116,7 +116,7 @@ Perform a specified number of retries, using a specified fixed time interval bet
 
 __Configuration:__
 
-パラメーター |説明
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 maxAttempt | Number of retry attempts.
 deltaBackoff | Back-off interval between retries.
@@ -182,7 +182,7 @@ public interface IRetryPolicy
 
 Log retries as ETW events using an EventSource. Here are the fields that should be logged for every retry attempt
 
-パラメーター |説明
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 requestId | ""
 policyType | "RetryExponential"

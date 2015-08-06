@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Authenticating a Service Principal with Azure Resource Manager"
    description="Describes how to grant access to a Service Principal through role-based access control and authenticate it. Shows how to perform these tasks with PowerShell and Azure CLI."
    services="azure-resource-manager"
@@ -28,7 +28,7 @@ This topic shows you how to permit a service principal (such as an automated pro
 
 ## Grant access to and authenticate a service principal using PowerShell
 
-If you do not have Azure PowerShell installed, see [Comment installer et configurer Azure PowerShell](./powershell-install-configure.md).
+If you do not have Azure PowerShell installed, see [How to install and configure Azure PowerShell](./powershell-install-configure.md).
 
 You will start by creating a service principal. To do this we must use create an application in the directory. This section will walk through creating a new application in the directory.
 
@@ -80,7 +80,7 @@ You will start by creating a service principal. To do this we must use create an
 
         PS C:\> $subscription = Get-AzureSubscription | where { $_.IsCurrent }
 
-     If you created the role assignment in a subscription other than the currently selected subscription, you can specify the **SubscriptoinId** ou **SubscriptionName** parameters to retrive a different subscription.
+     If you created the role assignment in a subscription other than the currently selected subscription, you can specify the **SubscriptoinId** or **SubscriptionName** parameters to retrive a different subscription.
 
 5. Create a new **PSCredential** object which contains your credentials by running the **Get-Credential** command.
 
@@ -88,9 +88,9 @@ You will start by creating a service principal. To do this we must use create an
 
      You will be prompted you to enter your credentials.
 
-     ! [][1]
+     ![][1]
 
-     For the user name, use the **ApplicationId** ou **IdentifierUris** that you used when creating the application. For the password, use the one you specified when creating the account.
+     For the user name, use the **ApplicationId** or **IdentifierUris** that you used when creating the application. For the password, use the one you specified when creating the account.
 
 6. Use the credentials that you entered as an input to the **Add-AzureAccount** cmdlet, which will sign the service principal in:
 
@@ -148,11 +148,11 @@ If you do not have Azure CLI for Mac, Linux and Windows installed, see [Install 
 
     You should now be authenticated as the service principal for the AAD application that you created.
 
-## Prochaines étapes
+## Next Steps
 Getting Started  
 
 - [Azure Resource Manager Overview](./resource-group-overview.md)  
-- [À l'aide de PowerShell Azur avec le gestionnaire de ressources d'Azur](./powershell-azure-resource-manager.md)
+- [Using Azure PowerShell with Azure Resource Manager](./powershell-azure-resource-manager.md)
 - [Using the Azure CLI for Mac, Linux, and Windows with Azure Resource Management](virtual-machines/xplat-cli-azure-resource-manager.md)  
 - [Using the Azure Portal to manage your Azure resources](azure-portal/resource-group-portal.md)
 

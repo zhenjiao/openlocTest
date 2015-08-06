@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to make a phone call from Twilio (.NET) - Azure" 
 	description="Learn how to make a phone call and send a SMS message with the Twilio API service on Azure. Code samples written in .NET." 
 	services="" 
@@ -19,17 +19,17 @@
 
 
 
-# Azure の web ロールで Twilio を使用して電話をかける方法
+# How to make a phone call using Twilio in a web role on Azure
 
-このガイドでは、Azure でホストされている web ページから呼び出す Twilio を使用する方法を示します。作成されたアプリケーションは、次のスクリーン ショットに示すように、電話の呼び出し値のユーザーを求めます。
+This guide demonstrates how to use Twilio to make a call from a web page hosted in Azure. The resulting application prompts the user for phone call values, as shown in the following screenshot.
 
-![Twilio と ASP.NET を使用して紺碧呼び出しフォーム][twilio_dotnet_基本的です_f
+![Azure call form using Twilio and ASP.NET][twilio_dotnet_basic_f
 
-## <a name="twilio-prereqs"></a>前提条件
+## <a name="twilio-prereqs"></a>Prerequisites
 
-このトピックのコードを使用する、次を行う必要があります。
+You will need to do the following to use the code in this topic:
 
-1. Twilio アカウントと認証を取得トークン。Twilio を開始するにサインアップします。 [https://www.twilio.com/try-twilio][try_twilio].価格設定を評価できます。 [http://www.twilio.com/pricing][twilio_pricing].Twilio によって提供される API の詳細については、次を参照してください。 [http://www.twilio.com/voice/api][twilio_api].
+1. Acquire a Twilio account and authentication token. To get started with Twilio, sign up at [https://www.twilio.com/try-twilio][try_twilio]. You can evaluate pricing at [http://www.twilio.com/pricing][twilio_pricing]. For information about the API provided by Twilio, see [http://www.twilio.com/voice/api][twilio_api].
 2. Add the Twilio .NET libary to your web role. See "To add the Twilio libraries to your web role project," later in this topic.
 
 You should be familiar with creating a basic web role on Azure.
@@ -70,7 +70,7 @@ The following code shows how to create a web form to retrieve user data for maki
     </asp:Content>
 
 ## <a id="howtocreatecode"></a>How to: Create the code to make the call
-The following code, which is called when the user completes the form, creates the call message and generates the call. In this example, the code is run in the onclick event handler of the button on the form. (Use your Twilio account and authentication token instead of the placeholder values assigned to **accountSID** と **authToken** in the code below.)
+The following code, which is called when the user completes the form, creates the call message and generates the call. In this example, the code is run in the onclick event handler of the button on the form. (Use your Twilio account and authentication token instead of the placeholder values assigned to **accountSID** and **authToken** in the code below.)
 
     using System;
     using System.Collections.Generic;
@@ -155,7 +155,7 @@ The call is made, and the Twilio endpoint, API version, and the call status are 
 
 More information about TwiML can be found at [http://www.twilio.com/docs/api/twiml][twiml]. More information about &lt;Say&gt; and other Twilio verbs can be found at [http://www.twilio.com/docs/api/twiml/say][twilio_say].
 
-## <a id="nextsteps"></a>次のステップ
+## <a id="nextsteps"></a>Next steps
 This code was provided to show you basic functionality using Twilio in an ASP.NET web role on Azure. Before deploying to Azure in production, you may want to add more error handling or other features. For example:
 
 * Instead of using a web form, you could use Azure Blob storage or an Azure SQL Database instance to store phone numbers and call text. For information about using blobs in Azure, see [How to use the Azure Blob storage service in .NET][howto_blob_storage_dotnet]. For information about using SQL Database, see [How to use Azure SQL Database in .NET applications][howto_sql_azure_dotnet].

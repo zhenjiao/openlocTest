@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Cloud Cruiser and Microsoft Azure Billing API Integration"
    description="Provides a unique perspective from Microsoft Azure Billing partner Cloud Cruiser, on their experiences integrating the Azure Billing APIs into their product.  This is especially useful for Azure and Cloud Cruiser customers that are interested in using/trying Cloud Cruiser for Microsoft Azure Pack."
    services="billing"
@@ -16,14 +16,14 @@
    ms.date="06/17/2015"
    ms.author="mobandyo;sirishap;bryanla"/>
 
-# クラウド ・ クルーザー、Microsoft Azure 課金 API の統合 
+# Cloud Cruiser and Microsoft Azure Billing API Integration 
 
-この記事では、クラウドのクルーザーで新しい Microsoft Azure 課金 Api から収集した情報を使用して、ワークフロー コスト シミュレーションと解析の方法について説明します。
+This article describes how the information collected from the new Microsoft Azure Billing APIs can be used in Cloud Cruiser for workflow cost simulation and analysis.
 
-## 紺碧 RateCard API
-RateCard API は、Azure から速度情報を提供します。適切な資格情報を持つ認証、ID を提供に関連付けられている金利と一緒に azure で利用できるサービスに関するメタデータを収集するために API を照会できます。 
+## Azure RateCard API
+The RateCard API provides rate information from Azure. After authenticating with the proper credentials, you can query the API to collect metadata about the services available on Azure, along with the rates associated with your Offer ID. 
 
-A0 の価格を示す API からの応答の例を以下です (Windows) インスタンス。
+Below is a sample response from the API showing the prices for the A0 (Windows) instance:
 
     {       
 		"MeterId": "0e59ad56-03e5-4c3d-90d4-6670874d7e29",       
@@ -39,20 +39,20 @@ A0 の価格を示す API からの応答の例を以下です (Windows) イン�
 		"IncludedQuantity": 0.0     
 	}, 
 
-## 雲の Azure RateCard API にクルーザーのインターフェイス
-クラウドのクルーザーは、さまざまな方法で RateCard API 情報を活用できます。この記事の IaaS をするための使用方法を示すがワークロードのコストのシミュレーションと解析。
+## Cloud Cruiser’s Interface to Azure RateCard API
+Cloud Cruiser can leverage the RateCard API information in different ways. For this article, we will show how it can be used to make IaaS workload cost simulation and analysis.
 
-この使用例を示すためには、Microsoft Azure パック (WAP) に実行されているいくつかのインスタンスの作業負荷を想像してください。目的は、azure でこの同じ負荷をシミュレートし、そのような移行を行うためのコストを見積もる。このシミュレーションを作成するために 2 つの主要なタスクを実行するがあります。
+To demonstrate this use case, imagine a workload of several instances running on Microsoft Azure Pack (WAP). The goal is to simulate this same workload on Azure, and estimate the costs of doing such migration. In order to create this simulation, there are two main tasks to be performed:
 
-1. **サービス情報が RateCard API から採集されたインポート ・ プロセス** -このタスクは、ブック、RateCard API からの抽出物は変換、新しい料金プランに公開でも実行されます。この新料金プランは、Azure の価格を推定するシミュレーションに使用されます。
+1. **Import and process the service information collected from the RateCard API** - This task is also performed on the workbooks, where the extract from the RateCard API is transformed and published to a new rate plan. This new rate plan will be used on the simulations to estimate the Azure prices.
 
-2. **WAP サービスと Azure サービス IaaS を正規化します。** -デフォルトでは、WAP サービスが基づいている Azure ながら個々 のリソース (CPU、メモリのサイズ、ディスク ・ サイズ、等) のサービスのインスタンスのサイズ (A0、A1、A2 など) に基づいています。この最初のタスクはクラウド クルーザーの ETL エンジンによって実行されることをインスタンス サイズ、Azure インスタンス サービスに類似してこれらのリソースをバンドルすることができます、ブックと呼ばれます。
+2. **Normalize WAP services and Azure services for IaaS** - By default, WAP services are based on individual resources (CPU, Memory Size, Disk Size, etc.) while Azure services are based on instance size (A0, A1, A2, etc.). This first task can be performed by Cloud Cruiser’s ETL engine, called workbooks, where these resources can be bundled on instance sizes, analogous to Azure instance services.
 
-## RateCard API からデータをインポートします。
+## Import data from the RateCard API
 
-クラウド クルーザー ブックは、自動的に収集および RateCard API からの情報を処理する方法を提供します。 ETL (抽出、変換、読み込み) ブックでは、コレクション、変換、およびクラウド クルーザー データベースにデータの公開を構成することができます。
+Cloud Cruiser workbooks provide an automated way to collect and process information from the RateCard API.  ETL (extract-transform-load) workbooks allow you to configure the collection, transformation, and publishing of data into the Cloud Cruiser database.
 
-各ブックには、1 つまたは複数のコレクションを持つことができます。補完または利用状況のデータを拡張するさまざまなソースから情報を関連付けることができます。以下 2 つのスクリーン ショットの作成を表示します。 *コレクション* 既存のブックに情報をインポートするのには *コレクション* RateCard API: から
+Each workbook can have one or multiple collections. This allows you to correlate information from different sources to complement or augment the usage data. In the two screenshots below, we showing creating a new *collection* in an existing workbook, and importing information into the *collection* from the RateCard API:
 
 ![Figure 1 - Creating a new collection][1]
 
@@ -112,10 +112,10 @@ The top graph shows a cost comparison broken by services and compares the price 
 
 The bottom graph shows the same data but broken down by department, demonstrating the costs for each department to run their workload on WAP and Azure, along with the difference between these two – Savings bar (green color).
 
-## 次のステップ
+## Next Steps
 
 + For detailed instructions on creating Cloud Cruiser workbooks and reports, please refer to Cloud Cruiser’s online [documentation](http://docs.cloudcruiser.com/) (valid login required).  For more information about Cloud Cruiser, please contact [info@cloudcruiser.com](mailto:info@cloudcruiser.com).
-+ See [Microsoft Azure リソースの消費量を把握します。](billing-usage-rate-card-overview.md) for an overview of the Azure Resource Usage and RateCard APIs. 
++ See [Gain insights into your Microsoft Azure resource consumption](billing-usage-rate-card-overview.md) for an overview of the Azure Resource Usage and RateCard APIs. 
 + Check out the [Azure Billing REST API Reference](https://msdn.microsoft.com/library/azure/1ea5b323-54bb-423d-916f-190de96c6a3c) for more information on both APIs, which are part of the set of APIs provided by the Azure Resource Manager.
 + If you would like to dive right into the sample code, check out our [Microsoft Azure Billing API Code Samples on Github](https://github.com/Azure/BillingCodeSamples).
 

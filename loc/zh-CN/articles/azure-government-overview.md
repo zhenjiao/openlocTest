@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Azure Government Overview" 
    description="This article provides an overview of the Azure Government Cloud capabilities and the trustworthy design and security used to support compliance applicable to federal, state, and local government organizations and their partners. " 
    services="Azure-Government" 
@@ -16,77 +16,77 @@
    ms.date="03/13/2015"
    ms.author="john.harvey@microsoft.com"/>
 
-#  微软 Azure 政府概述 
+#  Microsoft Azure Government Overview 
 
 <p> Microsoft Azure Government is a physically and network isolated instance of Microsoft Azure.  This developers guide will provide details on the differences that application developers and administrators would need to interact and work with these seperate regions of Azure.
 
 
-## <a name="Overview"></a>概述
+## <a name="Overview"></a>Overview
 
-蔚蓝的政府是政府社区云 (GCC) 旨在支持速度、 规模、 安全、 法规遵从性和经济要求美国政府组织的战略的政府方案。  它被开发基于微软的广泛经验中如 Azure 公共，Office 365，O365 GCC，Microsoft CRM 在线等其他微软云服务提供软件、 安全、 法规遵从性和控制。 
+Azure Government is a government-community cloud (GCC) designed to support strategic government scenarios that require speed, scale, security, compliance and economics for U.S. government organizations.   It was developed based on Microsoft’s extensive experience delivering software, security, compliance, and controls in other Microsoft cloud offerings such as Azure public, Office 365, O365 GCC, Microsoft CRM Online etc. 
 
-此外，Azure 政府旨在满足更高级别的安全性和法规遵从性敏感、 敬业、 美国公共部门工作负载需要发现法规，如美国联邦风险与刑事司法信息服务 (CJIS) 部的国防企业云服务经纪人 (ECSB)，授权管理程序 (FedRAMP)，安全策略和健康保险可携性与责任法案 (HIPAA)。     
+In addition, Azure Government is designed to meet the higher level security and compliance needs for sensitive, dedicated, U.S. Public Sector workloads found in regulations such as United States Federal Risk and Authorization Management Program (FedRAMP), Department of Defense Enterprise Cloud Service Broker (ECSB), Criminal Justice Information Services (CJIS) Security Policy and Health Insurance Portability and Accountability Act (HIPAA).     
 
-下面是 Azure 政府云计算基础设施、 织物、 服务和框架，可用来帮助政府组织构建混合云解决方案，以满足他们的目标的摘要视图。 如下面一些服务只是在预览中可用，请参阅 [区域页](http://azure.microsoft.com/regions/#services) 列出了通常是可用的最最新服务。
+Below is a summary view of the Azure Government Cloud infrastructure, fabric, services and frameworks that are available to help government organizations build hybrid cloud solutions to meet their goals.  As some services below are only available in preview, please see the [regions page](http://azure.microsoft.com/regions/#services) as the most up to date services that are generally available are listed.
 
 ![][2]
 
-蔚蓝的政府包括基础设施作为服务 (IaaS) 和平台作为服务 (PaaS) 的核心组成部分。 这包括基础设施、 网络、 存储、 数据管理、 身份管理和许多其他的服务。 蔚蓝的政府支持公共天青客户已在利用像地球同步数据复制和自动缩放相同的强大功能。微软已被确定为在两个领袖 <a href="https://www.gartner.com/doc/2575715/magic-quadrant-cloud-infrastructure-service" target="_new">IaaS</a> 和 <a href="https://www.gartner.com/doc/2645317/magic-quadrant-enterprise-application-platform" target="_new">复活节<a/> 由领先的行业分析师。
+Azure Government includes the core components of Infrastructure-as-a-Service (IaaS) and Platform-as-a-Service (PaaS).  This includes infrastructure, network, storage, data management, identity management and many other services.  Azure Government supports the same great features that public Azure customers have leveraged like Geo-Synchronous data replication and auto scaling. Microsoft has been identified as the leader in both <a href="https://www.gartner.com/doc/2575715/magic-quadrant-cloud-infrastructure-service" target="_new">IaaS</a> and <a href="https://www.gartner.com/doc/2645317/magic-quadrant-enterprise-application-platform" target="_new">PaaS<a/> by leading industry analysts.
 
-除了提供强大的服务和功能的公共 Azure，Azure 政府提供了大量功能，以确保美国政府实体，他们的数据是安全通过提供:
+In addition to providing the robust services and features of public Azure, Azure Government provides a number of features to assure US government entities that their data is secure by providing:
 
-- **物理和网络隔离的实例** — — 蔚蓝政府环境是从微软 Azure 公共和唯一一个完全单独实例使用合格的美国政府机构和解决方案提供商。
+- **Physical and network-isolated instance** – The Azure Government environment is a completely separate instance from Microsoft Azure public and only used by qualified U.S. government organizations and solution providers.
 
-- **安全隐私 & 法规遵从性** Microsoft 已实施其鲁棒性、 安全性、 隐私和法规遵从性管制框架加上额外的严格控制，以满足更高的级别要求，在 ECSB 影响级别和 CJIS 中找到。 
+- **Security, Privacy & Compliance** - Microsoft has implemented its robust security, privacy, and compliance controls framework plus additional stringent controls to meet the higher level requirements found in ECSB Impact Levels and CJIS. 
 
-- **数据存储** — — 蔚蓝政府环境维护 2 数据中心超过 500 英里分开。客户管理的所有数据都存储在大陆美国 (圆锥) 数据中心
+- **Data Storage** – The Azure Government environment maintains 2 datacenters over 500 miles apart. All customer managed data is stored within the Continental United States (CONUS) datacenters
 
-- **美国人员** — — 所有蔚蓝政府操作员和管理员是屏蔽的美国公民。
+- **U.S. Personnel** – All Azure Government operators and administrators are screened U.S. citizens.
 
-- **身份管理** — — 在 Azure 政府环境身份管理是 Azure Active Directory 的单独实例。
+- **Identity Management** – Identity Management within the Azure Government environment is a separate instance of Azure Active Directory.
 
-- **法规遵从性** — — 微软不断投资以满足并保持严谨和改变联邦、 州和地方的法规遵从性要求，如 FedRAMP，CJIS、 ECSB 和美国政府的 HIPAA 云解决方案。 
+- **Compliance** – Microsoft is continuously investing to meet and maintain rigorous and changing federal, state, and local compliance requirements such as FedRAMP, CJIS, ECSB, and HIPAA for U.S. government cloud solutions. 
 
-- **云集成** — — 蔚蓝的政府提供的集成的环境与 O365 政府允许单个登录跨云服务和增强的服务，例如 1 TB 的另存储空间。
+- **Cloud Integration** – Azure Government provides an integrated environment with O365 Government allowing for a single sign-on across cloud services and enhanced services such as 1TB of OneDrive storage space.
 
-蔚蓝的政府还使组织能够保持他们现有的技术投资，实现云服务的好处。 由于 Azure 政府是可互操作的云平台，提供的产品和技术组织可以构建的应用程序更多开拓从地面。 机构可以选择工具、 服务、 操作系统、 体系结构和框架包括 Windows、 Linux、 Oracle、 SharePoint、.NET、 Java、 PHP 和 Node.js，为他们的云解决方案。Azure 政府平台的灵活性允许为新形式的跨机构协作、 应用程序开发和集成。  
+Azure Government also enables organizations to maintain their existing technology investments and realize the benefits of cloud services.  Since Azure Government is an interoperable cloud platform, with products and technologies organizations can build applications that are more open from the ground up.  Agencies can choose the tools, services, operating system, architecture, and frameworks including Windows, Linux, Oracle, SharePoint, .NET, Java, PHP and Node.js, for their cloud solutions. The flexibility of the Azure Government platform allows for new forms of cross-agency collaboration, application development, and integration.  
 
-美国政府组织感兴趣的云服务可以确信 Azure 政府提供了巨大的规模和严格的安全措施，以满足他们不断变化的需求。 
-
-
+U.S. government organizations interested in cloud services can be confident that Azure Government provides enormous scale and rigorous security practices to meet their evolving needs. 
 
 
 
 
 
-## <a name="Features"></a> 在微软 Azure 政府目前可用的功能
-蔚蓝的政府目前有下列可用的服务在美国 GOV 爱荷华州和美国 GOV 弗吉尼亚地区:
 
-- 虚拟机
-- 云服务
-- 存储
-- 活动目录
-- 调度程序
-- 虚拟网络
-- SQL 数据库
-- 蔚蓝的文件
-- 媒体服务
-- 流量管理器
-- 服务总线
 
-其他服务，并将在连续的基础上添加更多的服务。 有关服务的最新列表，请参见 [区域页](http://azure.microsoft.com/regions/#services) 这将突出显示每个可用的区域和他们的服务。  
+## <a name="Features"></a> Features currently available in Microsoft Azure Government
+Azure Government currently has the following services available in both US GOV IOWA and US GOV VIRGINIA regions:
 
-目前，美国 GOV 爱荷华州和美国 GOV 弗吉尼亚是 Azure 政府支持的数据中心。 请参阅上面的这个区域页面，为当前的数据中心和服务可用。
+- Virtual Machines
+- Cloud Services
+- Storage
+- Active Directory
+- Scheduler
+- Virtual Networking
+- SQL Database
+- Azure Files
+- Media Services
+- Traffic Manager
+- Service Bus
+
+Other services are available, and more services will be added on a continuous basis.  For the most current list of services, please see the [regions page](http://azure.microsoft.com/regions/#services) which will highlight each available region and their services.  
+
+Currently, US GOV Iowa and US GOV Virginia are the data centers supporting Azure Government.  Please refer to the regions page above for current data centers and services available.
 
 <!--Every topic should have next steps and links to the next logical set of content to keep the customer engaged -->
 
-## <a name="next"></a>接下来的步骤
+## <a name="next"></a>Next steps
 
-如果你有兴趣学习更多关于 Azure 政府请利用一些下面的链接。
+If you are interested in learning more and about Azure Government please leverage some of the links below.
 
-- **<A href="http://azure.com/gov">获取和访问 Azure 政府</a>**
+- **<A href="http://azure.com/gov">Acquiring and accessing Azure Government</a>**
 
-- **<A href="/azure-government-developer-guide">天青政府开发人员指南</a>**
+- **<A href="/azure-government-developer-guide">Azure Government Developer Guide</a>**
 
 <!--- **<A href="/azure-government-service-description">Azure Government Service Descriptions</a>**-->
 

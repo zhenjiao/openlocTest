@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Cloud Cruiser and Microsoft Azure Billing API Integration"
    description="Provides a unique perspective from Microsoft Azure Billing partner Cloud Cruiser, on their experiences integrating the Azure Billing APIs into their product.  This is especially useful for Azure and Cloud Cruiser customers that are interested in using/trying Cloud Cruiser for Microsoft Azure Pack."
    services="billing"
@@ -16,14 +16,14 @@
    ms.date="06/17/2015"
    ms.author="mobandyo;sirishap;bryanla"/>
 
-# 云的巡洋舰和微软 Azure 计费 API 集成 
+# Cloud Cruiser and Microsoft Azure Billing API Integration 
 
-这篇文章描述如何从新的微软 Azure 计费 Api 收集的信息可用于在云巡洋舰工作流成本仿真和分析。
+This article describes how the information collected from the new Microsoft Azure Billing APIs can be used in Cloud Cruiser for workflow cost simulation and analysis.
 
-## 天青 RateCard API
-RateCard API 从 Azure 提供率信息。之后使用适当的凭据进行身份验证，您可以查询 API 在 Azure，收集有关可用的服务的元数据，以及利率与您提供的 id。 
+## Azure RateCard API
+The RateCard API provides rate information from Azure. After authenticating with the proper credentials, you can query the API to collect metadata about the services available on Azure, along with the rates associated with your Offer ID. 
 
-下面是显示的价格为 A0 的 API 的示例响应 (Windows) 实例:
+Below is a sample response from the API showing the prices for the A0 (Windows) instance:
 
     {       
 		"MeterId": "0e59ad56-03e5-4c3d-90d4-6670874d7e29",       
@@ -39,20 +39,20 @@ RateCard API 从 Azure 提供率信息。之后使用适当的凭据进行身份
 		"IncludedQuantity": 0.0     
 	}, 
 
-## 云到 Azure RateCard API 巡洋舰的接口
-云巡洋舰可以以不同的方式利用 RateCard API 的信息。这篇文章中，我们将展示如何使用它以使 IaaS 成本模拟和分析的工作量。
+## Cloud Cruiser’s Interface to Azure RateCard API
+Cloud Cruiser can leverage the RateCard API information in different ways. For this article, we will show how it can be used to make IaaS workload cost simulation and analysis.
 
-为了证明这一使用情形，请想象的几个实例运行在微软 Azure 包 (WAP) 的工作量。目标是模拟在 Azure 上, 这个相同的工作负载并估计做这种迁移的成本。为了创建这种模拟，有要完成两个主要任务:
+To demonstrate this use case, imagine a workload of several instances running on Microsoft Azure Pack (WAP). The goal is to simulate this same workload on Azure, and estimate the costs of doing such migration. In order to create this simulation, there are two main tasks to be performed:
 
-1. **导入和处理从 RateCard API 收集的服务信息** -此任务也执行上的工作簿，其中提取物 RateCard API 是转化，发布到新的收费计划。此新的收费计划将用于模拟估计 Azure 的价格。
+1. **Import and process the service information collected from the RateCard API** - This task is also performed on the workbooks, where the extract from the RateCard API is transformed and published to a new rate plan. This new rate plan will be used on the simulations to estimate the Azure prices.
 
-2. **正常化、 Azure 服务 IaaS WAP 服务** -默认情况下，基于 WAP 服务是对单个资源 (CPU、 内存大小、 磁盘大小等) 同时 Azure 服务基于实例的大小 (A0、 A1、 A2 等)。这第一项任务可以由云巡洋舰 ETL 引擎，称为工作簿，在那里这些资源可以在实例的大小，类似于 Azure 实例服务捆绑在一起。
+2. **Normalize WAP services and Azure services for IaaS** - By default, WAP services are based on individual resources (CPU, Memory Size, Disk Size, etc.) while Azure services are based on instance size (A0, A1, A2, etc.). This first task can be performed by Cloud Cruiser’s ETL engine, called workbooks, where these resources can be bundled on instance sizes, analogous to Azure instance services.
 
-## 从 RateCard API 导入数据
+## Import data from the RateCard API
 
-云的巡洋舰工作簿提供自动化的方式来收集和处理来自 RateCard API 的信息。 ETL (提取物-变换-负载) 工作簿允许您配置收集、 转换和数据到云巡洋舰数据库出版。
+Cloud Cruiser workbooks provide an automated way to collect and process information from the RateCard API.  ETL (extract-transform-load) workbooks allow you to configure the collection, transformation, and publishing of data into the Cloud Cruiser database.
 
-每个工作簿可以有一个或多个集合。这允许您从不同的来源，以补充或增加使用率数据的信息关联起来。在下面的两个截图，我们显示创建新 *集合* 在现有的工作簿，并导入到信息 *集合* 从 RateCard API:
+Each workbook can have one or multiple collections. This allows you to correlate information from different sources to complement or augment the usage data. In the two screenshots below, we showing creating a new *collection* in an existing workbook, and importing information into the *collection* from the RateCard API:
 
 ![Figure 1 - Creating a new collection][1]
 
@@ -112,11 +112,11 @@ The top graph shows a cost comparison broken by services and compares the price 
 
 The bottom graph shows the same data but broken down by department, demonstrating the costs for each department to run their workload on WAP and Azure, along with the difference between these two – Savings bar (green color).
 
-## 接下来的步骤
+## Next Steps
 
 + For detailed instructions on creating Cloud Cruiser workbooks and reports, please refer to Cloud Cruiser’s online [documentation](http://docs.cloudcruiser.com/) (valid login required).  For more information about Cloud Cruiser, please contact [info@cloudcruiser.com](mailto:info@cloudcruiser.com).
-+ See [洞察你微软 Azure 资源消耗](billing-usage-rate-card-overview.md) for an overview of the Azure Resource Usage and RateCard APIs. 
-+ 签出 [Azure Billing REST API Reference](https://msdn.microsoft.com/library/azure/1ea5b323-54bb-423d-916f-190de96c6a3c) for more information on both APIs, which are part of the set of APIs provided by the Azure Resource Manager.
++ See [Gain insights into your Microsoft Azure resource consumption](billing-usage-rate-card-overview.md) for an overview of the Azure Resource Usage and RateCard APIs. 
++ Check out the [Azure Billing REST API Reference](https://msdn.microsoft.com/library/azure/1ea5b323-54bb-423d-916f-190de96c6a3c) for more information on both APIs, which are part of the set of APIs provided by the Azure Resource Manager.
 + If you would like to dive right into the sample code, check out our [Microsoft Azure Billing API Code Samples on Github](https://github.com/Azure/BillingCodeSamples).
 
 ## Learn More

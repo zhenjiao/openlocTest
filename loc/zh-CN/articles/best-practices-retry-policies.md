@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="NuGet Packages | Microsoft Azure"
    description="Guidance on NuGet Packages for general retry policy work."
    services=""
@@ -17,30 +17,30 @@
    ms.date="04/09/2015"
    ms.author="masashin"/>
 
-# NuGet 程序包
+# NuGet Packages
 
 <p class="lead">As more components begin to communicate, transient failures become
 more important to smartly handle. The Transient Fault Handling work handled by the
 retry policies NuGet package can help handle retries within a single instance.</p>
 
-> 此文档基于草案作为一个概念证明。它是不现实的。
-  审查的指导。
+> This document was based on a draft as a proof of concept. It is not the actual
+  reviewed guidance.
 
-模式 & 做法 `TransientFaultHandling` 代码被建议一般重试政策工作。
+The Patterns & Practices `TransientFaultHandling` code is recommended for general retry policy work.
 
 ```
 Install-Package EnterpriseLibrary.WindowsAzure.TransientFaultHandling
 ```
 
-## 配置
+## Configuration
 
-部分包括重试功能的配置信息:
+Section includes the configuration information for the retry feature:
 
-参数 |描述
--------------------- |----------------------
-MaximumExecutionTime |最长执行时间的要求，包括所有潜在的重试次数。
-ServerTimeOut |请求的服务器超时间隔
-RetryPolicy |重试策略。请参阅下面的政策部分
+Parameter            | Description
+-------------------- | ----------------------
+MaximumExecutionTime | Maximum execution time for the request, including all potential retry attempts.
+ServerTimeOut        | Server timeout interval for the request
+RetryPolicy          | Retry policy. See Policies section below
 
 ```csharp
 /// <summary>
@@ -56,12 +56,12 @@ public interface IRequestOptions
 }
 ```
 
-方案:
+Programmatic:
 
-- 客户端上设置的的支持。
-- 启用在操作客户端提供的重写
+- Support for setting on the Client.
+- Enable overriding at operations provided by client
 
-配置文件:
+Configuration file:
 
 ```xml
 <RetryPolicyConfiguration defaultRetryStrategy="Fixed Interval Retry Strategy">
@@ -73,9 +73,9 @@ public interface IRequestOptions
 </RetryPolicyConfiguration>
 ```
 
-## 政策
+## Policies
 
-### 指数
+### Exponential
 
 Used for spacing out repeated attempts of service invocations exponentially to avoid service throttling.
 
@@ -83,9 +83,9 @@ __Approach:__
 
 Exponentially increase the backoff interval between subsequent attempts. Add randomization to (+/- 20%) to backoff interval to avoid all clients retrying simultaneously
 
-__配置:__
+__Configuration:__
 
-参数 |描述
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 maxAttempt           | Number of retry attempts.
 deltaBackoff         | Back-off interval between retries. Multiples of this timespan will be used for subsequent retry attempts.
@@ -114,9 +114,9 @@ __Approach:__
 
 Perform a specified number of retries, using a specified fixed time interval between retries. Add randomization to (+/- 20%) to backoff interval to avoid all clients retrying simultaneously.
 
-__配置:__
+__Configuration:__
 
-参数 |描述
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 maxAttempt | Number of retry attempts.
 deltaBackoff | Back-off interval between retries.
@@ -143,7 +143,7 @@ __Approach:__
 Perform a specified number of retries, using a backoff interval calculated based on error code / metadata passed by service in response header
 
 
-__配置:__
+__Configuration:__
 
 Not configurable
 
@@ -182,7 +182,7 @@ public interface IRetryPolicy
 
 Log retries as ETW events using an EventSource. Here are the fields that should be logged for every retry attempt
 
-参数 |描述
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 requestId | ""
 policyType | "RetryExponential"

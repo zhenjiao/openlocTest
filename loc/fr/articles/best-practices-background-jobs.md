@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Background jobs guidance | Microsoft Azure"
    description="Guidance on background tasks that run independently of the user interface."
    services=""
@@ -17,245 +17,245 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# Orientation de travaux de fond
+# Background jobs guidance
 
 ![](media/best-practices-background-jobs/pnp-logo.png)
 
 
-## Vue d'ensemble
+## Overview
 
-Plusieurs types d'applications nécessitent des tâches de fond qui s'exécutent indépendamment de l'interface utilisateur (UI). Les exemples incluent des traitements par lots, intensifs, traitement des tâches et des processus tels que les flux de travail de longue durée. Tâches en arrière-plan peuvent être exécutées sans nécessiter l'intervention de l'utilisateur ; l'application peut commencer le travail et puis continuer à traiter des requêtes interactives des utilisateurs. Ceci peut aider à réduire la charge sur l'application interface utilisateur, qui peut améliorer la disponibilité et réduire les temps de réponse interactive.
+Many types of applications require background tasks that run independently of the user interface (UI). Examples include batch jobs, intensive processing tasks, and long running processes such as workflows. Background jobs can be executed without requiring user interaction; the application can start the job and then continue to process interactive requests from users. This can help to minimize the load on the application UI, which can improve availability and reduce interactive response times.
 
-Par exemple, si une application doit générer les miniatures des images téléchargées par les utilisateurs, il peut faire cela comme une tâche en arrière-plan et enregistrer la miniature au stockage lorsque vous avez terminé sans que les utilisateurs qui ont besoin d'attendre que le processus pour compléter. De la même manière, un utilisateur en passant une commande peut initier un flux de travail de fond qui traite de l'ordre, alors que l'interface utilisateur permet à l'utilisateur de continuer à naviguer sur le site Web. Lorsque la tâche en arrière-plan est terminée, il peut mettre à jour les données de commandes stockées et envoyer un email à l'utilisateur de confirmer la commande.
+For example, if an application is required to generate thumbnails of images uploaded by users, it can do this as a background job and save the thumbnail to storage when complete without the user needing to wait for the process to complete. In the same way, a user placing an order can initiate a background workflow that processes the order, while the UI allows the user to continue browsing the website. When the background job is complete, it can update the stored orders data and send an email to the user confirming the order.
 
-Si l'on considère que pour mettre en œuvre une tâche comme une tâche en arrière-plan, les principaux critères est si la tâche peut s'exécuter sans intervention de l'utilisateur et sans l'interface utilisateur qui ont besoin d'attendre pour le travail à effectuer. Les tâches qui requièrent l'utilisateur ou l'interface utilisateur à patienter pendant qu'ils sont terminés peuvent ne pas convenir comme des tâches en arrière-plan.
+When considering whether to implement a task as a background job, the main criteria is whether the task can run without user interaction and without the UI needing to wait for the job to complete. Tasks that require the user or the UI to wait while they are completed may not be appropriate as background jobs.
 
-## Types de tâches en arrière-plan
+## Types of background jobs
 
-Tâches en arrière-plan ont généralement un ou plusieurs des caractéristiques suivantes :
+Background jobs typically have one or more of the following characteristics:
 
-- CPU intensives emplois tels que des calculs mathématiques, analyse du modèle structurel et plus.
-- I/O intensives travaux tels que l'exécution d'une série d'opérations de stockage ou d'indexation de fichiers.
-- Lots par exemple les données mises à jour ou de traitement régulier.
-- Flux de travail telles que l'exécution des commandes de longue durée ou fourniture des services et systèmes.
-- Traitement de données sensible où la tâche est remise à un endroit plus sûr pour le traitement. Par exemple, vous pouvez voulez pas traiter des données sensibles dans un rôle de web et utilisez plutôt un motif tel que [Contrôleur d'accès](http://msdn.microsoft.com/library/dn589793.aspx) pour transférer les données vers un rôle de fond isolé qui a accès à protected storage.
+- CPU intensive jobs such as mathematical calculations, structural model analysis, and more.
+- I/O intensive jobs such as executing a series of storage transactions or indexing files.
+- Batch jobs such as nightly data updates or scheduled processing.
+- Long running workflows such as order fulfillment or provisioning services and systems.
+- Sensitive data processing where the task is handed off to a more secure location for processing. For example, you may not want to process sensitive data within a web role, and instead use a pattern such as [Gatekeeper](http://msdn.microsoft.com/library/dn589793.aspx) to transfer the data to an isolated background role that has access to protected storage.
 
-## Déclencheurs
+## Triggers
 
-Tâches en arrière-plan peuvent être lancées de plusieurs façons différentes. Effectivement, tous d'entre eux tombent dans l'une des catégories suivantes :
+Background jobs can be initiated in several different ways. Effectively, all of them fall into one of the following categories:
 
-- [**Pilotés par les déclencheurs des événements**](#event-driven-triggers). La tâche est lancée en réponse à un événement, généralement une mesure prise par un utilisateur ou une étape dans un workflow.
-- [**Programme axé sur les déclencheurs**](#schedule-driven-triggers). La tâche est appelée sur un calendrier basé sur une minuterie. C'est peut-être une planification récurrente, ou un appel unique spécifié pour une date ultérieure
+- [**Event driven triggers**](#event-driven-triggers). The task is started in response to an event, typically an action taken by a user or a step in a workflow.
+- [**Schedule driven triggers**](#schedule-driven-triggers). The task is invoked on a schedule based on a timer. This may be a recurring schedule, or a one-off invocation specified for a later time
 
-### Pilotés par les déclencheurs des événements
+### Event driven triggers
 
-Pilotés par invocation des événements utilise un déclencheur pour démarrer la tâche en arrière-plan. Exemples d'utilisation de déclencheurs d'événements conduit comprennent :
+Event driven invocation uses a trigger to start the background task. Examples of using event driven triggers include:
 
-- L'interface utilisateur ou un autre emploi place un message dans une file d'attente. Le message contient des données concernant une action qui a eu lieu, comme l'utilisateur de passer une commande. La tâche d'arrière-plan écoute sur cette file d'attente et détecte l'arrivée d'un nouveau message. Il lit le message et utilise les données dedans comme l'entrée de la tâche en arrière-plan.
-- L'interface utilisateur ou un autre emploi enregistre ou met à jour une valeur dans le stockage. La tâche d'arrière-plan surveille le stockage et détecte les modifications apportées. Il lit les données et l'utilise comme l'entrée de la tâche en arrière-plan.
-- L'interface utilisateur ou un autre emploi fait une demande à un point de terminaison, par exemple un HTTPS URI, ou une API exposée comme un service web. Il transmet les données nécessaires pour terminer la tâche en arrière-plan dans le cadre de la demande. Le point de terminaison ou au service web appelle la tâche en arrière-plan, qui utilise les données en entrée.
+- The UI or another job places a message in a queue. The message contains data about an action that has taken place, such as the user placing an order. The background task listens on this queue and detects the arrival of a new message. It reads the message and uses the data in it as the input to the background job.
+- The UI or another job saves or updates a value in storage. The background task monitors the storage and detects changes. It reads the data and uses it as the input to the background job.
+- The UI or another job makes a request to an endpoint, such as an HTTPS URI, or an API exposed as a web service. It passes the data required to complete the background task as part of the request. The endpoint or web service invokes the background task, which uses the data as its input.
 
-Des exemples typiques de tâches adaptées à l'événement piloté par invocation incluent image processing, workflows, envoi d'informations aux services à distance, envoi de messages e-mail, fourniture de nouveaux utilisateurs dans les applications multi-locataires et bien plus encore.
+Typical examples of tasks suited to event driven invocation include image processing, workflows, sending information to remote services, sending email messages, provisioning new users in multi-tenant applications, and more.
 
-### Programme axé sur les déclencheurs
+### Schedule driven triggers
 
-Invocation de calendrier conduit utilise une minuterie pour démarrer la tâche en arrière-plan. Exemples d'utilisation horaire piloté par déclencheurs :
+Schedule driven invocation uses a timer to start the background task. Examples of using schedule driven triggers include:
 
-- Un timer exécute localement au sein de l'application ou dans le cadre du système d'exploitation de l'application appelle une tâche en arrière-plan sur une base régulière.
-- Une minuterie en cours d'exécution dans une autre application ou un service de minuteur comme planificateur d'Azure, envoie une requête à un service web ou API sur une base régulière. Le service web ou API appelle la tâche en arrière-plan.
-- Un processus distinct ou une application démarre une minuterie qui provoque la tâche en arrière-plan est appelée une fois après un délai spécifié, ou à un moment précis.
+- A timer running locally within the application or as part of the application’s operating system invokes a background task on a regular basis.
+- A timer running in a different application, or a timer service such as Azure Scheduler, sends a request to an API or web service on a regular basis. The API or web service invokes the background task.
+- A separate process or application starts a timer that causes the background task to be invoked once after a specified time delay, or at a specific time.
 
-Des exemples typiques de tâches adaptées à l'invocation de calendrier conduit incluent routines de traitement par lots telles que mise à jour listes de produits connexes pour les utilisateurs en fonction de leur comportement récent, tâches de traitement systématique des données telles que la mise à jour des index ou en générant accumulent des résultats, analyse des données pour des rapports quotidiens, nettoyage de rétention de données, contrôles de cohérence des données et plus.
+Typical examples of tasks suited to schedule driven invocation include batch processing routines such as updating related products lists for users based on their recent behavior, routine data processing tasks such as updating indexes or generating accumulated results, analyzing data for daily reports, data retention cleanup, data consistency checks, and more.
 
-Si vous utilisez un programme axé sur les tâches qui doivent s'exécuter comme une instance unique, être au courant de ce qui suit :
+If you use a schedule driven task that must run as a single instance, be aware of the following:
 
-- Si l'instance de calcul qui exécute le planificateur (par exemple, une Machine virtuelle à l'aide de tâches planifiées de Windows) est mis à l'échelle, vous avez plusieurs instances du planificateur en cours d'exécution et que ceux-ci pourraient démarrer plusieurs instances de la tâche.
-- Si les tâches s'exécutent plus longtemps que la période entre les événements de planificateur, le planificateur peut démarrer une autre instance de la tâche, tandis que l'autre est toujours en cours.
+- If the compute instance that is running the scheduler (such as a Virtual Machine using Windows Scheduled Tasks) is scaled, you will have multiple instances of the scheduler running and these could start multiple instances of the task.
+- If tasks run for longer than the period between scheduler events, the scheduler may start another instance of the task while the previous one is still running.
 
-## Retour de résultats
+## Returning results
 
-Tâches en arrière-plan exécutent de manière asynchrone dans un processus distinct, ou même un emplacement distinct, de l'interface utilisateur ou le processus qui a appelé la tâche en arrière-plan. Idéalement, les tâches de fond sont des opérations « fire and forget », et leur progression de l'exécution n'a aucune incidence sur l'interface utilisateur ou le processus appelant. Cela signifie que le processus appelant n'attend pas pour l'achèvement des tâches et par conséquent ne peut pas détecter automatiquement lorsque la tâche se termine.
-Si vous avez besoin d'une tâche de fond pour communiquer avec la tâche appelante pour indiquer la progression ou achèvement, vous devez implémenter un mécanisme pour cela. Quelques exemples sont :
+Background jobs execute asynchronously in a separate process, or even a separate location, from the UI or the process that invoked the background task. Ideally, background tasks are “fire and forget” operations, and their execution progress has no impact on the UI or the calling process. This means that the calling process does not wait for completion of the tasks, and therefore cannot automatically detect when the task ends.
+If you require a background task to communicate with the calling task to indicate progress or completion, you must implement a mechanism for this. Some examples are:
 
-- Valeur d'indicateur État écrire stockage accessible à la tâche UI ou d'appel, qui peut surveiller ou vérifier cette valeur si nécessaire. Autres données que la tâche d'arrière-plan doit renvoyer à l'appelant peuvent être placées dans la même mémoire.
-- Créer une file d'attente de réponse qui écoute à l'interface utilisateur ou l'appelant. La tâche d'arrière-plan peut envoyer des messages à la file d'attente indiquant le statut et accomplissement. Les données que la tâche d'arrière-plan doit renvoyer à l'appelant peuvent être placées dans les messages. Si vous utilisez Azure Service Bus, vous pouvez utiliser le **ReplyTo** et **CorrelationId** Propriétés d'implémenter cette fonctionnalité. Pour plus d'informations, consultez [Corrélation dans le Bus de Service négocié par messagerie](http://www.cloudcasts.net/devguide/Default.aspx?id=13029).
-- Exposer un API ou un point de terminaison de la tâche en arrière-plan qui pouvez accéder à l'interface utilisateur ou l'appelant pour obtenir des informations d'État. Les données que la tâche d'arrière-plan doit renvoyer à l'appelant peuvent être incluses dans la réponse.
-- Ont la tâche d'arrière-plan à rappeler à l'interface utilisateur ou l'appelant via une API pour indiquer l'État à des moments prédéfinis ou à la fin. Cela pourrait être par le biais d'événements déclenchés localement ou une publication et abonnement mécanisme. Les données que la tâche d'arrière-plan doit renvoyer à l'appelant peuvent être incluses dans la charge utile de demande ou d'un événement.
+- Write status indicator value to storage that is accessible to the UI or caller task, which can monitor or check this value when required. Other data that the background task must return to the caller can be placed into the same storage.
+- Establish a reply queue that the UI or caller listens on. The background task can send messages to the queue indicating status and completion. Data that the background task must return to the caller can be placed into the messages. If you are using Azure Service Bus, you can use the **ReplyTo** and **CorrelationId** properties to implement this capability. For more information, see [Correlation in Service Bus Brokered Messaging](http://www.cloudcasts.net/devguide/Default.aspx?id=13029).
+- Expose an API or endpoint from the background task that the UI or caller can access to obtain status information. Data that the background task must return to the caller can be included in the response.
+- Have the background task call back to the UI or caller through an API to indicate status at predefined points or on completion. This might be through events raised locally, or through a publish and subscribe mechanism. Data that the background task must return to the caller can be included in the request or event payload.
 
-## Environnement d'hébergement
+## Hosting environment
 
-Vous pouvez héberger des tâches en arrière-plan à l'aide d'une gamme de services de la plateforme Azure différents :
+You can host background tasks using a range of different Azure platform services:
 
-- [**Sites Web d'Azur**](#azure-web-sites-and-webjobs). Vous pouvez utiliser WebJobs pour exécuter les travaux personnalisée basée sur une gamme de différents types de script ou programme exécutable dans le cadre du site Web.
-- [**Azur Cloud Services web et travail des rôles**](#azure-cloud-services-web-and-worker-roles). Vous pouvez écrire du code dans un rôle qui s'exécute en tâche de fond.
-- [**Azur des Machines virtuelles**](#azure-virtual-machines). Si vous avez un service Windows ou si vous souhaitez utiliser le planificateur de tâches de Windows, il est fréquent d'accueillir vos tâches en arrière-plan dans une machine virtuelle dédiée.
+- [**Azure Web Sites**](#azure-web-sites-and-webjobs). You can use WebJobs to execute custom jobs based on a range of different types of script or executable program within the context of the website.
+- [**Azure Cloud Services web and worker roles**](#azure-cloud-services-web-and-worker-roles). You can write code within a role that executes as a background task.
+- [**Azure Virtual Machines**](#azure-virtual-machines). If you have a Windows service or you want to use the Windows Task Scheduler, it is common to host your background tasks within a dedicated virtual machine.
 
-Les sections suivantes décrivent chacune de ces options plus en détail et des considérations pour vous aider à choisir l'option appropriée.
+The following sections describe each of these options in more detail, and include considerations to help you choose the appropriate option.
 
-### Des Sites Web d'Azur et WebJobs
+### Azure Web Sites and WebJobs
 
-Vous pouvez utiliser Azure WebJobs pour exécuter les travaux personnalisés comme des tâches de fond au sein d'une application Azure Web Sites hébergés. WebJobs pouvez exécuter des scripts ou programmes exécutables dans le cadre de votre site Web comme un processus continu, ou en réponse à un événement déclencheur d'Azure planificateur ou des facteurs externes tels que les changements de blobs de stockage et les files d'attente. Emplois peuvent être démarrés et arrêtés à la demande et arrêter de façon appropriée. Si un WebJob continuellement en cours d'exécution échoue, il est automatiquement redémarré. Mesures de relance et d'erreur sont configurables.
+You can use Azure WebJobs to execute custom jobs as background tasks within an Azure Web Sites hosted application. WebJobs can run scripts or executable programs within the context of your website as a continuous process, or in response to a trigger event from Azure Scheduler or external factors such as changes to storage blobs and message queues. Jobs can be started and stopped on demand, and shut down gracefully. If a continuously running WebJob fails, it is automatically restarted. Retry and error actions are configurable.
 
-Lorsque vous configurez un WebJob :
+When configuring a WebJob:
 
-- Si vous souhaitez que la tâche de répondre à un événement axé sur la détente, il doit être configuré comme **Fonctionner en continu**. Le script ou le programme est stocké dans le dossier nommé site/wwwroot/app_données/emplois/continu.
-- Si vous souhaitez que la tâche de répondre à un programme axé sur la détente, il doit être configuré comme **Run sur un calendrier**. Le script ou le programme est stocké dans le dossier nommé site/wwwroot/app_données/emplois/déclenché.
-- Si vous choisissez le **Exécutées à la demande** option lorsque vous configurez un travail, il va exécuter le même code que le **Run sur un calendrier** option lorsque vous le démarrez.
+- If you want the job to respond to an event driven trigger, it should be configured as **Run continuously**. The script or program is stored in the folder named site/wwwroot/app_data/jobs/continuous.
+- If you want the job to respond to a schedule driven trigger, it should be configured as **Run on a schedule**. The script or program is stored in the folder named site/wwwroot/app_data/jobs/triggered.
+- If you choose the **Run on demand** option when you configure a job, it will execute the same code as the **Run on a schedule** option when you start it.
 
-WebJobs Azur s'exécutent dans le sandbox du site, ce qui signifie qu'ils peuvent accéder aux variables d'environnement et partager des informations telles que les chaînes de connexion avec le site. Le travail a accès à l'identifiant unique de l'ordinateur qui exécute le travail. La chaîne de connexion nommée **AzureJobsStorage** donne accès aux files d'attente de Azure storage, blobs et des tables pour les données d'application et Service de Bus pour la messagerie et de communication. La chaîne de connexion nommée **AzureJobsDashboard** fournit l'accès aux fichiers journaux action revendicative.
+Azure WebJobs run within the sandbox of the website, which means they can access environment variables, and share information such as connection strings with the website. The job has access to the unique identifier of the machine running the job. The connection string named **AzureJobsStorage** provides access to Azure storage queues, blobs, and tables for application data, and Service Bus for messaging and communication. The connection string named **AzureJobsDashboard** provides access to the job action log files.
 
-WebJobs Azur possèdent les caractéristiques suivantes :
+Azure WebJobs have the following characteristics:
 
-- **Sécurité**: WebJobs sont protégés par les informations d'identification de déploiement du site Web.
-- **Types de fichiers supportés**: WebJobs peut être définie à l'aide de scripts de commandes (.cmd), les fichiers batch (.bat), les scripts PowerShell (.ps1), bash scripts shell (.sh), PHP scripts (.php), scripts Python (.py), le code JavaScript (.js) et des programmes exécutables (.exe, .jar, etc.).
-- **Déploiement**: Scripts et exécutables peuvent être déployées en utilisant le portail Azure, créé et déployé à l'aide de la [WebJobsVs](https://visualstudiogallery.msdn.microsoft.com/f4824551-2660-4afa-aba1-1fcc1673c3d0) Add-in pour Visual Studio ou le [Visual Studio 2013 Update 4](http://www.visualstudio.com/news/vs2013-update4-rc-vs), à l'aide de la [Azur WebJobs SDK](websites-dotnet-webjobs-sdk-get-started.md), ou en les copiant directement aux endroits suivants :
-  - pour déclenché l'exécution : site/wwwroot/app_données/emplois/déclenché / {nom d'emploi}
-  - pour l'exécution continue : site/wwwroot/app_données/emplois/continu / {nom d'emploi}
-- **Exploitation forestière**: Console.Out est réputée (marquée) INFO et Console.Error comme erreur. Surveillance et diagnostic des informations accessibles via le portail Azure, et les fichiers journaux peuvent être téléchargés directement depuis le site. Elles sont enregistrées dans les localités suivantes :
-  - pour déclenché l'exécution : Vfs/données/emplois/continu/jobName
-  - pour l'exécution continue : Vfs/données/emplois/déclenché/jobName
-- **Configuration**: WebJobs peut être configuré à l'aide du portail, l'API REST et PowerShell. Un fichier de configuration nommé settings.job dans le même répertoire racine comme le script de travail peut être utilisé pour fournir des informations de configuration pour un emploi. Par exemple :
-  - {"arrêt_attendre_temps": 60}
-  - {"est_Singleton": true}
+- **Security**: WebJobs are protected by the deployment credentials of the website.
+- **Supported file types**: WebJobs can be defined using command scripts (.cmd), batch files (.bat), PowerShell scripts (.ps1), bash shell scripts (.sh), PHP scripts (.php), Python scripts (.py), JavaScript code (.js), and executable programs (.exe, .jar, and more).
+- **Deployment**: Scripts and executables can be deployed using the Azure portal, created and deployed by using the [WebJobsVs](https://visualstudiogallery.msdn.microsoft.com/f4824551-2660-4afa-aba1-1fcc1673c3d0) add-in for Visual Studio or the [Visual Studio 2013 Update 4](http://www.visualstudio.com/news/vs2013-update4-rc-vs), by using the [Azure WebJobs SDK](websites-dotnet-webjobs-sdk-get-started.md), or by copying them directly to the following locations:
+  - for triggered execution: site/wwwroot/app_data/jobs/triggered/{job name}
+  - for continuous execution: site/wwwroot/app_data/jobs/continuous/{job name}
+- **Logging**: Console.Out is treated (marked) as INFO and Console.Error as ERROR. Monitoring and diagnostics information can be accessed using the Azure portal, and log files can be downloaded directly from the site. They are saved in the following locations:
+  - for triggered execution: Vfs/data/jobs/continuous/jobName
+  - for continuous execution: Vfs/data/jobs/triggered/jobName
+- **Configuration**: WebJobs can be configured using the portal, the REST API, and PowerShell. A configuration file named settings.job in the same root directory as the job script can be used to provide configuration information for a job. For example:
+  - { "stopping_wait_time": 60 }
+  - { "is_singleton": true }
 
-### Considérations
+### Considerations
 
-- Par défaut, WebJobs échelle avec le site. Toutefois, les emplois peuvent être configurés pour s'exécuter sur une instance unique en définissant la **est_Singleton** Propriété Configuration. Instance unique WebJobs sont utiles pour les tâches que vous ne souhaitez pas échelle ou exécuter en tant que multiple simultanée instances, telles que la ré-indexation, analyse des données et des tâches similaires.
-- Pour minimiser l'impact des travaux sur la performance du site, pensez à créer une instance Azure Web Sites vide dans un nouveau Plan de Service App pour hôte WebJobs qui peut être longue en cours d'exécution ou de la ressource intensif.
+- By default, WebJobs scale with the website. However, jobs can be configured to run on single instance by setting the **is_singleton** configuration property to true. Single instance WebJobs are useful for tasks that you do not want to scale or run as simultaneous multiple instances, such as re-indexing, data analysis, and similar tasks.
+- To minimize the impact of jobs on the performance of the website, consider creating an empty Azure Web Sites instance in a new App Service Plan to host WebJobs that may be long running or resource intensive.
 
-### Plus d'informations
+### More information
 
-- [WebJobs Azur Ressources recommandées](websites-webjobs-resources/) répertorie les nombreuses ressources utiles, les téléchargements et échantillons pour WebJobs.
+- [Azure WebJobs Recommended Resources](websites-webjobs-resources/) lists the many useful resources, downloads, and samples for WebJobs.
 
-## Azur Cloud Services web et travail des rôles
+## Azure Cloud Services web and worker roles
 
-Tâches d'arrière-plan peuvent être exécutés dans un rôle web ou dans un rôle de travail distinct. La décision que d'utiliser un travailleur rôle devrait être basée sur un examen des exigences d'élasticité et d'évolutivité, de durée de vie opérationnelle, relâchez la cadence, la sécurité, tolérance aux pannes, contention, complexité et l'architecture logique. Pour plus d'informations, consultez [Calculer le modèle de Consolidation de ressource](http://msdn.microsoft.com/library/dn589778.aspx).
+Background tasks can be executed within a web role or in a separate worker role. The decision whether to use a worker role should be based on consideration of scalability and elasticity requirements, task lifetime, release cadence, security, fault tolerance, contention, complexity, and the logical architecture. For more information, see [Compute Resource Consolidation Pattern](http://msdn.microsoft.com/library/dn589778.aspx).
 
-Il y a plusieurs façons de mettre en œuvre des tâches d'arrière-plan dans un rôle de Services de Cloud :
+There are several ways to implement background tasks within a Cloud Services role:
 
-- Créer une implémentation de la **RoleEntryPoint** dans le rôle de classe et ses méthodes permettent d'exécuter des tâches en arrière-plan. Les tâches exécuter dans le contexte de WaIISHost.exe et peut utiliser le **GetSetting** méthode de la **CloudConfigurationManager** classe pour charger les paramètres de configuration. Pour plus d'informations, consultez [Cycle de vie (Services en nuage)](#lifecycle-cloud-services-).
-- Les tâches de démarrage permet d'exécuter des tâches en arrière-plan lorsque l'application démarre. Pour les tâches de continuer à fonctionner dans le jeu de fond de forcer le **taskType** propriété **arrière-plan** (si vous ne le faites pas, le processus de démarrage d'application sera arrêter et attendre que la tâche se termine). Pour plus d'informations, consultez [Exécuter les tâches de démarrage dans Azure](http://msdn.microsoft.com/library/azure/hh180155.aspx).
-- Utiliser le SDK de WebJobs pour mettre en œuvre des tâches d'arrière-plan comme WebJobs qui commencent comme une tâche de démarrage. Pour plus d'informations, consultez [Débuter avec le SDK de WebJobs d'Azur](websites-dotnet-webjobs-sdk-get-started.md).
-- Utiliser une tâche de démarrage pour installer un service Windows qui exécute une ou plusieurs tâches de fond. Vous devez définir le **taskType** propriété **arrière-plan** afin que le service s'exécute en arrière-plan. Pour plus d'informations, consultez [Exécuter les tâches de démarrage dans Azure](http://msdn.microsoft.com/library/azure/hh180155.aspx).
+- Create an implementation of the **RoleEntryPoint** class in the role and use its methods to execute background tasks. The tasks run in the context of WaIISHost.exe, and can use the **GetSetting** method of the **CloudConfigurationManager** class to load configuration settings. For more information, see [Lifecycle (Cloud Services)](#lifecycle-cloud-services-).
+- Use startup tasks to execute background tasks when the application starts. To force the tasks to continue to run in the background set the **taskType** property to **background** (if you do not do this, the application startup process will halt and wait for the task to finish). For more information, see [Run Startup Tasks in Azure](http://msdn.microsoft.com/library/azure/hh180155.aspx).
+- Use the WebJobs SDK to implement background tasks as WebJobs that are initiated as a startup task. For more information, see [Get Started with the Azure WebJobs SDK](websites-dotnet-webjobs-sdk-get-started.md).
+- Use a startup task to install a Windows service that executes one or more background tasks. You must set the **taskType** property to **background** so that the service executes in the background. For more information, see [Run Startup Tasks in Azure](http://msdn.microsoft.com/library/azure/hh180155.aspx).
 
-### Exécution de tâches de fond dans le rôle de web
+### Running background tasks in the web role
 
-Le principal avantage de l'exécution de tâches de fond dans le rôle de web est l'économie de coûts d'hébergement parce que rien n'oblige à déployer des rôles supplémentaires.
+The main advantage of running background tasks in the web role is the saving in hosting costs because there is no requirement to deploy additional roles.
 
-### Exécution de tâches de fond dans un rôle de travail
+### Running background tasks in a worker role
 
-Exécution de tâches de fond dans un rôle de travailleur présente plusieurs avantages :
+Running background tasks in a worker role has several advantages:
 
-- Il vous permet de gérer la mise à l'échelle séparément pour chaque type de rôle. Vous devrez par exemple, plusieurs instances d'un rôle de web pour supporter la charge actuelle, mais les instances moins le rôle de travailleur qui exécute des tâches en arrière-plan. Mise à l'échelle des instances de calcul de tâche de fond séparément des rôles UI peut réduire coût hébergement, tout en conservant des performances acceptables.
-- Il décharge de la charge de traitement pour les tâches de fond dans le rôle du web. Le rôle de web qui fournit l'interface utilisateur peut rester réactif, et il se peut que les instances moins sont nécessaires pour justifier un volume donné de demandes d'utilisateurs.
-- Il vous permet de mettre en oeuvre la séparation des préoccupations. Chaque type de rôle peut implémenter un ensemble spécifique de tâches clairement définies et connexes. Ceci rend la conception et la maintenance du code plus facile parce qu'il est moins interdépendance du code et des fonctionnalités entre chaque rôle.
-- Il peut aider à isoler les données et les processus sensibles. Par exemple, les rôles de web qui implémentent l'interface utilisateur n'avez pas besoin d'avoir accès aux données sont gérés et contrôlés par un rôle de travail. Cela peut être utile pour renforcer la sécurité, surtout lorsque vous utilisez un modèle tel que le [Modèle de contrôleur d'accès](http://msdn.microsoft.com/library/dn589793.aspx).  
+- It allows you to manage scaling separately for each type of role. For example, you may need more instances of a web role to support the current load, but fewer instances of the worker role that executes background tasks. Scaling background task compute instances separately from the UI roles can reduce hosting cost, while maintaining acceptable performance.
+- It offloads the processing overhead for background tasks from the web role. The web role that provides the UI can remain responsive, and it may mean fewer instances are required to support a given volume of requests from users.
+- It allows you to implement separation of concerns. Each role type can implement a specific set of clearly defined and related tasks. This makes designing and maintaining the code easier because there is less interdependence of code and functionality between each role.
+- It can help to isolate sensitive processes and data. For example, web roles that implement the UI do not need to have access to data that is managed and controlled by a worker role. This can be useful in strengthening security, especially when using a pattern such as the [Gatekeeper Pattern](http://msdn.microsoft.com/library/dn589793.aspx).  
 
-### Considérations
+### Considerations
 
-Considérer les points suivants lors du choix où et comment déployer des tâches en arrière-plan lorsque vous utilisez des rôles web et de travail des Services de Cloud :
+Consider the following points when choosing how and where to deploy background tasks when using Cloud Services web and worker roles:
 
-- Hébergement des tâches d'arrière-plan dans un site web existant rôle peut faire l'économie d'un rôle de travail distincts pour ces tâches en cours d'exécution, mais il est susceptible d'affecter les performances et la disponibilité de l'application, si il existe un conflit pour le traitement et les autres ressources. À l'aide d'un rôle de travail distinct protège le rôle de web de l'impact des tâches de fond intensif longue course ou une ressource.
-- Si vous hébergez des tâches en arrière-plan à l'aide de la **RoleEntryPoint** classe, vous pouvez facilement ce déplacer à un autre rôle. Par exemple, si vous créez la classe dans un rôle de web et plus tard décider de vous devez exécuter les tâches d'un rôle de travailleur, vous pouvez déplacer le **RoleEntryPoint** implémentation de la classe dans le rôle de travailleur.
-- Les tâches de démarrage sont conçus pour exécuter un programme ou un script. Déploiement d'une tâche en arrière-plan sous forme de programme exécutable peut être plus difficile, surtout si elle exige également le déploiement des assemblys dépendants. Il peut être plus facile à déployer et à utiliser un script pour définir une tâche en arrière-plan lorsque vous utilisez des tâches de démarrage.
-- Exceptions qui causent une tâche de fond pour ne pas ont un impact différent selon la manière qu'ils sont hébergés :
-  - Si vous utilisez le **RoleEntryPoint** approche de la classe, une tâche qui a échoué provoquera le rôle à redémarrer pour que la tâche redémarre automatiquement. Cela peut affecter la disponibilité de l'application. Pour éviter cela, assurez-vous que vous incluez dans la gestion des exceptions robuste le **RoleEntryPoint** classe et toutes les tâches de fond. Utilisez le code pour redémarrer les tâches qui échouent lorsque cela est approprié et lever l'exception pour redémarrer le rôle que si vous ne pouvez pas récupérer gracieusement de l'échec dans votre code.
-  - Si vous utilisez des tâches de démarrage, vous êtes responsable de la gestion de l'exécution de la tâche et en vérifiant si elle échoue.
-- Gestion et suivi des tâches de démarrage sont plus difficile que l'utilisation de la **RoleEntryPoint** approche de la classe. Cependant, l'Azure WebJobs SDK inclut un tableau de bord pour le rendre plus facile à gérer WebJobs que vous initiez à travers les tâches de démarrage.
+- Hosting background tasks in an existing web role can save the cost of running a separate worker role just for these tasks, but it is likely to affect the performance and availability of the application if there is contention for processing and other resources. Using a separate worker role protects the web role from the impact of long running or resource intensive background tasks.
+- If you host background tasks using the **RoleEntryPoint** class, you can easily move this to another role. For example, if you create the class in a web role and later decide you need to run the tasks in a worker role, you can move the **RoleEntryPoint** class implementation into the worker role.
+- Startup tasks are designed to execute a program or a script. Deploying a background job as an executable program may be more difficult, especially if it also requires deployment of dependent assemblies. It may be easier to deploy and use a script to define a background job when using startup tasks.
+- Exceptions that cause a background task to fail have a different impact depending on the way that they are hosted:
+  - If you use the **RoleEntryPoint** class approach, a failed task will cause the role to restart so that the task automatically restarts. This can affect availability of the application. To prevent this, ensure that you include robust exception handling within the **RoleEntryPoint** class and all the background tasks. Use code to restart tasks that fail where this is appropriate, and throw the exception to restart the role only if you cannot gracefully recover from the failure within your code.
+  - If you use startup tasks, you are responsible for managing the task execution and checking if it fails.
+- Managing and monitoring startup tasks is more difficult than using the **RoleEntryPoint** class approach. However, the Azure WebJobs SDK include a dashboard to make it easier to manage WebJobs that you initiate through startup tasks.
 
-### Plus d'informations
+### More information
 
-- [Calculer le modèle de Consolidation de ressource](http://msdn.microsoft.com/library/dn589778.aspx)
-- [Débuter avec le SDK de WebJobs d'Azur](websites-dotnet-webjobs-sdk-get-started/)
+- [Compute Resource Consolidation Pattern](http://msdn.microsoft.com/library/dn589778.aspx)
+- [Get Started with the Azure WebJobs SDK](websites-dotnet-webjobs-sdk-get-started/)
 
-## Azur des Machines virtuelles
+## Azure Virtual Machines
 
-Tâches d'arrière-plan peuvent être mis en œuvre d'une manière qui les empêche d'avoir déployé sur Azure Web Sites ou Services en nuage, ou cela ne peut pas commode. Des exemples typiques sont des services Windows et utilitaires tiers et programmes exécutables. Il peut également inclure des programmes écrits pour un environnement d'exécution différent de celui hébergeant l'application ; par exemple, il peut être un programme Unix ou Linux que vous souhaitez exécuter à partir d'une application Windows ou .NET. Vous pouvez choisir parmi une gamme de systèmes d'exploitation pour un ordinateur virtuel d'Azur et exécuter votre service ou exécutable sur cette machine virtuelle.
+Background tasks may be implemented in a way that prevents them from being deployed to Azure Web Sites or Cloud Services, or this may not convenient. Typical examples are Windows services, and third party utilities and executable programs. It may also include programs written for an execution environment different to that hosting the application; for example, it may be a Unix or Linux program that you want to execute from a Windows or .NET application. You can choose from a range of operating systems for an Azure virtual machine, and run your service or executable on that virtual machine.
 
-Pour vous aider à choisir le moment d'utiliser des ordinateurs virtuels, voir [Comparaison de sites Web, Cloud Services et Machines virtuelles Azur](choose-web-site-cloud-service-vm.md). Pour plus d'informations sur les options pour [Les ordinateurs virtuels, voir Machine virtuelle et Cloud Service tailles pour Azure](http://msdn.microsoft.com/library/azure/dn197896.aspx). Pour plus d'informations sur les systèmes d'exploitation et des images prédéfinies disponibles pour les ordinateurs virtuels, voir [Galerie des Machines virtuelles d'Azur](http://azure.microsoft.com/gallery/virtual-machines/).
+To help you choose when to use Virtual Machines, see [Azure Websites, Cloud Services and Virtual Machines comparison](choose-web-site-cloud-service-vm.md). For information about the options for [Virtual Machines, see Virtual Machine and Cloud Service Sizes for Azure](http://msdn.microsoft.com/library/azure/dn197896.aspx). For more information about the operating systems and pre-built images available for Virtual Machines, see [Azure Virtual Machines Gallery](http://azure.microsoft.com/gallery/virtual-machines/).
 
-Pour lancer la tâche en arrière-plan dans une autre machine virtuelle, vous avez un éventail d'options :
+To initiate the background task in a separate virtual machine, you have a range of options:
 
-- Vous pouvez exécuter la tâche à la demande directement à partir de votre application en envoyant une demande à un point de terminaison qui expose la tâche, en passant toutes les données qui requiert la tâche. Ce point de terminaison appelle la tâche.
-- Vous pouvez configurer la tâche s'exécutera sur un calendrier à l'aide d'un planificateur ou une minuterie disponible dans votre système d'exploitation choisi. Par exemple, sous Windows vous pouvez utiliser le planificateur de tâches Windows pour exécuter des scripts et des tâches, ou, si vous disposez de SQL Server installées sur l'ordinateur virtuel, vous pouvez utiliser l'Agent SQL Server pour exécuter des scripts et des tâches.
-- Vous pouvez utiliser Azure planificateur pour initier la tâche en ajoutant un message à une file d'attente qui écoute à la tâche, ou en envoyant une demande à une API qui expose la tâche.
+- You can execute the task on demand directly from your application by sending a request to an endpoint that the task exposes, passing in any data that the task requires. This endpoint invokes the task.
+- You can configure the task to run on a schedule using a scheduler or timer available in your chosen operating system. For example, on Windows you can use Windows Task Scheduler to execute scripts and tasks or, if you have SQL Server installed on the virtual machine, you can use the SQL Server Agent to execute scripts and tasks.
+- You can use Azure Scheduler to initiate the task by adding a message to a queue that the task listens on, or by sending a request to an API that the task exposes.
 
-Voir la section précédente [Déclencheurs](#triggers) Pour plus d'informations sur comment vous pouvez lancer des tâches en arrière-plan.  
+See the earlier section [Triggers](#triggers) for more information about how you can initiate background tasks.  
 
-### Considérations
+### Considerations
 
-Considérez les points suivants lorsque vous décidez de déployer des tâches en arrière-plan dans une machine virtuelle d'Azur :
+Consider the following points when deciding whether to deploy background tasks in an Azure virtual machine:
 
-- Hébergement des tâches d'arrière-plan dans un ordinateur virtuel d'Azur distinct fournit souplesse et permet un contrôle précis sur l'initiation, l'exécution, planification et affectation des ressources. Toutefois, il augmentera DUREE coût si une machine virtuelle doit être déployée juste pour exécuter des tâches en arrière-plan.
-- Il n'y a aucune installation pour surveiller les tâches dans le portail Azure et aucune capacité de redémarrage automatique pour les tâches ayant échouées, même si vous pouvez surveiller l'état de base de la machine virtuelle et le gérer à l'aide de la [Cmdlets de gestion de Service Azur](http://msdn.microsoft.com/library/azure/dn495240.aspx). Cependant, il n'y a pas d'installations pour contrôler les processus et les threads dans les nœuds de calcul. En général, à l'aide d'une machine virtuelle nécessitera des efforts supplémentaires pour mettre en place un mécanisme qui collecte les données d'instrumentation à la tâche et du système d'exploitation dans la machine virtuelle. Une solution qui peut être appropriée consiste à utiliser la [Pack d'administration System Center pour Azure](http://technet.microsoft.com/library/gg276383.aspx).
-- Vous pouvez envisager de créer des sondes de surveillance qui sont exposées par le biais de points de terminaison HTTP. Le code de ces sondes puisse effectuent des vérifications de la santé, recueillir des informations opérationnelles et statistiques, ou collecter des informations d'erreur et retourner à une application de gestion. Pour plus d'informations, consultez [Modèle de suivi de point de terminaison santé](http://msdn.microsoft.com/library/dn589789.aspx).
+- Hosting background tasks in a separate Azure virtual machine provides flexibility and allows precise control over initiation, execution, scheduling, and resource allocation. However, it will increase runtime cost if a virtual machine must be deployed just to run background tasks.
+- There is no facility to monitor the tasks in the Azure portal, and no automated restart capability for failed tasks, although you can monitor the basic status of the virtual machine and manage it using the [Azure Service Management Cmdlets](http://msdn.microsoft.com/library/azure/dn495240.aspx). However, there are no facilities to control processes and threads in compute nodes. Typically, using a virtual machine will require additional effort to implement a mechanism that collects data from instrumentation in the task, and from the operating system in the virtual machine. One solution that may be appropriate is to use the [System Center Management Pack for Azure](http://technet.microsoft.com/library/gg276383.aspx).
+- You might consider creating monitoring probes that are exposed through HTTP endpoints. The code for these probes could perform health checks, collect operational information and statistics, or collate error information, and return it to a management application. For more information, see [Health Endpoint Monitoring Pattern](http://msdn.microsoft.com/library/dn589789.aspx).
 
-### Plus d'informations
+### More information
 
-- [Machines virtuelles](http://azure.microsoft.com/services/virtual-machines/) sur le site d'Azur
+- [Virtual Machines](http://azure.microsoft.com/services/virtual-machines/) on the Azure website
 - [Azure Virtual Machines FAQ](http://msdn.microsoft.com/library/azure/dn683781.aspx)
 
-## Considérations de conception
+## Design considerations
 
-Il y a plusieurs facteurs fondamentaux à considérer lors de la conception des tâches en arrière-plan. Les sections suivantes traitent de partitionnement, des conflits et la coordination.
+There are several fundamental factors to consider when designing background tasks. The following sections discuss partitioning, conflicts, and coordination.
 
-## Partitionnement
+## Partitioning
 
-Si vous décidez d'inclure les tâches de fond au sein d'une instance de calcul existantes (par exemple, un site Web, web rôle, existant rôle worker ou machine virtuelle), vous devez considérer comment cela affectera les attributs de qualité de l'instance de calcul et la tâche d'arrière-plan lui-même. Ces facteurs vont vous aider à décider s'il faut regrouper les tâches avec l'instance de calcul existantes ou séparer en une instance de calcul distincte :
+If you decide to include background tasks within an existing compute instance (such as a website, web role, existing worker role, or virtual machine), you must consider how this will affect the quality attributes of the compute instance and the background task itself. These factors will help you to decide whether to co-locate the tasks with the existing compute instance, or separate them out into a separate compute instance:
 
-- **Disponibilité**: Tâches d'arrière-plan ne peuvent pas besoin d'avoir le même niveau de disponibilité que d'autres parties de la demande, en particulier l'interface utilisateur et autres parties directement impliquées dans l'interaction avec l'utilisateur. Tâches d'arrière-plan peuvent être plus tolérants de latence, pannes de connexion rejugé, et d'autres facteurs qu'affectent la disponibilité car les opérations peuvent être en file d'attente. Toutefois, il doit y avoir une capacité suffisante pour empêcher la sauvegarde des requêtes qui pourraient bloquer les files d'attente et incidence sur l'application dans son ensemble.
-- **Évolutivité**: Tâches d'arrière-plan sont susceptibles d'avoir une exigence d'évolutivité différente de l'interface utilisateur et les éléments interactifs de l'application. Mise à l'échelle de l'interface utilisateur peut être nécessaire pour répondre aux pics de la demande, tandis que les tâches de fond en suspens pourraient être achevés durant les périodes moins achalandées par un moins nombre d'instances de calcul.
-- **Résilience**: Échec d'une instance de calcul que seulement les tâches de fond hôtes peuvent affecter pas fatalement l'application dans son ensemble si les demandes de ces tâches peuvent être en file d'attente ou reportées jusqu'à ce que la tâche soit à nouveau disponible. Si l'instance de calcul et/ou de tâches peuvent être relancés dans un intervalle approprié, utilisateurs de l'application ne peuvent pas nuire.
-- **Sécurité**: Tâches d'arrière-plan peuvent avoir différentes exigences ou restrictions que l'interface utilisateur ou d'autres parties de la demande. En utilisant une instance de calcul distincte, vous pouvez spécifier un environnement de sécurité différents pour les tâches. Vous pouvez également utiliser des modèles tels que Gatekeeper pour isoler les instances de calcul du fond de l'interface utilisateur afin de maximiser la sécurité et la séparation.
-- **Performances**: Vous pouvez choisir le type d'instance de calcul pour les tâches de fond correspondre précisément aux exigences de performance des tâches. Cela peut signifier en utilisant une option de calcul moins coûteuse si les tâches ne nécessitent pas les mêmes capacités de traitement que l'interface utilisateur, ou une instance plus grande s'ils nécessitent des ressources et des capacités supplémentaires.
-- **Facilité de gestion**: Tâches d'arrière-plan peuvent avoir un rythme différent de développement et le déploiement de code principal de l'application ou de l'interface utilisateur. Leur déploiement pour une instance de calcul distincte peut simplifier les mises à jour et le versioning.
-- **Coût**: Ajout d'instances de calcul pour exécuter arrière-plan tâches augmente les coûts d'hébergement. Vous devriez soigneusement considérer le compromis entre la capacité supplémentaire et ces surcoûts.
+- **Availability**: Background tasks may not need to have the same level of availability as other parts of the application, in particular the UI and other parts directly involved in user interaction. Background tasks may be more tolerant of latency, retried connection failures, and other factors that affect availability because the operations can be queued. However, there must be sufficient capacity to prevent backing up of requests that could block queues and affect the application as a whole.
+- **Scalability**: Background tasks are likely to have a different scalability requirement to the UI and the interactive parts of the application. Scaling the UI may be necessary to meet peaks in demand, while outstanding background tasks could be completed during less busy times by a fewer number of compute instances.
+- **Resiliency**: Failure of a compute instance that just hosts background tasks may not fatally affect the application as a whole if the requests for these tasks can be queued or postponed until the task is available again. If the compute instance and/or tasks can be restarted within an appropriate interval, users of the application may not be affected.
+- **Security**: Background tasks may have different security requirements or restrictions than the UI or other parts of the application. By using a separate compute instance, you can specify a different security environment for the tasks. You can also use patterns such as Gatekeeper to isolate the background compute instances from the UI in order to maximize security and separation.
+- **Performance**: You can choose the type of compute instance for background tasks to specifically match the performance requirements of the tasks. This may mean using a less expensive compute option if the tasks do not require the same processing capabilities as the UI, or a larger instance if they require additional capacity and resources.
+- **Manageability**: Background tasks may have a different development and deployment rhythm from the main application code or the UI. Deploying them to a separate compute instance can simplify updates and versioning.
+- **Cost**: Adding compute instances to execute background tasks increases hosting costs. You should carefully consider the trade-off between additional capacity and these extra costs.
 
-Pour plus d'informations, consultez [Modèle d'élection de chef](http://msdn.microsoft.com/library/dn568104.aspx) et [Modèle de consommateurs concurrente](http://msdn.microsoft.com/library/dn568101.aspx).
+For more information, see [Leader Election pattern](http://msdn.microsoft.com/library/dn568104.aspx) and [Competing Consumers pattern](http://msdn.microsoft.com/library/dn568101.aspx).
 
-## Conflits
+## Conflicts
 
-Si vous avez plusieurs instances d'une tâche en arrière-plan, il est possible qu'ils seront en compétition pour l'accès aux ressources et services tels que des bases de données et le stockage. Cet accès simultané peut entraîner des conflits de ressources, qui peuvent entraîner des conflits dans la disponibilité des services et à l'intégrité des données dans le stockage. Conflits de ressources peuvent être résolus en utilisant une approche de verrouillage pessimiste pour empêcher les instances concurrentes d'une tâche à partir simultanément accès à un service, ou de corrompre les données.
+If you have multiple instances of a background job, it is possible that they will compete for access to resources and services such as databases and storage. This concurrent access can result in resource contention, which may cause conflicts in availability of the services and in the integrity of data in storage. Resource contention can be resolved by using a pessimistic locking approach to prevent competing instances of a task from concurrently accessing a service, or corrupting data.
 
-Une autre approche pour résoudre les conflits est de définir les tâches de fond comme un singleton, afin qu'il n'y a jamais une seule instance en cours d'exécution. Cependant, ceci élimine les avantages de performances et une fiabilité qui pourrait fournir une configuration de plusieurs instances, en particulier si l'interface utilisateur peut fournir suffisamment de travail pour occuper plus d'une tâche en arrière-plan. Il est essentiel de veiller à ce que la tâche d'arrière-plan peut redémarrer automatiquement, et qu'il possède une capacité suffisante pour faire face aux pics de demande. Ceci peut être réalisé en attribuant une instance de calcul avec des ressources suffisantes, en mettant en place un mécanisme de file d'attente qui peut stocker des demandes pour une exécution ultérieure lorsque la demande diminue, ou par une combinaison de ces techniques.
+Another approach to resolve conflicts is to define background tasks as a singleton, so that there is only ever one instance running. However, this eliminates the reliability and performance benefits that a multiple-instance configuration could provide, especially if the UI can supply sufficient work to keep more than one background task busy. It is vital to ensure that the background task can automatically restart, and that it has sufficient capacity to cope with peaks in demand. This may be achieved by allocating a compute instance with sufficient resources, by implementing a queueing mechanism that can store requests for later execution when demand decreases, or by a combination of these techniques.
 
 ## Coordination
 
-Les tâches d'arrière-plan peuvent être complexe et nécessiter plusieurs différentes tâches à exécuter pour produire un résultat ou à toutes les exigences. Il est fréquent dans ces scénarios de diviser la tâche en plus petit les étapes discrètes ou sous-tâches qui peuvent être exécutées par plusieurs consommateurs. Multi-étapes emplois peuvent être plus efficace et plus souple car les étapes individuelles peuvent être réutilisables dans plusieurs travaux. Il est également facile à ajouter, supprimer ou modifier l'ordre des étapes.
+The background tasks may be complex, and require multiple individual tasks to execute to produce a result or to fulfil all the requirements. It is common in these scenarios to divide the task into smaller discreet steps or subtasks that can be executed by multiple consumers. Multi-step jobs can be more efficient and more flexible because individual steps may be reusable in multiple jobs. It is also easy to add, remove, or modify the order of the steps.
 
-Coordination des tâches et des étapes multiples peut être difficile, mais il y a trois modèles courants, que vous pouvez utiliser pour orienter votre mise en œuvre d'une solution :
+Coordinating multiple tasks and steps can be challenging, but there are three common patterns you can use to guide your implementation of a solution:
 
-- **Décomposition d'une tâche en plusieurs étapes réutilisables**. Une application peut devoir effectuer une variété de tâches plus ou moins complexes sur les informations qu'il traite. Une approche simple mais inflexible à la mise en œuvre de la présente demande pourrait consister à faire cet usinage comme module monolithique. Toutefois, cette approche est susceptible de réduire les possibilités de refactorisation du code, optimisation ou réutiliser si des pièces du même traitement sont nécessaires ailleurs dans l'application. Pour plus d'informations, consultez [Tubes et modèle de filtres](http://msdn.microsoft.com/library/dn568100.aspx).
-- **Gérer l'exécution des étapes d'une tâche**. Une application peut accomplir des tâches qui comportent un certain nombre de mesures, dont certaines peuvent appeler télé-services ou accéder aux ressources distantes. Les étapes individuelles peuvent être indépendants des uns des autres, mais ils sont orchestrées par la logique de l'application qui implémente la tâche. Pour plus d'informations, consultez [Scheduler Agent superviseur Pattern](http://msdn.microsoft.com/library/dn589780.aspx).
-- **Gestion de récupération pour les étapes d'une tâche qui ne parviennent pas**. Une application peut besoin de défaire le travail effectué par une série d'étapes, qui définissent ensemble une opération finalement cohérente, si une ou plusieurs des étapes échouent. Pour plus d'informations, consultez [Modèle de Transaction de compensation](http://msdn.microsoft.com/library/dn589804.aspx).
+- **Decomposing a task into multiple reusable steps**. An application may be required to perform a variety of tasks of varying complexity on the information that it processes. A straightforward but inflexible approach to implementing this application could be to perform this processing as monolithic module. However, this approach is likely to reduce the opportunities for refactoring the code, optimizing it, or reusing it if parts of the same processing are required elsewhere within the application. For more information, see [Pipes and Filters Pattern](http://msdn.microsoft.com/library/dn568100.aspx).
+- **Managing execution of the steps for a task**. An application may perform tasks that comprise a number of steps, some of which may invoke remote services or access remote resources. The individual steps may be independent of each other, but they are orchestrated by the application logic that implements the task. For more information, see [Scheduler Agent Supervisor Pattern](http://msdn.microsoft.com/library/dn589780.aspx).
+- **Managing recovery for steps of a task that fail**. An application may need to undo the work performed by a series of steps, which together define an eventually consistent operation, if one or more of the steps fail. For more information, see [Compensating Transaction Pattern](http://msdn.microsoft.com/library/dn589804.aspx).
 
-## Cycle de vie (Services en nuage)
+## Lifecycle (Cloud Services)
 
- Si vous décidez d'implémenter des tâches en arrière-plan pour des applications de Cloud Services qui utilisent des rôles web et de travail à l'aide de la **RoleEntryPoint** classe, il est important de comprendre le cycle de vie de cette classe afin de le pour utiliser correctement.
+ If you decide to implement background jobs for Cloud Services applications that use web and worker roles by using the **RoleEntryPoint** class, it is important to understand the lifecycle of this class in order to use it correctly.
 
-Rôles de Web et de travail passent par une série de phases distinctes qu'ils Démarrer, exécutent et arrêter. Le **RoleEntryPoint** classe expose une série d'événements qui indiquent quand ces étapes sont produisent. Vous utilisez ceux-ci pour initialiser, exécuter et arrêter vos tâches d'arrière-plan personnalisé. Le cycle complet est :
+Web and worker roles go through a set of distinct phases as they start, run, and stop. The **RoleEntryPoint** class exposes a series of events that indicate when these stages are occurring. You use these to initialize, run, and stop your custom background tasks. The complete cycle is:
 
-- D'Azur, charge l'assembly du rôle et il cherche une classe qui dérive de **RoleEntryPoint**.
-- S'il trouve cette classe, il appelle **RoleEntryPoint.OnStart()**. Vous substituez cette méthode pour initialiser vos tâches en arrière-plan.
-- Après la **OnStart** méthode se termine, Azure appelle **Application_Start()** global de l'application fichier si cela est présent (par exemple, Global.asax dans un rôle de web ASP.NET en cours d'exécution).
-- Appels d'Azur **RoleEntryPoint.Run()** sur un nouveau thread de premier plan qui s'exécute en parallèle avec **OnStart()**. Vous substituez cette méthode pour démarrer vos tâches en arrière-plan.
-- Lorsque la méthode Run se termine, Azure appelle d'abord **Application_End()** global de l'application fichier si cela est présent, puis appelle **RoleEntryPoint.OnStop()**. Vous substituez le **OnStop** méthode pour arrêter vos tâches en arrière-plan, nettoyer les ressources, disposer d'objets et la fermeture des connexions qui les tâches pourraient avoir utilisé.
-- Le processus hôte de travailleur Azur rôle est arrêté. À ce stade, le rôle est recyclé et se remettra en marche.
+- Azure loads the role assembly and searches it for a class that derives from **RoleEntryPoint**.
+- If it finds this class, it calls **RoleEntryPoint.OnStart()**. You override this method to initialize your background tasks.
+- After the **OnStart** method completes, Azure calls **Application_Start()** in the application’s Global file if this is present (for example, Global.asax in a web role running ASP.NET).
+- Azure calls **RoleEntryPoint.Run()** on a new foreground thread that executes in parallel with **OnStart()**. You override this method to start your background tasks.
+- When the Run method ends, Azure first calls **Application_End()** in the application’s Global file if this is present, and then calls **RoleEntryPoint.OnStop()**. You override the **OnStop** method to stop your background tasks, clean up resources, dispose of objects, and close connections that the tasks may have used.
+- The Azure worker role host process is stopped. At this point, the role will be recycled and will restart.
 
-Pour plus d'informations et un exemple d'utilisation des méthodes de la **RoleEntryPoint** classe, voir [Calculer le modèle de Consolidation de ressource](http://msdn.microsoft.com/library/dn589778.aspx).
+For more details and an example of using the methods of the **RoleEntryPoint** class, see [Compute Resource Consolidation Pattern](http://msdn.microsoft.com/library/dn589778.aspx).
 
-## Considérations
+## Considerations
 
-Considérez les points suivants lorsque vous planifiez comment vous allez exécuter des tâches de fond dans un rôle web ou travailleur :
+Consider the following points when planning how you will run background tasks in a web or worker role:
 
-- La valeur par défaut **Courir** implémentation de la méthode dans le **RoleEntryPoint** classe contienne un appel à **Timeout.Infinite** qui garde le rôle vivant indéfiniment. Si vous substituez la **Courir** méthode (qui est généralement nécessaire pour exécuter les tâches d'arrière-plan) vous ne pouvez accepter votre code à la sortie de la méthode, à moins que vous voulez recycler l'instance de rôle.
-- Une implémentation standard de la **Courir** méthode inclut du code pour démarrer les tâches en arrière-plan, et un élément de la boucle qui vérifie périodiquement l'état de toutes les tâches de fond. Il peut redémarrer tout qui échouent ou surveiller des jetons d'annulation qui indiquent les tâches sont terminées.
-- Si une tâche d'arrière-plan lève une exception non gérée, cette tâche devrait être recyclée tout en permettant à d'autres tâches d'arrière-plan dans le rôle de continuer de fonctionner. Toutefois, si l'exception est déclenchée par la corruption des objets en dehors de la tâche, telles que le stockage partagé, l'exception devrait être gérée par votre **RoleEntryPoint** classe, toutes les tâches devraient être annulés et les **Courir** méthode a permis à la fin. Azur va ensuite redémarrer le rôle.
-- Utilisation du **OnStop** méthode pour faire une pause ou tuer des tâches en arrière-plan et nettoyer les ressources. Il peut s'agir d'arrêt des tâches longues ou à plusieurs étapes, et il est essentiel d'examiner comment cela peut être fait pour éviter les incohérences de données. Si une instance de rôle s'arrête pour une raison autre qu'un arrêt initié par l'utilisateur, le code s'exécutant le **OnStop** méthode doit terminer dans les cinq minutes avant qu'elle soit interrompue par la force. S'assurer que votre code peut accomplir en ce moment, ou peut tolérer ne pas en cours d'exécution jusqu'à la fin.  
-- L'équilibreur de charge Azure commence à diriger la circulation au rôle d'instance lorsque le **RoleEntryPoint.OnStart** méthode retourne la valeur true. Par conséquent, envisager de mettre tout votre code d'initialisation la **OnStart** méthode afin que les instances de rôle qui n'initialisent pas avec succès la volonté ne reçoivent pas tout trafic.
-- Vous pouvez utiliser les tâches de démarrage en plus des méthodes de la **RoleEntryPoint** classe. Vous devez utiliser les tâches de démarrage pour initialiser tous les paramètres que vous deviez changer de l'équilibrage de la charge d'Azur parce que ces tâches seront exécute avant que le rôle reçoit toutes les demandes. Pour plus d'informations, consultez [Exécuter les tâches de démarrage dans Azure](http://msdn.microsoft.com/library/azure/hh180155.aspx).
-- Si il y a une erreur dans une tâche de démarrage, il peut obliger le rôle de redémarrer continuellement. Cela peut vous empêcher d'effectuer un échange VIP revenir à une version précédemment mises en scène parce que le swap requiert un accès exclusif au rôle, et cela ne peut être obtenue même si le rôle redémarre. Pour résoudre ce problème :
-	-  Ajoutez le code suivant au début de la **OnStart** et **Courir** méthodes dans votre rôle :
+- The default **Run** method implementation in the **RoleEntryPoint** class contains a call to **Thread.Sleep(Timeout.Infinite)** that keeps the role alive indefinitely. If you override the **Run** method (which is typically necessary to execute background tasks) you must not allow your code to exit from the method unless you want to recycle the role instance.
+- A typical implementation of the **Run** method includes code to start each of the background tasks, and a loop construct that periodically checks the state of all the background tasks. It can restart any that fail, or monitor for cancellation tokens that indicate jobs have completed.
+- If a background task throws an unhandled exception, that task should be recycled while allowing any other background tasks in the role to continue running. However, if the exception is caused by corruption of objects outside the task, such as shared storage, the exception should be handled by your **RoleEntryPoint** class, all tasks should be cancelled, and the **Run** method allowed to end. Azure will then restart the role.
+- Use the **OnStop** method to pause or kill background tasks and clean up resources. This may involve stopping long-running or multi-step tasks, and it is vital to consider how this can be done to avoid data inconsistencies. If a role instance stops for any reason other than a user-initiated shutdown, the code running in the **OnStop** method must complete within five minutes before it is forcibly terminated. Ensure that your code can complete in that time, or can tolerate not running to completion.  
+- The Azure load balancer starts directing traffic to the role instance when the **RoleEntryPoint.OnStart** method returns true. Therefore, consider putting all your initialization code in the **OnStart** method so that role instances that do not successfully initialize will not receive any traffic.
+- You can use startup tasks in addition to the methods of the **RoleEntryPoint** class. You should use startup tasks to initialize any settings you need to change in the Azure load balancer because these tasks will execute before the role receives any requests. For more information, see [Run Startup Tasks in Azure](http://msdn.microsoft.com/library/azure/hh180155.aspx).
+- If there is an error in a startup task, it may force the role to continually restart. This can prevent you from performing a VIP swap back to a previously staged version because the swap requires exclusive access to the role, and this cannot be obtained while the role is restarting. To resolve this:
+	-  Add the following code to the beginning of the **OnStart** and **Run** methods in your role:
 
 	```C#
 	var freeze = CloudConfigurationManager.GetSetting("Freeze");
@@ -268,52 +268,52 @@ Considérez les points suivants lorsque vous planifiez comment vous allez exécu
 	}
 	```
 
-   - Ajoutez la définition de la **Gel** paramètre comme une valeur booléenne à le ServiceDefinition.csdef et ServiceConfiguration.*fichiers de.cscfg pour le rôle et affectez-lui **faux**. Si le rôle rentre dans un mode de redémarrage répété, vous pouvez modifier le paramètre de **true** pour geler l'exécution de rôle et lui permettre d'être échangé avec une version antérieure.
+   - Add the definition of the **Freeze** setting as a Boolean value to the ServiceDefinition.csdef and ServiceConfiguration.*.cscfg files for the role and set it to **false**. If the role goes into a repeated restart mode, you can change the setting to **true** to freeze role execution and allow it to be swapped with a previous version.
 
-## Facteurs de résilience
+## Resiliency considerations
 
-Tâches d'arrière-plan doivent être souple afin de fournir des services fiables à l'application. Lors de la planification et la conception de tâches en arrière-plan, considérez les points suivants :
+Background tasks must be resilient in order to provide reliable services to the application. When planning and designing background tasks, consider the following points:
 
-- Tâches d'arrière-plan doivent être en mesure de gérer correctement le rôle ou service redémarre sans endommager les données ou introduction d'incohérence dans l'application. Pour les tâches de longue durée ou à plusieurs étapes, envisagez d'utiliser _vérifier le pointage_ en enregistrant l'état des emplois dans un stockage persistant, ou sous forme de messages dans une file d'attente si cela est approprié. Par exemple, vous pouvez conserver les informations d'État dans un message dans une file d'attente et mise à jour incrémentielle ces informations d'État avec la progression des tâches pour que la tâche peut être réalisée à partir du dernier point de contrôle connu bon au lieu de redémarrer depuis le début. Lors de l'utilisation de files d'attente de Azure Service Bus, vous pouvez utiliser les sessions de message pour permettre le même scénario. Séances vous permettent d'enregistrer et récupérer l'état de traitement de la demande en utilisant le [SetState](http://msdn.microsoft.com/library/microsoft.servicebus.messaging.messagesession.setstate.aspx) et [GetState](http://msdn.microsoft.com/library/microsoft.servicebus.messaging.messagesession.getstate.aspx) Méthodes. Pour plus d'informations sur la conception fiable processus multi-étapes et workflows, consultez [Scheduler Agent superviseur Pattern](http://msdn.microsoft.com/library/dn589780.aspx).
-- Lorsque vous utilisez des rôles web ou travailleur d'accueillir plusieurs tâches en arrière-plan, concevoir votre substitution de la **Courir** méthode à suivre pour a échoué ou a décroché les tâches et les redémarre. Si ce n'est pas pratique, et que vous utilisez un rôle de travailleur, forcer le rôle de travailleur pour redémarrer en sortant de la **Courir** méthode.
-- Lors de l'utilisation de files d'attente pour communiquer avec les tâches en arrière-plan, les files d'attente peuvent agir comme un tampon pour stocker les requêtes envoyées aux tâches tandis que la demande est supérieure à charge habituelle. Cela permet aux tâches à rattraper avec l'interface utilisateur pendant les périodes creuses. Cela signifie également que le rôle de recyclage ne bloquera pas l'interface utilisateur. Pour plus d'informations, consultez [Charge en fonction des file d'attente de mise à niveau modèle](http://msdn.microsoft.com/library/dn589783.aspx). Si certaines tâches sont plus importants que d'autres, envisagez d'implémenter la [Modèle de file d'attente de priorité](http://msdn.microsoft.com/library/dn589794.aspx) pour s'assurer que ces tâches s'exécutent avant moins importants.
-- Tâches en arrière-plan qui commencent par ou autrement traitent les messages doivent être conçus pour supporter des incohérences telles que les messages qui arrivent dans le désordre, messages qui à plusieurs reprises provoquent une erreur (souvent dénommée _messages incohérents_) et les messages qui sont livrés en plus d'une fois. Considérez ce qui suit :
+- Background tasks must be able to gracefully handle role or service restarts without corrupting data or introducing inconsistency into the application. For long-running or multi-step tasks, consider using _check pointing_ by saving the state of jobs in persistent storage, or as messages in a queue if this is appropriate. For example, you can persist state information in a message in a queue and incrementally update this state information with the task progress so that the task can be processed from the last known good checkpoint instead of restarting from the beginning. When using Azure Service Bus queues, you can use message sessions to enable the same scenario. Sessions allow you to save and retrieve the application processing state by using the [SetState](http://msdn.microsoft.com/library/microsoft.servicebus.messaging.messagesession.setstate.aspx) and [GetState](http://msdn.microsoft.com/library/microsoft.servicebus.messaging.messagesession.getstate.aspx) methods. For more information about designing reliable multi-step processes and workflows, see [Scheduler Agent Supervisor Pattern](http://msdn.microsoft.com/library/dn589780.aspx).
+- When using web or worker roles to host multiple background tasks, design your override of the **Run** method to monitor for failed or stalled tasks, and restart them. Where this is not practical, and you are using a worker role, force the worker role to restart by exiting from the **Run** method.
+- When using queues to communicate with background tasks, the queues can act as a buffer to store requests sent to the tasks while the application is under higher than usual load. This allows the tasks to catch up with the UI during less busy periods. It also means that recycling the role will not block the UI. For more information, see [Queue-Based Load Leveling Pattern](http://msdn.microsoft.com/library/dn589783.aspx). If some tasks are more important than others, consider implementing the [Priority Queue Pattern](http://msdn.microsoft.com/library/dn589794.aspx) to ensure that these tasks run before less important ones.
+- Background tasks that are initiated by, or otherwise process messages must be designed to handle inconsistencies such as messages arriving out of order, messages that repeatedly cause an error (often referred to as _poison messages_), and messages that are delivered more than once. Consider the following:
   - Messages that must be processed in a specific order, such as those that change data based on its existing value (for example, adding a value to an existing value), may not arrive in the original order they were sent. Alternatively, they may be handled by different instances of a background task in a different order due to varying loads on each instance. Messages that must be processed in a specific order should include a sequence number, key, or some other indicator that background tasks can use to ensure they are processed in the correct order. If you are using Azure Service Bus, you can use message sessions to guarantee the order of delivery. However, it is usually more efficient where possible to design the process so that the message order is not important.
   - Typically, a background task will peek messages in the queue, which temporarily hides them from other message consumers, and then delete the messages after they have been successfully processed. If a background task fails when processing a message, that message will reappear on the queue after the peek timeout expires, and will be processed by another instance of the task or during the next processing cycle of this instance. If the message consistently causes an error in the consumer, it will block the task, the queue, and eventually the application itself when the queue becomes full. Therefore, it is vital to detect and remove poison messages from the queue. If you are using Azure Service Bus, messages that cause an error can be moved automatically or manually to an associated dead letter queue.
-  - Files d'attente sont garantis au _moins une fois_ delivery mechanisms, but they may deliver the same message more than once. In addition, if a background task fails after processing a message but before deleting it from the queue, the message will become available for processing again. Background tasks should be idempotent, which means that processing the same message more than once does not cause an error or inconsistency in the application’s data. Some operations are naturally idempotent, such as setting a stored value to a specific new value. However, operations such as adding a value to an existing stored value without checking that the stored value is still the same as when the message was originally sent will cause inconsistencies.  Azure Service Bus queues can be configured to automatically remove duplicated messages.
-  - Certains systèmes de messagerie, tels que Azure storage files d'attente et les files d'attente de Bus de Service Azure, prend en charge une propriété de comte de-queue qui indique le nombre de fois qu'un message a été lu dans la file d'attente. Cela peut être utile dans la gestion des messages incohérents et répétés. Pour plus d'informations, consultez [Apprêt de messagerie asynchrone](http://msdn.microsoft.com/library/dn589781.aspx) et [Idempotence Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
+  - Queues are guaranteed at _least once_ delivery mechanisms, but they may deliver the same message more than once. In addition, if a background task fails after processing a message but before deleting it from the queue, the message will become available for processing again. Background tasks should be idempotent, which means that processing the same message more than once does not cause an error or inconsistency in the application’s data. Some operations are naturally idempotent, such as setting a stored value to a specific new value. However, operations such as adding a value to an existing stored value without checking that the stored value is still the same as when the message was originally sent will cause inconsistencies.  Azure Service Bus queues can be configured to automatically remove duplicated messages.
+  - Some messaging systems, such as Azure storage queues and Azure Service Bus queues, support a de-queue count property that indicates the number of times a message has been read from the queue. This can be useful in handling repeated and poison messages. For more information, see [Asynchronous Messaging Primer](http://msdn.microsoft.com/library/dn589781.aspx) and [Idempotency Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
 
-## Considérations de mise à l'échelle et la performance
+## Scaling and performance considerations
 
-Tâches d'arrière-plan doivent offrir des performances suffisantes afin de ne pas bloquer l'application, ou provoquer des incohérences en raison de l'opération différé lorsque le système est sous charge. En règle générale, les performances sont améliorées par les instances de calcul qui hébergent les tâches de fond d'échelle. Lors de la planification et la conception de tâches en arrière-plan, considérer les points suivants autour d'évolutivité et de performances :
+Background tasks must offer sufficient performance to ensure they do not block the application, or cause inconsistencies due to delayed operation when the system is under load. Typically, performance is improved by scaling the compute instances that host the background tasks. When planning and designing background tasks, consider the following points around scalability and performance:
 
-- Autoscaling Azur prend en charge (l'évolution et mise à l'échelle en) basé sur la demande actuelle et de la charge, ou sur un calendrier prédéfini, pour Sites Web, web Services Cloud et rôles de travail et des ordinateurs virtuels hébergés déploiements. Cette fonction permet d'assurer l'application comme un ensemble a des possibilités suffisantes de rendement tout en minimisant les coûts d'exécution.
-- Lorsque les tâches de fond ont une capacité de performance différents des autres pièces d'une demande de Services Cloud (par exemple, l'interface utilisateur ou les composants tels que la couche d'accès aux données), hébergement les tâches de fond ensemble dans un rôle de travail distinct permet l'interface utilisateur et l'arrière-plan des rôles de tâche à l'échelle de manière indépendante pour gérer la charge. Si plusieurs tâches de fond ont des possibilités de performance significativement différents les uns des autres, envisager les divisant en rôles de travail séparé et mise à l'échelle de chaque rôle type indépendamment, mais notez que ceci peut augmenter la duree des coûts par rapport à la combinaison de toutes les tâches dans des rôles moins.
-- Simplement mise à l'échelle les rôles peut-être pas suffisante pour prévenir la perte de performances sous charge. Vous devrez peut-être également évoluer les files d'attente de stockage et d'autres ressources afin d'éviter un point unique de l'ensemble de sa chaîne, devenir un goulot d'étranglement de traitement. Aussi, pensez à autres limitations, telles que le débit maximal de stockage et d'autres services de l'application et les tâches de fond dépendent.
-- Tâches d'arrière-plan doivent être conçus pour la mise à l'échelle. Par exemple, ils doivent être en mesure de détecter dynamiquement le nombre de files d'attente de stockage en usage pour l'écouter sur ou envoyer des messages à la file d'attente appropriée.
-- Par défaut, WebJobs échelle avec leur instance Azure Web Sites associée. Toutefois, si vous voulez un WebJob à exécuter en tant qu'une seule instance, vous pouvez créer un fichier Settings.job contenant les données JSON **{"est_Singleton": true}**. Cela force Azure pour exécuter uniquement une seule instance de le WebJob, même s'il existe plusieurs instances du site associé, qui peut être une technique utile pour les tâches planifiées qui doivent s'exécuter comme une seule instance.
+- Azure supports autoscaling (both scaling out and scaling back in) based on current demand and load, or on a predefined schedule, for Web Sites, Cloud Services web and worker roles, and Virtual Machines hosted deployments. Use this feature to ensure the application as a whole has sufficient performance capabilities while minimizing runtime costs.
+- Where background tasks have a different performance capability from the other parts of a Cloud Services application (for example, the UI or components such as the data access layer), hosting the background tasks together in a separate worker role allows the UI and background task roles to scale independently to manage the load. If multiple background tasks have significantly different performance capabilities from each other, consider dividing them into separate worker roles and scaling each role type independently, but note that this may increase runtime costs compared to combining all the tasks into fewer roles.
+- Simply scaling the roles may not be sufficient to prevent loss of performance under load. You may also need to scale storage queues and other resources to prevent a single point of the overall processing chain becoming a bottleneck. Also, consider other limitations, such as the maximum throughput of storage and other services the application and the background tasks rely on.
+- Background tasks must be designed for scaling. For example, they must be able to dynamically detect the number of storage queues in use in order to listen on or send messages to the appropriate queue.
+- By default, WebJobs scale with their associated Azure Web Sites instance. However, if you want a WebJob to run as only a single instance, you can create a Settings.job file containing the JSON data **{ "is_singleton": true }**. This forces Azure to only run one instance of the WebJob, even if there are multiple instances of the associated website, which can be a useful technique for scheduled jobs that must run as only a single instance.
 
-## Modèles liés
+## Related patterns
 
-- [Apprêt de messagerie asynchrone](http://msdn.microsoft.com/library/dn589781.aspx)
-- [AutoScaling orientation](http://msdn.microsoft.com/library/dn589774.aspx)
-- [Modèle de Transaction de compensation](http://msdn.microsoft.com/library/dn589804.aspx)
-- [Modèle de consommateurs concurrentes](http://msdn.microsoft.com/library/dn568101.aspx)
-- [Calculer l'orientation de partitionnement](http://msdn.microsoft.com/library/dn589773.aspx)
-- [Calculer le modèle de Consolidation de ressource](http://msdn.microsoft.com/library/dn589778.aspx)
-- [Modèle de contrôleur d'accès](http://msdn.microsoft.com/library/dn589793.aspx)
-- [Modèle d'élection chef](http://msdn.microsoft.com/library/dn568104.aspx)
-- [Tubes et modèle de filtres](http://msdn.microsoft.com/library/dn568100.aspx)
-- [Modèle de file d'attente de priorité](http://msdn.microsoft.com/library/dn589794.aspx)
-- [Charge en fonction des file d'attente de mise à niveau modèle](http://msdn.microsoft.com/library/dn589783.aspx)
-- [Scheduler Agent superviseur Pattern](http://msdn.microsoft.com/library/dn589780.aspx)
+- [Asynchronous Messaging Primer](http://msdn.microsoft.com/library/dn589781.aspx)
+- [Autoscaling Guidance](http://msdn.microsoft.com/library/dn589774.aspx)
+- [Compensating Transaction Pattern](http://msdn.microsoft.com/library/dn589804.aspx)
+- [Competing Consumers Pattern](http://msdn.microsoft.com/library/dn568101.aspx)
+- [Compute Partitioning Guidance](http://msdn.microsoft.com/library/dn589773.aspx)
+- [Compute Resource Consolidation Pattern](http://msdn.microsoft.com/library/dn589778.aspx)
+- [Gatekeeper Pattern](http://msdn.microsoft.com/library/dn589793.aspx)
+- [Leader Election Pattern](http://msdn.microsoft.com/library/dn568104.aspx)
+- [Pipes and Filters Pattern](http://msdn.microsoft.com/library/dn568100.aspx)
+- [Priority Queue Pattern](http://msdn.microsoft.com/library/dn589794.aspx)
+- [Queue-Based Load Leveling Pattern](http://msdn.microsoft.com/library/dn589783.aspx)
+- [Scheduler Agent Supervisor Pattern](http://msdn.microsoft.com/library/dn589780.aspx)
 
-## Plus d'informations
+## More information
 
-- [Mise à l'échelle des Applications Azure avec rôles de travail](http://msdn.microsoft.com/library/hh534484.aspx#sec8)
-- [L'exécution de tâches de fond](http://msdn.microsoft.com/library/ff803365.aspx)
-- [Cycle de vie de démarrage rôle Azur](http://blog.syntaxc4.net/post/2011/04/13/windows-azure-role-startup-life-cycle.aspx) (article de blog)
-- [Le cycle de vie de rôle Azur Cloud Services](http://channel9.msdn.com/Series/Windows-Azure-Cloud-Services-Tutorials/Windows-Azure-Cloud-Services-Role-Lifecycle) (vidéo)
-- [Débuter avec le SDK de WebJobs d'Azur](websites-dotnet-webjobs-sdk-get-started/)
-- [Azur files d'attente et les files d'attente Service Bus - comparaison et contraste](http://msdn.microsoft.com/library/hh767287.aspx)
-- [Comment faire pour activer les Diagnostics dans un Service de Cloud Computing](http://msdn.microsoft.com/library/dn482131.aspx)
+- [Scaling Azure Applications with Worker Roles](http://msdn.microsoft.com/library/hh534484.aspx#sec8)
+- [Executing Background Tasks](http://msdn.microsoft.com/library/ff803365.aspx)
+- [Azure Role Startup Life Cycle](http://blog.syntaxc4.net/post/2011/04/13/windows-azure-role-startup-life-cycle.aspx) (blog post)
+- [Azure Cloud Services Role Lifecycle](http://channel9.msdn.com/Series/Windows-Azure-Cloud-Services-Tutorials/Windows-Azure-Cloud-Services-Role-Lifecycle) (video)
+- [Get Started with the Azure WebJobs SDK](websites-dotnet-webjobs-sdk-get-started/)
+- [Azure Queues and Service Bus Queues - Compared and Contrasted](http://msdn.microsoft.com/library/hh767287.aspx)
+- [How To Enable Diagnostics in a Cloud Service](http://msdn.microsoft.com/library/dn482131.aspx)

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Create and Configure an Application Gateway with Internal Load Balancer (ILB) in a Virtual Network | Microsoft Azure"
    description="This page provides instructions to configure an Azure Application Gateway with an Internal Load Balanced endpoint"
    documentationCenter="na"
@@ -51,7 +51,7 @@ To create a new application gateway, perform the following steps in the order li
 
 **To validate** that the gateway was created, you can use the `Get-AzureApplicationGateway` cmdlet. 
 
-In the sample, *Description*, *InstanceCount*和 *GatewaySize* are optional parameters. The default value for *InstanceCount* is 2, with a maximum value of 10. The default value for *GatewaySize* is Medium. Small and Large are other available values. *Vip* 和 *DnsName* are shown as blank because the gateway has not started yet. These will be created once the gateway is in the running state. 
+In the sample, *Description*, *InstanceCount*, and *GatewaySize* are optional parameters. The default value for *InstanceCount* is 2, with a maximum value of 10. The default value for *GatewaySize* is Medium. Small and Large are other available values. *Vip* and *DnsName* are shown as blank because the gateway has not started yet. These will be created once the gateway is in the running state. 
 
 	PS C:\> Get-AzureApplicationGateway AppGwTest
 
@@ -79,7 +79,7 @@ The values are:
 - **Backend server pool settings:** Every pool has settings like port, protocol, and cookie based affinity. These settings are tied to a pool and are applied to all servers within the pool.
 - **Frontend Port:** This port is the public port opened on the application gateway. Traffic hits this port, and then gets redirected to one of the backend servers.
 - **Listener:** The listener has a frontend port, a protocol (Http or Https, these are case-sensitive), and the SSL certificate name (if configuring SSL offload). 
-- **Rule:** The rule binds the listener and the backend server pool and defines which backend server pool the traffic should be directed to when it hits a particular listener. Currently, only the *基本* rule is supported. The *基本* rule is round-robin load distribution.
+- **Rule:** The rule binds the listener and the backend server pool and defines which backend server pool the traffic should be directed to when it hits a particular listener. Currently, only the *basic* rule is supported. The *basic* rule is round-robin load distribution.
 
 You can construct your configuration either by creating a configuration object, or by using a configuration XML file. 
 To construct your configuration by using a configuration XML file, use the sample below.
@@ -89,11 +89,11 @@ To construct your configuration by using a configuration XML file, use the sampl
 Note the following:
 
 
-- 的 *FrontendIPConfigurations* element describes the ILB details relevant for configuring Application Gateway with an ILB. 
+- The *FrontendIPConfigurations* element describes the ILB details relevant for configuring Application Gateway with an ILB. 
 
 - The Frontend IP *Type* should be set to 'Private'
 
-- 的 *StaticIPAddress* should be set to the desired internal IP on which the gateway will receive traffic. Note that the  *StaticIPAddress* element is optional. If not set, an available internal IP from the deployed subnet is chosen. 
+- The *StaticIPAddress* should be set to the desired internal IP on which the gateway will receive traffic. Note that the  *StaticIPAddress* element is optional. If not set, an available internal IP from the deployed subnet is chosen. 
 
 - The value of the *Name* element specified in *FrontendIPConfiguration* should be used in the  HTTPListener's *FrontendIP* element to refer to the FrontendIPConfiguration.
 
@@ -171,7 +171,7 @@ Next, you'll set the application gateway. You can use the `Set-AzureApplicationG
 Once the gateway has been configured, use the `Start-AzureApplicationGateway` cmdlet to start the gateway. Billing for an application gateway begins after the gateway has been successfully started. 
 
 
-**注意:** 的 `Start-AzureApplicationGateway` cmdlet might take up to 15-20 minutes to complete. 
+**Note:** The `Start-AzureApplicationGateway` cmdlet might take up to 15-20 minutes to complete. 
    
 	PS C:\> Start-AzureApplicationGateway AppGwTest 
 
@@ -183,9 +183,9 @@ Once the gateway has been configured, use the `Start-AzureApplicationGateway` cm
 
 ## Verify the gateway status
 
-使用 `Get-AzureApplicationGateway` cmdlet to check the status of gateway. If *Start-AzureApplicationGateway* succeeded in the previous step, the State should be *运行*, and the Vip and DnsName should have valid entries. This sample shows the cmdlet on the first line, followed by the output. In this sample, the gatway is running, and is ready to take traffic. 
+Use the `Get-AzureApplicationGateway` cmdlet to check the status of gateway. If *Start-AzureApplicationGateway* succeeded in the previous step, the State should be *Running*, and the Vip and DnsName should have valid entries. This sample shows the cmdlet on the first line, followed by the output. In this sample, the gatway is running, and is ready to take traffic. 
 
-**注意:** The application gateway is configured to accept traffic at the configured ILB endpoint of 10.0.0.10 in this example.
+**Note:** The application gateway is configured to accept traffic at the configured ILB endpoint of 10.0.0.10 in this example.
 
 	PS C:\> Get-AzureApplicationGateway AppGwTest 
 
@@ -201,7 +201,7 @@ Once the gateway has been configured, use the `Start-AzureApplicationGateway` cm
 	VirtualIPs    : {10.0.0.10}
 	DnsName       : appgw-b2a11563-2b3a-4172-a4aa-226ee4c23eed.cloudapp.net
 
-## 接下来的步骤
+## Next Steps
 
 
 If you want more information about load balancing options in general, see:

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to create and publish a product in Azure API Management" 
 	description="Learn how to create and publish products in Azure API Management." 
 	services="api-management" 
@@ -26,7 +26,7 @@ Operations are added and configured to an API in the publisher portal. To access
 
 ![Publisher portal][api-management-management-console]
 
->If you have not yet created an API Management service instance, see [Create an API Management service instance][] 在 [Get started with Azure API Management][] tutorial.
+>If you have not yet created an API Management service instance, see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
 Click on **Products** in the menu on the left to display the **Products** page, and click **Add Product**.
 
@@ -36,7 +36,7 @@ Click on **Products** in the menu on the left to display the **Products** page, 
 
 Enter a descriptive name for the product in the **Name** field and a description of the product in the **Description** field.
 
-Products in API Management can be **Open** 或 **Protected**. Protected products must be subscribed to before they can be used, while open products can be used without a subscription. Check **Require subscription** to create a protected product that requires a subscription. This is the default setting.
+Products in API Management can be **Open** or **Protected**. Protected products must be subscribed to before they can be used, while open products can be used without a subscription. Check **Require subscription** to create a protected product that requires a subscription. This is the default setting.
 
 Check **Require subscription approval** if you want an administrator to review and accept or reject subscription attempts to this product. If the box is unchecked, subscription attempts will be auto-approved. For more information on subscriptions, see [View subscribers to a product][].
 
@@ -58,9 +58,9 @@ To configure a product, click on the product name in the **Products** tab.
 
 ## <a name="add-apis"> </a>Add APIs to a product
 
-的 **Products** page contains four links for configuration: **摘要**, **设置**, **Visibility**和 **Subscribers**. The **摘要** tab is where you can add APIs and publish or unpublish a product.
+The **Products** page contains four links for configuration: **Summary**, **Settings**, **Visibility**, and **Subscribers**. The **Summary** tab is where you can add APIs and publish or unpublish a product.
 
-![摘要][api-management-new-product-summary]
+![Summary][api-management-new-product-summary]
 
 Before publishing your product you need to add one or more APIs. To do this, click **Add API to product**.
 
@@ -70,7 +70,7 @@ Select the desired APIs and click **Save**.
 
 ## <a name="add-description"> </a>Add descriptive information to a product
 
-的 **设置** tab allows you to provide detailed information about the product such as its purpose, the APIs it provides access to, and other useful information. The content is targeted at the developers that will be calling the API and can be written in plain text or HTML markup.
+The **Settings** tab allows you to provide detailed information about the product such as its purpose, the APIs it provides access to, and other useful information. The content is targeted at the developers that will be calling the API and can be written in plain text or HTML markup.
 
 ![Product settings][api-management-product-settings]
 
@@ -84,27 +84,27 @@ Optionally fill in the **Terms of use** field describing the terms of use for th
 
 ## <a name="publish-product"> </a>Publish a product
 
-Before the APIs in a product can be called, the product must be published. On the **摘要** tab for the product, click **发布**, and then click **Yes, publish it** to confirm. To make a previously published product private, click **Unpublish**.
+Before the APIs in a product can be called, the product must be published. On the **Summary** tab for the product, click **Publish**, and then click **Yes, publish it** to confirm. To make a previously published product private, click **Unpublish**.
 
 ![Publish product][api-management-publish-product]
 
 ## <a name="make-visible"> </a>Make a product visible to developers
 
-的 **Visibility** tab allows you to choose which roles are able to see the product on the developer portal and subscribe to the product.
+The **Visibility** tab allows you to choose which roles are able to see the product on the developer portal and subscribe to the product.
 
 ![Product visibility][api-management-product-visiblity]
 
 To enable or disable visibility of a product for the developers in a group, check or uncheck the check box beside the group and then click **Save**.
 
->有关更多信息，请参见 [How to create and use groups to manage developer accounts in Azure API Management][].
+>For more information, see [How to create and use groups to manage developer accounts in Azure API Management][].
 
 ## <a name="view-subscribers"> </a>View subscribers to a product
 
-的 **Subscribers** tab lists the developers who have subscribed to the product. The details and settings for each developer can be viewed by clicking on the developer's name. In this example no developers have yet subscribed to the product.
+The **Subscribers** tab lists the developers who have subscribed to the product. The details and settings for each developer can be viewed by clicking on the developer's name. In this example no developers have yet subscribed to the product.
 
 ![Developers][api-management-developer-list]
 
-## <a name="next-steps"> </a>接下来的步骤
+## <a name="next-steps"> </a>Next steps
 
 Once the desired APIs are added and the product published, developers can subscribe to the product and begin to call the APIs. For a tutorial that demonstrates these items as well as advanced product configuration see [How create and configure advanced product settings in Azure API Management][].
 

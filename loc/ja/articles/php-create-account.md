@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Create an Azure account" 
 	description="Create an account" 
 	authors="tfitzmac" 
@@ -16,6 +16,6 @@
     ms.date="06/03/2015"
 	ms.author="tomfitz"/>
 
-# Azure アカウントを作成し、プレビュー機能を有効にします。
+# Create an Azure account and enable preview features
 
-[AZURE。含まれます [azure のアカウントを作成します。](../includes/create-an-azure-account.md)]
+[AZURE.INCLUDE [create-an-azure-account](../includes/create-an-azure-account.md)]

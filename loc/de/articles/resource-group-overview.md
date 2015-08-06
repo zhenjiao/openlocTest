@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Azure Resource Manager Overview"
    description="Describes how to use Azure Resource Manager for deployment, management, and access control of resources on Azure."
    services="azure-resource-manager"
@@ -22,7 +22,7 @@ Applications are typically made up of many components – maybe a web app, datab
 
 Azure Resource Manager natively integrates access control into the management platform so you can specify which actions a user in your organization can take for a resource group.  
 
-> [AZURBLAU. HINWEIS] This topic describes resources, groups, and templates using the preview portal to demonstrate the concepts. However, you can also create, manage, and delete Azure resources using the [Azure CLI for Mac, Linux, and Windows](virtual-machines/xplat-cli-azure-resource-manager.md) as well as [PowerShell](powershell-azure-resource-manager.md).
+> [AZURE.NOTE] This topic describes resources, groups, and templates using the preview portal to demonstrate the concepts. However, you can also create, manage, and delete Azure resources using the [Azure CLI for Mac, Linux, and Windows](virtual-machines/xplat-cli-azure-resource-manager.md) as well as [PowerShell](powershell-azure-resource-manager.md).
 
 ## Resource Groups
 
@@ -70,7 +70,7 @@ For more information about defining the template, see [Authoring Azure Resource 
 
 For template schemas, see [Azure Resource Manager Schemas](https://github.com/Azure/azure-resource-manager-schemas).
 
-For information about using a template for deployment, see [Deploy an application with Azure Resource Manager template](azure-portal/resource-group-template-deploy.md) und [Deploy a complex application predictably in Azure](app-service-web/app-service-deploy-complex-application-predictably.md).
+For information about using a template for deployment, see [Deploy an application with Azure Resource Manager template](azure-portal/resource-group-template-deploy.md) and [Deploy a complex application predictably in Azure](app-service-web/app-service-deploy-complex-application-predictably.md).
 
 ## Tags
 
@@ -104,13 +104,13 @@ For examples of setting access policies, see [Managing and Auditing Access to Re
 
 Azure Resource Manager provides completely compatible operations through Azure PowerShell, Azure CLI for Mac, Linux, and Windows, the Azure portal, or REST API. You can use the interface that works best for you, and move quickly between the interfaces without confusion. The portal even displays notification for actions taken outside of the portal.
 
-For information about PowerShell, see [Using Azure PowerShell with Resource Manager](./powershell-azure-resource-manager.md) und [Azure Resource Manager Cmdlets](https://msdn.microsoft.com/library/azure/dn757692.aspx).
+For information about PowerShell, see [Using Azure PowerShell with Resource Manager](./powershell-azure-resource-manager.md) and [Azure Resource Manager Cmdlets](https://msdn.microsoft.com/library/azure/dn757692.aspx).
 
 For information about Azure CLI, see [Using the Azure CLI for Mac, Linux, and Windows with Azure Resource Management](./virtual-machines/xplat-cli-azure-resource-manager.md).
 
 For information about the REST API, see [Azure Resource Manager REST API Reference](https://msdn.microsoft.com/library/azure/dn790568.aspx).
 
-## Die nächsten Schritte
+## Next Steps
 Getting Started
 
 - [Using Azure PowerShell with Resource Manager](./powershell-azure-resource-manager.md)

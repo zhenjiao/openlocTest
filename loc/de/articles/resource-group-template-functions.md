@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Azure Resource Manager Template Functions"
    description="Describes the functions to use in an Azure Resource Manager template to retrieve values, format strings and retrieve deployment information."
    services="azure-resource-manager"
@@ -186,7 +186,7 @@ Enables an expression to derive its value from another resource's runtime state.
 | resourceName or resourceIdentifier |   Yes    | Name or the unique identifier of a resource.
 | apiVersion                         |   No     | API version of resource runtime state. Parameter should be used if resource is not provisioned within same template.
 
-Die **reference** function derives its value from a runtime state, and therefore cannot be used in the variables section. It can be used in outputs section of a template.
+The **reference** function derives its value from a runtime state, and therefore cannot be used in the variables section. It can be used in outputs section of a template.
 
 By using the reference expression, you declare that one resource depends on another resource if the referenced resource is provisioned within same template.
 
@@ -376,7 +376,7 @@ Returns the value of variable. The specified variable name must be defined in th
 | variable Name                      |   Yes    | The name of the variable to return.
 
 
-## Die nächsten Schritte
+## Next Steps
 - [Authoring Azure Resource Manager Templates](./resource-group-authoring-templates.md)
 - [Advanced Template Operations](./resource-group-advanced-template.md)
 - [Deploy an application with Azure Resource Manager Template](azure-portal/resource-group-template-deploy.md)

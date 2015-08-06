@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Azure Search Tier (Azure Architecture Patterns)" 
    description="The Azure Search Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document" 
    services="" 
@@ -16,32 +16,32 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# 紺碧検索層 (Azure アーキテクチャ パターン)
+# Azure Search Tier (Azure Architecture Patterns)
 
-、 [クラウド プラットフォーム統合フレームワーク (CPIF)](azure-architectures-cpif-overview.md) マイクロソフトのクラウド ソリューションにアプリケーションのワークロード統合ガイダンスを提供します。  
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution.  
 
-CPIF では、どのように組織、顧客およびパートナーの設計および Windows Server System Center、Azure のハイブリッド クラウド プラットフォームと管理機能を活用したクラウド向けのワークロードを展開をについて説明します。 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-、 **紺碧検索層** パターンの一部である、 **財団** エリア、CPIF アーキテクチャ ドキュメントで詳しく解説されています。 
+The **Azure Search Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-##  紺碧検索層
+##  Azure Search Tier
 
-Azure 検索層デザイン パターン詳細 Azure 機能および地理的な境界の間で予測可能なパフォーマンスと高可用性を提供することができます、アーキテクチャ パターンは、Azure 探索を用いた検索ソリューションを提供する検索サービスを提供するために必要なサービス。 紺碧の検索は「検索-として-、-サービス」展開、することなくアプリケーションに検索機能を組み込む開発者ことができます Microsoft Azure 内で構築された管理またはアプリケーションにこの機能を提供するインフラストラクチャ サービスを維持します。このパターンの目的は、設計のさまざまな状況での使用を対象として再現性のあるソリューションを提供することです。 
+The Azure Search Tier design pattern details the Azure features and services required to deliver search services that can provide predictable performance and high availability across geographic boundaries and provides an architectural pattern for using Azure Search in delivering a search Solution.  Azure Search is a “search-as-a-service” built within Microsoft Azure that allows developers to incorporate search capabilities into applications without having to deploy, manage or maintain infrastructure services to provide this capability to applications. The purpose of this pattern is to provide a repeatable solution intended for use in different situations and design. 
 
-## アーキテクチャ パターンの概要 
+## Architectural Pattern Overview 
 
-このドキュメントでは、Azure 検索コアの 2 つのバリエーションを用いたサービスの建築の範囲を示すためのコアのパターンについて説明します。 コア パターンは Azure 検索と周囲の Azure サービスから成り、エンド-エンドのデザインを作成するためのガイダンスを提供するものです。 パターン、特にサービスの共有と同時実行パターンのバリエーションもさまざまな要件、サービス レベル契約 (SLA) およびその他の特定の条件に基づいて指導を提供するためにここに含まれます。 
+This document describes a core pattern for using Azure Search with two variations of the core to demonstrate the architectural range of the service.  The core pattern consists of Azure Search and surrounding Azure services and is intended to provide guidance for creating end-to-end designs.  Variations of the pattern, specifically the Shared Service and Concurrency patterns, are also included in this section to provide guidance based on different requirements, Service Level Agreements (SLA) and other specific conditions. 
 
-##  追加のリソース
-[紺碧の検索層 (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+##  Additional Resources
+[Azure Search Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-## また見なさい
-[CPIF アーキテクチャ](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[グローバル ロード バランスの取れた Web 層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+[Global Load Balanced Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-[負荷バランスの取れたデータ層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+[Load Balanced Data Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-[ハイブリッド ネットワーク](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[バッチ処理層](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)

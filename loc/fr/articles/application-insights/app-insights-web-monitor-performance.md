@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Monitor your app's health and usage with Application Insights" 
 	description="Get started with Application Insights. Analyze usage, availability and performance of your on-premises or Microsoft Azure applications." 
 	services="application-insights" 
@@ -20,7 +20,7 @@
 *Application Insights is in preview.*
 
 
-Make sure your application is performing well, and find out quickly about any failures. [Aperçus de l'application][start] will tell you about any performance issues and exceptions, and help you find and diagnose the root causes.
+Make sure your application is performing well, and find out quickly about any failures. [Application Insights][start] will tell you about any performance issues and exceptions, and help you find and diagnose the root causes.
 
 Application Insights can monitor ASP.NET web applications and WCF services, hosted on-premise or on virtual machines, as well as Microsoft Azure websites. 
 
@@ -47,7 +47,7 @@ Click a chart to choose which metrics it displays, or add a new chart and select
 
 ![Click a graph to choose metrics](./media/app-insights-web-monitor-performance/appinsights-61perfchoices.png)
 
-> [AZURE. REMARQUE] **Uncheck all the metrics** to see the full selection that is available. The metrics fall into groups; when any member of a group is selected, only the other members of that group appear.
+> [AZURE.NOTE] **Uncheck all the metrics** to see the full selection that is available. The metrics fall into groups; when any member of a group is selected, only the other members of that group appear.
 
 
 ## <a name="metrics"></a>What does it all mean? Performance tiles and reports
@@ -152,7 +152,7 @@ Here are a few tips for finding and diagnosing performance issues:
 * Compare the Request count with other metrics to see if failures or slow response are related to load.
 * [Insert and search trace statements][diagnostic] in your code to help pinpoint problems.
 
-## <a name="next"></a>Prochaines étapes
+## <a name="next"></a>Next steps
 
 [Web tests][availability] - Have web requests sent to your application at regular intervals from around the world.
 

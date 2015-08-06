@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Microsoft Azure Subscription and Service Limits, Quotas, and Constraints"
 	description="Provides a list of common Azure subscription and service limits, quotas, and constraints. This includes information on how to increase limits along with maximum values."
 	services=""
@@ -16,184 +16,184 @@
 	ms.date="07/15/2015"
 	ms.author="jroth"/>
 
-# Himmelblau-Abo und Service-Begrenzungen, Quoten und Einschränkungen
+# Azure Subscription and Service Limits, Quotas, and Constraints
 
-## Übersicht
+## Overview
 
-Dieses Dokument legt einige der am häufigsten verwendeten Microsoft Azure Grenzen. Beachten Sie, dass dies derzeit nicht alle Azure Dienste abdeckt. Diese Grenzwerte werden im Laufe der Zeit erweitert und aktualisiert, um mehr von der Plattform zu decken.
+This document specifies some of the most common Microsoft Azure limits. Note that this does not currently cover all Azure services. Over time, these limits will be expanded and updated to cover more of the platform.
 
-> [AZURBLAU. HINWEIS] Wenn Sie die oben genannten Grenze anheben wollen die **Standardlimit**Sie können [Öffnen Sie eine Support-Anfrage online-Kunden kostenlos](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/). Die Grenzen können nicht erhoben werden, über die **Höchstgrenze** Wert in den folgenden Tabellen. Wenn es gibt keine **Höchstgrenze** Spalte, dann die angegebene Ressource verfügt nicht über einstellbare Grenzwerte.
+> [AZURE.NOTE] If you want to raise the limit above the **Default Limit**, you can [open an online customer support request at no charge](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/). The limits cannot be raised above the **Maximum Limit** value in the tables below. If there is no **Maximum Limit** column, then the specified resource does not have adjustable limits.
 
 
-### Grenzen und den azurblauen Ressourcen-Manager
+### Limits and the Azure Resource Manager
 
-Es ist jetzt möglich, mehrere Azure Ressourcen in einer einzigen Azure-Ressourcengruppe zu kombinieren. Bei der Verwendung von Ressourcengruppen werden Grenzen, die einst global auf regionaler Ebene mit den Azure-Ressourcen-Manager verwaltet. Weitere Informationen über Azure Ressourcengruppen finden Sie [Verwendung von Ressourcengruppen Ihre Azure Ressourcen verwalten](resource-group-portal.md).
+It is now possible to combine multiple Azure resources in to a single Azure Resource Group. When using Resource Groups, limits that once were global become managed at a regional level with the Azure Resource Manager. For more information about Azure Resource Groups, see [Using resource groups to manage your Azure resources](resource-group-portal.md).
 
-Im Rahmen unten wurde eine neue Tabelle hinzugefügt, um irgendwelche Unterschiede in Grenzen zu reflektieren, bei Verwendung der Azure-Ressourcen-Manager. Zum Beispiel gibt es eine **Abonnement-Grenzen** Tabelle und eine **Abonnement-Grenzen - himmelblau Ressourcenmanager** Tabelle. Wenn ein Grenzwert für beide Szenarien gilt, wird sie nur in der ersten Tabelle angezeigt. Sofern nicht anders angegeben, sind Grenzwerte global in allen Regionen.
+In the limits below, a new table has been added to reflect any differences in limits when using the Azure Resource Manager. For example, there is a **Subscription Limits** table and a **Subscription Limits - Azure Resource Manager** table. When a limit applies to both scenarios, it is only shown in the first table. Unless otherwise indicated, limits are global across all regions.
 
-> [AZURBLAU. HINWEIS] Es ist wichtig zu betonen, dass die Quoten für Ressourcen in Azure Ressourcengruppen pro-Region durch Ihr Abonnement zugänglich sind, und sind nicht pro-Abonnement, wie die Dienst Verwaltung Quoten sind. Kern-Quoten nutzen wir als Beispiel. Wenn Sie eine Quotenerhöhung mit Unterstützung für Kerne anfordern müssen, müssen Sie wie viele Kerne entscheiden, in welchen Regionen verwenden, und nehmen Sie dann eine bestimmte Anforderung Azure Ressourcengruppe Kern die Kontingente für die Beträge und die Regionen, die Sie möchten. Also, wenn du 30 Kerne in Westeuropa zu verwenden musst, um Ihre Anwendung auszuführen, da; Sie sollten speziell 30 Kerne in Westeuropa anfordern. Aber Sie müssen kein Kern-Kontingent in jeder anderen Region erhöhen--nur Westeuropa wird die Quote 30-Kern haben.
+> [AZURE.NOTE] It is important to emphasize that quotas for resources in Azure Resource Groups are per-region accessible by your subscription, and are not per-subscription, as the service management quotas are. Let's use core quotas as an example. If you need to request a quota increase with support for cores, you need to decide how many cores you want to use in which regions, and then make a specific request for Azure Resource Group core quotas for the amounts and regions that you want. Therefore, if you need to use 30 cores in West Europe to run your application there; you should specifically request 30 cores in West Europe. But you will not have a core quota increase in any other region -- only West Europe will have the 30-core quota.
 <!-- -->
 As a result, you may find it useful to consider deciding what your Azure Resource Group quotas need to be for your workload in any one region, and request that amount in each region into which you are considering deployment. See [troubleshooting deployment issues](resource-group-deploy-debug.md##authentication-subscription-role-and-quota-issues) for more help discovering your current quotas for specific regions.
 
-## Abonnement-Grenzen
+## Subscription Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Abonnement-Grenzen](../includes/azure-subscription-limits.md)]
+[AZURE.INCLUDE [azure-subscription-limits](../includes/azure-subscription-limits.md)]
 
-### Abonnement-Grenzen - himmelblau Ressourcenmanager
+### Subscription Limits - Azure Resource Manager
 
-Die folgenden Einschränkungen gelten bei Verwendung des Ressourcen-Manager für Azure und Azure Ressourcengruppen. Grenzen, die nicht mit der Azure-Ressourcen-Manager geändert wurden sind nicht aufgeführt. Entnehmen Sie bitte der oben stehenden Tabelle genannten Grenzen.
+The following limits apply when using the Azure Resource Manager and Azure Resource Groups. Limits that have not changed with the Azure Resource Manager are not listed below. Please refer to the previous table for those limits.
 
-[AZURBLAU. ENTHALTEN [Azure-Subscription-Limits-Azure-Resource-Manager](../includes/azure-subscription-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-subscription-limits-azure-resource-manager](../includes/azure-subscription-limits-azure-resource-manager.md)]
 
 
-## Ressourcengruppe Grenzen
+## Resource Group Limits
 
-[AZURBLAU. ENTHALTEN [-Azurblau-Ressourcenbegrenzung-Gruppen](../includes/azure-resource-groups-limits.md)]
+[AZURE.INCLUDE [azure-resource-groups-limits](../includes/azure-resource-groups-limits.md)]
 
 
-## Grenzen der virtuellen Maschinen
+## Virtual Machines Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-virtuelle-Maschinen-Grenzen](../includes/azure-virtual-machines-limits.md)]
+[AZURE.INCLUDE [azure-virtual-machines-limits](../includes/azure-virtual-machines-limits.md)]
 
 
-### Virtuelle Maschinen Grenzen - himmelblau Ressourcenmanager
+### Virtual Machines Limits - Azure Resource Manager
 
-Die folgenden Einschränkungen gelten bei Verwendung des Ressourcen-Manager für Azure und Azure Ressourcengruppen. Grenzen, die nicht mit der Azure-Ressourcen-Manager geändert wurden sind nicht aufgeführt. Entnehmen Sie bitte der oben stehenden Tabelle genannten Grenzen.
+The following limits apply when using the Azure Resource Manager and Azure Resource Groups. Limits that have not changed with the Azure Resource Manager are not listed below. Please refer to the previous table for those limits.
 
-[AZURBLAU. ENTHALTEN [Azure-Virtual-Machines-Limits-Azure-Resource-Manager](../includes/azure-virtual-machines-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-virtual-machines-limits-azure-resource-manager](../includes/azure-virtual-machines-limits-azure-resource-manager.md)]
 
 
-## Vernetzung von Grenzen
+## Networking Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-virtuelle-Netzwerk-Grenzen](../includes/azure-virtual-network-limits.md)]
+[AZURE.INCLUDE [azure-virtual-network-limits](../includes/azure-virtual-network-limits.md)]
 
 
-### Vernetzung von Grenzen – himmelblau Ressourcenmanager
+### Networking Limits – Azure Resource Manager
 
-Die folgenden Einschränkungen gelten bei Verwendung des Ressourcen-Manager für Azure und Azure Ressourcengruppen. Grenzen, die nicht mit der Azure-Ressourcen-Manager geändert wurden sind nicht aufgeführt. Entnehmen Sie bitte der oben stehenden Tabelle genannten Grenzen.
+The following limits apply when using the Azure Resource Manager and Azure Resource Groups. Limits that have not changed with the Azure Resource Manager are not listed below. Please refer to the previous table for those limits.
 
-[AZURBLAU. ENTHALTEN [Azure-Virtual-Network-Limits-Azure-Resource-Manager](../includes/azure-virtual-network-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-virtual-network-limits-azure-resource-manager](../includes/azure-virtual-network-limits-azure-resource-manager.md)]
 
 
-## Speicher-Limits
+## Storage Limits
 
-### Standard-Speicher-Limits 
+### Standard Storage Limits 
 
-[AZURBLAU. ENTHALTEN [Azurblau-Speichergrenzwerte](../includes/azure-storage-limits.md)]
+[AZURE.INCLUDE [azure-storage-limits](../includes/azure-storage-limits.md)]
 
-Weitere Informationen über Konto Speicherbegrenzungen finden Sie unter [Himmelblau-Speicherskalierbarkeit und Performance-Ziele](../articles/storage/storage-scalability-targets.md).
+For additional details on storage account limits, see [Azure Storage Scalability and Performance Targets](../articles/storage/storage-scalability-targets.md).
 
 
-### Prämie von Speichergrenzwerten
+### Premium Storage Limits
 
-[AZURBLAU. ENTHALTEN [Azure-Storage-Grenzen-Prämie-Speicher](../includes/azure-storage-limits-premium-storage.md)]
+[AZURE.INCLUDE [azure-storage-limits-premium-storage](../includes/azure-storage-limits-premium-storage.md)]
 
 
-### Speicher-Limits - himmelblau Ressourcenmanager
+### Storage Limits - Azure Resource Manager
 
-[AZURBLAU. ENTHALTEN [Azure-Storage-Limits-Azure-Resource-Manager](../includes/azure-storage-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-storage-limits-azure-resource-manager](../includes/azure-storage-limits-azure-resource-manager.md)]
 
 
-## Cloud-Service-Grenzen
+## Cloud Services Limits
 
-[AZURBLAU. ENTHALTEN [Azure-Cloud-Dienste-Grenzen](../includes/azure-cloud-services-limits.md)]
+[AZURE.INCLUDE [azure-cloud-services-limits](../includes/azure-cloud-services-limits.md)]
 
 
-## App-Service-Begrenzungen - Web-Apps, Mobile Apps, API-Anwendungen, Logik-Apps
+## App Service Limits - Web Apps, Mobile Apps, API Apps, Logic Apps
 
-[AZURBLAU. ENTHALTEN [Azurblau-Websites-Grenzen](../includes/azure-websites-limits.md)]
+[AZURE.INCLUDE [azure-websites-limits](../includes/azure-websites-limits.md)]
 
-## Batch-Grenzen
+## Batch Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Batch-Grenzen](../includes/azure-batch-limits.md)]
+[AZURE.INCLUDE [azure-batch-limits](../includes/azure-batch-limits.md)]
 
 
-## DocumentDB Grenzen
+## DocumentDB Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Documentdb-Grenzen](../includes/azure-documentdb-limits.md)]
+[AZURE.INCLUDE [azure-documentdb-limits](../includes/azure-documentdb-limits.md)]
 
 
-## Mobilen Einsatz Grenzen
+## Mobile Engagement Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Mobil-Engagement-Grenzen](../includes/azure-mobile-engagement-limits.md)]
+[AZURE.INCLUDE [azure-mobile-engagement-limits](../includes/azure-mobile-engagement-limits.md)]
 
 
-## Suche-Grenzen
+## Search Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Suche-Grenzen](../includes/azure-search-limits.md)]
+[AZURE.INCLUDE [azure-search-limits](../includes/azure-search-limits.md)]
 
-Weitere Informationen über Azure Suche Grenzen sehen [Grenzen und Einschränkungen](https://msdn.microsoft.com/library/azure/dn798934.aspx).
+For additional details on Azure Search limits, see [Limits and Constraints](https://msdn.microsoft.com/library/azure/dn798934.aspx).
 
-## SQL-Datenbank-Grenzen
+## SQL Database Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Sql-Datenbank-Grenzen](../includes/azure-sql-database-limits.md)]
+[AZURE.INCLUDE [azure-sql-database-limits](../includes/azure-sql-database-limits.md)]
 
-Weitere Informationen über SQL-Datenbank finden Sie in den folgenden Themen:
+For additional details on SQL Database limits, please see the following topics:
 
- - [Azure SQL-Datenbank-Service-Tiers (Editionen)](http://msdn.microsoft.com/library/azure/dn741340.aspx)
- - [Azure SQL-Datenbank-Service-Tiers und Leistungswerte](http://msdn.microsoft.com/library/azure/dn741336.aspx)
- - [Datenbank-Durchsatz-Einheit (DTU)-Quoten](http://msdn.microsoft.com/library/azure/ee336245.aspx#DTUs)
- - [SQL-Datenbank-Ressourcenbegrenzung](sql-database/sql-database-resource-limits.md)
+ - [Azure SQL Database Service Tiers (Editions)](http://msdn.microsoft.com/library/azure/dn741340.aspx)
+ - [Azure SQL Database Service Tiers and Performance Levels](http://msdn.microsoft.com/library/azure/dn741336.aspx)
+ - [Database Throughput Unit (DTU) Quotas](http://msdn.microsoft.com/library/azure/ee336245.aspx#DTUs)
+ - [SQL Database Resource Limits](sql-database/sql-database-resource-limits.md)
 
-## Media-Dienste-Grenzen
+## Media Services Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Mediaservices-Grenzen](../includes/azure-mediaservices-limits.md)]
+[AZURE.INCLUDE [azure-mediaservices-limits](../includes/azure-mediaservices-limits.md)]
 
-## Mobile Dienste Grenzen
+## Mobile Services Limits
 
-[AZURBLAU. ENTHALTEN [Handy-Service-Bereiche](../includes/mobile-services-limits.md)]
+[AZURE.INCLUDE [mobile-services-limits](../includes/mobile-services-limits.md)]
 
-## Service Bus Grenzen
+## Service Bus Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Servicebus-Grenzen](../includes/service-bus-quotas-table.md)]
+[AZURE.INCLUDE [azure-servicebus-limits](../includes/service-bus-quotas-table.md)]
 
-## Stream-Analytics-Grenzen
+## Stream Analytics Limits
 
-[AZURBLAU. ENTHALTEN [Stream-Analytik-Grenzen-table](../includes/stream-analytics-limits-table.md)]
+[AZURE.INCLUDE [stream-analytics-limits-table](../includes/stream-analytics-limits-table.md)]
 
-## Active Directory-Grenzen
+## Active Directory Limits
 
-[AZURBLAU. ENTHALTEN [Service-AAD-Begrenzungen](../includes/active-directory-service-limits-include.md)]
+[AZURE.INCLUDE [AAD-service-limits](../includes/active-directory-service-limits-include.md)]
 
 
-## Azurblaue RemoteApp-Grenzen
+## Azure RemoteApp Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Remoteapp-Grenzen](../includes/azure-remoteapp-limits.md)]
+[AZURE.INCLUDE [azure-remoteapp-limits](../includes/azure-remoteapp-limits.md)]
 
-## StorSimple Grenzen
+## StorSimple System Limits
 
-[AZURBLAU. ENTHALTEN [Storsimple-Grenzen-table](../includes/storsimple-limits-table.md)]
+[AZURE.INCLUDE [storsimple-limits-table](../includes/storsimple-limits-table.md)]
 
 
-## Grenzen der operativen Einblicke
+## Operational Insights Limits
 
-[AZURBLAU. ENTHALTEN [Einblicke-Grenzwerte](../includes/operational-insights-limits.md)]
+[AZURE.INCLUDE [operational-insights-limits](../includes/operational-insights-limits.md)]
 
-## Sicherung der Grenzen
+## Backup Limits
 
-[AZURBLAU. ENTHALTEN [Azurblau-Backup-Grenzen](../includes/azure-backup-limits.md)]
+[AZURE.INCLUDE [azure-backup-limits](../includes/azure-backup-limits.md)]
 
-## Website-Recovery-Grenzen
+## Site Recovery Limits
 
-[AZURBLAU. ENTHALTEN [Website-Erholung-Grenzen](../includes/site-recovery-limits.md)]
+[AZURE.INCLUDE [site-recovery-limits](../includes/site-recovery-limits.md)]
 
-## API-Management-Grenzen
+## API Management Limits
 
-[AZURBLAU. ENTHALTEN [API-Verwaltung-Dienst-Grenzen](../includes/api-management-service-limits.md)]
+[AZURE.INCLUDE [api-management-service-limits](../includes/api-management-service-limits.md)]
 
-## Azurblaue Redis Cachelimits
+## Azure Redis Cache Limits
 
-[AZURBLAU. ENTHALTEN [Redis-Dienst-Cachelimits](../includes/redis-cache-service-limits.md)]
+[AZURE.INCLUDE [redis-cache-service-limits](../includes/redis-cache-service-limits.md)]
 
-## Wesentliche Depot Grenzen
+## Key Vault Limits
 
-[AZURBLAU. ENTHALTEN [Schlüssel-Depot-Grenzen](../includes/key-vault-limits.md)]
+[AZURE.INCLUDE [key-vault-limits](../includes/key-vault-limits.md)]
 
-## Multi-Faktor-Authentifizierung
-[AZURBLAU. ENTHALTEN [Azurblau-Mfa-Dienst-Grenzen](../includes/azure-mfa-service-limits.md)]
+## Multi-Factor Authentication
+[AZURE.INCLUDE [azure-mfa-service-limits](../includes/azure-mfa-service-limits.md)]
 
-## Siehe auch
+## See Also
 
-[Himmelblau Grenzen und erhöht das Verständnis](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/)
+[Understanding Azure Limits and Increases](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/)
 
-[Virtuelle Maschine und Cloud-Service-Größen für Azure](http://msdn.microsoft.com/library/azure/dn197896.aspx)
+[Virtual Machine and Cloud Service Sizes for Azure](http://msdn.microsoft.com/library/azure/dn197896.aspx)

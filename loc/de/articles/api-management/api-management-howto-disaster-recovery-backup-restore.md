@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to implement disaster recovery using service backup and restore in Azure API Management" 
 	description="Learn how to use backup and restore to perform disaster recovery in Azure API Management." 
 	services="api-management" 
@@ -24,11 +24,11 @@ To recover from availability problems affecting the region where your API Manage
 
 This guide shows how to authenticate Azure Resource Manager requests, and how to backup and restore your API Management service instances.
 
->[AZURBLAU. HINWEIS] The process for backing up and restoring an API Management service instance for disaster recovery can also be used for replicating API Management service instances for scenarios such as staging.
+>[AZURE.NOTE] The process for backing up and restoring an API Management service instance for disaster recovery can also be used for replicating API Management service instances for scenarios such as staging.
 
 ## Authenticating Azure Resource Manager requests
 
->[AZURBLAU. WICHTIG] The REST API for backup and restore uses Azure Resource Manager and has a different authentication mechanism than the REST APIs for managing your API Management entities. The steps in this section describe how to authenticate Azure Resource Manager requests. For more information, see [Authenticating Azure Resource Manager requests](http://msdn.microsoft.com/library/dn790557.aspx).
+>[AZURE.IMPORTANT] The REST API for backup and restore uses Azure Resource Manager and has a different authentication mechanism than the REST APIs for managing your API Management entities. The steps in this section describe how to authenticate Azure Resource Manager requests. For more information, see [Authenticating Azure Resource Manager requests](http://msdn.microsoft.com/library/dn790557.aspx).
 
 All of the tasks that you do on resources using the Azure Resource Manager must be authenticated with Azure Active Directory using the following steps.
 
@@ -38,7 +38,7 @@ All of the tasks that you do on resources using the Azure Resource Manager must 
 
 The first step is to create an Azure Active Directory application. Log into the [Management portal](http://manage.windowsazure.com/) using the subscription that contains your API Management service instance and navigate to the **Applications** tab for your default Azure Active Directory.
 
->[AZURBLAU. HINWEIS] If the Azure Active Directory default directory is not visible to your account, contact the administrator of the Azure subscription to grant the required permissions to your account. For information on locating your default directory, see [Locate your default directory in the Azure Portal](../virtual-machines/resource-group-create-work-id-from-persona.md/#locate-your-default-directory-in-the-azure-portal).
+>[AZURE.NOTE] If the Azure Active Directory default directory is not visible to your account, contact the administrator of the Azure subscription to grant the required permissions to your account. For information on locating your default directory, see [Locate your default directory in the Azure Portal](../virtual-machines/resource-group-create-work-id-from-persona.md/#locate-your-default-directory-in-the-azure-portal).
 
 ![Create Azure Active Directory application][api-management-add-aad-application]
 
@@ -48,11 +48,11 @@ Once the application is saved, click **Configure**, scroll down to the **permiss
 
 ![Add permissions][api-management-aad-permissions-add]
 
-Select **Windows** **Azure Servicemanagement API** and click the checkbox to add the application.
+Select **Windows** **Azure Service Management API** and click the checkbox to add the application.
 
 ![Add permissions][api-management-aad-permissions]
 
-Click **Delegated Permissions** beside the newly added **Windows** **Azure Servicemanagement API** application, check the box for **Access Azure Service Management (preview)**, and click **Save**.
+Click **Delegated Permissions** beside the newly added **Windows** **Azure Service Management API** application, check the box for **Access Azure Service Management (preview)**, and click **Save**.
 
 ![Add permissions][api-management-aad-delegated-permissions]
 
@@ -81,7 +81,7 @@ Prior to invoking the APIs that generate the backup and restore it, it is necess
     	}
 	}
 
-Replace `{tentand id}`, `{application id}`, und `{redirect uri}` using the following instructions.
+Replace `{tentand id}`, `{application id}`, and `{redirect uri}` using the following instructions.
 
 Replace `{tenant id}` with the tenant id of the Azure Active Directory application you just created. You can access the id by clicking **View endpoints**.
 
@@ -89,7 +89,7 @@ Replace `{tenant id}` with the tenant id of the Azure Active Directory applicati
 
 ![Endpoints][api-management-endpoint]
 
-Replace `{application id}` und `{redirect uri}` using the **Client Id** and  the URL from the **Redirect Uris** section from your Azure Active Directory application's **Configure** tab. 
+Replace `{application id}` and `{redirect uri}` using the **Client Id** and  the URL from the **Redirect Uris** section from your Azure Active Directory application's **Configure** tab. 
 
 ![Resources][api-management-aad-resources]
 
@@ -160,11 +160,11 @@ Set the value of the `Content-Type` request header to `application/json`.
 
 Restore is a long running operation that may take up to 30 or more minutes to complete.  If the request was successful and the restore process was initiated you’ll receive a `202 Accepted` response status code with a `Location` header.  Make 'GET' requests to the URL in the `Location` header to find out the status of the operation. While the restore is in progress you will continue to receive '202 Accepted' status code. A response code of `200 OK` will indicate successful completion of the restore operation.
 
->[AZURBLAU. WICHTIG] **The SKU** of the service being restored into **must match** the SKU of the backed up service being restored.
+>[AZURE.IMPORTANT] **The SKU** of the service being restored into **must match** the SKU of the backed up service being restored.
 >
 >**Changes** made to the service configuration (e.g. APIs, policies, developer portal appearance) while restore operation is in progress **could be overwritten**.
 
-## Die nächsten Schritte
+## Next steps
 Check out the following Microsoft blogs for two different walkthroughs of the backup/restore process.
 
 -	[Replicate Azure API Management Accounts](https://www.returngis.net/en/2015/06/replicate-azure-api-management-accounts/) 

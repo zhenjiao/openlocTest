@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Monitor a SharePoint site with Application Insights" 
 	description="Start monitoring a new application with a new instrumentation key" 
 	services="application-insights" 
@@ -18,7 +18,7 @@
 # Monitor a SharePoint site with Application Insights
 
 
-[AZURE。含まれます [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
+[AZURE.INCLUDE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
 
 Visual Studio Application Insights monitors the availability, performance and usage of your apps. Here you'll learn how to set it up for a SharePoint site.
 
@@ -98,11 +98,11 @@ Click through Users to see details about new users and their locations.
 
 
 
-## 次のステップ
+## Next Steps
 
 * [Web tests](app-insights-monitor-web-app-availability.md) to monitor the availability of your site.
 
-* [アプリケーションのインサイト](app-insights-get-started.md) for other types of app.
+* [Application Insights](app-insights-get-started.md) for other types of app.
 
 
 

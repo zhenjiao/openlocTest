@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Create a new Application Insights resource" 
 	description="Set up for a new application and get a new instrumentation key. Application Insights monitors the performance and usage of live applications." 
 	services="application-insights" 
@@ -18,7 +18,7 @@
 # Create a new Application Insights resource
 
 
-To avoid mixing up telemetry from debugging, test, and production versions of your app, create separate [Aperçus de l'application][start] resources to receive the data from each version.
+To avoid mixing up telemetry from debugging, test, and production versions of your app, create separate [Application Insights][start] resources to receive the data from each version.
 
 The data received from your application is stored and processed by Application Insights in a Microsoft Azure *resource*. Each resource is identified by an *instrumentation key.* In your app, the key is provided to the Application Insights SDK so that it can send the data it collects to the right resource. The key can be provided either in code or in ApplicationInsights.config. By changing the key in the SDK, you can direct data to different resources. 
 

@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Install Python and the SDK - Azure"
 	description="Learn how to install Python and the SDK to use with Azure."
 	services=""
@@ -33,7 +33,7 @@ Python is pretty easy to setup on Windows and comes pre-installed on Mac and Lin
 The Azure SDK for Python includes components that allow you to develop, deploy, and manage Python applications for Azure. Specifically, the Azure SDK for Python includes the following:
 
 * **The Python Client Libraries for Azure**. These class libraries provide an interface for accessing Azure features, such as storage and service bus, and managing Azure resources, such as storage accounts, virtual machines, etc.
-* **蔚蓝的仿真器 (仅限 Windows)**. The compute and storage emulators are local emulators of Cloud Services and Data Management Services that allow you to test an application locally. The Azure Emulators run on Windows only.
+* **The Azure Emulators (Windows Only)**. The compute and storage emulators are local emulators of Cloud Services and Data Management Services that allow you to test an application locally. The Azure Emulators run on Windows only.
 
 ## Which Python and which version to use
 
@@ -50,7 +50,7 @@ Only **CPython** is tested and supported for the Python Azure SDK and Azure serv
 There are several ways to get CPython:
 
 * Directly from [www.python.org][]
-* From a reputable distro such as [www.continuum.io][], [www.enthought.com][] 或 [www.activestate.com][]
+* From a reputable distro such as [www.continuum.io][], [www.enthought.com][] or [www.activestate.com][]
 * Build from source!
 
 Unless you have a specific need, we recommend the first two options, as described below.
@@ -62,7 +62,7 @@ For Windows, you can use the Web Platform Installer to streamline the installati
 * [Microsoft Azure SDK for Python 2.7][]
 * [Microsoft Azure SDK for Python 3.4][]
 
-**注意:** On Windows Server, in order to download the WebPI installer you may have to configure IE ESC settings (Start/Administrative Tools/Server Manager/Local Server, then click **IE Enhanced Security Configuration**, set to Off)
+**Note:** On Windows Server, in order to download the WebPI installer you may have to configure IE ESC settings (Start/Administrative Tools/Server Manager/Local Server, then click **IE Enhanced Security Configuration**, set to Off)
 
 
 ### Python 2.7
@@ -105,24 +105,24 @@ After the installation you should have Python and the Client Libraries available
 
 ### Getting More Packages
 
-的 [Python Package Index][] (PyPI) has a rich selection of Python libraries.  If you chose to install a Distro, you'll already have most of the interesting bits for a variety of scenarios from web development to Technical Computing.
+The [Python Package Index][] (PyPI) has a rich selection of Python libraries.  If you chose to install a Distro, you'll already have most of the interesting bits for a variety of scenarios from web development to Technical Computing.
 
 
-### Visual studio 的 Python 工具
+### Python Tools for Visual Studio
 
-[Visual studio 的 Python 工具][] (PTVS) is a free/OSS plugin from Microsoft which turns VS into a full-fledged Python IDE:
+[Python Tools for Visual Studio][] (PTVS) is a free/OSS plugin from Microsoft which turns VS into a full-fledged Python IDE:
 
 ![how-to-install-python-ptvs](./media/python-how-to-install/how-to-install-python-ptvs.png)
 
 Using PTVS is optional, but is recommended as it gives you Python and Web Project/Solution support, debugging, profiling, interactive window, Template editing and Intellisense.
 
-PTVS also makes it easy to deploy to Microsoft Azure, with support for deployment to [云服务][] 和 [Websites][].
+PTVS also makes it easy to deploy to Microsoft Azure, with support for deployment to [Cloud Services][] and [Websites][].
 
 PTVS works with your existing Visual Studio 2010, 2012 or 2013 installation.  For documentation, downloads and discussions, see [Python Tools for Visual Studio on CodePlex][].  
 
 ## Windows Uninstall
 
-的 **Azure SDK for Python** WebPI products are not applications in the typical sense, but actually a collection of distinct products such as 32-bit Python 2.7/3.4, Azure client libraries for Python, etc. which are bundled together.  A consequence of this is it has no conventional uninstaller of its own, so you will need to remove the programs that it installs individually from the Windows Control Panel.  
+The **Azure SDK for Python** WebPI products are not applications in the typical sense, but actually a collection of distinct products such as 32-bit Python 2.7/3.4, Azure client libraries for Python, etc. which are bundled together.  A consequence of this is it has no conventional uninstaller of its own, so you will need to remove the programs that it installs individually from the Windows Control Panel.  
 
 If you ever wish to reinstall **Azure SDK for Python**, simply open a PowerShell command prompt as an administrator and run the following command:
 
@@ -172,7 +172,7 @@ For information on how to setup a Linux VM, please see the [Create a Virtual Mac
 
 Using Git deployment, you can develop a Python web application and publish it to an Azure Website from any operating system.  When you push your repository to Azure, it will automatically create a virtual environment and pip install your required packages.
 
-For more information on developing and publishing Azure Websites, see the tutorials for [Creating Websites with Django][], [Creating Websites with Bottle][] 和 [Creating Websites with Flask][]. For more general information on using any WSGI compliant framework, see [Configuring Python with Azure Websites][].
+For more information on developing and publishing Azure Websites, see the tutorials for [Creating Websites with Django][], [Creating Websites with Bottle][] and [Creating Websites with Flask][]. For more general information on using any WSGI compliant framework, see [Configuring Python with Azure Websites][].
 
 
 ## Additional Software and Resources:

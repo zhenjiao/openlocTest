@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="NuGet Packages | Microsoft Azure"
    description="Guidance on NuGet Packages for general retry policy work."
    services=""
@@ -23,10 +23,10 @@
 more important to smartly handle. The Transient Fault Handling work handled by the
 retry policies NuGet package can help handle retries within a single instance.</p>
 
-> Ce document s'inspire d'un projet comme une preuve de concept. Il n'est pas le réel
-  document d'orientation révisé.
+> This document was based on a draft as a proof of concept. It is not the actual
+  reviewed guidance.
 
-Les patrons & Pratiques `TransientFaultHandling` code est recommandé pour le travail sur les politiques générales de réessayer.
+The Patterns & Practices `TransientFaultHandling` code is recommended for general retry policy work.
 
 ```
 Install-Package EnterpriseLibrary.WindowsAzure.TransientFaultHandling
@@ -34,13 +34,13 @@ Install-Package EnterpriseLibrary.WindowsAzure.TransientFaultHandling
 
 ## Configuration
 
-Section inclut les informations de configuration de la fonctionnalité de réessayer :
+Section includes the configuration information for the retry feature:
 
-Paramètre | Description
+Parameter            | Description
 -------------------- | ----------------------
-MaximumExecutionTime | Durée d'exécution maximale pour la demande, y compris tous les potentiels de nouvelles tentatives.
-ServerTimeOut | Intervalle de délai du serveur pour la demande
-RetryPolicy | Nouvelle tentative de politique. Voir la section politiques ci-dessous
+MaximumExecutionTime | Maximum execution time for the request, including all potential retry attempts.
+ServerTimeOut        | Server timeout interval for the request
+RetryPolicy          | Retry policy. See Policies section below
 
 ```csharp
 /// <summary>
@@ -56,12 +56,12 @@ public interface IRequestOptions
 }
 ```
 
-Programmation :
+Programmatic:
 
-- Support pour fixation sur le Client.
-- Activer la substitution de services offerts par le client
+- Support for setting on the Client.
+- Enable overriding at operations provided by client
 
-Fichier de configuration :
+Configuration file:
 
 ```xml
 <RetryPolicyConfiguration defaultRetryStrategy="Fixed Interval Retry Strategy">
@@ -73,9 +73,9 @@ Fichier de configuration :
 </RetryPolicyConfiguration>
 ```
 
-## Politiques
+## Policies
 
-### Exponentielle
+### Exponential
 
 Used for spacing out repeated attempts of service invocations exponentially to avoid service throttling.
 
@@ -85,7 +85,7 @@ Exponentially increase the backoff interval between subsequent attempts. Add ran
 
 __Configuration:__
 
-Paramètre | Description
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 maxAttempt           | Number of retry attempts.
 deltaBackoff         | Back-off interval between retries. Multiples of this timespan will be used for subsequent retry attempts.
@@ -116,7 +116,7 @@ Perform a specified number of retries, using a specified fixed time interval bet
 
 __Configuration:__
 
-Paramètre | Description
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 maxAttempt | Number of retry attempts.
 deltaBackoff | Back-off interval between retries.
@@ -182,7 +182,7 @@ public interface IRetryPolicy
 
 Log retries as ETW events using an EventSource. Here are the fields that should be logged for every retry attempt
 
-Paramètre | Description
+Parameter            | Description
 -------------------- | -------------------------------------------------------
 requestId | ""
 policyType | "RetryExponential"

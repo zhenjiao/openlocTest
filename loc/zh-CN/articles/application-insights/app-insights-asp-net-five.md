@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Insights for ASP.NET 5" 
 	description="Monitor web applications for availability, performance and usage." 
 	services="application-insights" 
@@ -36,7 +36,7 @@ In the [Azure portal][portal], create a new Application Insights resource. Pick 
 
 ![Click New, Developer services, Application Insights](./media/app-insights-asp-net-five/01-new-asp.png)
 
-的 [resource][roles] blade that opens is the place where you'll see performance and usage data about your app. To get back to it next time you login to Azure, you should find a tile for it on the start screen. Alternatively click Browse to find it.
+The [resource][roles] blade that opens is the place where you'll see performance and usage data about your app. To get back to it next time you login to Azure, you should find a tile for it on the start screen. Alternatively click Browse to find it.
 
 The choice of application type sets the default content of the resource blades and the properties visible in [Metrics Explorer][metrics].
 

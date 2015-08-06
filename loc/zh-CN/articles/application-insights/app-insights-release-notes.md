@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Release notes for Application Insights" 
 	description="The latest updates." 
 	services="application-insights" 

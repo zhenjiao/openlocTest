@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Global Load Balanced Web Tier (Azure Architecture Patterns)" 
    description="The Global Load Balanced Web Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document." 
    services="" 
@@ -16,36 +16,36 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# Charge globale équilibrée Web Tier (modèles d'Architecture d'Azur)
+# Global Load Balanced Web Tier (Azure Architecture Patterns)
 
-Le [Cadres d'intégration Cloud plate-forme (FIPC)](azure-architectures-cpif-overview.md) apporte la charge de travail pour l'intégration des applications dans une Solution de Cloud Microsoft intégration. 
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution. 
 
-FIPC décrit comment les organisations, les clients et les partenaires doivent concevoir et déployer des charges de travail axés sur le Cloud grâce aux capacités hybrid cloud plate-forme et de la gestion d'Azure, System Center et Windows Server. 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-Le **Charge globale équilibrée Web Tier** modèle fait partie de la **Fondation** zone, qui est abondamment décrite dans le document Architecture du FIPC. 
+The **Global Load Balanced Web Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-##  Charge globale équilibrée Web Tier
+##  Global Load Balanced Web Tier
 
-La couche Global Load Balanced Web caractéristiques de conception détails modèle l'azur et services nécessaires à la prestation des services de la couche web pouvant fournir une haute disponibilité et des performances prévisibles au-delà des frontières géographiques. 
+The Global Load Balanced Web Tier design pattern details the Azure features and services required to deliver web tier services that can provide predictable performance and high availability across geographic boundaries. 
 
-Pour l'application de ce modèle de design web tier est définie comme un niveau de service fournissant HTTP/HTTPS traditionnel contenu ou les services d'application de chaque manière isolée ou dans le cadre d'une application web à plusieurs niveaux.  Dans ce modèle, l'équilibrage de la charge de la couche web est fournie tant localement dans la région et dans toutes les régions. D'un point de vue calcul, ces services peuvent être fournis par le biais de machines virtuelles Microsoft Azure, de sites web ou une combinaison des deux.  Machines virtuelles fournissant des services web peut contenir du contenu à l'aide de toute prise en charge Microsoft Windows ou Linux commentaires d'exploitation réseau de distribution dans Microsoft Azure. 
+For the purposes of this design pattern a web tier is defined as a tier of service providing traditional HTTP/HTTPS content or application services in either an isolated manner or as part of a multi-tiered web application.  Within this pattern, load balancing of the web tier is provided both locally within the region and across regions. From a compute perspective, these services can be provided through Microsoft Azure virtual machines, web sites or a combination of both.  Virtual machines providing web services can host content using any supported Microsoft Windows or Linux distribution guest operating system within Microsoft Azure. 
 
 
-## Modèle architectural Overview 
+## Architectural Pattern Overview 
 
-Ce document décrit un modèle permettant d'accéder aux services web ou le contenu du serveur web entre plusieurs zones géographiques aux fins de redondance et de disponibilité.  Les services essentiels sont illustrées ci-dessous sans attention aux contraintes de plateforme web ou méthodologie de développement au sein du service web lui-même.  Il existe deux variantes à ce modèle – qui héberge le contenu web ou des services sur des machines virtuelles (à l'aide d'Azur pris en charge les systèmes d'exploitation et la famille) et l'autre qui utilise les sites Web d'Azur.  Le diagramme suivant est une illustration simple des services pertinents et comment ils sont utilisés dans le cadre de ce modèle à l'aide de l'exemple des machines virtuelles.   
+This document describes a pattern for providing access to web services or web server content over multiple geographies for the purposes of availability and redundancy.  Critical services are illustrated below without attention to web platform constraints or development methodology within the web service itself.  There are two variations to this pattern – one which hosts the web content or services on virtual machines (using Azure supported operating systems and families) and one which uses Azure Websites.  The diagram below is a simple illustration of the relevant services and how they are used as part of this pattern using the example of virtual machines.   
 
-##  Ressources supplémentaires
+##  Additional Resources
 [Global Load Balanced Web Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-## Voir aussi
-[Architecture de la FIPC](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[Charger la couche données équilibrée](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+[Load Balanced Data Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-[Réseaux hybrides](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[Niveau de recherche Azur](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+[Azure Search Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-[Niveau de traitement par lots](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
 

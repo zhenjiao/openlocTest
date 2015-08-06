@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Retry general guidance | Microsoft Azure"
    description="Guidance on retry for transient fault handling."
    services=""
@@ -17,36 +17,36 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# 重试的一般指导
+# Retry general guidance
 
 ![](media/best-practices-retry-general/pnp-logo.png)
 
-## 概述
+## Overview
 
-沟通与远程服务和资源的所有应用程序必须对瞬时故障敏感。这是运行在云中，哪里的环境和通过互联网连接的性质意味着这些类型的错误都可能会遇到更多的应用程序的情况尤其如此。瞬时故障包括到组件和服务的网络连接瞬间损失、 临时不可用的服务或当服务正忙时出现的超时。这些故障往往自我纠正，而且如果操作重复后适当的延迟就有可能获得成功。
+All applications that communicate with remote services and resources must be sensitive to transient faults. This is especially the case for applications that run in the cloud, where the nature of the environment and connectivity over the Internet means these types of faults are likely to be encountered more often. Transient faults include the momentary loss of network connectivity to components and services, the temporary unavailability of a service, or timeouts that arise when a service is busy. These faults are often self-correcting, and if the action is repeated after a suitable delay it is likely succeed.
 
-本文档介绍瞬态故障处理的通用指南。有关处理瞬时性故障时使用微软 Azure 服务的信息，请参阅 [蔚蓝的特定于服务的重试的指导方针](best-practices-retry-service-specific.md).
+This document covers general guidance for transient fault handling. For information about handling transient faults when using Microsoft Azure services, see [Azure service-specific retry guidelines](best-practices-retry-service-specific.md).
 
-## 为什么瞬时性故障发生在云计算?
+## Why do transient faults occur in the cloud?
 
-瞬时故障可以发生在任何环境中，在任何平台或操作系统，和任何类型的应用程序。在本地运行的解决方案，在内部部署基础结构、 性能和可用性的应用程序和其组件通过昂贵的和经常使用的硬件冗余，通常维持和组件和资源都位于每个另一个。虽然这使得故障不太可能，它仍然可以导致瞬时故障-和甚至中断通过不可预见的事件，如外接电源或网络问题或其他灾难场景。
+Transient faults can occur in any environment, on any platform or operating system, and in any kind of application. In solutions that run on local, on-premises infrastructure, performance and availability of the application and its components is typically maintained through expensive and often under-used hardware redundancy, and components and resources are located close to each another. While this makes a failure less likely, it can still result in transient faults - and even an outage through unforeseen events such as external power supply or network issues, or other disaster scenarios.
 
-云托管，包括私有云系统，可以通过使用共享的资源、 冗余、 自动故障转移，提供更高的总体可用性和跨大量商品的动态资源分配计算节点。然而，这些环境的性质可以意味着瞬时故障是更有可能发生。有几个原因:
+Cloud hosting, including private cloud systems, can offer a higher overall availability by using shared resources, redundancy, automatic failover, and dynamic resource allocation across a huge number of commodity compute nodes. However, the nature of these environments can mean that transient faults are more likely to occur. There are several reasons for this:
 
-* 在云环境中的很多资源共享的并对这些资源的访问受限制为了保护资源。一些服务将拒绝连接，当装载上升到一个特定的水平，或达到最大吞吐量速率，允许现有的请求处理，维持为所有用户服务的性能。节流有助于保持邻居和其他租户使用共享的资源的服务质量。
-* 使用大量的商品硬件单元构建云环境。他们通过动态分配负载跨多个计算单位和基础结构组件，提供的性能，通过自动回收或取代失败的单位来提供可靠性。这种动态性质意味着可能偶尔出现瞬时性故障和临时连接失败。
-* 经常有更多的硬件组件，包括网络基础设施，如路由器和负载平衡器之间的应用程序和资源使用的服务。这额外的基础架构可以偶尔引入额外的连接延迟和瞬态连接故障。
-* 客户端和服务器之间的网络条件可能是变量，尤其是通信跨越 Internet。甚至在房地上的位置，非常沉重的交通负荷可能慢通信，而且会导致间歇性连接失败。
+* Many resources in a cloud environment are shared, and access to these resources is subject to throttling in order to protect the resource. Some services will refuse connections when the load rises to a specific level, or a maximum throughput rate is reached, in order to allow processing of existing requests and to maintain performance of the service for all users. Throttling helps to maintain the quality of service for neighbors and other tenants using the shared resource.
+* Cloud environments are built using vast numbers of commodity hardware units. They deliver performance by dynamically distributing the load across multiple computing units and infrastructure components, and deliver reliability by automatically recycling or replacing failed units. This dynamic nature means that transient faults and temporary connection failures may occasionally occur.
+* There are often more hardware components, including network infrastructure such as routers and load balancers, between the application and the resources and services it uses. This additional infrastructure can occasionally introduce additional connection latency and transient connection faults.
+* Network conditions between the client and the server may be variable, especially when communication crosses the Internet. Even in on-premises locations, very heavy traffic loads may slow communication and cause intermittent connection failures.
 
-## 挑战
-即使它已被彻底测试所有可预见情况下瞬时故障会产生巨大的影响的应用程序，可感知的可用性。为了确保云承载的应用程序可靠地运作，他们必须能够应对以下挑战:
+## Challenges
+Transient faults can have a huge impact on the perceived availability of an application, even if it has been thoroughly tested under all foreseeable circumstances. To ensure that cloud-hosted applications operate reliably, they must be able to respond to the following challenges:
 
-* 应用程序必须能够检测出故障，当他们发生，并确定是否在这些故障可能是瞬态的持续更久，或终端故障。不同的资源很可能返回不同的响应，当发生故障时，和这些反应也可能随上下文的操作;例如，从存储中读取时出错的响应可能不同从错误响应写入存储时。很多的资源和服务有翔实的暂态故障合同。然而，这类信息不可用，可能很难发现的故障和是否有可能是暂时性质。
-* 应用程序必须能够重试操作，如果它确定故障很可能是短暂的和跟踪操作的重试次数。
-* 应用程序必须使用适当的战略以重试。此策略指定每次尝试和行动采取尝试失败后之间的延迟，它应重试的次数。适当数量的尝试和之间每个延迟往往难以确定，并根据资源的类型以及当前的操作条件下的资源和应用程序本身会有所不同。
+* The application must be able to detect faults when they occur, and determine if these faults are likely to be transient, more long-lasting, or are terminal failures. Different resources are likely to return different responses when a fault occurs, and these responses may also vary depending on the context of the operation; for example, the response for an error when reading from storage may be different from response for an error when writing to storage. Many resources and services have well-documented transient failure contracts. However, where such information is not available, it may be difficult to discover the nature of the fault and whether it is likely to be transient.
+* The application must be able to retry the operation if it determines that the fault is likely to be transient and keep track of the number of times the operation was retried.
+* The application must use an appropriate strategy for the retries. This strategy specifies the number of times it should retry, the delay between each attempt, and the actions to take after a failed attempt. The appropriate number of attempts and the delay between each one are often difficult to determine, and vary based on the type of resource as well as the current operating conditions of the resource and the application itself.
 
-## 一般准则
-以下指南将帮助您设计合适的暂态故障处理机制为您的应用程序:
+## General guidelines
+The following guidelines will help you to design a suitable transient fault handing mechanism for your applications:
 
 * **Determine if there is a built-in retry mechanism:**
   * Many services provide an SDK or client library that contains a transient fault handling mechanism. The retry policy it uses is typically tailored to the nature and requirements of the target service. Alternatively, REST interfaces for services may return information that is useful in determining whether a retry is appropriate, and how long to wait before the next retry attempt.
@@ -77,7 +77,7 @@
   * Prevent multiple instances of the same client, or multiple instances of different clients, from sending retries at the same times. If this is likely to occur, introduce randomization into the retry intervals.
 * **Test your retry strategy and implementation:**
   * Ensure you fully test your retry strategy implementation under as wide a set of circumstances as possible, especially when both the application and the target resources or services it uses are under extreme load. To check behavior during testing, you can:
-      * Inject transient and non-transient faults into the service. For example, send invalid requests or add code that detects test requests and responds with different types of errors. For an example using TestApi, see [Fault Injection Testing with TestApi](http://msdn.microsoft.com/magazine/ff898404.aspx) 和 [Introduction to TestApi – Part 5: Managed Code Fault Injection APIs](http://blogs.msdn.com/b/ivo_manolov/archive/2009/11/25/9928447.aspx).
+      * Inject transient and non-transient faults into the service. For example, send invalid requests or add code that detects test requests and responds with different types of errors. For an example using TestApi, see [Fault Injection Testing with TestApi](http://msdn.microsoft.com/magazine/ff898404.aspx) and [Introduction to TestApi – Part 5: Managed Code Fault Injection APIs](http://blogs.msdn.com/b/ivo_manolov/archive/2009/11/25/9928447.aspx).
       * Create a mock of the resource or service that returns a range of errors that the real service may return. Ensure you cover all the types of error that your retry strategy is designed to detect.
       * Force transient errors to occur by temporarily disabling or overloading the service if it is a custom service that you created and deployed (you should not, of course, attempt to overload any shared resources or shared services within Azure).
       * For HTTP-based APIs, consider using the FiddlerCore library in your automated tests to change the outcome of HTTP requests, either by adding extra roundtrip times or by changing the response (such as the HTTP status code, headers, body, or other factors). This enables deterministic testing of a subset of the failure conditions, whether transient faults or other types of failure. For more information, see [FiddlerCore](http://www.telerik.com/fiddler/fiddlercore). For examples of how to use the library, particularly the **HttpMangler** class, examine the [source code for the Azure Storage SDK](https://github.com/Azure/azure-storage-net/tree/master/Test).
@@ -102,15 +102,15 @@
 
 * **Other considerations**
   * When deciding on the values for the number of retries and the retry intervals for a policy, consider if the operation on the service or resource is part of a long-running or multi-step operation. It may be difficult or expensive to compensate all the other operational steps that have already succeeded when one fails. In this case, a very long interval and a large number of retries may be acceptable as long as it does not block other operations by holding or locking scarce resources.
-  * Consider if retrying the same operation may cause inconsistencies in data. If some parts of a multi-step process are repeated, and the operations are not idempotent, it may result in an inconsistency. For example, an operation that increments a value, if repeated, will produce an invalid result. Repeating an operation that sends a message to a queue may cause an inconsistency in the message consumer if it cannot detect duplicate messages. To prevent this, ensure that you design each step as an idempotent operation. For more information about idempotency, see [幂等性模式](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
+  * Consider if retrying the same operation may cause inconsistencies in data. If some parts of a multi-step process are repeated, and the operations are not idempotent, it may result in an inconsistency. For example, an operation that increments a value, if repeated, will produce an invalid result. Repeating an operation that sends a message to a queue may cause an inconsistency in the message consumer if it cannot detect duplicate messages. To prevent this, ensure that you design each step as an idempotent operation. For more information about idempotency, see [Idempotency Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
   * Consider the scope of the operations that will be retried. For example, it may be easier to implement retry code at a level that encompasses several operations, and retry them all if one fails. However, doing this may result in idempotency issues or unnecessary rollback operations.
   * If you choose a retry scope that encompasses several operations, take into account the total latency of all of them when determining the retry intervals, when monitoring the time taken, and before raising alerts for failures.
   * Consider how your retry strategy may affect neighbors and other tenants in a shared application, or when using shared resources and services. Aggressive retry policies can cause an increasing number of transient faults to occur for these other users and for applications that share the resources and services. Likewise, your application may be affected by the retry policies implemented by other users of the resources and services. For mission-critical applications, you may decide to use premium services that are not shared. This provides you with much more control over the load and consequent throttling of these resources and services, which can help to justify the additional cost.
 
-## 更多的信息
+## More information
 
-* [蔚蓝的特定于服务的重试的指导方针](best-practices-retry-service-specific.md)
+* [Azure service-specific retry guidelines](best-practices-retry-service-specific.md)
 * [The Transient Fault Handling Application Block](http://msdn.microsoft.com/library/hh680934.aspx)
-* [电路断路器模式](http://msdn.microsoft.com/library/dn589784.aspx)
-* [补偿的交易模式](http://msdn.microsoft.com/library/dn589804.aspx)
-* [幂等性模式](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/)
+* [Circuit Breaker Pattern](http://msdn.microsoft.com/library/dn589784.aspx)
+* [Compensating Transaction Pattern](http://msdn.microsoft.com/library/dn589804.aspx)
+* [Idempotency Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/)

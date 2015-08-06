@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Intro to Azure - Azure fundamentals" 
 	description="New to Microsoft Azure? Get a basic overview of the services it offers with examples of how they are useful." 
 	services=" " 
@@ -16,30 +16,30 @@
 	ms.date="06/30/2015"  
 	ms.author="robb"/>
 
-# 介绍微软 Azure
+# Introducing Microsoft Azure
 
-微软 Azure 是公共云的微软应用程序平台。 这篇文章的目的是要给你基础为了解基本的 Azure，即使你不懂云计算。
+Microsoft Azure is Microsoft's application platform for the public cloud.  The goal of this article is to give you a foundation for understanding the fundamentals of Azure, even if you don't know anything about cloud computing.
 
-**如何阅读这篇文章**
+**How to read this article**
 
-Azure 一直增长了，所以很容易会超载。 早些时候在本文中列出了基本的服务。开始只是那些，然后通过额外的服务。这并不意味着你不能利用自己，只是附加的服务，但基本服务不能运行在 Azure 应用程序的核心。 
+Azure is growing all the time so it's easy to get overloaded.  The basic services are listed earlier in the paper. Start with just those, then go through the additional services. That doesn't mean you can't use just the additional services by themselves, but the basic services make up the core of an application running in Azure. 
 
-**给出反馈**
+**Give feedback**
 
-您的反馈意见是重要的。这篇文章应该给你的 Azure 有效概述。如果它不存在，告诉我们在页面的底部的评论部分。给你期望看到什么和如何提高文章的一些细节。  
+Your feedback is important. This article should give you an effective overview of Azure. If it does not, tell us in the comments section at the bottom of the page. Give some detail on what you expected to see and how to improve the article.  
    
 
-## Azure 的组件
+## The Components of Azure
 
-Azure 组服务分为管理门户中，像各种视觉艾滋病 [蔚蓝的信息图表是什么](http://azure.microsoft.com/documentation/infographics/azure/) .管理门户是您用来管理在 Azure 中的大多数 (但不是全部) 服务。 
+Azure groups services into categories in the Management Portal and on various visual aids like the [What Is Azure Infographic](http://azure.microsoft.com/documentation/infographics/azure/) . The Management Portal is what you use to manage most (but not all) services in Azure. 
 
-本文将使用 **不同的组织** 谈一谈服务基于类似的功能，并叫出重要的子服务的规模较大的一部分。  
+This paper will use a **different organization** to talk about services based on similar function, and to call out important sub-services that are part of larger ones.  
 
-![蔚蓝的组件](./media/fundamentals-introduction-to-azure/AzureComponentsIntroNew780.png)   
- *图: Azure 提供互联网访问在 Azure 数据中心中运行的应用程序服务。*
+![Azure components](./media/fundamentals-introduction-to-azure/AzureComponentsIntroNew780.png)   
+ *Figure: Azure provides Internet-accessible application services running in Azure datacenters.*
 
-## 管理门户
-Azure 有称为 web 界面 [管理门户](http://manage.windowsazure.com) 这允许管理员访问和管理最多，但并不是所有的蔚蓝功能。 微软通常退休老一前发布 beta 版中的新 UI 门户。较新版本被称为 ["蔚蓝预览门户"](https://portal.azure.com/). 
+## Management Portal
+Azure has a web interface called the [Management Portal](http://manage.windowsazure.com) that allows administrators to access and administer most, but not all Azure features.  Microsoft typically releases the newer UI portal in beta before retiring an older one. The newer one is called the ["Azure Preview Portal"](https://portal.azure.com/). 
 
 There is typically a long overlap when both portals are active. While core services will appear in both portals, not all functionality may be available in both. Newer services may show up in the newer portal first and older services and functionality may only exist in the older one.  The message here is that if you don't find something in the older portal, check the newer one and vice-versa. 
 
@@ -52,9 +52,9 @@ One of the most basic things a cloud platform does is execute applications. Each
 You can use these technologies separately or combine them as needed to create the right foundation for your application. The approach you choose depends on what problems you're trying to solve.
 
 
-### 蔚蓝的虚拟机
+### Azure Virtual Machines
 
-![蔚蓝的虚拟机](./media/fundamentals-introduction-to-azure/mscsiart_VirtualMachinesIntroNew_12345.png)   
+![Azure Virtual Machines](./media/fundamentals-introduction-to-azure/mscsiart_VirtualMachinesIntroNew_12345.png)   
 *Figure: Azure Virtual Machines gives you full control over virtual machine instances in the cloud.* 
 
 The ability to create a virtual machine on demand, whether from a standard image or from one you supply, can be very useful. This approach, commonly known as Infrastructure as a Service (IaaS), is what Azure Virtual Machines provides. Figure 2 shows a combination of how an Virtual Machine (VM) runs and how to create one from a VHD.  
@@ -91,7 +91,7 @@ For development, Web Apps supports .NET, PHP, Node.js, Java and Python along wit
 
 Web Apps is intended to be useful for corporations, developers, and web design agencies. For corporations, it's an easy-to-manage, scalable, highly secure, and highly available solution for running presence websites. When you need to set up a Website, it’s best to start with Azure Web Apps and proceed to Cloud Services once you need a feature that’s not available. See the end of the "Compute" section for more links that can help you to choose between the options. 
 
-### 云服务
+### Cloud Services
 ![Azure Cloud Service](./media/fundamentals-introduction-to-azure/CloudServicesIntroNew.png)   
 *Figure: Azure Cloud Services provides a place to run highly scalable custom code on a Platform as a Service (PaaS) environment*
 
@@ -110,7 +110,7 @@ You have two roles to choose from when you create an instance, both based on Win
 Cloud Services are ideal to support massive scale out when you need more control over the platform than provided by Azure Web Apps but don’t need control over the underlying operating system. 
 
 #### Choosing a Compute Model
-页面 [Azure Web Apps, Cloud Services and Virtual Machines comparison](choose-web-site-cloud-service-vm.md) provides more detailed information on how to choose a Compute model.
+The page [Azure Web Apps, Cloud Services and Virtual Machines comparison](choose-web-site-cloud-service-vm.md) provides more detailed information on how to choose a Compute model.
 
 
 
@@ -125,7 +125,7 @@ The ability to run SQL Server or another DBMS in a VM created with Azure Virtual
 Again, the state of the Virtual Machine and any additional data disk you create or upload are backed by blob storage (which we talk about later).  
 
 
-### SQL azure 数据库
+### Azure SQL Database
 ![Azure Storage SQL Database](./media/fundamentals-introduction-to-azure/StorageAzureSQLDatabaseIntroNew.png)   
 
 *Figure: Azure SQL Database provides a managed relational database service in the cloud.*
@@ -143,7 +143,7 @@ There is also a Premium option that you can pay a little more for so you can hav
 If you're creating an Azure application (using any of the compute models) that needs relational storage, SQL Database can be a good option. Applications running outside the cloud can also use this service, though, so there are plenty of other scenarios. For instance, data stored in SQL Database can be accessed from different client systems, including desktops, laptops, tablets, and phones. And because it provides built-in high availability through replication, using SQL Database can help minimize downtime.
 
 
-### 表
+### Tables
 ![Azure Storage Tables](./media/fundamentals-introduction-to-azure/StorageTablesIntroNew.png)  
   
 *Figure: Azure Tables provides a flat NoSQL way to store data.* 
@@ -232,7 +232,7 @@ Setting it up an ExpressRoute connection requires more time and planning, so you
 
 For more information about ExpressRoute, see [ExpressRoute Technical Overview](http://msdn.microsoft.com/library/azure/dn606309.aspx).
 
-### 流量管理器
+### Traffic Manager
 
 ![TrafficManager](./media/fundamentals-introduction-to-azure/TrafficManagerIntroNew.png)   
 
@@ -287,7 +287,7 @@ Automation uses "runbooks", which uses Windows PowerShell workflows (vs. just re
 Azure Automation is a good choice to automate the manual, long-running, error-prone, and frequently repeated tasks in Azure.
 
 
-### API 管理
+### API Management
 
 Creating and publishing Application Programmer Interfaces (APIs) on the internet is a common way to provide services to applications. If those services are resellable (for example, weather data), an organization can allow other third parties to access those same services for a fee. As you scale to more partners, you'll usually need to optimize and control access.  Some partners may even need the data in a different format. 
 
@@ -305,7 +305,7 @@ A customer of the shipping company would probably also benefit from getting this
 Working with identity is part of most applications. Knowing who a user is lets an application decide how it should interact with that user. Azure provides services to help track identity as well as integrate it with identity stores you may already be using. 
 
 
-### 活动目录
+### Active Directory
 
 Like most directory services, Azure Active Directory stores information about users and the organizations they belong to. It lets users log in, then supplies them with tokens they can present to applications to prove their identity. It also allows synchronizing user information with Windows Server Active Directory running on premises in your local network. While the mechanisms and data formats used by Azure Active Directory aren't identical with those used in Windows Server Active Directory, the functions it performs are quite similar. 
  
@@ -317,7 +317,7 @@ Another capability of this service, Azure Active Directory Access Control, makes
 
 Directory services are a core underpinning of on-premises computing. It shouldn't be surprising that they're also important in the cloud.
 
-### 多因素身份验证
+### Multi-Factor Authentication
 ![Azure Multi-Factor Authentication](./media/fundamentals-introduction-to-azure/MFAIntroNew.png)   
 
 *Figure: Multi-Factor Authentication provides the functionality for your application to verify more than one form of identification*
@@ -433,7 +433,7 @@ Structuring an application in this way allows asynchronous processing, and it al
 You can use this same pattern between many different parts of your application even if they don't use web and worker roles.  It allows you to scale the parts on either side of the queue up and down as demand and processing time requires. 
 
 
-### 服务总线
+### Service Bus
 Whether they run in the cloud, in your data center, on a mobile device, or somewhere else, applications need to interact. The goal of Azure Service Bus is to let applications running pretty much anywhere exchange data.
 
 In addition to the queues (one-to-one) described earlier, Service Bus also provides to other communication methods. 
@@ -475,7 +475,7 @@ Business-to-Business (B2B) interactions commonly require this type of translatio
 ## Compute Assistance
 Azure provides assistance for services that do not need to run all the time.  
 
-### 调度程序
+### Scheduler
 
 ![Azure Scheduler](./media/fundamentals-introduction-to-azure/SchedulerIntroNew.png)   
 *Figure: Azure Scheduler provides a way to schedule jobs at a specific time for a specific duration.*
@@ -497,7 +497,7 @@ The Scheduler API allows you to create, update, delete, view, and manage job col
 
 
 
-## 性能
+## Performance
 
 Performance is always important for an application. Applications tend to access the same data over and over. One way to improve performance is to keep a copy of that data closer to the application, minimizing the time needed to retrieve it. Azure provides different services for doing this.
 
@@ -520,7 +520,7 @@ Azure has a number of different cache technologies that have shifted over time. 
 An application that repeatedly reads a product catalog might benefit from using this kind of caching, for example, since the data it needs will be available more quickly. The technology also supports locking, letting it be used with read/write as well as read-only data. And ASP.NET applications can use the service to store session data with just a configuration change. 
 
 ### Content Delivery Network
-![蔚蓝的 CDN](./media/fundamentals-introduction-to-azure/CDNIntroNew.png)   
+![Azure CDN](./media/fundamentals-introduction-to-azure/CDNIntroNew.png)   
  **Figure:Copies of a blob can be cached at sites around the world.**
 
 Suppose you need to store blob data that will be accessed by users around the world. Maybe it's a video of the latest World Cup match, for instance, or driver updates, or a popular e-book. Storing a copy of the data in multiple Azure datacenters will help, but if there are lots of users, it's probably not enough. For even better performance, you can use the Azure CDN.
@@ -587,7 +587,7 @@ For a more visual view of how Media Services works, download the [Azure Media Se
 
 ## Commerce
 
-The rise of Software as a Service is transforming how we create applications. It's also transforming how we sell applications. Since a SaaS application lives in the cloud, it makes sense that its potential customers should look for solutions online. And this change applies to data as well as to applications. Why shouldn't people look to the cloud for commercially available datasets? Microsoft addresses both of these concerns with [Azure Marketplace](http://datamarket.azure.com/) 和 [Azure Store](../articles/overview.md).
+The rise of Software as a Service is transforming how we create applications. It's also transforming how we sell applications. Since a SaaS application lives in the cloud, it makes sense that its potential customers should look for solutions online. And this change applies to data as well as to applications. Why shouldn't people look to the cloud for commercially available datasets? Microsoft addresses both of these concerns with [Azure Marketplace](http://datamarket.azure.com/) and [Azure Store](../articles/overview.md).
 
 ![Azure Commerce](./media/fundamentals-introduction-to-azure/CommerceIntroNew.png)   
  **Figure: Azure Marketplace and Azure Store let you find and buy Azure applications and commercial datasets and use them as part of your Azure applications.**

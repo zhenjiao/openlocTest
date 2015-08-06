@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to Use Twilio for Voice and SMS (Ruby) - Azure" 
 	description="Learn how to make a phone call and send a SMS message with the Twilio API service on Azure. Code samples written in Ruby." 
 	services="" 
@@ -20,16 +20,16 @@
 
 
 
-# Comment utiliser Twilio pour voix et SMS en Ruby
-Ce guide montre comment effectuer des tâches de programmation courantes avec la fonction API Twilio sur Azure. Les scénarios couverts comprennent un appel téléphonique et envoi d'un message de Service de Message court (SMS). Pour plus d'informations sur Twilio et utilisation de la voix et les SMS dans vos applications, consultez le [Prochaines étapes](#NextSteps) section.
+# How to Use Twilio for Voice and SMS Capabilities in Ruby
+This guide demonstrates how to perform common programming tasks with the Twilio API service on Azure. The scenarios covered include making a phone call and sending a Short Message Service (SMS) message. For more information on Twilio and using voice and SMS in your applications, see the [Next Steps](#NextSteps) section.
 
-## <a id="WhatIs"></a>Ce qui est Twilio ?
-Twilio est une API de services web de téléphonie qui vous permet d'utiliser vos compétences et langages web existants pour générer des applications de SMS et de voix. Twilio est un service de tiers (pas une fonction d'Azur et pas un produit Microsoft).
+## <a id="WhatIs"></a>What is Twilio?
+Twilio is a telephony web-service API that lets you use your existing web languages and skills to build voice and SMS applications. Twilio is a third-party service (not an Azure feature and not a Microsoft product).
 
-**Twilio voix** permet à vos applications émettre et recevoir des appels téléphoniques. **Twilio SMS** permet à vos applications émettre et recevoir des messages SMS. **Twilio Client** permet à vos applications permettre la communication vocale en utilisant des connexions Internet existantes, y compris les connexions mobiles.
+**Twilio Voice** allows your applications to make and receive phone calls. **Twilio SMS** allows your applications to make and receive SMS messages. **Twilio Client** allows your applications to enable voice communication using existing Internet connections, including mobile connections.
 
-## <a id="Pricing"></a>Twilio tarifs et offres spéciales
-Informations sur la tarification Twilio sont disponibles à [Twilio prix] [twilio_pricing]. Azur clients reçoivent un [offre spéciale][special_offer]: un crédit gratuit de textes de 1000 ou 1000 minutes de trafic entrant. Pour vous inscrire à cette offre ou obtenir plus d'informations, veuillez visiter [http://Ahoy.Twilio.com/Azure][special_offer].  
+## <a id="Pricing"></a>Twilio Pricing and Special Offers
+Information about Twilio pricing is available at [Twilio Pricing] [twilio_pricing]. Azure customers receive a [special offer][special_offer]: a free credit of 1000 texts or 1000 inbound minutes. To sign up for this offer or get more information, please visit [http://ahoy.twilio.com/azure][special_offer].  
 
 ## <a id="Concepts"></a>Concepts
 The Twilio API is a RESTful API that provides voice and SMS functionality for applications. Client libraries are available in multiple languages; for a list, see [Twilio API Libraries] [twilio_libraries].
@@ -67,7 +67,7 @@ For more information about Twilio verbs, their attributes, and TwiML, see [TwiML
 ## <a id="CreateAccount"></a>Create a Twilio Account
 When you're ready to get a Twilio account, sign up at [Try Twilio] [try_twilio]. You can start with a free account, and upgrade your account later.
 
-When you sign up for a Twilio account, you'll get a free phone number for your application. You'll also receive an account SID and an auth token. Both will be needed to make Twilio API calls. To prevent unauthorized access to your account, keep your authentication token secure. Your account SID and auth token are viewable at the [Twilio account page][twilio_account], in the fields labeled **ACCOUNT SID** et **AUTH TOKEN**, respectively.
+When you sign up for a Twilio account, you'll get a free phone number for your application. You'll also receive an account SID and an auth token. Both will be needed to make Twilio API calls. To prevent unauthorized access to your account, keep your authentication token secure. Your account SID and auth token are viewable at the [Twilio account page][twilio_account], in the fields labeled **ACCOUNT SID** and **AUTH TOKEN**, respectively.
 
 ### <a id="VerifyPhoneNumbers"></a>Verify Phone Numbers
 In addition to the number you are given by Twilio, you can also verify numbers that you control (i.e. your cell phone or home phone number) for use in your applications. 
@@ -109,7 +109,7 @@ On the command line, run `bundle install`. Now open `web.rb` and including this 
 You're now all set to use the Twilio helper library for Ruby in your web app.
 
 ## <a id="howto_make_call"></a>How to: Make an outgoing call
-The following shows how to make an outgoing call. Key concepts include using the Twilio helper library for Ruby to make REST API calls and rendering TwiML. Substitute your values for the **From** et **To** phone numbers, and ensure that you verify the **From** phone number for your Twilio account prior to running the code.
+The following shows how to make an outgoing call. Key concepts include using the Twilio helper library for Ruby to make REST API calls and rendering TwiML. Substitute your values for the **From** and **To** phone numbers, and ensure that you verify the **From** phone number for your Twilio account prior to running the code.
 
 Add this function to `web.md`:
 
@@ -163,7 +163,7 @@ After making the change, make sure to re-start your web app. Now, take out your 
 ## <a id="additional_services"></a>How to: Use Additional Twilio Services
 In addition to the examples shown here, Twilio offers web-based APIs that you can use to leverage additional Twilio functionality from your Azure application. For full details, see the [Twilio API documentation] [twilio_api_documentation].
 
-### <a id="NextSteps"></a>Prochaines étapes
+### <a id="NextSteps"></a>Next Steps
 Now that you've learned the basics of the Twilio service, follow these links to learn more:
 
 * [Twilio Security Guidelines] [twilio_security_guidelines]

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Insights for Windows Phone and Store apps" 
 	description="Analyze usage and performance of your Windows device app with Application Insights." 
 	services="application-insights" 
@@ -19,11 +19,11 @@
 
 *Application Insights is in preview.*
 
-[AZURE. INCLURE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
+[AZURE.INCLUDE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
 
 Visual Studio Application Insights lets you monitor your published application for:
 
-* [**Son utilisation**][windowsUsage] - Learn how many users you have and what they are doing with your app.
+* [**Usage**][windowsUsage] - Learn how many users you have and what they are doing with your app.
 * [**Crashes**][windowsCrash] - Get diagnostic reports of crashes and understand their impact on users.
 
 ![](./media/app-insights-windows-get-started/appinsights-d018-oview.png)
@@ -141,7 +141,7 @@ Application Insights SDK Includes several collectors, which collect different ty
 
 #### Send your own telemetry data
 
-Utilisation du [API][api] to send events, metrics and diagnostic data to Application Insights. In summary:
+Use the [API][api] to send events, metrics and diagnostic data to Application Insights. In summary:
 
 ```C#
 
@@ -199,7 +199,7 @@ When a [new SDK version is released](app-insights-release-notes-windows.md):
 * Select the installed Application Insights packages and choose Action: Upgrade.
 
 
-## <a name="usage"></a>Prochaines étapes
+## <a name="usage"></a>Next Steps
 
 
 [Detect and diagnose crashes in your app][windowsCrash]

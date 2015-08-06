@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Azure Search Tier (Azure Architecture Patterns)" 
    description="The Azure Search Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document" 
    services="" 
@@ -16,32 +16,32 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# Recherche d'Azur Tier (modèles d'Architecture d'Azur)
+# Azure Search Tier (Azure Architecture Patterns)
 
-Le [Cadres d'intégration Cloud plate-forme (FIPC)](azure-architectures-cpif-overview.md) apporte la charge de travail pour l'intégration des applications dans une Solution de Cloud Microsoft intégration.  
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution.  
 
-FIPC décrit comment les organisations, les clients et les partenaires doivent concevoir et déployer des charges de travail axés sur le Cloud grâce aux capacités hybrid cloud plate-forme et de la gestion d'Azure, System Center et Windows Server. 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-Le **Niveau de recherche Azur** modèle fait partie de la **Fondation** zone, qui est abondamment décrite dans le document Architecture du FIPC. 
+The **Azure Search Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-##  Niveau de recherche Azur
+##  Azure Search Tier
 
-Le niveau de recherche Azure caractéristiques de conception détails modèle l'azur et services nécessaires à la prestation des services de recherche qui peuvent fournir une haute disponibilité et des performances prévisibles au-delà des frontières géographiques et fournit un modèle architectural à l'aide d'Azur recherche en offrant une Solution de recherche.  Recherche d'Azur est un « recherche-as-a-service » construit dans Azure de Microsoft qui permet aux développeurs d'incorporer des fonctionnalités de recherche dans les applications sans avoir à déployer, gérer ou maintenir des services d'infrastructure pour fournir cette fonctionnalité aux applications. Ce modèle vise à fournir une solution répétable conçu pour être utilisé dans différentes situations et la conception. 
+The Azure Search Tier design pattern details the Azure features and services required to deliver search services that can provide predictable performance and high availability across geographic boundaries and provides an architectural pattern for using Azure Search in delivering a search Solution.  Azure Search is a “search-as-a-service” built within Microsoft Azure that allows developers to incorporate search capabilities into applications without having to deploy, manage or maintain infrastructure services to provide this capability to applications. The purpose of this pattern is to provide a repeatable solution intended for use in different situations and design. 
 
-## Modèle architectural Overview 
+## Architectural Pattern Overview 
 
-Ce document décrit un modèle de noyau pour l'utilisation d'Azur recherche avec deux variantes du noyau pour démontrer la gamme architecturale du service.  Le modèle de base se compose d'Azur recherche et entourant les services Azure et vise à fournir des conseils pour créer des designs de bout en bout.  Les variations du motif, spécifiquement le Service partagé et modes d'accès concurrentiel, sont également incluses dans cette section pour fournir une orientation fondée sur des exigences différentes, les accords de niveau de Service (SLA) et les autres conditions spécifiques. 
+This document describes a core pattern for using Azure Search with two variations of the core to demonstrate the architectural range of the service.  The core pattern consists of Azure Search and surrounding Azure services and is intended to provide guidance for creating end-to-end designs.  Variations of the pattern, specifically the Shared Service and Concurrency patterns, are also included in this section to provide guidance based on different requirements, Service Level Agreements (SLA) and other specific conditions. 
 
-##  Ressources supplémentaires
-[Azur recherche Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+##  Additional Resources
+[Azure Search Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-## Voir aussi
-[Architecture de la FIPC](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[Charge globale équilibrée Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+[Global Load Balanced Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-[Charger la couche données équilibrée](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+[Load Balanced Data Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-[Réseaux hybrides](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[Niveau de traitement par lots](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)

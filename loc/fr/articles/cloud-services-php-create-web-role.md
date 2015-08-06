@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Create Web and Worker Roles"
 	description="A guide to creating PHP Web and Worker roles in an Azure Cloud Service, and configuring the PHP runtime."
 	services=""
@@ -16,24 +16,24 @@
 	ms.date="06/09/2015"
 	ms.author="tomfitz"/>
 
-#How pour créer les rôles de web et de travail PHP
+#How to create PHP web and worker roles
 
-## Vue d'ensemble
+## Overview
 
-Ce guide vous montrera comment créer des rôles web ou travailleur PHP dans un environnement de développement Windows, choisissez une version spécifique de PHP dans les versions « incorporées » disponibles, modifier la configuration de PHP, activer les extensions et enfin, comment déployer sur Azure. Il explique également comment configurer un rôle web ou travailleur pour utiliser une exécution PHP (avec configuration personnalisée et extensions) que vous fournissez.
+This guide will show you how to create PHP web or worker roles in a Windows development environment, choose a specific version of PHP from the "built-in" versions available, change the PHP configuration, enable extensions, and finally, how to deploy to Azure. It also describes how to configure a web or worker role to use a PHP runtime (with custom configuration and extensions) that you provide.
 
-## Quels sont les rôles de web et de travail PHP ?
-Azure fournit que trois calculer des modèles pour exécuter des applications : [Sites Web d'Azur][execution model-web sites], [Azur des Machines virtuelles][execution model-vms], et [Services en nuage bleu azur][execution model-cloud services]. Tous les trois modèles supportent PHP. Fournissent des Services de Cloud, qui incluent des rôles web et de travail, *Platform as a Service (PaaS)*. Au sein d'un service de cloud, un rôle web fournit un serveur dédié de web Internet Information Services (IIS) pour héberger des applications web front-end, alors qu'un rôle de travail peut exécuter des tâches asynchrones, longues ou perpétuels indépendants d'entrée ou d'une interaction utilisateur.
+## What are PHP web and worker roles?
+Azure provides three compute models for running applications: [Azure Web Sites][execution model-web sites], [Azure Virtual Machines][execution model-vms], and [Azure Cloud Services][execution model-cloud services]. All three models support PHP. Cloud Services, which include web and worker roles, provide *Platform as a Service (PaaS)*. Within a cloud service, a web role provides a dedicated Internet Information Services (IIS) web server to host front-end web applications, while a worker role can run asynchronous, long-running or perpetual tasks independent of user interaction or input.
 
-Pour plus d'informations, consultez [Ce qui est un Service de Cloud Computing ?].
+For more information, see [What is a Cloud Service?].
 
-## Télécharger le SDK Azure pour PHP
+## Download the Azure SDK for PHP
 
-Le [Azure SDK pour PHP] se compose de plusieurs composants. Cet article utilisera deux d'entre eux : Azure PowerShell et les émulateurs d'Azur. Ces deux composants peuvent être installés par l'intermédiaire de Microsoft Web Platform Installer ici : [Install Azure PowerShell and the Azure Emulators][install ps and emulators].
+The [Azure SDK for PHP] consists of several components. This article will use two of them: Azure PowerShell and the Azure Emulators. These two components can be installed via the Microsoft Web Platform Installer here: [Install Azure PowerShell and the Azure Emulators][install ps and emulators].
 
 ## How to: Create a Cloud Services project
 
-The first step in creating a PHP web or worker role is to create an Azure Service project. an Azure Service project serves as a logical container for web and worker roles, and contains the project's [service definition (.csdef)] et [service configuration (.cscfg)] files.
+The first step in creating a PHP web or worker role is to create an Azure Service project. an Azure Service project serves as a logical container for web and worker roles, and contains the project's [service definition (.csdef)] and [service configuration (.cscfg)] files.
 
 To create a new Azure Servcie project, run Azure PowerShell as an administrator, and execute the following command:
 
@@ -51,7 +51,7 @@ For a worker role, use this command:
 
 	PS C:\myProject> Add-AzurePHPWorkerRole roleName
 
-> [AZURE. REMARQUE] Le `roleName` parameter is optional. If it is omitted, the role name will be automatically generated. The first web role created will be `WebRole1`, the second `WebRole2`, and so on. The first worker role created will be `WorkerRole1`, the second `WorkerRole2`, and so on.
+> [AZURE.NOTE] The `roleName` parameter is optional. If it is omitted, the role name will be automatically generated. The first web role created will be `WebRole1`, the second `WebRole2`, and so on. The first worker role created will be `WorkerRole1`, the second `WorkerRole2`, and so on.
 
 ## How to: Specify the built-in PHP Version
 
@@ -75,7 +75,7 @@ You can set the PHP runtime version to any of the PHP versions that are listed. 
 
 	PS C:\myProject> Set-AzureServiceProjectRole roleName php 5.4.0
 
-> [AZURE. REMARQUE] More PHP versions may be available in the future, and the available versions may change.
+> [AZURE.NOTE] More PHP versions may be available in the future, and the available versions may change.
 
 ## How to: Customize the built-in PHP runtime
 
@@ -90,7 +90,7 @@ To customize the built-in PHP runtime, follow these steps:
 		display_errors=On
 		extension=php_mongo.dll
 
-> [AZURE. REMARQUE] Any settings that you don't explicity set in the `php.ini` file that you provide will automatically be set to their default values. However, keep in mind that you can add a complete `php.ini` file.
+> [AZURE.NOTE] Any settings that you don't explicity set in the `php.ini` file that you provide will automatically be set to their default values. However, keep in mind that you can add a complete `php.ini` file.
 
 ## How to: Use your own PHP runtime
 In some cases, instead of selecting a built-in PHP runtime and configuring it as described above, you may want to provide your own PHP runtime. For example, you can use the same PHP runtime in a web or worker role that you use in your development environment, making it easier to ensure that application will not change behavior in your production environment.
@@ -99,7 +99,7 @@ In some cases, instead of selecting a built-in PHP runtime and configuring it as
 
 To configure a web role to use a PHP runtime that you provide, follow the steps below.
 
-1. Create an Azure Service project and add a PHP web role as described in the [How to: Create a cloud services project](#how-to-create-a-cloud-services-project) et [How to: Add PHP web or worker roles](#how-to-add-php-web-or-worker-roles) sections above.
+1. Create an Azure Service project and add a PHP web role as described in the [How to: Create a cloud services project](#how-to-create-a-cloud-services-project) and [How to: Add PHP web or worker roles](#how-to-add-php-web-or-worker-roles) sections above.
 2. Create a `php` folder in the `bin` folder that is in your web role's root directory, then add your PHP runtime (all binaries, configuration files, subfolders, etc.) to the `php` folder.
 3. (OPTIONAL) If your PHP runtime uses the [Microsoft Drivers for PHP for SQL Server][sqlsrv drivers], you will need to configure your web role to install [SQL Server Native Client 2012][sql native client] when it is provisioned. To do this, add the `sqlncli.msi` installer to the `bin` folder in your web role's root directory. You can download the installer here: [sqlncli.msi x64 installer]. The startup script described in the next step will silently run the installer when the role is provisioned. If your PHP runtime does not use the Microsoft Drivers for PHP for SQL Server, you can remove the following line from the script shown in the next step:
 
@@ -127,13 +127,13 @@ To configure a web role to use a PHP runtime that you provide, follow the steps 
 
 6. Publish your application as described in the [How to: Publish your application](#how-to-publish-your-application) section below.
 
-> [AZURE. REMARQUE] Le `download.ps1` script (in the `bin` folder of the web role's root directory) can be deleted after following the steps described above for using your own PHP runtime.
+> [AZURE.NOTE] The `download.ps1` script (in the `bin` folder of the web role's root directory) can be deleted after following the steps described above for using your own PHP runtime.
 
 ### Configuring a worker role to use your own PHP runtime
 
 To configure a worker role to use a PHP runtime that you provide, follow the steps below.
 
-1. Create an Azure Service project and add a PHP worker role as described in the [How to: Create a cloud services project](#how-to-create-a-cloud-services-project) et [How to: Add PHP web or worker roles](#how-to-add-php-web-or-worker-roles) sections above.
+1. Create an Azure Service project and add a PHP worker role as described in the [How to: Create a cloud services project](#how-to-create-a-cloud-services-project) and [How to: Add PHP web or worker roles](#how-to-add-php-web-or-worker-roles) sections above.
 2. Create a `php` folder in the worker role's root directory, then add your PHP runtime (all binaries, configuration files, subfolders, etc.) to the `php` folder.
 3. (OPTIONAL) If your PHP runtime uses [Microsoft Drivers for PHP for SQL Server][sqlsrv drivers], you will need to configure your worker role to install [SQL Server Native Client 2012][sql native client] when it is provisioned. To do this, add the `sqlncli.msi` installer to the worker role's root directory. You can download the installer here: [sqlncli.msi x64 installer]. The startup script described in the next step will silently run the installer when the role is provisioned. If your PHP runtime does not use the Microsoft Drivers for PHP for SQL Server, you can remove the following line from the script shown in the next step:
 
@@ -172,7 +172,7 @@ To configure a worker role to use a PHP runtime that you provide, follow the ste
 
 ## How to: Run your application in the Compute and Storage Emulators
 
-The Azure Compute and Storage Emulators provide a local environment in which you can test your Azure application before deploying it to the cloud. There are some differences between the emulators and the Azure environment. To understand this better, see [Differences Between the Compute Emulator and Azure](http://msdn.microsoft.com/library/windowsazure/gg432960.aspx) et [Differences Between the Storage Emulator and Azure Storage Services](http://msdn.microsoft.com/library/windowsazure/gg433135.aspx).
+The Azure Compute and Storage Emulators provide a local environment in which you can test your Azure application before deploying it to the cloud. There are some differences between the emulators and the Azure environment. To understand this better, see [Differences Between the Compute Emulator and Azure](http://msdn.microsoft.com/library/windowsazure/gg432960.aspx) and [Differences Between the Storage Emulator and Azure Storage Services](http://msdn.microsoft.com/library/windowsazure/gg433135.aspx).
 
 Note that you must have PHP installed locally to use the Compute Emulator. The Compute Emulator will use your local PHP installation to run your application.
 
@@ -195,7 +195,7 @@ To stop the emulators, execute this command:
 
 ## How to: Publish your application
 
-To publish your application, you need to first import your publish settings  with the **Import-PublishSettingsFile** cmdlet, then you can publish your application with the **Publish-AzureServiceProject** cmdlet. Details on using each of these cmdlets can be found in [How to: Import publish settings] et [How to: Deploy a cloud service to Azure] respectively.
+To publish your application, you need to first import your publish settings  with the **Import-PublishSettingsFile** cmdlet, then you can publish your application with the **Publish-AzureServiceProject** cmdlet. Details on using each of these cmdlets can be found in [How to: Import publish settings] and [How to: Deploy a cloud service to Azure] respectively.
 
 [execution model-web sites]: /develop/net/fundamentals/compute/#WebSites
 [execution model-vms]: /develop/net/fundamentals/compute/#VMachine

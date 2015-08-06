@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to make a phone call from Twilio (.NET) - Azure" 
 	description="Learn how to make a phone call and send a SMS message with the Twilio API service on Azure. Code samples written in .NET." 
 	services="" 
@@ -19,17 +19,17 @@
 
 
 
-# Comment faire un appel téléphonique à l'aide de Twilio dans un rôle de web sur Azure
+# How to make a phone call using Twilio in a web role on Azure
 
-Ce guide montre comment utiliser Twilio pour faire un appel d'une page web hébergée dans Azure. L'application invite l'utilisateur pour les valeurs de l'appel téléphonique, comme le montre la capture d'écran suivante.
+This guide demonstrates how to use Twilio to make a call from a web page hosted in Azure. The resulting application prompts the user for phone call values, as shown in the following screenshot.
 
-! [Formulaire d'appel d'Azur à l'aide de Twilio et ASP.NET][Twilio_dotnet_base_f
+![Azure call form using Twilio and ASP.NET][twilio_dotnet_basic_f
 
-## <a name="twilio-prereqs"></a>Conditions préalables
+## <a name="twilio-prereqs"></a>Prerequisites
 
-Vous devez effectuer les opérations suivantes pour utiliser le code dans cette rubrique :
+You will need to do the following to use the code in this topic:
 
-1. Acquérir une authentification et Twilio compte jeton. Pour commencer avec Twilio, inscrivez-vous à [https://www.Twilio.com/try-Twilio][try_twilio]. Vous pouvez évaluer le prix à [http://www.Twilio.com/pricing][twilio_pricing]. Pour plus d'informations sur l'API fournie par Twilio, consultez [http://www.twilio.com/voice/api][twilio_api].
+1. Acquire a Twilio account and authentication token. To get started with Twilio, sign up at [https://www.twilio.com/try-twilio][try_twilio]. You can evaluate pricing at [http://www.twilio.com/pricing][twilio_pricing]. For information about the API provided by Twilio, see [http://www.twilio.com/voice/api][twilio_api].
 2. Add the Twilio .NET libary to your web role. See "To add the Twilio libraries to your web role project," later in this topic.
 
 You should be familiar with creating a basic web role on Azure.
@@ -42,7 +42,7 @@ You should be familiar with creating a basic web role on Azure.
 2.  Right-click **References**.
 3.  Click **Manage NuGet Packages**.
 4.  Click **Online**.
-5.  In the search online box, type *Twilio*.
+5.  In the search online box, type *twilio*.
 6.  Click **Install** on the Twilio package.
 
 The following code shows how to create a web form to retrieve user data for making a call. In this example, an ASP.NET web role named **TwilioCloud** is created.
@@ -70,7 +70,7 @@ The following code shows how to create a web form to retrieve user data for maki
     </asp:Content>
 
 ## <a id="howtocreatecode"></a>How to: Create the code to make the call
-The following code, which is called when the user completes the form, creates the call message and generates the call. In this example, the code is run in the onclick event handler of the button on the form. (Use your Twilio account and authentication token instead of the placeholder values assigned to **accountSID** et **authToken** in the code below.)
+The following code, which is called when the user completes the form, creates the call message and generates the call. In this example, the code is run in the onclick event handler of the button on the form. (Use your Twilio account and authentication token instead of the placeholder values assigned to **accountSID** and **authToken** in the code below.)
 
     using System;
     using System.Collections.Generic;
@@ -155,7 +155,7 @@ The call is made, and the Twilio endpoint, API version, and the call status are 
 
 More information about TwiML can be found at [http://www.twilio.com/docs/api/twiml][twiml]. More information about &lt;Say&gt; and other Twilio verbs can be found at [http://www.twilio.com/docs/api/twiml/say][twilio_say].
 
-## <a id="nextsteps"></a>Prochaines étapes
+## <a id="nextsteps"></a>Next steps
 This code was provided to show you basic functionality using Twilio in an ASP.NET web role on Azure. Before deploying to Azure in production, you may want to add more error handling or other features. For example:
 
 * Instead of using a web form, you could use Azure Blob storage or an Azure SQL Database instance to store phone numbers and call text. For information about using blobs in Azure, see [How to use the Azure Blob storage service in .NET][howto_blob_storage_dotnet]. For information about using SQL Database, see [How to use Azure SQL Database in .NET applications][howto_sql_azure_dotnet].

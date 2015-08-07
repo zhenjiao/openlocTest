@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Linking resources in Azure Resource Manager" 
 	description="Create a link between resources in different resource groups in Azure Resource Manager." 
 	services="azure-resource-manager" 
@@ -150,7 +150,7 @@ The properties element contains the identifier for the second resource.
 
 For more examples, including how to retrieve information about links, see [Linked Resources](https://msdn.microsoft.com/library/azure/mt238499.aspx).
 
-## 接下来的步骤
+## Next steps
 
 - You can also organize your resources with tags. To learn about tagging resources, see [Using tags to organize your resources](resource-group-using-tags.md).
 - For a description of how to create templates and define the resources to be deployed, see [Authoring templates](resource-group-authoring-templates.md).

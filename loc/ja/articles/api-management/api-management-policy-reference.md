@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Azure API Management Policy Reference" 
 	description="Learn about the policies available to configure API Management." 
 	services="api-management" 
@@ -20,7 +20,7 @@
 
 This section provides an index for the policies in the [API Management policy reference][]. For information on adding and configuring policies, see [Policies in API Management][].
 
-Policy expressions can be used as attribute values or text values in any of the API Management policies, unless the policy specifies otherwise. Some policies such as the [Control flow][] と [Set variable][] policies are based on policy expressions. For more information, see [Advanced policies][] と [Policy expressions][]
+Policy expressions can be used as attribute values or text values in any of the API Management policies, unless the policy specifies otherwise. Some policies such as the [Control flow][] and [Set variable][] policies are based on policy expressions. For more information, see [Advanced policies][] and [Policy expressions][]
 
 ## Policy reference index
 
@@ -54,7 +54,7 @@ Policy expressions can be used as attribute values or text values in any of the 
 	-	[Set query string parameter][] - Adds, replaces value of, or deletes request query string parameter.
 	-	[Rewrite URL][] - Converts a request URL from its public form to the form expected by the web service.
 
-## 次のステップ
+## Next steps
 
 For more information on policy expressions, see the following video.
 

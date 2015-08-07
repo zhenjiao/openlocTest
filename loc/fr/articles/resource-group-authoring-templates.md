@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Authoring Azure Resource Manager Templates"
    description="Create Azure Resource Manager templates using declarative JSON syntax to deploy applications to Azure."
    services="azure-resource-manager"
@@ -48,7 +48,7 @@ We will examine the sections of the template in greater detail later in this top
 
 ## Expressions and functions
 
-The basic syntax of the template is JSON; however, expressions and functions extend the JSON that is available in the template and enable you to create values that are not strict literal values. Expressions are enclosed with brackets ([ et ]), and are evaluated when the template is deployed. Expressions can appear anywhere in a JSON string value and always return another JSON value. If you need to use a literal string that starts with a bracket [, you must use two brackets [[.
+The basic syntax of the template is JSON; however, expressions and functions extend the JSON that is available in the template and enable you to create values that are not strict literal values. Expressions are enclosed with brackets ([ and ]), and are evaluated when the template is deployed. Expressions can appear anywhere in a JSON string value and always return another JSON value. If you need to use a literal string that starts with a bracket [, you must use two brackets [[.
 
 Typically, you use expressions with functions to perform operations for configuring the deployment. Just like in JavaScript, function calls are formatted as **functionName(arg1,arg2,arg3)**. You reference properties by using the dot and [index] operators.
 
@@ -122,7 +122,7 @@ The allowed types and values are:
 - array - any valid JSON array
 
 
->[AZURE. REMARQUE] All passwords, keys, and other secrets should use the **secureString** type. Template parameters with the secureString type cannot be read after resource deployment. 
+>[AZURE.NOTE] All passwords, keys, and other secrets should use the **secureString** type. Template parameters with the secureString type cannot be read after resource deployment. 
 
 The following example shows how to define parameters:
 
@@ -398,7 +398,7 @@ The following template deploys a web app and provisions it with code from a .zip
        }
     }
 
-## Prochaines étapes
+## Next Steps
 - [Azure Resource Manager Template Functions](./resource-group-template-functions.md)
 - [Deploy an application with Azure Resource Manager Template](azure-portal/resource-group-template-deploy.md)
 - [Advanced Template Operations](./resource-group-advanced-template.md)

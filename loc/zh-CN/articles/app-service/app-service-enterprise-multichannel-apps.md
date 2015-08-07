@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Enterprise Multichannel Apps" 
 	description="Overview of how a multichannel app spans on-premises resources and cloud based software services." 
 	services="app-service" 
@@ -19,7 +19,7 @@
 
 # Create multi-channel applications for the enterprise
 
-## 概述
+## Overview
 
 Enterprise multichannel apps present data to customers using multiple technologies.  Enterprise web, mobile, and API consumers all retrieve and process information from a variety of sources.  These sources span internal systems running on-premises as well
 as cloud-based services.  
@@ -84,9 +84,9 @@ The corporation's Salesforce account is set up with AAD to allow transparent aut
 
 For more information on SaaS integration, see [SaaS Integration][SaaSIntegration]
 
-## <a name="NextSteps"></a>接下来的步骤
+## <a name="NextSteps"></a>Next Steps
 
-有关更多信息，请参见 [Azure Application Services][AzureApplicationServices]
+For more information, see [Azure Application Services][AzureApplicationServices]
  
 [AASIntegrationwithAAD]:http://azure.microsoft.com/blog/2014/11/13/azure-websites-authentication-authorization/
 [VNETIntegration]:http://azure.microsoft.com/blog/2014/09/15/azure-websites-virtual-network-integration/ 

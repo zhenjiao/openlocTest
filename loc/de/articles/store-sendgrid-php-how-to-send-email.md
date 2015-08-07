@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to use the SendGrid email service (PHP) - Azure" 
 	description="Learn how send email with the SendGrid email service on Azure. Code samples written in PHP." 
 	documentationCenter="php" 
@@ -19,7 +19,7 @@
 # How to Use the SendGrid Email Service from PHP
 
 This guide demonstrates how to perform common programming tasks with the SendGrid email service on Azure. The samples are written in PHP.
-The scenarios covered include **constructing email**, **sending email**, und **adding attachments**. For more information on SendGrid and sending email, see the [Die nächsten Schritte][] Abschnitt.
+The scenarios covered include **constructing email**, **sending email**, and **adding attachments**. For more information on SendGrid and sending email, see the [Next Steps][] section.
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ The scenarios covered include **constructing email**, **sending email**, und **a
 -   [How To: Send an Email][]
 -   [How To: Add an Attachment][]
 -   [How to: Use Filters to Enable Footers, Tracking, and Analytics][]
--   [Die nächsten Schritte][]
+-   [Next Steps][]
 
 ## <a name="bkmk_WhatIsSendGrid"> </a>What is the SendGrid Email Service?
 
@@ -47,11 +47,11 @@ include:
 -   Forwarding customer inquiries
 - Email notifications from your application
 
-Weitere Informationen finden Sie unter [https://sendgrid.com][].
+For more information, see [https://sendgrid.com][].
 
 ## <a name="bkmk_CreateSendGrid"> </a>Create a SendGrid Account
 
-[AZURBLAU. ENTHALTEN [sendgrid-sign-up](../includes/sendgrid-sign-up.md)]
+[AZURE.INCLUDE [sendgrid-sign-up](../includes/sendgrid-sign-up.md)]
 
 ## <a name="bkmk_UsingSendGridfromPHP"> </a>Using SendGrid from your PHP Application
 
@@ -73,10 +73,10 @@ can download the *Swift Mailer* library from
 [http://swiftmailer.org/download][] v5.3.0 (use [Composer] to install Swift Mailer). Sending email with the library
 involves creating instances of the
 <span class="auto-style2">Swift\_SmtpTransport</span>,
-<span class="auto-style2">Swift\_Mailer</span>, und
+<span class="auto-style2">Swift\_Mailer</span>, and
 <span class="auto-style2">Swift\_Message</span> classes, setting the
 appropriate properties, and calling the
-<span class="auto-style2">Swift\_Mailer::send</span> -Methode.
+<span class="auto-style2">Swift\_Mailer::send</span> method.
 
     <?php
      include_once "vendor/autoload.php";
@@ -429,7 +429,7 @@ Example:
 
      print_r($response);
 
-## <a name="bkmk_NextSteps"> </a>Die nächsten Schritte
+## <a name="bkmk_NextSteps"> </a>Next Steps
 
 Now that you've learned the basics of the SendGrid Email service, follow
 these links to learn more.

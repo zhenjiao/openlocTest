@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Role-based access control in the Microsoft Azure portal"
 	description="Describes how role based access control works and how to set it up"
 	services=""
@@ -25,7 +25,7 @@ We’ve added support for role-based access control (RBAC) in the Microsoft Azur
 
 Every Azure subscription is associated with an Azure Active Directory. Users and services that access resources of the subscription using the Microsoft Azure Management Portal or Azure Resource Manager API first need to authenticate with that Azure Active Directory.
 
-! [][1]
+![][1]
 
 Azure role-based access control allows you to grant appropriate access to Azure AD users, groups, and services, by assigning roles to them on a subscription or resource group or individual resource level. The assigned role defines the level of access that the users, groups, or services have on the Azure resource.
 
@@ -50,7 +50,7 @@ Roles can be assigned to the following types of Azure AD security principals:
 
 Access does not need to be granted to the entire subscription. Roles can also be assigned for resource groups as well as for individual resources. In Azure RBAC, a resource inherits role assignments from its parent resources. So if a user, group, or service is granted access to only a resource group within a subscription, they will be able to access only that resource group and resources within it, and not the other resources groups within the subscription. As another example, a security group can be added to the Reader role for a resource group, but be added to the Contributor role for a database within that resource group.
 
-! [][2]
+![][2]
 
 ## Co-existence of RBAC with subscription co-administrators
 
@@ -84,19 +84,19 @@ Brock  | Create and manage all resources in the Prod resource group  | Add Brock
 
 First, let’s add Read access for all resources of the subscription. Click **Browse > Everything > Subscriptions**.
 
-! [][3]
+![][3]
 
 Click *name of your subscription* ** > Reader > Add**. From the list of users and groups, select or type the name of the Active Directory group.
 
-! [][4]
+![][4]
 
 Then add the same team to the Contributor role of the Test resource group. Click the resource group to open its property blade. Under **Roles**, click **Contributor > Add** and type the name of the team.
 
-! [][5]
+![][5]
 
 To add Brock to the Contributor role of the Prod resource group, click the resource group click **Contributor > Add** and type Brock’s name.
 
-! [][6]
+![][6]
 
 Role assignments can also be managed by using the Microsoft Azure module for Windows PowerShell. Here is an example of adding Brock's account by using the New-AzureRoleAssignment cmdlet rather than the portal:
 
@@ -108,7 +108,7 @@ For more information about using Windows PowerShell to add and remove access, se
 
 You can also remove assignments easily. Let’s say you want to remove a user named Brad Adams from the Reader role for a resource group named TestDB. Open the resource group blade, click **Reader > Brad Adams > Remove**.
 
-! [][7]
+![][7]
 
 Here is an example of how to remove Brad Adams by using the Remove-AzureRoleAssignment cmdlet:
 
@@ -116,14 +116,14 @@ Here is an example of how to remove Brad Adams by using the Remove-AzureRoleAssi
 
 ### Add or remove access for external user
 
-Die **Configure** tab of a directory includes options to control access for external users. These options can be changed only in the UI (there is no Windows PowerShell or API method) in the full Azure portal by a directory global administrator.
+The **Configure** tab of a directory includes options to control access for external users. These options can be changed only in the UI (there is no Windows PowerShell or API method) in the full Azure portal by a directory global administrator.
 To open the **Configure** tab in the Azure portal, click **Active Directory**, and then click the name of the directory.
 
-! [][10]
+![][10]
 
 Then you can edit the options to control access for external users.
 
-! [][8]
+![][8]
 
 By default, guests cannot enumerate the contents of the directory, so they do not see any users or groups in the **Member List**. They can search for a user by typing the user's full email address, and then grant access. The set of default restrictions for guests are:
 
@@ -135,7 +135,7 @@ The ability for guests to see limited details of a user or group allows them to 
 
 Let’s step through the process to add access for an external user. We’ll add an external user to the same Reader role for TestDB resource group so that user can help debug an error. Open the resource group blade, click **Reader > Add > Invite** and type the email address of the user you want to add.
 
-! [][9]
+![][9]
 
 When you add an external user, a guest is created in the directory. Thereafter, that guest can be added to a group or removed from a group, or you can add or remove it individually from a role just like you would for any other directory users.
 
@@ -143,7 +143,7 @@ You can also remove a guest from any role, just as you would remove any user. Re
 
 ## How to track changes to role assignments
 
-Changes to role assignments are logged in the [Audit logs](http://azure.microsoft.com/updates/audit-logs-in-azure-preview-portal/), similar to other events.  The log of role assignment changes can be retrieved using [Azurblaue PowerShell](https://msdn.microsoft.com/library/azure/jj156055.aspx) or the [Azure Resource Manager REST API](https://msdn.microsoft.com/library/azure/dn931927.aspx).
+Changes to role assignments are logged in the [Audit logs](http://azure.microsoft.com/updates/audit-logs-in-azure-preview-portal/), similar to other events.  The log of role assignment changes can be retrieved using [Azure PowerShell](https://msdn.microsoft.com/library/azure/jj156055.aspx) or the [Azure Resource Manager REST API](https://msdn.microsoft.com/library/azure/dn931927.aspx).
 
 For example, to retrieve the list of role assignment changes for an entire subscription, run the following two cmdlets with Azure PowerShell. The first one switches to Azure Resource Manager mode.
 
@@ -439,7 +439,7 @@ If you encounter a problem when you use role based access control feature, see [
 
 Azure role-based access control comes with the following built-in roles that can be assigned to users, groups, and services. You can’t modify the definition of built-in roles. In an upcoming release of Azure RBAC, you will be able to define custom roles by composing a set of actions from a list of available actions that can be performed on Azure resources.
 
-Click the corresponding link to see the **actions** und **not actions** properties of a role definition. The **actions** property specifies the allowed actions on Azure resources. Action strings can use wildcard characters. The **not actions** property of a role definition specifies the actions that must be excluded from the allowed actions.
+Click the corresponding link to see the **actions** and **not actions** properties of a role definition. The **actions** property specifies the allowed actions on Azure resources. Action strings can use wildcard characters. The **not actions** property of a role definition specifies the actions that must be excluded from the allowed actions.
 
 
 Role name  | Description
@@ -1273,7 +1273,7 @@ Role name  | Description
 Please try Azure RBAC and send us [feedback](http://aka.ms/azurerbacfeedback).
 
 
-## Die nächsten Schritte
+## Next steps
 
 Here are some additional resources to help you use role-based access control:
 

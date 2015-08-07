@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to add operations to an API in Azure API Management" 
 	description="Learn how to add operations to an API in Azure API Management." 
 	services="api-management" 
@@ -26,7 +26,7 @@ Operations are added and configured to an API in the publisher portal. To access
 
 ![Publisher portal][api-management-management-console]
 
->If you have not yet created an API Management service instance, see [Create an API Management service instance][] 在 [Get started with Azure API Management][] tutorial.
+>If you have not yet created an API Management service instance, see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
 Select the desired API in the API Management portal and then select the **Operations** tab. 
 
@@ -67,7 +67,7 @@ To easily and quickly enable caching for the operation, select the **Caching** t
 
 **Duration** specifies the time period during which the operation response remains in the cache. The default value is 3600 seconds or 1 hour.
 
-Cache keys are used to differentiate between responses so that the response corresponding to each different cache key will get its own separate cached value. Optionally, enter specific query string parameters and/or HTTP headers to be used in computing cache key values in the **Vary by query string parameters** 和 **Vary by headers** text boxes respectively. When none are specified, full request URL and the following HTTP header values are used in cache key generation: **Accept** 和 **Accept-Charset**.
+Cache keys are used to differentiate between responses so that the response corresponding to each different cache key will get its own separate cached value. Optionally, enter specific query string parameters and/or HTTP headers to be used in computing cache key values in the **Vary by query string parameters** and **Vary by headers** text boxes respectively. When none are specified, full request URL and the following HTTP header values are used in cache key generation: **Accept** and **Accept-Charset**.
 
 >For more information on caching and caching policies, see [How to cache operation results in Azure API Management][].
 
@@ -121,7 +121,7 @@ If desired, add an optional description into the **Description** text box.
 Once the operation is configured, click **Save**.
 
 
-## <a name="next-steps"> </a>接下来的步骤
+## <a name="next-steps"> </a>Next steps
 
 Once the operations are added to an API, the next step is to associate the API with a product and publish it so that developers can call its operations.
 

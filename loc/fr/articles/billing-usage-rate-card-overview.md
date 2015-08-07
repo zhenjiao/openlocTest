@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Gain insights into your Microsoft Azure resource consumption"
    description="Provides a conceptual overview of the Azure Billing Usage and RateCard APIs, which are used to provide insights into Azure resource consumption and trends."
    services="billing"
@@ -16,33 +16,33 @@
    ms.date="07/7/2015"
    ms.author="mobandyo;bryanla"/>
 
-# Mieux comprendre votre consommation de ressources de Microsoft Azure 
+# Gain insights into your Microsoft Azure resource consumption 
 
-Clients et partenaires exigent la capacité de prédire avec précision et de gérer leurs coûts d'Azur.  Comme ils passent d'un Capex à un modèle Opex, ils doivent également pouvoir faire showback vs analyse de rétrofacturation, ainsi que fournir la fidélité de la mode dans l'estimation et la facturation, en particulier pour les déploiements de grand nuage. 
+Customers and partners require the ability to accurately predict and manage their Azure costs.  As they move from a Capex to an Opex model, they also need the ability to do showback vs. chargeback analysis, as well as provide mode fidelity in estimation and billing, especially for large cloud deployments. 
 
-L'utilisation des ressources d'Azur et taux carte API discutaient dans cette adresse article ces besoins, en permettant de mieux comprendre votre consommation de ressources d'Azur.  
+The Azure Resource Usage and Rate Card APIs discussed in this article address these needs, by enabling new insights into your consumption of Azure resources.  
 
-## Introduction à l'utilisation des ressources d'Azur et tarifs API 
+## Introducing the Azure Resource Usage and RateCard APIs 
 
-L'utilisation des ressources d'Azur et RateCard APIs sont implémentés comme un fournisseur de ressources, dans le cadre de la famille des API exposées par le gestionnaire de ressources d'Azur.  
+The Azure Resource Usage and RateCard APIs are implemented as a Resource Provider, as part of the family of APIs exposed by the Azure Resource Manager.  
 
-### Utilisation des ressources d'Azur API (aperçu)
-Clients et partenaires peuvent utiliser l'API d'utilisation de ressource Azure pour obtenir leurs données de consommation estimée de bleu azur. Les caractéristiques comprennent :
+### Azure Resource Usage API (Preview)
+Customers and partners can use the Azure Resource Usage API to get their estimated Azure consumption data. The features include:
 	
-- **Azur Role-based Access Control** -Clients et partenaires peuvent configurer leurs stratégies d'accès sur le [Aperçu d'Azur portail](https://portal.azure.com) ou par l'intermédiaire [Les applets de commande PowerShell Azur](powershell-install-configure.md) pour spécifier les utilisateurs ou les applications peuvent accéder à des données d'utilisation de l'abonnement. Les appelants doivent utiliser standards jetons Azure Active Directory pour l'authentification. L'appelant doit également être ajouté au rôle soit le lecteur, le propriétaire ou le contributeur pour avoir accès à des données d'utilisation pour un abonnement Azur particulier.
+- **Azure Role-based Access Control** - Customers and partners can configure their access policies on the [Azure Preview Portal](https://portal.azure.com) or through [Azure PowerShell cmdlets](powershell-install-configure.md) to specify which users or applications can get access to the subscription’s usage data. Callers must use standard Azure Active Directory tokens for authentication. The caller must also be added to either the Reader, Owner or Contributor role to get access to the usage data for a particular Azure subscription.
 
-- **Agrégations horaires ou journalier** -Appelants peuvent spécifier s'ils veulent que leurs données d'utilisation Azure en seaux horaire ou journalier seaux. La valeur par défaut est tous les jours.
+- **Hourly or Daily Aggregations** - Callers can specify whether they want their Azure usage data in hourly buckets or daily buckets. The default is daily.
 
-- **Métadonnées d'instance fournies (y compris les balises de ressource)** -Niveau de l'instance détails comme l'uri de la ressource entièrement qualifiée (/subscriptions/ {abonnement id} /..), ainsi que la ressource balises d'informations et de ressources groupe seront fournis dans la réponse. Ceci aidera les clients de façon déterministe et allouer par programme l'utilisation par les balises, pour des cas d'utilisation comme Croix-charge.
+- **Instance metadata provided (includes resource tags)** – Instance-level details such as the fully qualified resource uri (/subscriptions/{subscription-id}/..), along with the resource group information and resource tags will be provided in the response. This will help customers deterministically and programmatically allocate usage by the tags, for use-cases like cross-charging.
 
-- **Métadonnées de ressource fournies** -Détails ressources telles que le nom de compteur, catégorie de compteur, compteur sub catégorie, unité et la région seront également passés dans la réponse, de donner le nombre d'appelants une meilleure compréhension de ce qui a été consommé. Nous travaillons aussi à aligner la terminologie de métadonnées de ressources à travers le portail Azure, Azur utilisation CSV, EA CSV et autres expériences au public, pour permettre aux clients de corréler les données à travers des expériences de facturation.
+- **Resource metadata provided** - Resource details such as the meter name, meter category, meter sub category, unit and region will also be passed in the response, to give the callers a better understanding of what was consumed. We are also working to align  resource metadata terminology across the Azure portal, Azure usage CSV, EA billing CSV and other public-facing experiences, to enable customers to correlate data across experiences.
 
-- **Utilisation pour tous les types d'offre** – Usage data will be accessible for all offer types including Pay-as-you-go, MSDN, Monetary commitment, Monetary credit, and EA among others.
+- **Usage for all offer types** – Usage data will be accessible for all offer types including Pay-as-you-go, MSDN, Monetary commitment, Monetary credit, and EA among others.
 
 ### Azure Resource RateCard API (Preview)
 Customers and partners can use the Azure Resource RateCard API to get the list of available Azure resources, along with estimated pricing information for each. The features include:
 
-- **Azur Role-based Access Control** -Clients et partenaires peuvent configurer leurs stratégies d'accès sur le [Aperçu d'Azur portail](https://portal.azure.com) ou par l'intermédiaire [Les applets de commande PowerShell Azur](powershell-install-configure.md) to specify which users or applications can get access to the RateCard data. Callers must use standard Azure Active Directory tokens for authentication. The caller must also be added to either the Reader, Owner or Contributor role to get access to the usage data for a particular Azure subscription.
+- **Azure Role-based Access Control** - Customers and partners can configure their access policies on the [Azure Preview Portal](https://portal.azure.com) or through [Azure PowerShell cmdlets](powershell-install-configure.md) to specify which users or applications can get access to the RateCard data. Callers must use standard Azure Active Directory tokens for authentication. The caller must also be added to either the Reader, Owner or Contributor role to get access to the usage data for a particular Azure subscription.
 	
 - **Support for Pay-as-you-go, MSDN, Monetary commitment, and Monetary credit offers (EA not supported)** - This API provides Azure offer-level rate information, vs. subscription-level.  The caller of this API must pass in the offer information to get resource details and rates.  As EA offers have customized rates per enrollment, we are unable to provide the EA rates at this time.
 
@@ -66,11 +66,11 @@ Here are some of the scenarios that are made possible with the combination of th
 
 ## Partner solutions
 
-[Utilisation de Microsoft Azure et tarifs API permettre Cloudyn de prévoir ITFM clients](billing-usage-rate-card-partner-solution-cloudyn.md) describes the integration experience offered by Azure Billing API partner [Cloudyn](https://www.cloudyn.com/microsoft-azure/).  This article provides detailed coverage of their experiences, including a short video which shows how an Azure customer can use Cloudyn and the Azure Billing APIs to gains insights from their Azure consumption data. 
+[Microsoft Azure Usage and RateCard APIs Enable Cloudyn to Provide ITFM for Customers](billing-usage-rate-card-partner-solution-cloudyn.md) describes the integration experience offered by Azure Billing API partner [Cloudyn](https://www.cloudyn.com/microsoft-azure/).  This article provides detailed coverage of their experiences, including a short video which shows how an Azure customer can use Cloudyn and the Azure Billing APIs to gains insights from their Azure consumption data. 
 
-[Nuage de Cruiser et Azure de Microsoft API intégration de facturation](billing-usage-rate-card-partner-solution-cloudcruiser.md) describes how [Cloud Cruiser's Express for Azure Pack](http://www.cloudcruiser.com/partners/microsoft/) works directly from the  WAP portal, enabling customers to seamlessly manage both the operational and financial aspects of their Microsoft Azure private or hosted public cloud from a single user interface.   
+[Cloud Cruiser and Microsoft Azure Billing API Integration](billing-usage-rate-card-partner-solution-cloudcruiser.md) describes how [Cloud Cruiser's Express for Azure Pack](http://www.cloudcruiser.com/partners/microsoft/) works directly from the  WAP portal, enabling customers to seamlessly manage both the operational and financial aspects of their Microsoft Azure private or hosted public cloud from a single user interface.   
 
-## Prochaines étapes
+## Next Steps
 + Check out the [Azure Billing REST API Reference](https://msdn.microsoft.com/library/azure/1ea5b323-54bb-423d-916f-190de96c6a3c) for more details on both APIs, which are part of the set of APIs provided by the Azure Resource Manager.
 + If you would like to dive right into the sample code, check out our [Microsoft Azure Billing API Code Samples on Github](https://github.com/Azure/BillingCodeSamples).
 

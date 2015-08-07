@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Using Azure PowerShell with Azure Resource Manager" 
 	description="Use Azure PowerShell to deploy multiple resources as a resource group to Azure." 
 	services="azure-resource-manager" 
@@ -16,32 +16,32 @@
 	ms.date="07/15/2015" 
 	ms.author="tomfitz"/>
 
-# Azure リソース マネージャーと紺碧の PowerShell を使用
+# Using Azure PowerShell with Azure Resource Manager
 
-> [AZURE。セレクター]
-- [紺碧の PowerShell](powershell-azure-resource-manager.md)
-- [紺碧の CLI](xplat-cli-azure-resource-manager.md)
+> [AZURE.SELECTOR]
+- [Azure PowerShell](powershell-azure-resource-manager.md)
+- [Azure CLI](xplat-cli-azure-resource-manager.md)
 
-Azure のリソース マネージャーでは、Azure のリソースに関する思考のまったく新しい方法を紹介しています。作成し、個々 のリソースを管理する代わりに、ブログ、フォト ギャラリー、SharePoint ポータル、または wiki などの複雑なサービスを想像してまずします。-サービスのリソース モデル - テンプレートを使用して、サービスをサポートする必要があるリソースでリソース グループを作成します。その後、管理および、論理単位としてそのリソース グループを配置できます。 
+Azure Resource Manager introduces an entirely new way of thinking about your Azure resources. Instead of creating and managing individual resources, you begin by imagining a complex service, such as a blog, a photo gallery, a SharePoint portal, or a wiki. You use a template -- a resource model of the service --  to create a resource group with the resources that you need to support the service. Then, you can manage and deploy that resource group as a logical unit. 
 
-このチュートリアルでは、Microsoft Azure の Azure PowerShell と Azure リソース マネージャーを使用する方法を学ぶ。作成とそれをサポートする必要があるリソースのすべての完全な SQL データベースと Azure ホステッド web アプリのリソース グループを展開するプロセスを説明します。
+In this tutorial, you learn how to use Azure PowerShell with Azure Resource Manager for Microsoft Azure. It walks you through the process of creating and deploying a resource group for an Azure-hosted web app with a SQL database, complete with all of the resources that you need to support it.
 
-## 前提条件
+## Prerequisites
 
-このチュートリアルを完了する必要があります Azure PowerShell バージョン 0.8.0 以降。最新バージョンをインストールして Azure サブスクリプションに関連付けるには、次を参照してください。 [インストールし、Azure PowerShell を構成する方法](powershell-install-configure.md).
+To complete this tutorial, you must have Azure PowerShell version 0.8.0 or later. To install the latest version and associate it with your Azure subscription, see [How to install and configure Azure PowerShell](powershell-install-configure.md).
 
-このチュートリアルは、PowerShell 初心者向けですが、モジュール、コマンドレット、およびセッションなど、基本的な概念を理解することを想定しています。Windows PowerShell の詳細については、次を参照してください。 [Windows PowerShell の概要](http://technet.microsoft.com/library/hh857337.aspx).
+This tutorial is designed for PowerShell beginners, but it assumes that you understand the basic concepts, such as modules, cmdlets, and sessions. For more information about Windows PowerShell, see [Getting Started with Windows PowerShell](http://technet.microsoft.com/library/hh857337.aspx).
 
-このチュートリアルで参照してくださいすべてのコマンドレットの詳細なヘルプを表示するには、Get-help コマンドレットを使用します。 
+To get detailed help for any cmdlet that you see in this tutorial, use the Get-Help cmdlet. 
 
 	Get-Help <cmdlet-name> -Detailed
 
-たとえば、追加 AzureAccount コマンドレットのヘルプを取得するため次のように入力します。
+For example, to get help for the Add-AzureAccount cmdlet, type:
 
 	Get-Help Add-AzureAccount -Detailed
 
-## 紺碧の PowerShell モジュールについて
-Azure PowerShell インストールにはバージョン 0.8.0 に始まり、複数の PowerShell モジュールが含まれています。紺碧のモジュールまたは Azure リソース マネージャー モジュールで使用可能なコマンドを使用するかどうかを決定する必要があります明示的に。それらの間のスイッチを容易に、我々 は新しいコマンドレットを追加しました **スイッチ-AzureMode**, to the Azure Profile module.
+## About the Azure PowerShell Modules
+Beginning in version 0.8.0, the Azure PowerShell installation includes more than one PowerShell module. You must explicitly decide whether to use the commands that are available in the Azure module or the Azure Resource Manager module. To make it easy to switch between them, we have added a new cmdlet, **Switch-AzureMode**, to the Azure Profile module.
 
 When you use Azure PowerShell, the cmdlets in the Azure module are imported by default. To switch to the Azure Resource Manager module, use the Switch-AzureMode cmdlet. It removes the Azure module from your session and imports the Azure Resource Manager and Azure Profile modules.
 
@@ -55,7 +55,7 @@ To switch back to the Azure module, type:
 
 By default, Switch-AzureMode affects only the current session. To make the switch effective in all PowerShell sessions, use the **Global** parameter of Switch-AzureMode.
 
-For help with the Switch-AzureMode cmdlet, type: `Get-Help Switch-AzureMode` or see [スイッチ-AzureMode](http://go.microsoft.com/fwlink/?LinkID=394398).
+For help with the Switch-AzureMode cmdlet, type: `Get-Help Switch-AzureMode` or see [Switch-AzureMode](http://go.microsoft.com/fwlink/?LinkID=394398).
   
 To get a list of cmdlets in the AzureResourceManager module with a help synopsis, type: 
 
@@ -90,7 +90,7 @@ You don't need to be an expert in Azure, SQL, web apps, or resource management t
 ### Step 1: Switch to Azure Resource Manager 
 1. Start PowerShell. You can use any host program that you like, such as the Azure PowerShell console or Windows PowerShell ISE.
 
-2. 使用、 **スイッチ-AzureMode** cmdlet to import the cmdlets in the AzureResourceManager and AzureProfile modules. 
+2. Use the **Switch-AzureMode** cmdlet to import the cmdlets in the AzureResourceManager and AzureProfile modules. 
 
         PS C:\> Switch-AzureMode AzureResourceManager
 
@@ -102,7 +102,7 @@ The cmdlet prompts you for the login credentials for your Azure account. After l
 
 The account settings expire, so you need to refresh them occasionally. To refresh the account settings, run **Add-AzureAccount** again. 
 
->[AZURE。メモ] The AzureResourceManager module requires Add-AzureAccount. A Publish Settings file is not sufficient.     
+>[AZURE.NOTE] The AzureResourceManager module requires Add-AzureAccount. A Publish Settings file is not sufficient.     
 
 ### Step 2: Select a gallery template
 
@@ -139,9 +139,9 @@ Save-AzureResourceGroupGalleryTemplate saves the template and returns the path a
 	C:\Azure\Templates\New_WebSite_And_Database.json
 
 
-You can view the template file in a text editor, such as Notepad. Each template has a **parameters** section and a **resources** セクション。
+You can view the template file in a text editor, such as Notepad. Each template has a **parameters** section and a **resources** section.
 
-、 **parameters** section of the template is a collection of the parameters that are defined in all of the resources. It includes property values you can provide when setting up your resource group.
+The **parameters** section of the template is a collection of the parameters that are defined in all of the resources. It includes property values you can provide when setting up your resource group.
 
     "parameters": {
       "siteName": {
@@ -183,7 +183,7 @@ Note that the **administratorLoginPassword** parameter uses a secure string, not
       "type": "securestring"
     },
 
-、 **resources** section of the template lists the resources that the template creates. This template creates a SQL database server and SQL database, a server farm and website, and several management settings.
+The **resources** section of the template lists the resources that the template creates. This template creates a SQL database server and SQL database, a server farm and website, and several management settings.
   
 The definition of each resource includes its properties, such as name, type and location, and parameters for user-defined values. For example, this section of the template defines the SQL database. It includes parameters for the database name ([parameters('databaseName')]), the database server location [parameters('serverLocation')], and the collation property [parameters('collation')].
 
@@ -373,7 +373,7 @@ The AzureResourceManager module includes cmdlets that help you to prevent errors
 - **Your Azure credentials have not been set up or have expired**:  To refresh the credentials in your Windows PowerShell session, use the Add-AzureAccount cmdlet. The credentials in a publish settings file are not sufficient for the cmdlets in the AzureResourceManager module.
 
 
-## 次のステップ
+## Next Steps
 Getting Started
 
 - [Azure Resource Manager Overview](./resource-group-overview.md)

@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Microsoft Azure Usage and RateCard APIs Enable Cloudyn to Provide ITFM for Customers"
    description="Provides a unique perspective from Microsoft Azure Billing partner Cloudyn, on their experiences integrating the Azure Billing APIs into their product.  This is especially useful for Azure and Cloudyn customers that are interested in using/trying Cloudyn for Azure Services."
    services="billing"
@@ -16,19 +16,19 @@
    ms.date="06/14/2015"
    ms.author="mobandyo;bryanla"/>
 
-# Microsoft Azure 利用と RateCard Api 向け ITFM を提供する Cloudyn を有効にします。 
+# Microsoft Azure Usage and RateCard APIs Enable Cloudyn to Provide ITFM for Customers 
 
-Cloudyn、マイクロソフト開発パートナー、クラウド管理機能の主要なプロバイダーは、新しい Microsoft Azure リソースの使用状況と RateCard Api のプライベート プレビューに選ばれました。 使用状況 API は、サブスクリプションの Azure 消費予測データへのアクセスを提供します。RateCard API は、非エンタープライズ契約 EA の顧客のためのすべての Azure サービスの完全な価格情報を提供します。一緒に統合され、これらの Api の完全な情報の基礎を提供それに入力する Cloudyn によって提供されるような金融管理 (ITFM) ツール。
+Cloudyn, a Microsoft development partner and a leading provider of cloud management capabilities, was chosen for a private preview of the new Microsoft Azure Resource Usage and RateCard APIs.  The Usage API provides access to estimated Azure consumption data for a subscription. The RateCard API provides complete pricing information of all Azure services, for non-Enterprise Agreement (EA) customers. Integrated together, these APIs provide a complete information basis for input into IT Financial Management (ITFM) tools such as those provided by Cloudyn.
 
-## 導入 
+## Introduction 
 
-いわゆる「乗算」RateCard API (使用からデータ使用状況 API からデータの [単位] 価格[$unit] 詳細な利用状況とコストを =) 最も細かく、正確かつ信頼性の高い課金情報利用可能な Azure の今日を作成します。
+The so-called “multiplication” of data from the Usage API with data from the RateCard API (usage [units] price[$unit] = Detailed Usage and Cost) creates the most granular, accurate and reliable billing information available for Azure today.
 
-![ITFM 概要][1]
+![ITFM Overview][1]
 
-これらの Api を消費顧客の使用量とコスト、Cloudyn、プログラムで簡単な方法で顧客アカウントを分析し、お客様の様々 な ITFM タスクを実行することができます重要な情報を提供します。 
+Consuming these APIs provides key information on customers’ usage and costs, allowing Cloudyn to analyze customer accounts in a simple, programmatic manner, and to perform various ITFM tasks for its customers. 
 
-## RateCard と使用状況 Api と Cloudyn を統合
+## Integrating Cloudyn with the RateCard and Usage APIs
 The RateCard API requires several input parameters -- like region info, currency and locale -- but the most important one is OfferDurableID, which specifies the type of Azure offering the customer is using (Pay-as-you-Go, legacy 6 and 12-month commitment plans, MSDN offers, MPN offers, promotional offers and others). The OfferDurableID can be found in the [Azure Usage and Billing portal](https://account.windowsazure.com/Subscriptions), under the "Offer ID" for the given subscription. 
 
 Upon registration for [Cloudyn for Azure](https://www.cloudyn.com/microsoft-azure/) services, customers can add their OfferDurableID code, which allows Cloudyn to pull their relevant pricing information through the RateCard API.  Information on the different types of offers can be found one the [Microsoft Azure Offer Details](http://azure.microsoft.com/en-gb/support/legal/offer-details/) page.
@@ -69,10 +69,10 @@ Here's a short video which shows how an Azure customer can use Cloudyn for Azure
 > [AZURE.VIDEO cloudyn-provides-cloud-itfm-tools-via-microsoft-azure-apis]
 
 
-## 次のステップ
+## Next Steps
 
 + Start a free [Cloudyn for Azure](https://www.cloudyn.com/microsoft-azure/) trial to see how you can obtain cost transparency with customized reporting and analytics for your Microsoft Azure cloud deployment.
-+ See [Microsoft Azure リソースの消費量を把握します。](billing-usage-rate-card-overview.md) for an overview of the Azure Resource Usage and RateCard APIs. 
++ See [Gain insights into your Microsoft Azure resource consumption](billing-usage-rate-card-overview.md) for an overview of the Azure Resource Usage and RateCard APIs. 
 + Check out the [Azure Billing REST API Reference](https://msdn.microsoft.com/library/azure/1ea5b323-54bb-423d-916f-190de96c6a3c) for more information on both APIs, which are part of the set of APIs provided by the Azure Resource Manager.
 + If you would like to dive right into the sample code, check out our [Microsoft Azure Billing API Code Samples on Github](https://github.com/Azure/BillingCodeSamples).
 

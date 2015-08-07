@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Troubleshooting and Questions about Application Insights" 
 	description="Something in Visual Studio Application Insights unclear or not working? Try here." 
 	services="application-insights" 
@@ -95,7 +95,7 @@ The details depend on the type of project. For a web application:
 ####<a name="NuGetBuild"></a> I get "NuGet package(s) are missing" on my build server, though everything builds OK on my dev machines
 
 Please see [NuGet Package Restore](http://docs.nuget.org/Consume/Package-Restore)
-et [Automatic Package Restore](http://docs.nuget.org/Consume/package-restore/migrating-to-automatic-package-restore).
+and [Automatic Package Restore](http://docs.nuget.org/Consume/package-restore/migrating-to-automatic-package-restore).
 
 ####<a name="FailUpdate"></a> I get "project references NuGet package(s) that are missing on my computer" when attempting to build after updating to 0.17 or newer of the NuGet packages.
 
@@ -191,13 +191,13 @@ The help pages you're looking at refer to [Application Insights for Microsoft Az
 
 Take a look at [Data Retention and Privacy][data].
 
-## Exploitation forestière
+## Logging
 
 #### <a name="post"></a>How do I see POST data in Diagnostic search?
 
 We don't log POST data automatically, but you can use a TrackTrace call: put the data in the message parameter. This has a longer size limit than the limits on string properties, though you can't filter on it. 
 
-## Sécurité
+## Security
 
 #### Is my data secure in the portal? How long is it retained?
 

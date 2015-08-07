@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Create an Azure account" 
 	description="Create an account" 
 	authors="tfitzmac" 
@@ -16,6 +16,6 @@
     ms.date="06/03/2015"
 	ms.author="tomfitz"/>
 
-# Créer un compte Azure et activer les fonctionnalités d'aperçu
+# Create an Azure account and enable preview features
 
-[AZURE. INCLURE [créer-un-Azur-compte](../includes/create-an-azure-account.md)]
+[AZURE.INCLUDE [create-an-azure-account](../includes/create-an-azure-account.md)]

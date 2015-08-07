@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Using Linked Templates with Azure Resource Manager"
    description="Describes how to use linked templates in an Azure Resource Manager template to create a modular template solution. Shows how to pass parameters values, specify a parameter file, and dynamically created URLs."
    services="na"
@@ -77,7 +77,7 @@ The previous examples showed hard-coded URL values for the template links. This 
 for the main template and then dynamically create URLs for the linked templates from that base URL. The benefit of this approach is you can 
 easily move or fork the template because you only need to change the static variable in the main template. The main template passes the correct URIs throughout the decomposed template.
 
-The following example shows how to use a base URL to create two URLs for linked templates (**sharedTemplateUrl** と **vmTemplate**). 
+The following example shows how to use a base URL to create two URLs for linked templates (**sharedTemplateUrl** and **vmTemplate**). 
 
     "variables": {
         "templateBaseUrl": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/postgresql-on-ubuntu/",
@@ -103,6 +103,6 @@ The following example shows how to use a base URL to create two URLs for linked 
 If you need to pass a value from linked template to the main template, you can create a value in **outputs** section of the linked template. For an example, see 
 [Sharing State in Azure Resource Manager Templates](best-practices-resource-manager-state.md).
 
-## 次のステップ
+## Next steps
 - [Authoring templates](./resource-group-authoring-templates.md)
 - [Deploying templates](azure-portal/resource-group-template-deploy.md)

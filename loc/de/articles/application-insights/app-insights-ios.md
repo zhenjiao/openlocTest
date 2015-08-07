@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
     pageTitle="Application Insights for iOS apps" 
     description="Analyze usage and performance of your iOS app with Application Insights." 
     services="application-insights" 
@@ -77,7 +77,7 @@ The blade that opens is the place where you'll see performance and usage data ab
 
 11. Modify your source code as shown in the wizard, then click Finish
 
-12. Launch your app in the iOS simulator with Build & Ausführen
+12. Launch your app in the iOS simulator with Build & Run
 
 ## Insert telemetry calls
 
@@ -120,7 +120,7 @@ As your app is used, data will appear in the overview blade.
 Click on any chart to get more detail. For example, crashes:
 
 ![Click the crash chart](./media/app-insights-ios/23-crashes.png)
-## <a name="usage"></a>Die nächsten Schritte
+## <a name="usage"></a>Next Steps
 
 [Track usage of your app][track]
 

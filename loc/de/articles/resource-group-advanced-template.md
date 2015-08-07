@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Azure Resource Manager Advanced Template Operations"
    description="Describes how to use nested templates and the copy operation in an Azure Resource Manager template when deploying apps to Azure."
    services="na"
@@ -137,7 +137,7 @@ The next example uses the **parametersLink** property to link to a parameter fil
       } 
     ] 
 
-## Die nächsten Schritte
+## Next Steps
 - [Authoring Azure Resource Manager Templates](./resource-group-authoring-templates.md)
 - [Azure Resource Manager Template Functions](./resource-group-template-functions.md)
 - [Deploy an application with Azure Resource Manager Template](azure-portal/resource-group-template-deploy.md)

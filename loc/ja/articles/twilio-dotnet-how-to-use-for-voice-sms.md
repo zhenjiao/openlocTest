@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to Use Twilio for Voice and SMS (.NET) - Azure" 
 	description="Learn how to make a phone call and send a SMS message with the Twilio API service on Azure. Code samples written in .NET." 
 	services="" 
@@ -22,19 +22,19 @@
 
 # How to use Twilio for voice and SMS capabilities from Azure
 
-このガイドでは、Azure で Twilio API サービスで一般的なプログラミング タスクを実行する方法を示します。説明するシナリオには、電話をかけると、ショート メッセージ サービス (SMS) メッセージを送信するが含まれます。Twilio とアプリケーションで音声通話と SMS の使用の詳細についてを参照してください、 [次のステップ](#NextSteps) セクション。
+This guide demonstrates how to perform common programming tasks with the Twilio API service on Azure. The scenarios covered include making a phone call and sending a Short Message Service (SMS) message. For more information on Twilio and using voice and SMS in your applications, see the [Next steps](#NextSteps) section.
 
-## <a id="WhatIs"></a>Twilio ってなに?
-Twilio は、ビジネス通信、音声、VoIP、およびアプリケーションにメッセージングを埋め込むには開発者の未来の電源です。Twilio 通信 API プラットフォームを通じて公開するクラウド ベース、グローバルな環境で必要なすべてのインフラストラクチャを仮想化します。アプリケーションは、ビルドにシンプルかつスケーラブルです。報酬としてあなたの柔軟性を楽しむ価格設定を行ったり、クラウドの信頼性の恩恵します。
+## <a id="WhatIs"></a>What is Twilio?
+Twilio is powering the future of business communications, enabling developers to embed voice, VoIP, and messaging into applications. They virtualize all infrastructure needed in a cloud-based, global environment, exposing it through the Twilio communications API platform. Applications are simple to build and scalable. Enjoy flexibility with pay-as-you go pricing, and benefit from cloud reliability.
 
-**Twilio 声** 携帯電話の通話を送受信するアプリケーションをできます。 **Twilio SMS** enables your applications to send and receive SMS messages. **Twilio Client** allows you to make VoIP calls from any phone, tablet, or browser and supports WebRTC.
+**Twilio Voice** allows your applications to make and receive phone calls. **Twilio SMS** enables your applications to send and receive SMS messages. **Twilio Client** allows you to make VoIP calls from any phone, tablet, or browser and supports WebRTC.
 
-## <a id="Pricing"></a>Twilio 価格や特別オファー
-紺碧のお客様に、 [特別オファー](http://www.twilio.com/azure): complimentary $10 of Twilio Credit when you upgrade your Twilio Account. This Twilio Credit can be applied to any Twilio usage ($10 credit equivalent to sending as many as 1,000 SMS messages or receiving up to 1000 inbound Voice minutes, depending on the location of your phone number and message or call destination). Redeem this Twilio credit and get started at [ahoy.twilio.com/azure](http://ahoy.twilio.com/azure).
+## <a id="Pricing"></a>Twilio Pricing and Special Offers
+Azure customers receive a [special offer](http://www.twilio.com/azure): complimentary $10 of Twilio Credit when you upgrade your Twilio Account. This Twilio Credit can be applied to any Twilio usage ($10 credit equivalent to sending as many as 1,000 SMS messages or receiving up to 1000 inbound Voice minutes, depending on the location of your phone number and message or call destination). Redeem this Twilio credit and get started at [ahoy.twilio.com/azure](http://ahoy.twilio.com/azure).
 
-Twilio は、従量課金制のサービスです。セットアップ料金がない、いつでも自分のアカウントを閉じることができます。詳細を見つけることができます。 [Twilio 価格](http://www.twilio.com/voice/pricing).  
+Twilio is a pay-as-you-go service. There are no set-up fees and you can close your account at any time. You can find more details at [Twilio Pricing](http://www.twilio.com/voice/pricing).  
 
-## <a id="Concepts"></a>概念
+## <a id="Concepts"></a>Concepts
 The Twilio API is a RESTful API that provides voice and SMS functionality for applications. Client libraries are available in multiple languages; for a list, see [Twilio API Libraries] [twilio_libraries].
 
 Key aspects of the Twilio API are Twilio verbs and Twilio Markup Language (TwiML).
@@ -72,7 +72,7 @@ For more information about Twilio verbs, their attributes, and TwiML, see [TwiML
 ## <a id="CreateAccount"></a>Create a Twilio Account
 When you're ready to get a Twilio account, sign up at [Try Twilio] [try_twilio]. You can start with a free account, and upgrade your account later.
 
-When you sign up for a Twilio account, you'll receive an account ID and an authentication token. Both will be needed to make Twilio API calls. To prevent unauthorized access to your account, keep your authentication token secure. Your account ID and authentication token are viewable at the [Twilio account page] [twilio_account], in the fields labeled **ACCOUNT SID** と **AUTH TOKEN**, respectively.
+When you sign up for a Twilio account, you'll receive an account ID and an authentication token. Both will be needed to make Twilio API calls. To prevent unauthorized access to your account, keep your authentication token secure. Your account ID and authentication token are viewable at the [Twilio account page] [twilio_account], in the fields labeled **ACCOUNT SID** and **AUTH TOKEN**, respectively.
 
 ## <a id="create_app"></a>Create an Azure Application
 An Azure application that hosts a Twilio enabled application is no different from any other Azure application. You add the Twilio .NET library and configure the role to use the Twilio .NET libraries.
@@ -117,7 +117,7 @@ The libraries can be [installed using the NuGet package manager extension](http:
 
 By default, Microsoft Visual Studio 2010 installs version 1.2 of NuGet. Installing the Twilio libraries requires version 1.6 of NuGet or higher. For information on installing or updating NuGet, see [http://nuget.org/][nuget].
 
-> [AZURE。メモ] To install the latest verison of NuGet, you must first uninstall the loaded version using the Visual Studio Extension Manager. To do so, you must run Visual Studio as administrator. Otherwise, the Uninstall button is disabled.
+> [AZURE.NOTE] To install the latest verison of NuGet, you must first uninstall the loaded version using the Visual Studio Extension Manager. To do so, you must run Visual Studio as administrator. Otherwise, the Uninstall button is disabled.
 
 ### <a id="use_nuget"></a>To add the Twilio libraries to your Visual Studio project:
 
@@ -130,7 +130,7 @@ By default, Microsoft Visual Studio 2010 installs version 1.2 of NuGet. Installi
 
 
 ## <a id="howto_make_call"></a>How to: Make an outgoing call
-The following shows how to make an outgoing call using the **TwilioRestClient** class. This code also uses a Twilio-provided site to return the Twilio Markup Language (TwiML) response. Substitute your values for the **From** と **To** phone numbers, and ensure that you verify the **From** phone number for your Twilio account prior to running the code.
+The following shows how to make an outgoing call using the **TwilioRestClient** class. This code also uses a Twilio-provided site to return the Twilio Markup Language (TwiML) response. Substitute your values for the **From** and **To** phone numbers, and ensure that you verify the **From** phone number for your Twilio account prior to running the code.
 
     // Use your account SID and authentication token instead
     // of the placeholders shown here.
@@ -188,7 +188,7 @@ The following screenshot shows how to send an SMS message using the **TwilioRest
 ## <a id="howto_provide_twiml_responses"></a>How to: Provide TwiML Responses from your own website
 When your application initiates a call to the Twilio API - for example, via the **client.InitiateOutboundCall** method - Twilio sends your request to a URL that is expected to return a TwiML response. The example in [How to: Make an outgoing call](#howto_make_call) uses the Twilio-provided URL [http://twimlets.com/message][twimlet_message_url] to return the response. 
 
-> [AZURE。メモ] While TwiML is designed for use by web services, you can view the TwiML in your browser. For example, click [http://twimlets.com/message](twimlet_message_url) to see an empty &lt;Response&gt; element; as another example, click [http://twimlets.com/message?Message%5B0%5D=Hello%20World](twimlet_message_url_hello_world) to see a &lt;Response&gt; element that contains a &lt;Say&gt; element.
+> [AZURE.NOTE] While TwiML is designed for use by web services, you can view the TwiML in your browser. For example, click [http://twimlets.com/message](twimlet_message_url) to see an empty &lt;Response&gt; element; as another example, click [http://twimlets.com/message?Message%5B0%5D=Hello%20World](twimlet_message_url_hello_world) to see a &lt;Response&gt; element that contains a &lt;Say&gt; element.
 
 Instead of relying on the Twilio-provided URL, you can create your own URL site that returns HTTP responses. You can create the site in any language that returns HTTP responses. This topic assumes you'll be hosting the URL from an ASP.NET generic handler.
 
@@ -277,9 +277,9 @@ Once you have set up a way to provide TwiML responses, you can pass that URL int
     var call = client.InitiateOutboundCall(options);
 
 
-For additional information about using Twilio on Azure with ASP.NET, see [Azure の web ロールで Twilio を使用して電話をかける方法][howto_phonecall_dotnet].
+For additional information about using Twilio on Azure with ASP.NET, see [How to make a phone call using Twilio in a web role on Azure][howto_phonecall_dotnet].
 
-[AZURE。含まれます [twilio_additional_services_と_next_steps](../includes/twilio_additional_services_and_next_steps.md)]
+[AZURE.INCLUDE [twilio_additional_services_and_next_steps](../includes/twilio_additional_services_and_next_steps.md)]
 
 
 

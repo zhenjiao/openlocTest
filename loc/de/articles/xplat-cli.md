@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="The Azure CLI for Mac, Linux, and Windows"
 	description="Install and configure the Azure CLI for Mac, Linux, and Windows to manage Azure Services"
 	editor="tysonn"
@@ -18,9 +18,9 @@
 
 # Install and Configure the Azure CLI
 
-> [AZURBLAU. SELEKTOR]
+> [AZURE.SELECTOR]
 - [PowerShell](powershell-install-configure.md)
-- [Azurblaue CLI](xplat-cli.md)
+- [Azure CLI](xplat-cli.md)
 
 The Azure CLI provides a set of open source, cross-platform commands for working with the Azure Platform. The Azure CLI provides much of the same functionality found in the Azure Management Portal, such as the ability to manage websites, virtual machines, mobile services, SQL Database and other services provided by the Azure platform.
 
@@ -79,7 +79,7 @@ The Azure CLI is accessed using the `azure` command. To see a list of commands a
 	help:      -h, --help     output usage information
 	help:      -v, --version  output the application version
 
-The top level commands listed above contain commands for working with a specific area of Azure. For example, the `azure account` command contains commands that relate to your Azure subscription, such as the `download` und `import` settings used previously. See [Using the Azure CLI for Mac, Linux, and Windows] for details on the available commands and options.
+The top level commands listed above contain commands for working with a specific area of Azure. For example, the `azure account` command contains commands that relate to your Azure subscription, such as the `download` and `import` settings used previously. See [Using the Azure CLI for Mac, Linux, and Windows] for details on the available commands and options.
 
 Most commands are formatted as `azure <command> <operation> [parameters]` and perform an operation on a service or object such as your account configuration. Other commands provide sub-commands and follow the format `azure <command> <subcommand> <operation> [parameters]`. The following are example commands that work with your account configuration:
 
@@ -91,7 +91,7 @@ Most commands are formatted as `azure <command> <operation> [parameters]` and pe
 
 		azure account set <subscription>
 
-Die `--help` oder `-h` parameter can be used to view help for specific commands. Alternately, the `azure help [command] [options]` format can also be used to return the same information. For example, the following commands all return the same information:
+The `--help` or `-h` parameter can be used to view help for specific commands. Alternately, the `azure help [command] [options]` format can also be used to return the same information. For example, the following commands all return the same information:
 
 	azure account set --help
 
@@ -99,7 +99,7 @@ Die `--help` oder `-h` parameter can be used to view help for specific commands.
 
 	azure help account set
 
-When in doubt about the parameters needed by a command, refer to help using `--help`, `-h` oder `azure help [command]`.
+When in doubt about the parameters needed by a command, refer to help using `--help`, `-h` or `azure help [command]`.
 
 ### Setting the configuration mode
 
@@ -107,7 +107,7 @@ The Azure CLI allows you to perform management operations on individual _resourc
 
 To support managing a group of resources as a single logical unit, or _resource group_, we have introduced a preview of the **Resource Manager** as a new way of managing Azure resources.
 
->[AZURBLAU. HINWEIS] The Resource Manager is currently in preview, and does not provide the same  level of management capabilities as Azure Service Management.
+>[AZURE.NOTE] The Resource Manager is currently in preview, and does not provide the same  level of management capabilities as Azure Service Management.
 
 To support the new Resource Manager, the Azure CLI allows you to switch between these management 'modes' using the `azure config mode` command.
 
@@ -119,7 +119,7 @@ To change back to Azure service management mode, use the following command:
 
 	azure config mode asm
 
->[AZURBLAU. HINWEIS] The Resource Manager mode and Azure Service Management mode are mutually exclusive. That is, resources created in one mode cannot be managed from the other mode.
+>[AZURE.NOTE] The Resource Manager mode and Azure Service Management mode are mutually exclusive. That is, resources created in one mode cannot be managed from the other mode.
 
 For more information on working with the Resource Manager using the Azure CLI, see [Using the Azure CLI with the Resource Manager][cliarm].
 
@@ -133,9 +133,9 @@ The Azure CLI allows you to easily manage Azure services. In this example, you w
 
 	You will be prompted to specify the region that the website will be created in. Select a region that is geographically near you. After this command completes, the website will be available at http://mywebsite.azurewebsites.net (replace **mywebsite** with the name you specified.)
 
-	> [AZURBLAU. HINWEIS] If you use Git for project source control, you can specify the `--git` parameter to create a Git repository on Azure for this website. This will also initialize a Git repository in the directory from which the command was ran if one does not already exist. It will also create a Git remote named __azure__, which can be used to push deployments to the Azure Website using the `git push azure master` command.
+	> [AZURE.NOTE] If you use Git for project source control, you can specify the `--git` parameter to create a Git repository on Azure for this website. This will also initialize a Git repository in the directory from which the command was ran if one does not already exist. It will also create a Git remote named __azure__, which can be used to push deployments to the Azure Website using the `git push azure master` command.
 
-	> [AZURBLAU. HINWEIS] If you receive an error that 'site' is not an azure command, the Azure CLI is most likely in resource group mode. To change back to resource mode, use the `azure config mode asm` command.
+	> [AZURE.NOTE] If you receive an error that 'site' is not an azure command, the Azure CLI is most likely in resource group mode. To change back to resource mode, use the `azure config mode asm` command.
 
 2. Use the following command to list websites for your subscription:
 
@@ -180,7 +180,7 @@ For information on scripting Windows-based systems using batch files, see [Comma
 
 ### Understanding results
 
-When creating scripts, you often need to capture the output of a command and either pass this to another command or perform an operation on the output such as checking for a specific value. The Azure CLI generates output to STDOUT and STDERR. Each line is prefixed by the strings `info:` for informational status messages, or `data:` for data returned about a service; however, you can instruct the Azure CLI to return more verbose information by using the `--verbose` oder `-v` parameter. This will return additional information prefixed by the string `verbose:`.
+When creating scripts, you often need to capture the output of a command and either pass this to another command or perform an operation on the output such as checking for a specific value. The Azure CLI generates output to STDOUT and STDERR. Each line is prefixed by the strings `info:` for informational status messages, or `data:` for data returned about a service; however, you can instruct the Azure CLI to return more verbose information by using the `--verbose` or `-v` parameter. This will return additional information prefixed by the string `verbose:`.
 
 For example, the following output is returned from the `azure site list` command:
 
@@ -191,7 +191,7 @@ For example, the following output is returned from the `azure site list` command
 	data:    myawesomesite  Running  Free  myawesomesite.azurewebsites.net
 	info:    site list command OK
 
-Wenn die `--verbose` oder `-v` parameter is specified, information similar to the following is returned:
+If the `--verbose` or `-v` parameter is specified, information similar to the following is returned:
 
 	info:    Executing command site list
 	verbose: Subscription ####################################
@@ -228,13 +228,13 @@ Wenn die `--verbose` oder `-v` parameter is specified, information similar to th
 	data:    myawesomesite  Running  Free  myawesomesite.azurewebsites.net
 	info:    site list command OK
 
-Note that the `verbose:` information appears to be JSON formatted data. You can use the `--json` parameter to return the information in JSON format if you are working with utilities that natively understand JSON, such as [jsawk](https://github.com/micha/jsawk) oder [jq](http://stedolan.github.io/jq/). For example:
+Note that the `verbose:` information appears to be JSON formatted data. You can use the `--json` parameter to return the information in JSON format if you are working with utilities that natively understand JSON, such as [jsawk](https://github.com/micha/jsawk) or [jq](http://stedolan.github.io/jq/). For example:
 
 	azure site list --json | jsawk -n 'out(this.Name)' | xargs -L 1 azure site delete -q
 
 The command above retrieves a list of websites as JSON, then uses jsawk to retrieve the site names, and finally uses xargs to run a site delete command for each site, passing the site name as a parameter.
 
->[AZURBLAU. HINWEIS] Die `--json` parameter blocks the generation of status or data information (strings prefixed by `info:` und `data:`). For example, if the `--json` parameter is used with the `azure site create`, no output is returned as this command does not return any data other than `info:`.
+>[AZURE.NOTE] The `--json` parameter blocks the generation of status or data information (strings prefixed by `info:` and `data:`). For example, if the `--json` parameter is used with the `azure site create`, no output is returned as this command does not return any data other than `info:`.
 
 ### Working with errors
 

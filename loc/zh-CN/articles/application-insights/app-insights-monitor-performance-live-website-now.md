@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Diagnose performance issues on a running website" 
 	description="Monitor a website's performance without re-deploying it. Use standalone or with Application Insights SDK to get dependency telemetry." 
 	services="application-insights" 
@@ -42,7 +42,7 @@ You have a choice of three ways to apply Application Insights to your IIS web ap
 
 
 
-> [AZURE。小贴士] Is your app an [Azure App Service Web App](../app-service-web/websites-learning-map.md)? [Add the Application Insights SDK][greenbrown] and then [add the Application Insights extension](../insights-perf-analytics.md) from the app's control panel in Azure.
+> [AZURE.TIP] Is your app an [Azure App Service Web App](../app-service-web/websites-learning-map.md)? [Add the Application Insights SDK][greenbrown] and then [add the Application Insights extension](../insights-perf-analytics.md) from the app's control panel in Azure.
 
 
 ## Install Application Insights Status Monitor on your IIS web server
@@ -90,7 +90,7 @@ Sign into [the Azure Preview portal](http://portal.azure.com), browse Applicatio
 
 Open the Performance blade to see dependency and other data.
 
-![性能](./media/app-insights-monitor-performance-live-website-now/21-perf.png)
+![Performance](./media/app-insights-monitor-performance-live-website-now/21-perf.png)
 
 Click through any chart to see more details.
 
@@ -103,7 +103,7 @@ The charts labeled HTTP, SQL, AZUREBLOB show the response times and counts of ca
 
 
 
-#### 性能计数器
+#### Performance counters
 
 Click any performance counter chart to change what it shows. Or you can add a new chart. 
  
@@ -145,7 +145,7 @@ On the client side Windows 7, 8 and 8.1, again with .NET Framework 4.0 and 4.5
 IIS support is: IIS 7, 7.5, 8, 8.5
 (IIS is required)
 
-## <a name="next"></a>接下来的步骤
+## <a name="next"></a>Next steps
 
 * [Create web tests][availability] to make sure your site stays live.
 * [Search events and logs][diagnostic] to help diagnose problems.
@@ -154,7 +154,7 @@ IIS support is: IIS 7, 7.5, 8, 8.5
 
 ## Video
 
-#### 性能监视
+#### Performance monitoring
 
 [AZURE.VIDEO app-insights-performance-monitoring]
 

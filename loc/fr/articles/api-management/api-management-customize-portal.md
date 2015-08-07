@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Customizing the developer portal in Azure API Management"
 	description="Customizing the developer portal in Azure API Management."
 	services="api-management"
@@ -28,7 +28,7 @@ Content within the Developer Portal is modified via the Publisher portal, which 
 
 ![Publisher portal][api-management-management-console]
 
-The developer portal is based on a Content Management System or CMS. The header that appears on every page is a special type of content known as a widget. To edit the contents of that widget click **Widgets** de la **Developer Portal** menu on the left, and then select the **Header** widget from the list.
+The developer portal is based on a Content Management System or CMS. The header that appears on every page is a special type of content known as a widget. To edit the contents of that widget click **Widgets** from the **Developer Portal** menu on the left, and then select the **Header** widget from the list.
 
 ![Widgets header][api-management-widgets-header]
 
@@ -40,7 +40,7 @@ Now you should be able to see the new header on every page within the developer 
 
 ## <a name="change-headers-styling"> </a>Change the styling of the headers
 
-The colors, fonts, sizes, spacings and other style-related elements of any page on the portal are defined by style rules. To edit the styles click on **Appearance** de la **Developer portal** menu in the Publisher portal. Then click on **Begin customization** to enable the styling editor.
+The colors, fonts, sizes, spacings and other style-related elements of any page on the portal are defined by style rules. To edit the styles click on **Appearance** from the **Developer portal** menu in the Publisher portal. Then click on **Begin customization** to enable the styling editor.
 
 Your browser will switch to a hidden page within the developer portal that contains samples of content, with examples for all styling rules used anywhere on the site. To open the styling editor, move your cursor over the thin gray vertical line on the left-most part of the page. The editor toolbar should appear.
 
@@ -68,15 +68,15 @@ When you are done with making changes to the styles of the selected element clic
 
 The developer portal consists of automatically generated pages like APIs, Products, Applications, Issues and manually written content. Since it is based on a content management system you can create such content as necessary.
 
-To see the list of all existing content pages click on **Content** de la **Developer portal** menu in the publisher portal.
+To see the list of all existing content pages click on **Content** from the **Developer portal** menu in the publisher portal.
 
 ![Manage content][api-management-customization-manage-content]
 
 Click on the "Welcome" page to edit what is displayed on the home page of the developer portal. Make the changes you would like, preview them if necessary, and then click on **Publish Now** to make them visible to everyone.
 
-> The home page uses a special layout which allows it to display a banner at the top. This banner is not editable from the Content section. To edit this banner click on **Widgets** de la **Developer portal** menu, then select **Home page** de la **Current Layer** drop-down and then open the **Banner** item under the Featured section. The contents of this widget are editable just like any other page.
+> The home page uses a special layout which allows it to display a banner at the top. This banner is not editable from the Content section. To edit this banner click on **Widgets** from the **Developer portal** menu, then select **Home page** from the **Current Layer** drop-down and then open the **Banner** item under the Featured section. The contents of this widget are editable just like any other page.
 
-## <a name="next-steps"> </a>Prochaines étapes
+## <a name="next-steps"> </a>Next steps
 
 -	Check out the other topics in the [Get started with advanced API configuration][] tutorial.
 

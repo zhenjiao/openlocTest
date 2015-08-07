@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Configuring Application Insights SDK with ApplicationInsights.config or .xml" 
 	description="Enable or disable data collection modules, and add performance counters and other parameters" 
 	services="application-insights"
@@ -21,11 +21,11 @@
 The Application Insights .NET SDK consists of a number of NuGet packages. The 
 [core package](http://www.nuget.org/packages/Microsoft.ApplicationInsights) provides the API for sending telemetry to 
 the Application Insights. [Additional packages](http://www.nuget.org/packages?q=Microsoft.ApplicationInsights) provide 
-telemetry _modules_ と _initializers_ for automatically tracking telemetry from your application and its context. By 
+telemetry _modules_ and _initializers_ for automatically tracking telemetry from your application and its context. By 
 adjusting the configuration file, you can enable or disable telemetry modules and initializers, and set parameters for 
 some of them.
 
-The configuration file is named `ApplicationInsights.config` または `ApplicationInsights.xml`, depending on the type of your
+The configuration file is named `ApplicationInsights.config` or `ApplicationInsights.xml`, depending on the type of your
 application. It is automatically added to your project when you [install some versions of the SDK][start]. It is also added to a web app 
 by [Status Monitor on an IIS server][redfield], or when you select the Appplication Insights 
 [extension for an Azure website or VM][azure].
@@ -36,7 +36,7 @@ There's a node in the configuration file for each module. To disable a module, d
 
 ## [Microsoft.ApplicationInsights](http://www.nuget.org/packages/Microsoft.ApplicationInsights) NuGet package
 
-、 `Microsoft.ApplicationInsights` NuGet package provides the following telemetry modules in the 
+The `Microsoft.ApplicationInsights` NuGet package provides the following telemetry modules in the 
 `ApplicationInsights.config`.
 
 ```
@@ -46,13 +46,13 @@ There's a node in the configuration file for each module. To disable a module, d
   </TelemetryModules>
 </ApplicationInsights>
 ```
-、 `DiagnosticsTelemetryModule` reports errors in the Application Insights instrumenation code itself. For example, 
+The `DiagnosticsTelemetryModule` reports errors in the Application Insights instrumenation code itself. For example, 
 if the code cannot access performance counters or if an `ITelemetryInitializer` throws an exception. Trace telemetry 
 tracked by this module appears in the [Diagnostic Search][diagnostic].
 
 ## [Microsoft.ApplicationInsights.DependencyCollector](http://www.nuget.org/packages/Microsoft.ApplicationInsights.DependencyCollector) NuGet package
 
-、 `Microsoft.ApplicationInsights.DependencyCollector` NuGet package provides the following telemetry modules in 
+The `Microsoft.ApplicationInsights.DependencyCollector` NuGet package provides the following telemetry modules in 
 `ApplicationInsights.config`.
 
 ```
@@ -62,14 +62,14 @@ tracked by this module appears in the [Diagnostic Search][diagnostic].
   </TelemetryModules>
 </ApplicationInsights>
 ```
-、 `DependencyTrackingTelemetryModule` tracks telemetry about calls to external dependencies made by your application, 
+The `DependencyTrackingTelemetryModule` tracks telemetry about calls to external dependencies made by your application, 
 such as HTTP requests and SQL queries. To allow this module to work in an IIS server, you need to [install Status Monitor][redfield]. To use it in Azure web apps or VMs, [select the Application Insights extension][azure].
 
 You can also write your own dependency tracking code using the [TrackDependency API](app-insights-api-custom-events-metrics.md#track-dependency).
 
 ## [Microsoft.ApplicationInsights.Web](http://www.nuget.org/packages/Microsoft.ApplicationInsights.Web) NuGet package
 
-、 `Microsoft.ApplicationInsights.Web` NuGet package provides the following telemetry initializers and modules in the
+The `Microsoft.ApplicationInsights.Web` NuGet package provides the following telemetry initializers and modules in the
 `ApplicationInsights.config`.
 
 ```
@@ -97,29 +97,29 @@ You can also write your own dependency tracking code using the [TrackDependency 
 
 **Initializers**
 
-* `SyntheticTelemetryInitializer` updates the `User`, `Session` と `Operation` contexts properties of all telemetry 
+* `SyntheticTelemetryInitializer` updates the `User`, `Session` and `Operation` contexts properties of all telemetry 
 items tracked when handling a request from a synthetic source, such as an availability test. The Application Insights 
 portal does not display synthetic telemetry by default.
-* `ClientIpHeaderTelemetryInitializer` updates `Ip` プロパティ、 `Location` context of all telemetry items based on the 
+* `ClientIpHeaderTelemetryInitializer` updates `Ip` property of the `Location` context of all telemetry items based on the 
 `X-Forwarded-For` HTTP header of the request.
-* `UserAgentTelemetryInitializer` updates the `UserAgent` プロパティ、 `User` context of all telemetry items based 
+* `UserAgentTelemetryInitializer` updates the `UserAgent` property of the `User` context of all telemetry items based 
 on the `User-Agent` HTTP header of the request.
-* `OperationNameTelemetryInitializer` updates the `Name` プロパティ、 `RequestTelemetry` and the `Name` property of 
+* `OperationNameTelemetryInitializer` updates the `Name` property of the `RequestTelemetry` and the `Name` property of 
 the `Operation` context of all telemetry items based on the HTTP method, as well as names of ASP.NET MVC controller and 
 action invoked to process the request.
 * `OperationNameTelemetryInitializer` updates the 'Operation.Id` context property of all telemetry items tracked while 
 handling a request with the automatically generated `RequestTelemetry.Id`.
-* `UserTelemetryInitializer` updates the `Id` と `AcquisitionDate` properties of `User` context for all telemetry items
+* `UserTelemetryInitializer` updates the `Id` and `AcquisitionDate` properties of `User` context for all telemetry items
 with values extracted from the `ai_user` cookie generated by the Application Insights JavaScript instrumentation code 
 running in the user's browser.
-* `SessionTelemetryInitializer` updates the `Id` プロパティ、 `Session` context for all telemetry items with value
+* `SessionTelemetryInitializer` updates the `Id` property of the `Session` context for all telemetry items with value
 extracted from the `ai_session` cookie generated by the ApplicationInsights JavaScript instrumentation code running in the
 user's browser. 
-* `AzureRoleEnvironmentTelemetryInitializer` updates the `RoleName` と `RoleInstance` properties of the `Device` context
+* `AzureRoleEnvironmentTelemetryInitializer` updates the `RoleName` and `RoleInstance` properties of the `Device` context
 for all telemetry items with information extracted from the Azure runtime environment.
-* `DomainNameRoleInstanceTelemetryInitializer` updates the `RoleInstance` プロパティ、 `Device` context for all
+* `DomainNameRoleInstanceTelemetryInitializer` updates the `RoleInstance` property of the `Device` context for all
 telemetry items with the domain name of the computer where the web application is running.
-* `BuildInfoConfigComponentVersionTelemetryInitializer` updates the `Version` プロパティ、 `Component` context for 
+* `BuildInfoConfigComponentVersionTelemetryInitializer` updates the `Version` property of the `Component` context for 
 all telemetry items with the value extracted from the `BuildInfo.config` file produced by TFS build.
 * `DeviceTelemetryInitializer` updates the following properties of the `Device` context for all telemetry items.
  - `Type` is set to "PC"
@@ -140,7 +140,7 @@ portal at the cost of significant CPU and network bandwidth overhead.
 
 ## [Microsoft.ApplicationInsights.PerfCounterCollector](http://www.nuget.org/packages/Microsoft.ApplicationInsights.PerfCounterCollector) NuGet package
 
-、 `Microsoft.ApplicationInsights.PerfCounterCollector` NuGet package adds the following telemetry modules to the `ApplicationInsights.config` by default.
+The `Microsoft.ApplicationInsights.PerfCounterCollector` NuGet package adds the following telemetry modules to the `ApplicationInsights.config` by default.
 
 ```
 <ApplicationInsights xmlns="http://schemas.microsoft.com/ApplicationInsights/2013/Settings">
@@ -169,7 +169,7 @@ Use the following syntax to collect additional performance counters:
 </Add>
 ```      
       
-`PerformanceCounter` must be either `\CategoryName(InstanceName)\CounterName` または `\CategoryName\CounterName`
+`PerformanceCounter` must be either `\CategoryName(InstanceName)\CounterName` or `\CategoryName\CounterName`
       
 If you provide a `ReportAs` attribute, this will be used as the name displayed in Application Insights.
 

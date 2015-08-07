@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Role-based access control in the Microsoft Azure portal"
 	description="Describes how role based access control works and how to set it up"
 	services=""
@@ -116,8 +116,8 @@ Here is an example of how to remove Brad Adams by using the Remove-AzureRoleAssi
 
 ### Add or remove access for external user
 
-的 **Configure** tab of a directory includes options to control access for external users. These options can be changed only in the UI (there is no Windows PowerShell or API method) in the full Azure portal by a directory global administrator.
-To open the **Configure** tab in the Azure portal, click **活动目录**, and then click the name of the directory.
+The **Configure** tab of a directory includes options to control access for external users. These options can be changed only in the UI (there is no Windows PowerShell or API method) in the full Azure portal by a directory global administrator.
+To open the **Configure** tab in the Azure portal, click **Active Directory**, and then click the name of the directory.
 
 ![][10]
 
@@ -143,7 +143,7 @@ You can also remove a guest from any role, just as you would remove any user. Re
 
 ## How to track changes to role assignments
 
-Changes to role assignments are logged in the [Audit logs](http://azure.microsoft.com/updates/audit-logs-in-azure-preview-portal/), similar to other events.  The log of role assignment changes can be retrieved using [天青 PowerShell](https://msdn.microsoft.com/library/azure/jj156055.aspx) 或 [Azure Resource Manager REST API](https://msdn.microsoft.com/library/azure/dn931927.aspx).
+Changes to role assignments are logged in the [Audit logs](http://azure.microsoft.com/updates/audit-logs-in-azure-preview-portal/), similar to other events.  The log of role assignment changes can be retrieved using [Azure PowerShell](https://msdn.microsoft.com/library/azure/jj156055.aspx) or the [Azure Resource Manager REST API](https://msdn.microsoft.com/library/azure/dn931927.aspx).
 
 For example, to retrieve the list of role assignment changes for an entire subscription, run the following two cmdlets with Azure PowerShell. The first one switches to Azure Resource Manager mode.
 
@@ -439,7 +439,7 @@ If you encounter a problem when you use role based access control feature, see [
 
 Azure role-based access control comes with the following built-in roles that can be assigned to users, groups, and services. You can’t modify the definition of built-in roles. In an upcoming release of Azure RBAC, you will be able to define custom roles by composing a set of actions from a list of available actions that can be performed on Azure resources.
 
-Click the corresponding link to see the **actions** 和 **not actions** properties of a role definition. The **actions** property specifies the allowed actions on Azure resources. Action strings can use wildcard characters. The **not actions** property of a role definition specifies the actions that must be excluded from the allowed actions.
+Click the corresponding link to see the **actions** and **not actions** properties of a role definition. The **actions** property specifies the allowed actions on Azure resources. Action strings can use wildcard characters. The **not actions** property of a role definition specifies the actions that must be excluded from the allowed actions.
 
 
 Role name  | Description
@@ -1273,7 +1273,7 @@ Role name  | Description
 Please try Azure RBAC and send us [feedback](http://aka.ms/azurerbacfeedback).
 
 
-## 接下来的步骤
+## Next steps
 
 Here are some additional resources to help you use role-based access control:
 

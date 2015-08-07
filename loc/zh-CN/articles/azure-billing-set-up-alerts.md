@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Set up billing alerts for your Microsoft Azure subscriptions" 
 	description="Describes how you can set up alerts on your Azure bill so you can avoid billing surprises." 
 	services="" 
@@ -16,31 +16,31 @@
 	ms.date="06/01/2015" 
 	ms.author="vikdesai"/>
 
-# 设置您的微软 Azure 订阅计费通知
+# Set up billing alerts for your Microsoft Azure subscriptions
 
-你是否担心你多少花每个月为你蔚蓝的订阅?如果你是蔚蓝的订阅的帐户管理员，您可以使用 Azure 计费警报服务来创建自定义计费的警报，帮助您监视和管理计费活动你蔚蓝的帐户。
+Are you concerned about how much you're spending each month for your Azure subscription? If you’re the account administrator for an Azure subscription, you can use the Azure Billing Alert Service to create customized billing alerts that help you monitor and manage billing activity for your Azure accounts.
 
-这项服务是一项预览服务，所以你要做的第一件事是注册为它-访问 <a href="https://account.windowsazure.com/PreviewFeatures">预览功能页 </a> 在 Azure 帐户管理门户中做到这一点。
+This service is a preview service, so the first thing you have to do is sign up for it - visit <a href="https://account.windowsazure.com/PreviewFeatures">the Preview Features page </a> in the Azure account management portal to do this.
 
-## 设置警报的阈值和电子邮件收件人
+## Set the alert threshold and email recipients
 
-你收到账单服务打开的电子邮件确认您的订阅后，请访问 <a href="https://account.windowsazure.com/Subscriptions">订阅页</a> 在帐户门户。单击您想要监视，然后单击的订阅 **警报**.
+After you receive the email confirmation that the billing service is turned on for your subscription, visit <a href="https://account.windowsazure.com/Subscriptions">the Subscriptions page</a> in the account portal. Click the subscription you want to monitor, and then click **Alerts**.
 
 ![][Image1]
 
-接下来，单击 **添加警报** 若要创建您的第一个-您可以设置共五个计费通知每个订阅，与不同的阈值和每个警报的两个电子邮件收件人。
+Next, click **Add Alert** to create your first one - you can set up a total of five billing alerts per subscription, with a different threshold and up to two email recipients for each alert.
 
 ![][Image2]
 
-当你添加一个警报时，你给它一个独特的名称，选择消费的门槛，并选择将发送的通知的电子邮件地址。当设置阈值，您可以选择 **帐单总额** 或 **货币信贷** 从 **警报** 列表。计费总订阅支出超过阈值时，会发出一个警报。货币信贷，当货币信贷下降低于上限的时候，会发出一个警报。货币信贷通常适用于免费试用和与 MSDN 帐户关联的订阅。
+When you add an alert, you give it a unique name, choose a spending threshold, and choose the email addresses where alerts will be sent. When setting up the threshold, you can choose either a **Billing Total** or a **Monetary Credit** from the **Alert For** list. For a billing total, an alert is sent when subscription spending exceeds the threshold. For a monetary credit, an alert is sent when monetary credits drop below the limit. Monetary credits usually apply to free trials and subscriptions associated with MSDN accounts.
 
 ![][Image3]
 
-Azure 支持任何电子邮件地址，但不会验证电子邮件地址的工作，所以仔细检查输入错误。
+Azure supports any email address but doesn’t verify that the email address works, so double-check for typos.
 
-## 检查您的通知
+## Check on your alerts
 
-设置警报后，帐户中心列出他们并显示多少你可以设置更多。对于每个警报，你看到的日期和发送，是否它是一个警报，对于计费总或货币信贷的时间以及您设置的限制。日期和时间格式是 24 小时通用协调时间 (UTC) 和日期是 yyyy mm dd 格式。单击加号为警报列表中要编辑它，或单击垃圾桶来删除它。
+After you set up alerts, the Account Center lists them and shows how many more you can set up. For each alert, you see the date and time it was sent, whether it’s an alert for Billing Total or Monetary Credit, and the limit you set up. The date and time format is 24-hour Universal Time Coordinate (UTC) and the date is yyyy-mm-dd format. Click the plus sign for an alert in the list to edit it, or click the trash can to delete it.
 
 [Image1]: ./media/azure-billing-set-up-alerts/billingalert1.png
 [Image2]: ./media/azure-billing-set-up-alerts/billingalert2.png

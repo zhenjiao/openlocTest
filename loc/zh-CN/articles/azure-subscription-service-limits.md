@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Microsoft Azure Subscription and Service Limits, Quotas, and Constraints"
 	description="Provides a list of common Azure subscription and service limits, quotas, and constraints. This includes information on how to increase limits along with maximum values."
 	services=""
@@ -16,184 +16,184 @@
 	ms.date="07/15/2015"
 	ms.author="jroth"/>
 
-# 蔚蓝的订阅和服务限制、 配额和限制
+# Azure Subscription and Service Limits, Quotas, and Constraints
 
-## 概述
+## Overview
 
-此文档指定一些最常见的微软 Azure 限制。请注意这当前不包括所有的 Azure 服务。随着时间推移，这些限制将扩大和更新，以覆盖更多的平台。
+This document specifies some of the most common Microsoft Azure limits. Note that this does not currently cover all Azure services. Over time, these limits will be expanded and updated to cover more of the platform.
 
-> [AZURE。注意] 如果你想要提高限额以上 **默认限制**您可以 [打开在线客户支持请求，无费用](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/).限制不能提出以上 **最大限制** 在下表中的值。如果有是没有 **最大限制** 列，然后指定的资源不存在可调的限制。
+> [AZURE.NOTE] If you want to raise the limit above the **Default Limit**, you can [open an online customer support request at no charge](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/). The limits cannot be raised above the **Maximum Limit** value in the tables below. If there is no **Maximum Limit** column, then the specified resource does not have adjustable limits.
 
 
-### 限制和蔚蓝的资源管理器
+### Limits and the Azure Resource Manager
 
-它是现在可以组合到单个 Azure 资源组多蔚蓝资源。当使用资源组，曾经是全球的限制成为托管在区域一级与 Azure 资源管理器中。关于 Azure 资源组的详细信息，请参阅 [使用资源组来管理你蔚蓝的资源](resource-group-portal.md).
+It is now possible to combine multiple Azure resources in to a single Azure Resource Group. When using Resource Groups, limits that once were global become managed at a regional level with the Azure Resource Manager. For more information about Azure Resource Groups, see [Using resource groups to manage your Azure resources](resource-group-portal.md).
 
-在下面的限制，已添加一个新表以反映任何差异在限制时使用 Azure 资源管理器。例如，有的是 **订阅数限制** 表和 **订阅数限制-蔚蓝的资源管理器** 表。当限制仅适用于这两种方案时，它仅显示第一个表中。除非另有说明，限制是全球所有地区。
+In the limits below, a new table has been added to reflect any differences in limits when using the Azure Resource Manager. For example, there is a **Subscription Limits** table and a **Subscription Limits - Azure Resource Manager** table. When a limit applies to both scenarios, it is only shown in the first table. Unless otherwise indicated, limits are global across all regions.
 
-> [AZURE。注意] 它是重要的是强调 Azure 资源组中的资源的配额限制是每个区域可以访问由您的订阅、 并不是每个订阅，正如服务管理配额。作为一个例子，让我们使用核心配额。如果您需要申请配额增加内核的支持，您需要决定如何多个内核，您想要使用在哪些地区，然后进行 Azure 资源组核心配额的具体申请的金额和您想要的区域。因此，如果你需要使用 30 芯在西欧来运行您的应用程序;你应具体请求 30 芯在西欧。但你不会有任何其他地区增加核心配额 — — 只有西欧将有 30 芯配额。
+> [AZURE.NOTE] It is important to emphasize that quotas for resources in Azure Resource Groups are per-region accessible by your subscription, and are not per-subscription, as the service management quotas are. Let's use core quotas as an example. If you need to request a quota increase with support for cores, you need to decide how many cores you want to use in which regions, and then make a specific request for Azure Resource Group core quotas for the amounts and regions that you want. Therefore, if you need to use 30 cores in West Europe to run your application there; you should specifically request 30 cores in West Europe. But you will not have a core quota increase in any other region -- only West Europe will have the 30-core quota.
 <!-- -->
 As a result, you may find it useful to consider deciding what your Azure Resource Group quotas need to be for your workload in any one region, and request that amount in each region into which you are considering deployment. See [troubleshooting deployment issues](resource-group-deploy-debug.md##authentication-subscription-role-and-quota-issues) for more help discovering your current quotas for specific regions.
 
-## 订阅数限制
+## Subscription Limits
 
-[AZURE。包括 [azure 订阅限制](../includes/azure-subscription-limits.md)]
+[AZURE.INCLUDE [azure-subscription-limits](../includes/azure-subscription-limits.md)]
 
-### 订阅数限制-蔚蓝的资源管理器
+### Subscription Limits - Azure Resource Manager
 
-以下限制适用时使用 Azure 资源管理器和 Azure 资源组。没有改变与 Azure 资源管理器的限制未在下面列出。请参阅上表为这些限制。
+The following limits apply when using the Azure Resource Manager and Azure Resource Groups. Limits that have not changed with the Azure Resource Manager are not listed below. Please refer to the previous table for those limits.
 
-[AZURE。包括 [azure-subscription-limits-azure-resource-manager](../includes/azure-subscription-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-subscription-limits-azure-resource-manager](../includes/azure-subscription-limits-azure-resource-manager.md)]
 
 
-## 资源组的限制
+## Resource Group Limits
 
-[AZURE。包括 [azure-资源-组-限制](../includes/azure-resource-groups-limits.md)]
+[AZURE.INCLUDE [azure-resource-groups-limits](../includes/azure-resource-groups-limits.md)]
 
 
-## 虚拟机限制
+## Virtual Machines Limits
 
-[AZURE。包括 [azure 虚拟机限制](../includes/azure-virtual-machines-limits.md)]
+[AZURE.INCLUDE [azure-virtual-machines-limits](../includes/azure-virtual-machines-limits.md)]
 
 
-### 虚拟机限制-蔚蓝的资源管理器
+### Virtual Machines Limits - Azure Resource Manager
 
-以下限制适用时使用 Azure 资源管理器和 Azure 资源组。没有改变与 Azure 资源管理器的限制未在下面列出。请参阅上表为这些限制。
+The following limits apply when using the Azure Resource Manager and Azure Resource Groups. Limits that have not changed with the Azure Resource Manager are not listed below. Please refer to the previous table for those limits.
 
-[AZURE。包括 [azure-virtual-machines-limits-azure-resource-manager](../includes/azure-virtual-machines-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-virtual-machines-limits-azure-resource-manager](../includes/azure-virtual-machines-limits-azure-resource-manager.md)]
 
 
-## 网络限制
+## Networking Limits
 
-[AZURE。包括 [azure 虚拟网络限制](../includes/azure-virtual-network-limits.md)]
+[AZURE.INCLUDE [azure-virtual-network-limits](../includes/azure-virtual-network-limits.md)]
 
 
-### 网络限制 — — 蔚蓝的资源管理器
+### Networking Limits – Azure Resource Manager
 
-以下限制适用时使用 Azure 资源管理器和 Azure 资源组。没有改变与 Azure 资源管理器的限制未在下面列出。请参阅上表为这些限制。
+The following limits apply when using the Azure Resource Manager and Azure Resource Groups. Limits that have not changed with the Azure Resource Manager are not listed below. Please refer to the previous table for those limits.
 
-[AZURE。包括 [azure-virtual-network-limits-azure-resource-manager](../includes/azure-virtual-network-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-virtual-network-limits-azure-resource-manager](../includes/azure-virtual-network-limits-azure-resource-manager.md)]
 
 
-## 存储限制
+## Storage Limits
 
-### 标准的存储限制 
+### Standard Storage Limits 
 
-[AZURE。包括 [azure 存储限制](../includes/azure-storage-limits.md)]
+[AZURE.INCLUDE [azure-storage-limits](../includes/azure-storage-limits.md)]
 
-存储帐户限制的更多详细信息，请参阅 [Azure 存储可扩展性和性能指标](../articles/storage/storage-scalability-targets.md).
+For additional details on storage account limits, see [Azure Storage Scalability and Performance Targets](../articles/storage/storage-scalability-targets.md).
 
 
-### 特优的存储限制
+### Premium Storage Limits
 
-[AZURE。包括 [azure 存储限制高端存储](../includes/azure-storage-limits-premium-storage.md)]
+[AZURE.INCLUDE [azure-storage-limits-premium-storage](../includes/azure-storage-limits-premium-storage.md)]
 
 
-### 存储限制-蔚蓝的资源管理器
+### Storage Limits - Azure Resource Manager
 
-[AZURE。包括 [azure-storage-limits-azure-resource-manager](../includes/azure-storage-limits-azure-resource-manager.md)]
+[AZURE.INCLUDE [azure-storage-limits-azure-resource-manager](../includes/azure-storage-limits-azure-resource-manager.md)]
 
 
-## 云服务限制
+## Cloud Services Limits
 
-[AZURE。包括 [azure 云服务限制](../includes/azure-cloud-services-limits.md)]
+[AZURE.INCLUDE [azure-cloud-services-limits](../includes/azure-cloud-services-limits.md)]
 
 
-## 应用程序服务限制-Web 应用程序，移动应用程序，API 应用程序，应用程序逻辑
+## App Service Limits - Web Apps, Mobile Apps, API Apps, Logic Apps
 
-[AZURE。包括 [azure 网站限制](../includes/azure-websites-limits.md)]
+[AZURE.INCLUDE [azure-websites-limits](../includes/azure-websites-limits.md)]
 
-## 批次限制
+## Batch Limits
 
-[AZURE。包括 [azure 批限制](../includes/azure-batch-limits.md)]
+[AZURE.INCLUDE [azure-batch-limits](../includes/azure-batch-limits.md)]
 
 
-## DocumentDB 限制
+## DocumentDB Limits
 
-[AZURE。包括 [azure-documentdb-限制](../includes/azure-documentdb-limits.md)]
+[AZURE.INCLUDE [azure-documentdb-limits](../includes/azure-documentdb-limits.md)]
 
 
-## 移动接触限制
+## Mobile Engagement Limits
 
-[AZURE。包括 [azure 移动接触限制](../includes/azure-mobile-engagement-limits.md)]
+[AZURE.INCLUDE [azure-mobile-engagement-limits](../includes/azure-mobile-engagement-limits.md)]
 
 
-## 搜索限制
+## Search Limits
 
-[AZURE。包括 [azure 搜索限制](../includes/azure-search-limits.md)]
+[AZURE.INCLUDE [azure-search-limits](../includes/azure-search-limits.md)]
 
-Azure 搜索限制的更多详细信息，请参阅 [限制和约束](https://msdn.microsoft.com/library/azure/dn798934.aspx).
+For additional details on Azure Search limits, see [Limits and Constraints](https://msdn.microsoft.com/library/azure/dn798934.aspx).
 
-## SQL 数据库限制
+## SQL Database Limits
 
-[AZURE。包括 [azure sql 数据库限制](../includes/azure-sql-database-limits.md)]
+[AZURE.INCLUDE [azure-sql-database-limits](../includes/azure-sql-database-limits.md)]
 
-SQL 数据库限制的更多详细信息，请参阅下列主题:
+For additional details on SQL Database limits, please see the following topics:
 
- - [SQL azure 数据库服务层 (版)](http://msdn.microsoft.com/library/azure/dn741340.aspx)
- - [SQL azure 数据库服务层和性能级别](http://msdn.microsoft.com/library/azure/dn741336.aspx)
- - [数据库吞吐量单元 (DTU) 配额](http://msdn.microsoft.com/library/azure/ee336245.aspx#DTUs)
- - [SQL 数据库资源限制](sql-database/sql-database-resource-limits.md)
+ - [Azure SQL Database Service Tiers (Editions)](http://msdn.microsoft.com/library/azure/dn741340.aspx)
+ - [Azure SQL Database Service Tiers and Performance Levels](http://msdn.microsoft.com/library/azure/dn741336.aspx)
+ - [Database Throughput Unit (DTU) Quotas](http://msdn.microsoft.com/library/azure/ee336245.aspx#DTUs)
+ - [SQL Database Resource Limits](sql-database/sql-database-resource-limits.md)
 
-## 媒体服务限制
+## Media Services Limits
 
-[AZURE。包括 [azure 提供限制](../includes/azure-mediaservices-limits.md)]
+[AZURE.INCLUDE [azure-mediaservices-limits](../includes/azure-mediaservices-limits.md)]
 
-## 移动服务限制
+## Mobile Services Limits
 
-[AZURE。包括 [移动服务限制](../includes/mobile-services-limits.md)]
+[AZURE.INCLUDE [mobile-services-limits](../includes/mobile-services-limits.md)]
 
-## 服务总线限制
+## Service Bus Limits
 
-[AZURE。包括 [azure-servicebus-限制](../includes/service-bus-quotas-table.md)]
+[AZURE.INCLUDE [azure-servicebus-limits](../includes/service-bus-quotas-table.md)]
 
-## 流分析限制
+## Stream Analytics Limits
 
-[AZURE。包括 [流分析限制表](../includes/stream-analytics-limits-table.md)]
+[AZURE.INCLUDE [stream-analytics-limits-table](../includes/stream-analytics-limits-table.md)]
 
-## 活动目录限制
+## Active Directory Limits
 
-[AZURE。包括 [反倾销协定 》 服务限制](../includes/active-directory-service-limits-include.md)]
+[AZURE.INCLUDE [AAD-service-limits](../includes/active-directory-service-limits-include.md)]
 
 
-## 蔚蓝的 RemoteApp 限制
+## Azure RemoteApp Limits
 
-[AZURE。包括 [azure remoteapp 限制](../includes/azure-remoteapp-limits.md)]
+[AZURE.INCLUDE [azure-remoteapp-limits](../includes/azure-remoteapp-limits.md)]
 
-## StorSimple 系统限制
+## StorSimple System Limits
 
-[AZURE。包括 [storsimple 限制表](../includes/storsimple-limits-table.md)]
+[AZURE.INCLUDE [storsimple-limits-table](../includes/storsimple-limits-table.md)]
 
 
-## 业务洞察力限制
+## Operational Insights Limits
 
-[AZURE。包括 [业务洞察力限制](../includes/operational-insights-limits.md)]
+[AZURE.INCLUDE [operational-insights-limits](../includes/operational-insights-limits.md)]
 
-## 备份限制
+## Backup Limits
 
-[AZURE。包括 [azure 备份限制](../includes/azure-backup-limits.md)]
+[AZURE.INCLUDE [azure-backup-limits](../includes/azure-backup-limits.md)]
 
-## 网站恢复限制
+## Site Recovery Limits
 
-[AZURE。包括 [网站恢复限制](../includes/site-recovery-limits.md)]
+[AZURE.INCLUDE [site-recovery-limits](../includes/site-recovery-limits.md)]
 
-## API 管理限制
+## API Management Limits
 
-[AZURE。包括 [api 管理服务限制](../includes/api-management-service-limits.md)]
+[AZURE.INCLUDE [api-management-service-limits](../includes/api-management-service-limits.md)]
 
-## 天青穿红衣的缓存限制
+## Azure Redis Cache Limits
 
-[AZURE。包括 [穿红衣的缓存服务限制](../includes/redis-cache-service-limits.md)]
+[AZURE.INCLUDE [redis-cache-service-limits](../includes/redis-cache-service-limits.md)]
 
-## 密钥存储库限制
+## Key Vault Limits
 
-[AZURE。包括 [密钥存储库限制](../includes/key-vault-limits.md)]
+[AZURE.INCLUDE [key-vault-limits](../includes/key-vault-limits.md)]
 
-## 多因素身份验证
-[AZURE。包括 [azure mfa 服务限制](../includes/azure-mfa-service-limits.md)]
+## Multi-Factor Authentication
+[AZURE.INCLUDE [azure-mfa-service-limits](../includes/azure-mfa-service-limits.md)]
 
-## 请参见
+## See Also
 
-[了解蔚蓝限制和增加](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/)
+[Understanding Azure Limits and Increases](http://azure.microsoft.com/blog/2014/06/04/azure-limits-quotas-increase-requests/)
 
-[虚拟机和 Azure 云服务大小](http://msdn.microsoft.com/library/azure/dn197896.aspx)
+[Virtual Machine and Cloud Service Sizes for Azure](http://msdn.microsoft.com/library/azure/dn197896.aspx)

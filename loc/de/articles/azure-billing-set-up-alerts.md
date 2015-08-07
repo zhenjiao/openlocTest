@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Set up billing alerts for your Microsoft Azure subscriptions" 
 	description="Describes how you can set up alerts on your Azure bill so you can avoid billing surprises." 
 	services="" 
@@ -16,31 +16,31 @@
 	ms.date="06/01/2015" 
 	ms.author="vikdesai"/>
 
-# Abrechnung-Benachrichtigungen für Ihre Microsoft Azure Abonnements einrichten
+# Set up billing alerts for your Microsoft Azure subscriptions
 
-Sind Sie besorgt über wie viel Sie jeden Monat Ihre Azure Abonnements ausgeben? Wenn Sie das Kontoadministrator ein himmelblau-Abonnement sind, können Sie die Azure Billing Alert-Service erstellen Sie angepasste Abrechnung Warnungen, mit denen Sie überwachen und verwalten Abrechnung Aktivität für Ihre Azure-Konten.
+Are you concerned about how much you're spending each month for your Azure subscription? If you’re the account administrator for an Azure subscription, you can use the Azure Billing Alert Service to create customized billing alerts that help you monitor and manage billing activity for your Azure accounts.
 
-Dieser Service ist eine Dienstleistung mit Vorschau, also das erste, was, das Sie tun müssen, ist, melden Sie sich für es - Besuch <a href="https://account.windowsazure.com/PreviewFeatures">der Seite Vorschau Features </a> im Verwaltungsportal Azure Konto, dies zu tun.
+This service is a preview service, so the first thing you have to do is sign up for it - visit <a href="https://account.windowsazure.com/PreviewFeatures">the Preview Features page </a> in the Azure account management portal to do this.
 
-## Legen Sie die Warnung Schwellenwert und e-Mail-Empfänger
+## Set the alert threshold and email recipients
 
-Nach der für Ihr Abonnement erhalten Sie die e-Mail-Bestätigung, die der Abrechnungsdienst eingeschaltet ist, besuchen <a href="https://account.windowsazure.com/Subscriptions">der Seite Abonnements</a> im Konto Portal. Klicken Sie auf das Abonnement zu überwachen, und klicken Sie dann auf die gewünschte **Warnungen**.
+After you receive the email confirmation that the billing service is turned on for your subscription, visit <a href="https://account.windowsazure.com/Subscriptions">the Subscriptions page</a> in the account portal. Click the subscription you want to monitor, and then click **Alerts**.
 
 ![][Image1]
 
-Klicken Sie anschließend **Warnung hinzufügen** Erstellen Sie Ihre erste eins - können Sie insgesamt fünf Abrechnung Alarme pro Abonnement, mit eine andere Schwelle und bis zu zwei e-Mail-Empfänger für jede Warnung einrichten.
+Next, click **Add Alert** to create your first one - you can set up a total of five billing alerts per subscription, with a different threshold and up to two email recipients for each alert.
 
 ![][Image2]
 
-Wenn Sie eine Warnung hinzufügen, geben sie einen eindeutigen Namen, wählen Sie eine Ausgabe Schwelle und wählen Sie die e-Mail-Adressen, an die Benachrichtigungen gesendet werden. Sie können entweder beim Einrichten der Schwellenwerts ein **Abrechnung-Total** oder eine **Monetäre Gutschrift** aus der **Warnung für** Liste. Für die Abrechnung insgesamt wird eine Warnung gesendet, wenn Abo Ausgaben den Schwellenwert überschreitet. Für eine monetäre Gutschrift wird eine Warnung gesendet, wenn die Währung Kredite unter die Grenze fallen. Monetäre Gutschriften gelten in der Regel für kostenlose Testversionen und Abonnements, die MSDN-Konten zugeordnet.
+When you add an alert, you give it a unique name, choose a spending threshold, and choose the email addresses where alerts will be sent. When setting up the threshold, you can choose either a **Billing Total** or a **Monetary Credit** from the **Alert For** list. For a billing total, an alert is sent when subscription spending exceeds the threshold. For a monetary credit, an alert is sent when monetary credits drop below the limit. Monetary credits usually apply to free trials and subscriptions associated with MSDN accounts.
 
 ![][Image3]
 
-Azure unterstützt beliebige e-Mail-Adresse jedoch nicht überprüfen, ob die e-Mail Adresse funktioniert, also überprüfen Sie noch einmal nach Tippfehlern.
+Azure supports any email address but doesn’t verify that the email address works, so double-check for typos.
 
-## Prüfen Sie auf Ihre Benachrichtigungen
+## Check on your alerts
 
-Nachdem Sie Warnungen einrichten, das Account Center listet sie und zeigt, wieviel mehr Sie einrichten können. Für jede Warnung sehen Sie das Datum und Zeit, die sie gesendet wurde, ob es eine Warnung für Billing Gesamt oder monetäre Gutschrift ist, und die Grenze, die Sie einrichten. Das Datums- und Uhrzeitformat ist 24-Stunden koordinieren (Weltzeit) und das Datum Format jjjj-mm-tt. Klicken Sie auf das Plus-Zeichen für eine Warnung in der Liste zu bearbeiten, oder klicken Sie auf den Papierkorb, um es zu löschen.
+After you set up alerts, the Account Center lists them and shows how many more you can set up. For each alert, you see the date and time it was sent, whether it’s an alert for Billing Total or Monetary Credit, and the limit you set up. The date and time format is 24-hour Universal Time Coordinate (UTC) and the date is yyyy-mm-dd format. Click the plus sign for an alert in the list to edit it, or click the trash can to delete it.
 
 [Image1]: ./media/azure-billing-set-up-alerts/billingalert1.png
 [Image2]: ./media/azure-billing-set-up-alerts/billingalert2.png

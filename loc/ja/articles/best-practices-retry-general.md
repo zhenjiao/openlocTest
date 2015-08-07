@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Retry general guidance | Microsoft Azure"
    description="Guidance on retry for transient fault handling."
    services=""
@@ -17,36 +17,36 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# 一般的なガイダンスを再試行します。
+# Retry general guidance
 
 ![](media/best-practices-retry-general/pnp-logo.png)
 
-## 概要
+## Overview
 
-リモート サービスおよびリソースと通信するすべてのアプリケーションは、過渡故障に敏感である必要があります。これは、特に環境とインターネット経由で接続の性質は障害のこれらのタイプがより頻繁に発生する可能性が高いということ、クラウドで実行するアプリケーションの場合です。過渡的な障害には、コンポーネントおよびサービスへのネットワーク接続の一時的な損失、サービス、またはサービスがビジー状態のときに発生するタイムアウトの一時的な使用不可。これらの障害が自己修正する多くの場合、適切な遅延の後、アクションが繰り返される場合は成功する可能性が高い。
+All applications that communicate with remote services and resources must be sensitive to transient faults. This is especially the case for applications that run in the cloud, where the nature of the environment and connectivity over the Internet means these types of faults are likely to be encountered more often. Transient faults include the momentary loss of network connectivity to components and services, the temporary unavailability of a service, or timeouts that arise when a service is busy. These faults are often self-correcting, and if the action is repeated after a suitable delay it is likely succeed.
 
-このドキュメントでは、一時的な障害を処理するための一般的なガイダンスについて説明します。一時的なエラーを処理する Microsoft Azure サービスを使用する場合については、次を参照してください。 [Azure のサービス固有の再試行のガイドライン](best-practices-retry-service-specific.md).
+This document covers general guidance for transient fault handling. For information about handling transient faults when using Microsoft Azure services, see [Azure service-specific retry guidelines](best-practices-retry-service-specific.md).
 
-## クラウドで過渡的な障害が発生するはなぜ?
+## Why do transient faults occur in the cloud?
 
-過渡的な障害は、あらゆる種類のアプリケーション、任意のプラットフォームまたはオペレーティング システムにどのような環境で発生します。ローカル上で動作するソリューションで社内のインフラストラクチャ ・ アプリケーションおよびそのコンポーネントの可用性は通常高価で、多くの場合使用ハードウェア冗長性により、管理およびコンポーネントとリソースが互いの近くに位置しています。これ、失敗が少ない、まだ過渡的な障害 - と外部電源またはネットワークの問題、またはその他の災害のシナリオなど不測の事態によって、故障の際になります。
+Transient faults can occur in any environment, on any platform or operating system, and in any kind of application. In solutions that run on local, on-premises infrastructure, performance and availability of the application and its components is typically maintained through expensive and often under-used hardware redundancy, and components and resources are located close to each another. While this makes a failure less likely, it can still result in transient faults - and even an outage through unforeseen events such as external power supply or network issues, or other disaster scenarios.
 
-自動フェールオーバー、冗長性、共有リソースを使用して、全体的な可用性の向上を提供できるクラウドホスティング、プライベート クラウド システムを含む、商品の膨大な数に渡る動的資源割当計算ノード。ただし、これらの環境の性質は、過渡的な障害が発生しやすくなることを意味できます。このためいくつかの理由があります。
+Cloud hosting, including private cloud systems, can offer a higher overall availability by using shared resources, redundancy, automatic failover, and dynamic resource allocation across a huge number of commodity compute nodes. However, the nature of these environments can mean that transient faults are more likely to occur. There are several reasons for this:
 
-* クラウド環境で多くのリソースを共用で、これらのリソースへのアクセスはリソースを保護するために調整されます。特定のレベルに達すると、ロードまたは最大スループット レートに達すると、既存の要求の処理を許可するために、すべてのユーザーに対してサービスのパフォーマンスを維持するために、いくつかのサービスは接続を拒否します。隣人と共有リソースを使用して他の入居者に対するサービスの質を維持するために調整に役立ちます。
-* クラウド環境は、膨大な数の商品のハードウェア ユニットを使用して構築されます。動的に複数のコンピューティング ユニットおよびインフラストラクチャ コンポーネント間で負荷が分散されパフォーマンスを提供して自動的にリサイクルまたは失敗したユニットの交換によって信頼性を提供します。この動的な性質は、一時的な障害や一時的な接続障害が時折発生することを意味します。
-* ルータやアプリケーションとリソースを使用するサービス間のロード バランサーなどのネットワーク インフラストラクチャを含めより多くのハードウェア コンポーネントがしばしばあります。この追加のインフラストラクチャは、追加の接続の待ち時間や一時的な接続障害に時折導入できます。
-* 通信インターネットを交差させる場合は特に、クライアントとサーバーの間のネットワーク条件は変数にあります。社内の場所においても非常に重いトラフィックの負荷は、通信を遅らせる可能性がありますおよび断続的な接続エラーが発生します。
+* Many resources in a cloud environment are shared, and access to these resources is subject to throttling in order to protect the resource. Some services will refuse connections when the load rises to a specific level, or a maximum throughput rate is reached, in order to allow processing of existing requests and to maintain performance of the service for all users. Throttling helps to maintain the quality of service for neighbors and other tenants using the shared resource.
+* Cloud environments are built using vast numbers of commodity hardware units. They deliver performance by dynamically distributing the load across multiple computing units and infrastructure components, and deliver reliability by automatically recycling or replacing failed units. This dynamic nature means that transient faults and temporary connection failures may occasionally occur.
+* There are often more hardware components, including network infrastructure such as routers and load balancers, between the application and the resources and services it uses. This additional infrastructure can occasionally introduce additional connection latency and transient connection faults.
+* Network conditions between the client and the server may be variable, especially when communication crosses the Internet. Even in on-premises locations, very heavy traffic loads may slow communication and cause intermittent connection failures.
 
-## 課題
-過渡的な障害は、たとえすべての予見可能な状況下で徹底的にテストされていますアプリケーションの知覚可用性に大きな影響を持つことができます。クラウドでホストされるアプリケーションが確実に動作するためには、彼らは次の課題に対応することができる必要があります。
+## Challenges
+Transient faults can have a huge impact on the perceived availability of an application, even if it has been thoroughly tested under all foreseeable circumstances. To ensure that cloud-hosted applications operate reliably, they must be able to respond to the following challenges:
 
-* アプリケーションと発生すると、これらの障害は、一時的なより長続きする可能性がありますがどう故障を検出することができる必要がありますか端末の故障もあります。さまざまなリソースは、障害が発生すると、操作のコンテキストによって異なります可能性がありますこれらの応答とは異なる応答を返す可能性が高いたとえば、ストレージに書き込むとき、ストレージからの読み取り時にエラーの応答がエラーの応答から異なる場合があります。多くのリソースとサービスよくとり上げられる一時エラー発生時の契約しています。しかし、そのような情報が利用可能ではないそれがあります断層とそれが一時的である可能性が高いかどうかの性質を発見することは困難。
-* アプリケーションは、障害が一時的であるし、の操作が再試行された回数を追跡する可能性が高いと判断した場合に操作を再試行できる必要があります。
-* アプリケーションでは、再試行の適切な戦略を使用する必要があります。この戦略は、それは、失敗した後を各試みとアクションの間の遅延を再試行する回数を指定します。試行回数と間隔の各 1 つの適切な数は、決定、およびリソースとアプリケーション自体の現在の営業状況と同様に、リソースの種類によって異なりますが困難。
+* The application must be able to detect faults when they occur, and determine if these faults are likely to be transient, more long-lasting, or are terminal failures. Different resources are likely to return different responses when a fault occurs, and these responses may also vary depending on the context of the operation; for example, the response for an error when reading from storage may be different from response for an error when writing to storage. Many resources and services have well-documented transient failure contracts. However, where such information is not available, it may be difficult to discover the nature of the fault and whether it is likely to be transient.
+* The application must be able to retry the operation if it determines that the fault is likely to be transient and keep track of the number of times the operation was retried.
+* The application must use an appropriate strategy for the retries. This strategy specifies the number of times it should retry, the delay between each attempt, and the actions to take after a failed attempt. The appropriate number of attempts and the delay between each one are often difficult to determine, and vary based on the type of resource as well as the current operating conditions of the resource and the application itself.
 
-## 一般的なガイドライン
-次のガイドラインは、あなたのアプリケーションのメカニズムを渡す適切な一時的な障害を設計することに役立ちます。
+## General guidelines
+The following guidelines will help you to design a suitable transient fault handing mechanism for your applications:
 
 * **Determine if there is a built-in retry mechanism:**
   * Many services provide an SDK or client library that contains a transient fault handling mechanism. The retry policy it uses is typically tailored to the nature and requirements of the target service. Alternatively, REST interfaces for services may return information that is useful in determining whether a retry is appropriate, and how long to wait before the next retry attempt.
@@ -77,7 +77,7 @@
   * Prevent multiple instances of the same client, or multiple instances of different clients, from sending retries at the same times. If this is likely to occur, introduce randomization into the retry intervals.
 * **Test your retry strategy and implementation:**
   * Ensure you fully test your retry strategy implementation under as wide a set of circumstances as possible, especially when both the application and the target resources or services it uses are under extreme load. To check behavior during testing, you can:
-      * Inject transient and non-transient faults into the service. For example, send invalid requests or add code that detects test requests and responds with different types of errors. For an example using TestApi, see [Fault Injection Testing with TestApi](http://msdn.microsoft.com/magazine/ff898404.aspx) と [Introduction to TestApi – Part 5: Managed Code Fault Injection APIs](http://blogs.msdn.com/b/ivo_manolov/archive/2009/11/25/9928447.aspx).
+      * Inject transient and non-transient faults into the service. For example, send invalid requests or add code that detects test requests and responds with different types of errors. For an example using TestApi, see [Fault Injection Testing with TestApi](http://msdn.microsoft.com/magazine/ff898404.aspx) and [Introduction to TestApi – Part 5: Managed Code Fault Injection APIs](http://blogs.msdn.com/b/ivo_manolov/archive/2009/11/25/9928447.aspx).
       * Create a mock of the resource or service that returns a range of errors that the real service may return. Ensure you cover all the types of error that your retry strategy is designed to detect.
       * Force transient errors to occur by temporarily disabling or overloading the service if it is a custom service that you created and deployed (you should not, of course, attempt to overload any shared resources or shared services within Azure).
       * For HTTP-based APIs, consider using the FiddlerCore library in your automated tests to change the outcome of HTTP requests, either by adding extra roundtrip times or by changing the response (such as the HTTP status code, headers, body, or other factors). This enables deterministic testing of a subset of the failure conditions, whether transient faults or other types of failure. For more information, see [FiddlerCore](http://www.telerik.com/fiddler/fiddlercore). For examples of how to use the library, particularly the **HttpMangler** class, examine the [source code for the Azure Storage SDK](https://github.com/Azure/azure-storage-net/tree/master/Test).
@@ -102,15 +102,15 @@
 
 * **Other considerations**
   * When deciding on the values for the number of retries and the retry intervals for a policy, consider if the operation on the service or resource is part of a long-running or multi-step operation. It may be difficult or expensive to compensate all the other operational steps that have already succeeded when one fails. In this case, a very long interval and a large number of retries may be acceptable as long as it does not block other operations by holding or locking scarce resources.
-  * Consider if retrying the same operation may cause inconsistencies in data. If some parts of a multi-step process are repeated, and the operations are not idempotent, it may result in an inconsistency. For example, an operation that increments a value, if repeated, will produce an invalid result. Repeating an operation that sends a message to a queue may cause an inconsistency in the message consumer if it cannot detect duplicate messages. To prevent this, ensure that you design each step as an idempotent operation. For more information about idempotency, see [等羃性パターン](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
+  * Consider if retrying the same operation may cause inconsistencies in data. If some parts of a multi-step process are repeated, and the operations are not idempotent, it may result in an inconsistency. For example, an operation that increments a value, if repeated, will produce an invalid result. Repeating an operation that sends a message to a queue may cause an inconsistency in the message consumer if it cannot detect duplicate messages. To prevent this, ensure that you design each step as an idempotent operation. For more information about idempotency, see [Idempotency Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
   * Consider the scope of the operations that will be retried. For example, it may be easier to implement retry code at a level that encompasses several operations, and retry them all if one fails. However, doing this may result in idempotency issues or unnecessary rollback operations.
   * If you choose a retry scope that encompasses several operations, take into account the total latency of all of them when determining the retry intervals, when monitoring the time taken, and before raising alerts for failures.
   * Consider how your retry strategy may affect neighbors and other tenants in a shared application, or when using shared resources and services. Aggressive retry policies can cause an increasing number of transient faults to occur for these other users and for applications that share the resources and services. Likewise, your application may be affected by the retry policies implemented by other users of the resources and services. For mission-critical applications, you may decide to use premium services that are not shared. This provides you with much more control over the load and consequent throttling of these resources and services, which can help to justify the additional cost.
 
-## 詳細については
+## More information
 
-* [Azure のサービス固有の再試行のガイドライン](best-practices-retry-service-specific.md)
+* [Azure service-specific retry guidelines](best-practices-retry-service-specific.md)
 * [The Transient Fault Handling Application Block](http://msdn.microsoft.com/library/hh680934.aspx)
-* [遮断パターン](http://msdn.microsoft.com/library/dn589784.aspx)
-* [補償トランザクション パターン](http://msdn.microsoft.com/library/dn589804.aspx)
-* [等羃性パターン](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/)
+* [Circuit Breaker Pattern](http://msdn.microsoft.com/library/dn589784.aspx)
+* [Compensating Transaction Pattern](http://msdn.microsoft.com/library/dn589804.aspx)
+* [Idempotency Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/)

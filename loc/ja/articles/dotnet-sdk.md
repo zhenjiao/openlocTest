@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="What is the Azure .NET SDK" 
 	description="Learn what is included in the Azure .NET SDK." 
 	documentationCenter=".net" 
@@ -16,35 +16,35 @@
 	ms.date="06/11/2015" 
 	ms.author="tdykstra"/>
 
-# Azure SDK for .NET とは何ですか。
+# What is the Azure SDK for .NET?
 
-## 概要
+## Overview
 
-.NET の Azure SDK は、Visual Studio ツールのセット、コマンド ライン ツール、ランタイム バイナリ、およびできますクライアント ライブラリ開発、テスト、および展開する Azure で実行されるアプリケーション。この記事の詳細、SDK をインストールするとき何を得る。SDK をダウンロードすることができます、 [紺碧のダウンロード ページ](/downloads/). 
+The Azure SDK for .NET is a set of Visual Studio tools, command-line tools, runtime binaries, and client libraries that help you develop, test, and deploy apps that run in Azure. This article details what you get when you install the SDK. You can download the SDK from the [Azure Downloads page](/downloads/). 
 
-.NET の Azure SDK も装備されています。 [Azure のサービスを利用するためのクライアント ライブラリ](http://go.microsoft.com/fwlink/?LinkId=510472).これらのライブラリは、NuGet を使用して別々 にインストールされます。
+The Azure SDK for .NET also comprises [client libraries for consuming Azure services](http://go.microsoft.com/fwlink/?LinkId=510472). These libraries are installed separately using NuGet.
 
-##<a id="included"></a>.NET の Azure SDK に含まれるもの
+##<a id="included"></a>What's included in the Azure SDK for .NET
 
-.NET の Azure SDK には、次の製品がインストールされます。
+The Azure SDK for .NET installs the following products:
 
-- [Visual Studio Express web](#vwd)
-- [Microsoft ASP.NET と Visual Studio の Web ツール](#wte)
-- [Microsoft Visual Studio、Microsoft Azure ツール](#tools)
-- [Microsoft Azure オーサリング ツール](#auth)
-- [Microsoft Azure エミュレーター](#emulator)
-- [Microsoft Azure ストレージ エミュレーター](#stgemulator)
-- [Microsoft Azure ストレージ ツール](#stgtools)
-- [.NET、Microsoft Azure ライブラリ](#libraries)
-- [Visual Studio の HDInsight ツール](#hdinsight) と [Microsoft Hive ODBC Driver](#hdinsight)
+- [Visual Studio Express for Web](#vwd)
+- [Microsoft ASP.NET and Web Tools for Visual Studio](#wte)
+- [Microsoft Azure Tools for Microsoft Visual Studio](#tools)
+- [Microsoft Azure Authoring Tools](#auth)
+- [Microsoft Azure Emulator](#emulator)
+- [Microsoft Azure Storage Emulator](#stgemulator)
+- [Microsoft Azure Storage Tools](#stgtools)
+- [Microsoft Azure Libraries for .NET](#libraries)
+- [HDInsight Tools for Visual Studio](#hdinsight) and [Microsoft Hive ODBC Driver](#hdinsight)
 - [Microsoft Azure Mobile App SDK V1.0](#mobile)
 - [Microsoft Azure PowerShell](#ps)
 
-###<a id="vwd"></a>Visual Studio Express web
+###<a id="vwd"></a>Visual Studio Express for Web
 
-If you don't have Visual Studio on your computer, the SDK will install [Visual Studio Express web](http://www.visualstudio.com/products/visual-studio-express-vs.aspx). 
+If you don't have Visual Studio on your computer, the SDK will install [Visual Studio Express for Web](http://www.visualstudio.com/products/visual-studio-express-vs.aspx). 
  
-###<a id="wte"></a>Microsoft ASP.NET と Visual Studio の Web ツール
+###<a id="wte"></a>Microsoft ASP.NET and Web Tools for Visual Studio
 
 This enables you to work with Azure Websites:
 
@@ -55,9 +55,9 @@ This enables you to work with Azure Websites:
 * [Manage and troubleshoot Azure Websites in Server Explorer](web-sites-dotnet-troubleshoot-visual-studio.md#sitemanagement).
 * [Run in debug mode remotely for Websites and WebJobs](web-sites-dotnet-troubleshoot-visual-studio.md#remotedebug). 
 
->[AZURE。メモ] You don't have to install the Azure SDK for .NET to use these features; they are also included in Visual Studio Updates. 
+>[AZURE.NOTE] You don't have to install the Azure SDK for .NET to use these features; they are also included in Visual Studio Updates. 
 
-###<a id="tools"></a>Microsoft Visual Studio、Microsoft Azure ツール
+###<a id="tools"></a>Microsoft Azure Tools for Microsoft Visual Studio
 
 This enables you to work with Azure resources, primarily Cloud Services and Virtual Machines:
 
@@ -66,31 +66,31 @@ This enables you to work with Azure resources, primarily Cloud Services and Virt
 * [Create Azure Virtual Machines while creating new web projects](virtual-machines-dotnet-create-visual-studio-powershell.md).
 * [Create PowerShell scripts while creating new virtual machines](http://msdn.microsoft.com/library/dn642480.aspx).
 * [View and manage cloud service project settings in Visual Studio Project Properties windows](http://msdn.microsoft.com/library/ee405486.aspx).
-* View and manage [cloud services](http://msdn.microsoft.com/library/ff683675.aspx), [virtual machines](http://msdn.microsoft.com/library/jj131259.aspx)、と [サービス バス](http://msdn.microsoft.com/library/jj149828.aspx) in Server Explorer. 
+* View and manage [cloud services](http://msdn.microsoft.com/library/ff683675.aspx), [virtual machines](http://msdn.microsoft.com/library/jj131259.aspx), and [Service Bus](http://msdn.microsoft.com/library/jj149828.aspx) in Server Explorer. 
 * [Run in debug mode remotely for cloud services and virtual machines](http://msdn.microsoft.com/library/ff683670.aspx).
 * [Automate resource provisioning using Azure Resource Group Deployment Projects](https://msdn.microsoft.com/library/dn872471.aspx)
 
-###<a id="auth"></a>Microsoft Azure オーサリング ツール
+###<a id="auth"></a>Microsoft Azure Authoring Tools
 
 This includes the following:
 
-* 、 [CSPack command-line tool](http://msdn.microsoft.com/library/gg432988.aspx) for creating deployment packages.
+* The [CSPack command-line tool](http://msdn.microsoft.com/library/gg432988.aspx) for creating deployment packages.
 * the [CSEncrypt command-line tool](http://msdn.microsoft.com/library/hh404001.aspx) for encrypting passwords that are used to access cloud service role instances through a remote desktop connection.
 * Runtime binaries that cloud service projects require for communicating with their runtime environment and for diagnostics. These binaries are not available in NuGet packages.
 
-###<a id="emulator"></a>Microsoft Azure エミュレーター
+###<a id="emulator"></a>Microsoft Azure Emulator
 
-、 [Azure Emulator](http://msdn.microsoft.com/library/dn339018.aspx) simulates the cloud service environment so that you can test cloud service projects locally on your computer before you deploy them to Azure.
+The [Azure Emulator](http://msdn.microsoft.com/library/dn339018.aspx) simulates the cloud service environment so that you can test cloud service projects locally on your computer before you deploy them to Azure.
 
-###<a id="stgemulator"></a>Microsoft Azure ストレージ エミュレーター
+###<a id="stgemulator"></a>Microsoft Azure Storage Emulator
 
-、 [Azure Storage Emulator](http://msdn.microsoft.com/library/hh403989.aspx) uses a SQL Server instance and the local file system to simulate Azure Storage (queues, tables, blobs), so that you can test locally. 
+The [Azure Storage Emulator](http://msdn.microsoft.com/library/hh403989.aspx) uses a SQL Server instance and the local file system to simulate Azure Storage (queues, tables, blobs), so that you can test locally. 
 
-###<a id="stgtools"></a>Microsoft Azure ストレージ ツール
+###<a id="stgtools"></a>Microsoft Azure Storage Tools
 
 This installs [AzCopy](http://aka.ms/AzCopy), a command line tool you can use to transfer data into and out of an Azure Storage account.
 
-###<a id="libraries"></a>.NET、Microsoft Azure ライブラリ
+###<a id="libraries"></a>Microsoft Azure Libraries for .NET
 
 This includes the following:
 
@@ -119,7 +119,7 @@ There are a few things that you might want for Azure development that aren't inc
 
   	**Local copies of client libraries.** The Azure SDK for .NET copies to your computer the NuGet packages for some Azure client libraries, such as Storage, Service Bus, and Caching. These client libraries are automatically included in new cloud service projects, so the local NuGet packages enable Visual Studio to create projects even if you're not connected to the Internet. Client libraries are generally updated more frequently than new SDK versions are released, so the client libraries at NuGet.org are often more current than what you get with the SDK. 
 
-	**Project templates that include client libraries.** Only [Azure Cloud Service](cloud-services-dotnet-get-started.md) と [Azure Mobile Service](mobile-services-dotnet-backend-windows-store-dotnet-leaderboard.md) project templates automatically include some client libraries. For other libraries or other templates, install the [client library NuGet packages](http://go.microsoft.com/fwlink/?LinkId=510472) that you need.
+	**Project templates that include client libraries.** Only [Azure Cloud Service](cloud-services-dotnet-get-started.md) and [Azure Mobile Service](mobile-services-dotnet-backend-windows-store-dotnet-leaderboard.md) project templates automatically include some client libraries. For other libraries or other templates, install the [client library NuGet packages](http://go.microsoft.com/fwlink/?LinkId=510472) that you need.
 
 * [Azure Mobile Service project templates](mobile-services-dotnet-backend-windows-store-dotnet-leaderboard.md).
 
@@ -160,7 +160,7 @@ See [Azure Guest OS Releases and SDK Compatibility Matrix](http://msdn.microsoft
 
 ###<a id="uninstall"></a>How do I uninstall the Azure SDK for .NET?
 
-Each item shown in this article under [.NET の Azure SDK に含まれるもの](#included) is a separate program in the list of installed programs in Windows Control Panel **Programs and Features**.  There is no way to uninstall them as a group; you have to uninstall each program individually.
+Each item shown in this article under [What's included in the Azure SDK for .NET](#included) is a separate program in the list of installed programs in Windows Control Panel **Programs and Features**.  There is no way to uninstall them as a group; you have to uninstall each program individually.
 
 When you have the Azure SDK for .NET already installed, and you install a new version, there is generally no need to uninstall the old one. In most cases, the SDK installation updates an existing program rather than adding a new one and leaving the old one. 
 
@@ -180,7 +180,7 @@ To see which version is current or to download older versions, see the [Azure SD
 
 ##<a id="resources"></a>Resources
 
-To download the current Azure SDK for .NET or a client library, see the [紺碧のダウンロード ページ](/downloads/).
+To download the current Azure SDK for .NET or a client library, see the [Azure Downloads page](/downloads/).
 
 For the Azure SDK for .NET source code, including client libraries, see [GitHub.com/Azure](https://github.com/azure/).
 

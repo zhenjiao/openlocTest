@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Data partitioning guidance | Microsoft Azure"
    description="Guidance upon how to separate partitions to be managed and accessed separately."
    services=""
@@ -17,462 +17,462 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# データ パーティション分割指導
+# Data partitioning guidance
 
 ![](media/best-practices-data-partitioning/pnp-logo.png)
 
-## 概要
+## Overview
 
-多くの大規模なソリューションで、データが別々 のパーティションに管理、個別にアクセスすることができますに分かれています。パーティション分割戦略は、副作用を最小限に抑えつつ、メリットを最大限に注意深く選ばれなければなりません。分割は、スケーラビリティが向上し、競合が低減するパフォーマンスを最適化できます。パーティション分割の副次的な利点は、使用パターンによってデータを分割するための機構を提供することができますも安価なデータ ストレージに古いよりアクティブでない (冷たい) データをアーカイブすることができます。
+In many large-scale solutions, data is divided into separate partitions that can be managed and accessed separately. The partitioning strategy must be chosen carefully to maximize the benefits while minimizing adverse effects. Partitioning can help to improve scalability, reduce contention, and optimize performance. A side-benefit of partitioning is that can also provide a mechanism for dividing data by the pattern of use; you could archive older, more inactive (cold) data to cheaper data storage.
 
-## なぜデータをパーティション?
+## Why partition data?
 
-ほとんどのクラウド アプリケーションとサービスを格納および彼らの操作の一部としてデータを取得します。アプリケーションが使用するデータ ストアの設計は、パフォーマンス、スループット、およびシステムのスケーラビリティに大きな影響を持つことができます。大規模なシステムでは一般的に適用される 1 つの方法は、別々 のパーティションにデータを分割します。
+Most cloud applications and services store and retrieve data as part of their operations. The design of the data stores that an application uses can have a significant bearing on the performance, throughput, and scalability of a system. One technique that is commonly applied in large-scale systems is to divide the data into separate partitions.
 
-> 用語 _パーティション分割_ このガイダンスは、物理的に別のデータ ストアにデータを分割するプロセスを指します。これは SQL Server テーブルをパーティション分割すると同じ別の概念であります。
+> The term _partitioning_ used in this guidance refers to the process of physically dividing data into separate data stores. This is not the same as SQL Server Table Partitioning, which is a different concept.
 
-データを分割する多くの利点を提供できます。たとえば、するために適用できます。
+Partitioning data can offer a number of benefits. For example, it can be applied in order to:
 
-- **スケーラビリティを向上させる**.1 つのデータベース システムをスケール アップと、物理的なハードウェア制限を最終的に達する。それぞれが別のサーバーでホストされている複数のパーティション間でデータを分割システムがほぼ無限にスケール アウトすることができます。
-- **パフォーマンスを向上させる**.各パーティションのデータ アクセス操作を引き継ぐデータの小さいボリュームの場所。ただし、適切な方法で、データを分割すると、これははるかに効率的です。1 つ以上のパーティションに影響する操作は、並列に実行できます。各パーティションは、ネットワーク待機時間を最小限に抑えるために使用するアプリケーションの近くにあることができます。
-- **可用性を向上します。**.複数サーバー間でデータを分割するには、単一障害点が回避できます。サーバーが失敗した場合は、パーティションが利用できないという点で、計画的なメンテナンス、データだけを受けているか。他のパーティションで操作を続行できます。パーティションの数を増やすと、利用されるデータの割合を減らすことによって単一のサーバー障害の相対的な影響が軽減されます。各パーティションをレプリケートしてさらに操作に影響を与える単一のパーティション失敗のチャンスを減らすことができます。それはまた、継続的にする必要がある重要なデータの分離を可能し、低値データ (ログ ファイル) などから高度利用することが可用性の要件が低い。
-- **セキュリティを向上させる**.データとパーティション分割方法の性質によっては、機密、非機密データを異なるパーティションおよび異なるサーバーまたはデータ ストアに分割することが可能があります。セキュリティは、機密性の高いデータのため特に最適化ことができます。
-- **運用上の柔軟性を提供します。**.分割操作を微調整、管理効率を最大化することやコストを最小限に抑えるのための多くの機会を提供しています。管理、監視、バックアップと復元、異なる戦略を定義しているいくつかの例と、その他の管理タスクは、各パーティション内のデータの重要性に基づきます。
-- **データ ストアの使用パターンと一致します。**.分割は、コストと提供をデータに保存する組み込みの機能に基づいて、データ ストアの種類に展開する各パーティションできます。たとえば、ドキュメントはデータベースにより構造化されたデータを開催可能性があります大きなバイナリ データを blob データ ストアに格納できます。詳細情報を参照してください。 [多言語ソリューションの構築](https://msdn.microsoft.com/library/dn313279.aspx) パターンの & 『 実践ガイド 』 [拡張性の高いソリューションのデータ アクセス: SQL、NoSQL は、および多言語の永続性を使用して](https://msdn.microsoft.com/library/dn271399.aspx) Microsoft の web サイト。
+- **Improve scalability**. Scaling up a single database system will eventually reach a physical hardware limit. Dividing data across multiple partitions, each of which is hosted on a separate server, allows the system to scale out almost indefinitely.
+- **Improve performance**. Data access operations on each partition take place over a smaller volume of data. Provided that the data is partitioned in a suitable way, this is much more efficient. Operations that affect more than one partition can execute in parallel. Each partition can be located near the application that uses it to minimize network latency.
+- **Improve availability**. Separating data across multiple servers avoids a single point of failure. If a server fails, or is undergoing planned maintenance, only the data in that partition is unavailable. Operations on other partitions can continue. Increasing the number of partitions reduces the relative impact of a single server failure by reducing the percentage of the data that will be unavailable. Replicating each partition can further reduce the chance of a single partition failure affecting operations. It also enables the separation of critical data that must be continually and highly available from low value data (such as log files) that has lower availability requirements.
+- **Improve security**. Depending on the nature of the data and how it is partitioned, it may be possible to separate sensitive and non-sensitive data into different partitions, and therefore different servers or data stores. Security can then be specifically optimized for the sensitive data.
+- **Provide operational flexibility**. Partitioning offers many opportunities for fine tuning operations, maximizing administrative efficiency, and minimizing cost. Some examples are defining different strategies for management, monitoring, backup and restore, and other administrative tasks based on the importance of the data in each partition.
+- **Match the data store to the pattern of use**. Partitioning allows each partition to be deployed on a different type of data store, based on cost and the built-in features that data store offers. For example, large binary data could be stored in a blob data store, while more structured data could be held in a document database. For more information see [Building a Polyglot Solution](https://msdn.microsoft.com/library/dn313279.aspx) in the patterns & practices guide [Data Access for Highly-Scalable Solutions: Using SQL, NoSQL, and Polyglot Persistence](https://msdn.microsoft.com/library/dn271399.aspx) on the Microsoft website.
 
-いくつかのシステムでは、それは利点ではなく、オーバーヘッドと見なされますので、分割を実装していません。この理論的根拠のための一般的な理由があります。
+Some systems do not implement partitioning because it is considered an overhead rather than an advantage. Common reasons for this rationale include:
 
-- 多くのデータ ・ ストレージ ・ システムは、パーティション間で結合をサポートしていないとそれは分割システムで参照整合性を維持することは困難することができます。それは頻繁に結合を実装する必要と整合性チェック アプリケーション コード (パーティション分割の層) では、追加の I/O およびアプリケーションの複雑さになることができます。
-- パーティションを維持は、常に簡単な作業ではありません。システム データは揮発性では、定期的に競合ホット スポットを減らすためにパーティションを再調整する必要があります。
-- いくつかの一般的なツールは分割されたデータが当然働かない。
+- Many data storage systems do not support joins across partitions, and it can be difficult to maintain referential integrity in a partitioned system. It is frequently necessary to implement joins and integrity checks in application code (in the partitioning layer), which can result in additional I/O and application complexity.
+- Maintaining partitions is not always a trivial task. In a system where the data is volatile, you may need to rebalance partitions periodically to reduce contention and hot spots.
+- Some common tools do not work naturally with partitioned data.
 
-## パーティションの設計
+## Designing partitions
 
-さまざまな方法でデータを分割することができます: 水平方向、垂直方向、または機能的。選択した戦略は、アプリケーションおよびデータを使用するサービスの要件、データのパーティション分割の理由によって異なります。
+Data can be partitioned in different ways: horizontally, vertically, or functionally. The strategy you choose depends on the reason for partitioning the data, and the requirements of the applications and services that will use the data.
 
-> [AZURE。メモ] このガイドで説明しているパーティション分割方式は、基になるデータ ストレージ技術に依存しない方法で説明します。彼らは、多くの種類のデータ ストア、リレーショナルを含むと NoSQL データベースに適用できます。
+> [AZURE.NOTE] The partitioning schemes described in this guidance are explained in a way that is independent of the underlying data storage technology. They can be applied to many types of data stores, including relational and NoSQL databases.
 
-### パーティション分割の方法
+### Partitioning strategies
 
-データのパーティション分割の 3 つの代表的な戦略は次のとおりです。
+The three typical strategies for partitioning data are:
 
-- **行方向の分割** (呼ばれる _sharding_).この戦略で各パーティションは独自の権利でデータ ストアが、すべてのパーティションは、同じスキーマを持ちます。各パーティションは、として知られている、 _シャード_ e コマース アプリケーションで顧客の特定のセットのすべての注文などのデータの特定のサブセットを保持しているとします。
-- **列方向の分割**.この戦略で各パーティションはデータ ストア内の項目のフィールドのサブセットを保持します。フィールドが 1 つの垂直方向のパーティションと別のアクセス頻度の低いフィールドで頻繁にアクセスされるフィールドを配置するなど、使用の彼らのパターンに従って分かれています。
-- **機能分割**.この方法ではデータはシステムの各境界コンテキストによってどのように使用されるに従って集計されます。たとえば、e コマース システム、別請求のビジネス機能の実装と管理製品在庫は別の 1 つのパーティションや商品在庫データに請求書データを格納可能性があります。
+- **Horizontal partitioning** (often called _sharding_). In this strategy each partition is a data store in its own right, but all partitions have the same schema. Each partition is known as a _shard_ and holds a specific subset of the data, such as all the orders for a specific set of customers in an ecommerce application.
+- **Vertical partitioning**. In this strategy each partition holds a subset of the fields for items in the data store. The fields are divided according to their pattern of use, such as placing the frequently accessed fields in one vertical partition and the less frequently accessed fields in another.
+- **Functional partitioning**. In this strategy data is aggregated according to how it is used by each bounded context in the system. For example, an ecommerce system that implements separate business functions for invoicing and managing product inventory might store invoice data in one partition and product inventory data in another.
 
-ここで説明した 3 つの戦略を結合することができることに注意することが重要です。 彼らは相互に排他的ではないと、パーティション分割スキームを設計するときそれらをすべて検討してください。たとえば、破片にデータを分割し、各シャードのデータをさらに分割する垂直分割を使用可能性があります。同様に、機能のパーティション内のデータは、(これも垂直方向に分割でき) 破片に裂けるかもしれない。
+It’s important to note that the three strategies described here can be combined.  They are not mutually exclusive and you should consider them all when you design a partitioning scheme. For example, you might divide data into shards and then use vertical partitioning to further subdivide the data in each shard. Similarly, the data in a functional partition may be split into shards (which may also be vertically partitioned).
 
-ただし、それぞれの戦略のそれぞれ異なる要件は、全体的なデータ処理システムのパフォーマンス目標を満たしているパーティション分割スキームを設計するとき数を評価する必要があります競合する問題とバランスを上げることができます。次のセクションの各戦略の詳細を探索します。
+However, the differing requirements of each strategy can raise a number of conflicting issues that you must evaluate and balance when designing a partitioning scheme that meets the overall data processing performance targets for your system. The following sections explore each of the strategies in more detail.
 
-### 水平分割 (分割)
+### Horizontal partitioning (sharding)
 
-水平分割または分割の概要を図 1 に示します。この例では、製品のインベントリ データは、プロダクト キーに基づいて破片に分かれています。各シャードでは、アルファベット順の破片キー (A G および H Z) の連続した範囲のデータを保持します。
+Figure 1 shows an overview of horizontal partitioning or sharding. In this example, product inventory data is divided into shards based on the product key. Each shard holds the data for a contiguous range of shard keys (A-G and H-Z), organized alphabetically.
 
 ![](media/best-practices-data-partitioning/DataPartitioning01.png)
 
-_図 1。-水平方向のパーティション キーに基づいて (シャーディング) データのパーティション分割_
+_Figure 1. - Horizontally partitioning (sharding) data based on a partition key_
 
-Sharding を複数のコンピューターに負荷を分散することができます。競合を抑え、パフォーマンスを向上させます。さらに追加のサーバーで実行されている破片を追加することによって、システムを拡張できます。
+Sharding enables you to spread the load over more computers; reducing contention, and improving performance. You can scale the system out by adding further shards running on additional servers.
 
 The most important factor when implementing this partitioning strategy is the choice of sharding key. It can be difficult to change the key after the system is in operation. The key must ensure that data is partitioned so that the workload is as even as possible across the shards. Note that different shards do not have to contain similar volumes of data, rather the important consideration is to balance the number of requests; some shards may be very large but each item is the subject of a low number of access operations, while other shards may be smaller but each item is accessed much more frequently. It is also important to ensure that a single shard does not exceed the scale limits (in terms of capacity and processing resources) of the data store being used to host that shard.
 
-分割方式は、ホット スポット (またはパーティション) の作成を避ける必要がありますもパフォーマンスと可用性に影響する可能性があります。たとえば、顧客の名前の最初の文字ではなく顧客の識別子のハッシュを使用すると、一般的なより少なく共通の頭文字からなる不均衡ができなくなります。これのパーティション間でより均等にデータを分散することができます典型的な技法です。
+The sharding scheme should also avoid creating hotspots (or hot partitions) that may affect performance and availability. For example, using a hash of a customer identifier instead of the first letter of a customer’s name will prevent the unbalanced distribution that would result from common and less common initial letters. This is a typical technique that helps to distribute the data more evenly across partitions.
 
 The sharding key you choose should minimize any future requirements to split large shards into smaller pieces, coalesce small shards into larger partitions, or change the schema that describes the data stored in a set of partitions. These operations can be very time consuming, and may require taking one or more shards offline while they are performed. If shards are replicated, it may be possible to keep some of the replicas online while others are split, merged, or reconfigured, but the system may need to limit the operations that can be performed on the data in these shards while the reconfiguration is taking place. For example, the data in the replicas could be marked as read-only to limit the scope of any inconsistences that could otherwise occur while shards are being restructured.
 
-> 詳細な情報、これらの考慮事項の多くについてのガイダンスおよび良い実践テクニックを実装する水平分割、保存データのデザインをご覧ください、 [分割パターン](http://aka.ms/Sharding-Pattern)
+> For more detailed information and guidance about many of these considerations, and good practice techniques for designing data stores that implement horizontal partitioning, see the [Sharding Pattern](http://aka.ms/Sharding-Pattern)
 
-### 列方向の分割
+### Vertical partitioning
 
-列方向の分割の最も一般的な用途は、I/O を削減してアイテムをフェッチに関連するパフォーマンス コストは最も頻繁にアクセスされます。図 2 データ項目ごとに異なるプロパティが異なるパーティションで開催される、列方向の分割の例の概要を示しています。名前、説明、および製品の価格情報は株式または最終注文日のボリュームよりも頻繁にアクセスされます。
+The most common use for vertical partitioning is to reduce the I/O and performance costs associated with fetching the items that are accessed most frequently. Figure 2 shows an overview of an example of vertical partitioning, where different properties for each data item are held in different partitions; the name, description, and price information for products are accessed more frequently than the volume in stock or the last ordered date.
 
 ![](media/best-practices-data-partitioning/DataPartitioning02.png)
 
-_図 2。-垂直使用のパターンによってデータのパーティション分割_
+_Figure 2. - Vertically partitioning data by its pattern of use_
 
-この例では、アプリケーションは、顧客に製品の詳細を表示するときに、製品名、説明、および価格一緒を定期的に照会します。製品を製造元からに最後に注文した日付と在庫レベルは、これらの 2 つの項目は一緒によく使用されるため別のパーティションに保持されます。このパーティション スキームが追加の利点を比較的低速で移動データ (製品名、説明、および価格) がより動的なデータ (株価レベルおよび最後の順序の日付) から切り離されていること。アプリケーションは、頻繁にアクセスする場合メモリ内の低速移動データをキャッシュに有益かもしれません。
+In this example, the application regularly queries the product name, description, and price together when displaying the details of products to customers. The stock level and date when the product was last ordered from the manufacturer are held in a separate partition because these two items are commonly used together. This partitioning scheme has the added advantage that the relatively slow-moving data (product name, description, and price) is separated from the more dynamic data (stock level and last ordered date). An application may find it beneficial to cache the slow-moving data in memory if it is frequently accessed.
 
-このパーティション分割戦略のもう 1 つの一般的なシナリオは、機密データのセキュリティを高めるためです。たとえば、によってクレジット カード番号と対応するカード セキュリティ検証番号を別々 のパーティションに格納します。
+Another typical scenario for this partitioning strategy is to maximize the security of sensitive data. For example, by storing credit card numbers and the corresponding card security verification numbers in separate partitions.
 
-列方向の分割も、データに必要な同時アクセスの量を減らすことができます。
+Vertical partitioning can also reduce the amount of concurrent access required to the data.
 
-> 部分的から打破するエンティティの正規化、データ ストア内のエンティティ レベルで動作する垂直分割、 _広い_ 項目のセットを _絞り込む_ アイテム。列指向データ ストア HBase やカサンドラなどに最適です。列のコレクションにデータを変更する可能性がありますできない場合、SQL Server では列に保存を使用してまた考慮できます。
+> Vertical partitioning operates at the entity level within a data store, partially normalizing an entity to break it down from a _wide_ item to a set of _narrow_ items. It is ideally suited for column-oriented data stores such as HBase and Cassandra. If the data in a collection of columns is unlikely to change, you can also consider using column stores in SQL Server.
 
-### 機能分割
+### Functional partitioning
 
-システムは、それぞれ異なるビジネス領域またはアプリケーション内のサービスのための境界コンテキストを識別するために、機能的なパーティショニングは、分離とデータ アクセスのパフォーマンスを向上させる手法を提供します。機能分割の別の一般的な用途は、読み取り/書き込みデータ レポートのために使用される読み取り専用のデータから分離することです。図 3 は、インベントリ データ、顧客データから分離されている機能的なパーティショニングの概要を示します。
+For systems where it is possible to identify a bounded context for each distinct business area or service in the application, functional partitioning provides a technique for improving isolation and data access performance. Another common use of functional partitioning is to separate read-write data from read-only data used for reporting purposes. Figure 3 shows an overview of functional partitioning where inventory data is separated from customer data.
 
 ![](media/best-practices-data-partitioning/DataPartitioning03.png)
 
-_図 3。-機能的境界コンテキストまたはサブドメインによってデータのパーティション分割_
+_Figure 3. - Functionally partitioning data by bounded context or subdomain_
 
-このパーティション分割戦略は、システムのさまざまな部分の間でデータ アクセスの競合を減らすために助けることができます。
+This partitioning strategy can help to reduce data access contention across different parts of the system.
 
-## スケーラビリティのためのパーティションの設計
+## Designing partitions for scalability
 
-サイズと各パーティションの作業負荷を考慮し、最大のスケーラビリティを実現するデータが分散されるようにそれらのバランスが重要です。ただし、1 つのパーティション ストアのスケーラビリティの制限を超えないようには、データをパーティション分割してもする必要があります。
+It is vital to consider size and workload for each partition and balance them so that data is distributed to achieve maximum scalability. However, you must also partition the data so that it does not exceed the scaling limits of a single partition store.
 
-スケーラビリティのパーティションを設計する際は、以下の手順を実行。
+Follow these steps when designing the partitions for scalability:
 
-1. 各クエリによって返される結果セットのサイズなどのデータ アクセス パターンを理解するためにアプリケーションの分析、アクセス、固有のレイテンシー、およびサーバー側の周波数計算処理の要件。多くの場合、いくつかの主要なエンティティの処理リソースのほとんどを要求します。
-2. 分析に基づいて、現在および将来の拡張ターゲット データのサイズと、ワークロードなどを決定し、スケーラビリティの目標を達成するパーティションに、データを分散します。水平方向のパーティション分割戦略の適切な破片のキーを選択配布が偶数かどうかを確認することが重要です。詳細については"を参照してください、 [分割パターン](http://aka.ms/Sharding-Pattern).
+1. Analyze the application to understand the data access patterns, such as size of the result set returned by each query, the frequency of access, the inherent latency, and the server-side compute processing requirements. In many cases, a few major entities will demand most of the processing resources.
+2. Based on the analysis, determine the current and future scalability targets such as data size and workload, and distribute the data across the partitions to meet the scalability target. In the horizontal partitioning strategy, choosing the appropriate shard key is important to make sure distribution is even. For more information see the [Sharding pattern](http://aka.ms/Sharding-Pattern).
 3. Make sure that the resources available to each partition are sufficient to handle the scalability requirements in terms of data size and throughput. For example, the node hosting a partition might impose a hard limit on the amount of storage space, processing power, or network bandwidth that it provides. If the data storage and processing requirements are likely to exceed these limits it may be necessary to refine your partitioning strategy or split data out further. For example, one scalability approach might be to separate logging data from the core application features by using separate data stores to prevent the total data storage requirements exceeding the scaling limit of the node. If the total number of data stores exceeds the node limit, it may be necessary to use separate storage nodes.
-4. 期待どおりにデータを分散して、パーティションが彼らに課せられた負荷を処理できることを確認する使用の下でシステムを監視します。それは使用のパーティションを再調整することが可能かもしれない分析による予想が一致しないことが可能かもしれない。失敗すると、必要なバランスを得るためにシステムの一部を再設計する必要がある場合があります。
+4. Monitor the system under use to verify that the data is distributed as expected and that the partitions can handle the load imposed on them. It could be possible that the usage does not match that anticipated by the analysis it may be possible to rebalance the partitions. Failing that, it may be necessary to redesign some parts of the system to gain the balance that is required.
 
-いくつかのクラウド環境インフラの境界面でのリソースの割り当て、選択した境界の制限がデータ ストレージ、処理能力、および帯域幅の面でのデータ量での予測成長に十分なスペースを提供することを確保する必要がありますに注意してください。たとえば、Azure テーブル ストレージを使用する場合は忙しいシャードは要求を処理する 1 つのパーティションに使用できるよりも多くのリソースを必要があります (一定の時間で 1 つのパーティションで処理できる要求の量に限界がある-をご覧ください [Azure ストレージのスケーラビリティとパフォーマンスの目標](https://msdn.microsoft.com/library/azure/dn249410.aspx) Microsoft のウェブサイトに詳細については)。この場合、シャードは、負荷を分散する分割する必要があります。合計サイズ、またはこれらのテーブルのスループットは、ストレージ アカウントの容量を超えた場合、追加のストレージ アカウントを作成し、これらのアカウントにテーブルを分散する必要があります。ストレージ アカウント数は、サブスクリプションに使用できるアカウントの数を超えた場合、複数のサブスクリプションを使用する必要あります。
+Note that some cloud environments allocate resources in terms of infrastructure boundaries, and you should ensure that the limits of your selected boundary provide enough room for any anticipated growth in the volume of data, in terms of data storage, processing power, and bandwidth. For example, if you use Azure table storage, a busy shard might require more resources than are available to a single partition to handle requests (there is a limit to the volume of requests that can be handled by a single partition in a given period of time—see the page [Azure Storage Scalability and Performance Targets](https://msdn.microsoft.com/library/azure/dn249410.aspx) on the Microsoft website for more details). In this case, the shard may need to be repartitioned to spread the load. If the total size or throughput of these tables exceeds capacity of a storage account, it may be necessary to create additional storage accounts and spread the tables across these accounts. If the number of storage accounts exceeds the number of accounts that are available to a subscription, then it may be necessary to use multiple subscriptions.
 
-## クエリのパフォーマンスのためのパーティションの設計
+## Designing partitions for query performance
 
-小さいデータ セットとクエリの並列実行を使用してクエリのパフォーマンスを強化多くの場合ことができます。各パーティションは、データ セット全体の小さな割合を含める必要があり、このボリュームの縮小は、クエリのパフォーマンスを向上できます。ただし、分割の設計およびデータベースを適切に構成するための代替手段ではありません。たとえば、リレーショナル データベースを使用する場合の場所で必要なインデックスがあることを確認します。
+Query performance can often be boosted by using smaller data sets and parallel query execution. Each partition should contain a small proportion of the entire data set, and this reduction in volume can improve the performance of queries. However, partitioning is not an alternative for designing and configuring a database appropriately. For example, make sure that you have the necessary indexes in place if you are using a relational database.
 
-クエリのパフォーマンスのパーティションを設計する際は、以下の手順を実行。
+Follow these steps when designing the partitions for query performance:
 
-1. アプリケーションの要件とパフォーマンスを調べます。
-	- ビジネス要件を使用して、常に迅速に実行する必要があります重要なクエリを調べます。
-	- ゆっくりとを実行するクエリを識別するためにシステムを監視します。
-	- 確立どのクエリが最も頻繁に行われます。各クエリの単一のインスタンスが最小のコスト、リソースの累積消費量は大きな可能性があります。異なるパーティション、またはもキャッシュにこれらのクエリによって取得されたデータを分離する有益なことがあります。
-2. パフォーマンスの低下の原因となっているデータをパーティション分割します。確認します。
-	- クエリの応答時間がターゲット内にあるので、各パーティションのサイズを制限します。
-	- 水平パーティショニングを実装する場合、アプリケーションは、パーティションを見つける簡単にできる方法でシャード キーを設計します。これは、すべてのパーティションをスキャンする必要があるクエリを防ぎます。
-	- クエリのパフォーマンスのパーティションの位置を考慮します。可能であれば、アプリケーションとそれにアクセスするユーザーの近くに地理的にあるパーティションにデータを保持しようとします。
-3. エンティティにスループットとクエリのパフォーマンス要件がある場合は、そのエンティティに基づく機能のパーティション分割を使用します。これはまだ要件を満たすことができませんが場合、は、同様の水平パーティションを適用します。ほとんどの場合 1 つのパーティション分割戦略で十分ですが、いくつかのケースで両方の方法を組み合わせることが効率的です。
-4. パフォーマンスを向上させるパーティションで同時に実行される非同期クエリを使用してください。
+1. Examine the application requirements and performance:
+	- Use the business requirements to determine critical queries that must always perform quickly.
+	- Monitor the system to identify any queries that perform slowly.
+	- Establish which queries are performed most frequently. A single instance of each query might have minimal cost, but the cumulative consumption of resources could be significant. It may be beneficial to separate the data retrieved by these queries into a distinct partition, or even a cache.
+2. Partition the data that is causing slow performance. Ensure that you:
+	- Limit the size of each partition so that the query response time is within target.
+	- Design the shard key in a way that the application can easily find the partition if you are implementing horizontal partitioning. This prevents the query needing to scan through every partition.
+	- Consider the location of a partition on the performance of queries. If possible, try to keep data in partitions that are geographically close to the applications and users that access it.
+3. If an entity has throughput and query performance requirements, use functional partitioning based on that entity. If this is still not able to satisfy the requirements, apply horizontal partitioning as well. In most cases a single partitioning strategy will suffice, but in some cases it is more efficient to combine both strategies.
+4. Consider using asynchronous queries that run in parallel across partitions to improve the performance.
 
-## 可用性のためのパーティションの設計
+## Designing partitions for availability
 
-データを分割すると、データセット全体が単一障害点を構成しないし、データセットの個別のサブセットに管理できる独立を確保することによってアプリケーションの可用性が向上します。重要なデータを含むパーティションをレプリケートする可用性を改善できます。
+Partitioning data can improve the availability of applications by ensuring that the entire dataset does not constitute a single point of failure and that individual subsets of the dataset can be managed independently. Replicating partitions containing critical data can also improve availability.
 
-デザイン パーティションを実装すると、可用性に影響する次の要因を考慮します。
+When designing and implementing partitions, consider the following factors that affect availability:
 
-- どのように重要なデータが業務です。いくつかのデータは、請求明細や銀行取引などの重要なビジネス情報を含むことができます。その他のデータは、ログ ファイル、パフォーマンス トレースなど、重要度の低いオペレーション データだけかもしれない。各種類のデータを識別した後考慮してください。
-	- 適切なバックアップ計画と高可用性パーティションに重要なデータを格納します。
-	- 個別の管理と監視の機構または各データセットの異なる criticalities の手順を確立します。できるように、同じパーティション内の重要性の同じレベルを持つ場所データは、適切な頻度で一緒にバックアップされます。たとえば、銀行取引のデータを保持しているパーティションは、ログまたはトレース情報を保持しているパーティションよりも頻繁にバックアップする必要があります。
-- 個々 のパーティションを管理することができますどのように。独立した管理と保守をサポートするためのパーティションの設計は、いくつかの利点を提供します。たとえば。
-	- パーティションが失敗した場合、回復できるない独立して他のパーティション内のデータにアクセスするアプリケーションのインスタンスに影響を与えずに。
-	- 地域別データの分割を各場所のオフピーク時に実行するスケジュールされた保守タスクができます。パーティションが大きすぎて、計画的なメンテナンスがこの期間中に完了していることを防ぐためにいないことを確認します。
-- パーティション間で重要なデータをレプリケートするかどうか。この戦略には、整合性の問題を導入することができますも可用性とパフォーマンスを向上できます。すべてのレプリカと同期するパーティション内のデータに加えられた変更のための時間がかかるし、この期間中にパーティションの異なるさまざまなデータ値が格納されます。
+- How critical the data is to business operations. Some data may comprise critical business information such as invoice details or bank transactions. Other data might simply be less critical operational data, such as log files, performance traces, and so on. After identifying each type of data, consider:
+	- Storing critical data in highly-available partitions with an appropriate back up plan.
+	- Establishing separate management and monitoring mechanisms or procedures for the different criticalities of each dataset. Place data that has the same level of criticality in the same partition so that it can backed up together at an appropriate frequency. For example, partitions holding data for bank transactions may need to be backed up more frequently than partitions holding logging or trace information.
+- How individual partitions can be managed. Designing partitions to support independent management and maintenance provides several advantages. For example:
+	- If a partition fails, it can be recovered independently without affecting instances of applications that access data in other partitions.
+	- Partitioning data by geographical area may allow scheduled maintenance tasks to occur at off-peak hours for each location. Ensure that partitions are not too big to prevent any planned maintenance from being completed during this period.
+- Whether to replicate critical data across partitions. This strategy can improve availability and performance, although it can also introduce consistency issues. It takes time for changes made to data in a partition to be synchronized with every replica, and during this period different partitions will contain different data values.
 
-## 問題と考慮事項
+## Issues and considerations
 
-分割法を用いたデザインとシステムの開発に複雑さを追加します。システムだけ最初 1 つのパーティションが含まれる場合でも、システム設計の基本的な部分としてパーティション分割を検討することが重要です。維持するためにライブ システムがある今分割システムのパフォーマンスとスケーラビリティの問題に苦しむ起動時に付け足しだけおそらくあなたの複雑さを増加させるように対処します。だけでなくデータ アクセス ロジックの変更が必要になりますこの環境でパーティション分割を組み込むシステムを更新、それはまた、移行を含むことができる既存のデータに分散パーティション、しばしばユーザー システムを使用し続けることができることを期待しながらの大量。
+Using partitioning adds complexity to the design and development of the system. It is important to consider partitioning as a fundamental part of the system design even if the system only contains a single partition initially. Addressing partitioning as an afterthought when the system starts to suffer performance and scalability issues only increases complexity as you probably now have a live system to maintain. Updating the system to incorporate partitioning in this environment necessitates not only modifying the data access logic, it can also involve migrating large quantities of existing data to distribute it across partitions, often while users expect to be able to continue using the system.
 
-いくつかのケースで分割不可能である重要な初期データセットが小さい、単一のサーバーで簡単に処理することができます。初期サイズを超えたスケールと予想されていないシステムでもこれが多くの商用システムは、増加するユーザーの数に応じて拡張できる必要があります。この拡張は通常データ量の増加を伴います。また、分割がない常に大きなデータ ストアの機能を理解する必要があります。たとえば、数百の同時実行クライアントによって小さなデータ ストアを大きくアクセス可能性があります。この状況でデータをパーティション分割は、競合を減らし、スループットを向上させるのに役立ちます。
+In some cases, partitioning is not considered important because the initial dataset is small and can be easily handled by a single server. This may be true in a system that is not expected to scale beyond its initial size, but many commercial systems need to be able to expand as the number of users increases. This expansion is typically accompanied by a growth in the volume of data. You should also understand that partitioning is not always a function of large data stores. For example, a small data store might be heavily accessed by hundreds of concurrent clients. Partitioning the data in this situation can help to reduce contention and improve throughput.
 
-データ パーティション分割スキームを設計するときは、次の点を考慮してください。
+You should consider the following points when you design a data partitioning scheme:
 
-- 可能であれば、最も一般的なデータベース操作のためのデータを各パーティション クロス パーティション データ アクセス操作を最小限に抑えるために一緒にしてください。1 つのパーティション内でのみクエリを実行するよりも時間がかかるすることができますパーティション間でのクエリが、クエリの 1 つのセットに対してパーティションの最適化とクエリの他のセットに悪影響を及ぼす可能性があります。これは避けられません、パーティション間で、クエリ時間を最小限に抑えるパーティション上の並列クエリを実行、アプリケーション内で結果を集計します。ただし、この方法も、1 つのクエリから結果を取得し、次のクエリで使用する必要がある場合など、いくつかのケースでことができない場合があります。
-- 場合は、クエリを使用する郵便番号テーブルや製品リストなどの比較的静的な参照データを使用する、すべてのパーティションを別のパーティションに別の参照操作の要件を減らすためにこのデータをレプリケートするを検討してください。このアプローチは追加コストが発生するため、この参照データ変更の同期に関連付けられているがシステム全体にわたってからの大量のトラフィックが「ホット」データセットになる参照データの可能性を削減できます。
-- 可能であれば、上下機能パーティション間で参照整合性の要件を最小限に抑えます。これらのスキームでは、アプリケーション自体がデータを更新し、消費されるときのパーティション間で参照整合性を維持する責任です。複数のパーティション間でデータを結合する必要がありますクエリをアプリケーションが通常キーと、外部キーに基づく連続したクエリを実行する必要があるために、同じパーティション内でのみデータを結合するクエリよりゆっくり実行します。代わりに、複製または重複関連データの正規化を検討します。、クロス パーティション結合が必要なクエリの時間を最小限に抑えるパーティション上の並列クエリを実行し、アプリケーション内でデータを結合します。
-- パーティション構成は、パーティション間でデータの一貫性にかもしれない影響を検討してください。強い一貫性が実際に必要かどうかを評価する必要があります。代わりに、クラウドの一般的なアプローチは、最終的な一貫性を実装します。各パーティション内のデータは別々 に更新され、アプリケーション ロジックは、すべてが正常に完了する更新プログラムのための責任を取ることができる、最終的に一貫した操作の実行中にデータを照会する場合に発生する不整合を処理します。イベンチュアル ・ コンシステンシーの実装の詳細については、一貫性のガイダンスを参照してください。(#insertlink #)
-- クエリで正しいパーティションを検索する方法を検討してください。クエリがスキャンする必要がある必要なデータを検索するすべてのパーティションは複数の並列クエリを使用した場合でも、パフォーマンスに大きな影響を与えるになります。クエリが垂直で使用され機能パーティション分割戦略は当然のことながらパーティションを指定できます。ただし、水平分割 (シャーディング) を使用して、アイテムを検索するが難しい場合すべての破片が同じスキーマを持っているので。シャーディングの典型的な解決策は、データの特定の項目のための破片の場所を検索に使用することができますマップを維持するためにです。このマップをアプリケーションの分割ロジックで実装または透明分割をサポートしている場合のデータ ストアで保持可能性があります。
-- 水平方向のパーティション分割戦略を使用する場合は、サイズ、ホット スポットを最小限に抑えるため、クエリのパフォーマンスを最大化するため、物理記憶域の制限を回避するワークロードに均等にデータを分散する破片を定期的にリバランスすることを検討してください。しかし、これは多くの場合カスタム ツールまたはプロセスの使用を必要とする複雑なタスクです。
-- 各パーティションを複製障害に対する追加の保護を提供します。1 つのレプリカが失敗した場合、作業コピーへクエリを送信できます。
-- パーティション分割戦略の物理的な限界に到達した場合は、別のレベルにスケーラビリティを拡張する必要があります。たとえば、データベース レベルでは、パーティション分割場合は可能性の位置決めや複数のデータベース パーティションをレプリケートします。データベース レベルでは既にパーティション分割、物理的な制限が問題の位置決めや複数のホストのアカウント内のパーティションをレプリケートする可能性します。
-- 複数のパーティションでデータにアクセスするトランザクションは避けてください。いくつかのデータ ストアを実装のトランザクション一貫性と操作の整合性、それは 1 つのパーティションである場合にのみ、データを変更します。複数のパーティション間でのトランザクションのサポートが必要な場合は、最もパーティション システムのネイティブ サポートが提供されないため、アプリケーション ロジックの一部として実装する必要があります。
+- Where possible, keep data for the most common database operations together in each partition to minimize cross-partition data access operations. Querying across partitions can be more time-consuming than querying only within a single partition, but optimizing partitions for one set of queries might adversely affect other sets of queries. To minimize the query time across partitions where this cannot be avoided, execute parallel queries over the partitions and aggregate the results within the application. However, this approach may not be possible in some cases, such as when it is necessary to obtain a result from one query and use this in the next query.
+- If queries make use of relatively static reference data, such as postal code tables or product lists, consider replicating this data in all of the partitions to reduce the requirement for a separate lookup operation in different partition. This approach can also reduce the likelihood of the reference data becoming a "hot" dataset that is subject to heavy traffic from across the entire system, although there is an additional cost associated with synchronizing any changes that might occur to this reference data.
+- Where possible, minimize requirements for referential integrity across vertical and functional partitions. In these schemes, the application itself is responsible for maintaining referential integrity across partitions when data is updated and consumed. Queries that must join data across multiple partitions run more slowly than queries that join data only within the same partition because the application will typically need to perform consecutive queries based on a key and then on a foreign key. Instead, consider replicating or de-normalizing the relevant data. To minimize the query time where cross-partition joins are necessary, execute parallel queries over the partitions and join the data within the application.
+- Consider the effect that the partitioning scheme might have on the data consistency across partitions. You should evaluate whether strong consistency is actually a requirement. Instead, a common approach in the cloud is to implement eventual consistency. The data in each partition is updated separately, and the application logic can take responsibility for ensuring that the updates all complete successfully—as well as handling the inconsistencies that can arise from querying data while an eventually consistent operation is running. For more information about implementing eventual consistency, see the Consistency Guidance.(#insertlink#)
+- Consider how queries will locate the correct partition. If a query must scan all partitions to locate the required data there will be a significant impact on performance, even when using multiple parallel queries. Queries used with the vertical and functional partitioning strategies can naturally specify the partitions. However, when using horizontal partitioning (sharding), locating an item can be difficult because every shard has the same schema. A typical solution for sharding is to maintain a map that can be used to look up the shard location for specific items of data. This map may be implemented in the sharding logic of the application, or maintained by the data store if it supports transparent sharding.
+- When using a horizontal partitioning strategy, consider periodically rebalancing the shards to distribute the data evenly by size and by workload to minimize hotspots, maximize query performance, and work around physical storage limitations. However, this is a complex task that often requires the use of a custom tool or process.
+- Replicating each partition provides additional protection against failure. If a single replica fails, queries can be directed towards a working copy.
+- If you reach the physical limits of a partitioning strategy, you may need to extend the scalability to a different level. For example, if partitioning is at the database level it may mean locating or replicating partitions in multiple databases. If partitioning is already at the database level, and physical limitations are an issue, it may mean locating or replicating partitions in multiple hosting accounts.
+- Avoid transactions that access data in multiple partitions. Some data stores implement transactional consistency and integrity for operations that modify data, but only when it is located in a single partition. If you need transactional support across multiple partitions, you will probably need to implement this as part of your application logic because most partitioning systems do not provide native support.
 
-すべてのデータ ストアには、いくつかの運用管理および監視が必要です。データの読み込み、バックアップしデータを復元する、データを再編成および正しくかつ効率的に、システムが実行されていることを確認、タスクの範囲です。
+All data stores require some operational management and monitoring activity. The tasks can range from loading data, backing up and restoring data, reorganizing data, and ensuring that the system is performing correctly and efficiently.
 
-運用管理に影響する次の要因を考慮してください。
+Consider the following factors that affect operational management:
 
-- その他の管理タスクと運用タスク データをパーティション分割すると、バックアップと復元、システムの監視、データのアーカイブなどとき、適切な管理を実装する方法を検討してください。たとえば、バックアップと復元操作中に論理的な一貫性維持は挑戦をすることができます。
-- データが複数のパーティションに読み込まれ、新しい方法をすることができますどのように他の情報源から届いたデータが追加されます。いくつかのツールとユーティリティ可能性があります正しいパーティションにデータを読み込むなどの sharded データ操作をサポートしていません、だから、これは作成または新しいツールとユーティリティを取得必要があります。
-- どのようにデータをアーカイブしてパーティションの過度の成長を防ぐために (おそらく月額) 定期的に削除されます。異なるアーカイブ スキーマと一致するデータを変換する必要があります。
-- 別の情報を参照する 1 つのパーティション内のデータなどの整合性の問題を任意のデータを検索する周期的なプロセスを実行する、この情報は不足している検討してください。プロセスでは、いずれかの試みこれらの問題を自動的に修正したり、手動で問題を修正するオペレーターにアラートを生成可能性があります。たとえば、e コマース アプリケーションでは、注文情報は、1 つのパーティションで開催されるかもしれないが、各順序を構成する品目は、別に開催されるかもしれない。注文の処理は、パーティションをわざわざデータを追加する必要があります。このプロセスが失敗した場合、ある品目間保存できる対応する注文が無い。
+- Consider how you will implement appropriate management and operational tasks when the data is partitioned, such as backup and restore, archiving data, monitoring the system, and other administrative tasks. For example, maintaining logical consistency during backup and restore operations can be a challenge.
+- How the data can be loaded into multiple partitions, and how new data arriving from other sources might be added. Some tools and utilities may not support sharded data operations such as loading data into the correct partition, and so this may require creating or obtaining new tools and utilities.
+- How the data will be archived and deleted on a regular basis (perhaps monthly) to prevent excessive growth of partitions. It may be necessary to transform the data to match a different archive schema.
+- Consider executing a periodic process to locate any data integrity issues such as data in one partition that references information in another, but this information is missing. The process could either attempt to fix these issues automatically or raise an alert to an operator to correct the problems manually. For example, in an ecommerce application, order information might be held in one partition but the line items that constitute each order might be held in another. The process of placing an order needs to add data to bother partitions. If this process fails, there could be line items stored for which there is no corresponding order.
 
-さまざまなデータ ストレージ技術は通常、パーティション分割をサポートする独自の機能を提供します。次のセクションでは、Azure アプリケーションで一般的に使用されるデータ ストアによって実装されるオプションを要約し、これらの機能を最大限に活用することができますアプリケーションを設計するための考慮事項について説明。
+Different data storage technologies typically provide their own features to support partitioning. The following sections summarize the options implemented by data stores commonly used by Azure applications, and describe considerations for designing applications that can take best advantage of these features.
 
-## Azure の SQL データベースのパーティション分割戦略
+## Partitioning strategies for Azure SQL Database
 
-Azure の SQL データベースは、リレーショナル データベース--サービスとして、クラウドで実行されます。それは、Microsoft SQL Server に基づいています。リレーショナル データベースのテーブルに情報を分割し、各テーブルは一連の行としてエンティティに関する情報を保持します。各行には、エンティティの個々 のフィールドのデータを格納する列が含まれています。、 [Azure の SQL データベース](https://msdn.microsoft.com/library/azure/ee336279.aspx) Microsoft の web サイト上のページを作成すると、SQL データベースを使用して詳細なドキュメントを提供します。
+Azure SQL Database is a relational database-as-a-service that runs in the cloud. It is based on Microsoft SQL Server. A relational database divides information into tables, and each table holds information about entities as a series of rows. Each row contains columns that hold the data for the individual fields of an entity. The [Azure SQL Database](https://msdn.microsoft.com/library/azure/ee336279.aspx) page on the Microsoft website provides detailed documentation on creating and using SQL databases.
 
-## 柔軟な拡張性と行方向の分割
+## Horizontal partitioning with Elastic Scale
 
-1 つの SQL データベースを含めること、およびスループットが建築的要因とそれをサポートする同時接続の数が制限されてデータの量に制限があります。Azure の SQL データベースは、SQL データベースの水平方向のスケーリングをサポートする柔軟な拡張性を提供します。柔軟な拡張性を使用して、複数の SQL データベースにわたって広がる破片にデータをパーティション分割することができ、追加または処理する必要があるデータの量が増大し、縮小の破片を削除できます。弾性のスケールを使用しても、データベース間で負荷を分散することによって競合を減らすために役立ちます。
+A single SQL database has a limit to the volume of data that it can contain, and throughput is constrained by architectural factors and the number of concurrent connections that it supports. Azure SQL Database provides Elastic Scale to support horizontal scaling for a SQL database. Using Elastic Scale, you can partition your data into shards spread across multiple SQL databases, and you can add or remove shards as the volume of data that you need to handle grows and shrinks. Using Elastic Scale can also help to reduce contention by distributing the load across databases.
 
-> [AZURE。メモ] 柔軟な拡張性は現在 2015 年 1 月末現在プレビュー中です。それは引退、Azure SQL データベース フェデレーションの交換です。Azure SQL データベース フェデレーションの既存のインストールを使用して柔軟な拡張性に移行できます、 [連合移行ユーティリティ](https://code.msdn.microsoft.com/vstudio/Federations-Migration-ce61e9c1).また、シナリオに自分自身を貸していない自然に柔軟な拡張性が提供する機能場合は、分割メカニズムを実装できます。
+> [AZURE.NOTE] Elastic Scale is currently in preview as of January 2015. It is a replacement for Azure SQL Database Federations which will be retired. Existing Azure SQL Database Federation installations can be migrated to Elastic Scale by using the [Federations Migration Utility](https://code.msdn.microsoft.com/vstudio/Federations-Migration-ce61e9c1). Alternatively, you can implement your own sharding mechanism if your scenario does not lend itself naturally to the features provided by Elastic Scale.
 
-各シャードは、SQL データベースとして実装されます。破片は 1 つ以上のデータセットを保持できます (と呼ばれる、 _shardlet_) と各データベースが含まれている shardlets を記述するメタデータを保持します。Shardlet は、単一のデータ項目をすることができます。 または shardlet キーが同じ項目のグループをすることができます。たとえば、マルチ テナント アプリケーションの分割データの場合は、shardlet キーができるテナント ID と同じ shardlet の一環として開催される特定のテナントのすべてのデータ。他のテナントのデータは、異なる shardlets で開催されるでしょう。
+Each shard is implemented as a SQL database. A shard can hold more than one dataset (referred to as a _shardlet_), and each database maintains metadata that describes the shardlets that it contains. A shardlet can be a single data item, or it can be a group of items that share the same shardlet key. For example, if you are sharding data in a multi-tenant application, the shardlet key could be the tenant ID and all data for a given tenant would be held as part of the same shardlet. Data for other tenants would be held in different shardlets.
 
-Shardlet キーにデータセットを関連付けるプログラマの責任です。別の SQL データベースは、各データベースの shardlets についての情報と共にシステム全体を構成するデータベース (破片) のリストを含むグローバル シャード マップ マネージャーとして機能します。データにアクセスするクライアント アプリケーションは、最初シャード-マップの (リストの破片および shardlets) ローカル キャッシュしたコピーを取得するグローバル シャード マップ マネージャー データベースに接続します。次に、アプリケーションは、適切な破片にデータ要求をルーティングするこの情報を使用します。この機能は、Azure SQL データベース弾性スケール クライアント ライブラリは、NuGet パッケージとして入手可能に含まれている Api のシリーズの下に隠れています。ページ [SQL azure データベースの柔軟な拡張性の概要](sql-database-elastic-scale-introduction.md) マイクロソフトでは、ウェブサイトは、弾性のスケールのより包括的な概要を提供します。
+It is the programmer's responsibility to associate a dataset with a shardlet key. A separate SQL database acts as a global shard-map manager that contains a list of databases (shards) that comprise the entire system together with information about the shardlets in each database. A client application that accesses data first connects to the global shard-map manager database to obtain a copy of the shard-map (listing shards and shardlets) which it caches locally. The application then uses this information to route data requests to the appropriate shard. This functionality is hidden behind a series of APIs contained in the Azure SQL Database Elastic Scale Client Library, available as a NuGet package. The page [Azure SQL Database Elastic Scale Overview](sql-database-elastic-scale-introduction.md) on the Microsoft website provides a more comprehensive introduction to Elastic Scale.
 
-> [AZURE。メモ] 待ち時間を削減し、可用性を向上させる地球の破片地図マネージャー データベースをレプリケートすることができます。保険料のいずれかを使用して、データベースを実装する場合価格階層レプリケーションを構成できますアクティブなジオ-継続的に別の地域のデータベースにデータをコピーします。それぞれの地域のユーザーが基づいていると、このコピーの破片マップを得るために接続するアプリケーションを構成データベースのコピーを作成します。
+> [AZURE.NOTE] You can replicate the global shard-map manager database to reduce latency and improve availability. If you implement the database by using one of the Premium pricing tiers you can configure active geo-replication to continuously copy data to databases in different regions. Create a copy of the database in each region in which users are based, and configure your application to connect to this copy to obtain the shard map.
 
-> 代替的アプローチは、地域間でシャード マップ マネージャー データベースをレプリケートする Azure SQL データ同期または Azure データ工場パイプラインを使用することです。レプリケーションのこのフォームは、定期的に実行、シャード マップ変更頻度の低い場合より適しています。さらに、シャード マップ マネージャー データベースは、プレミアムの価格階層を使用して作成する必要はありません。
+> An alternative approach is to use Azure SQL Data Sync or an Azure Data Factory pipeline to replicate the shard-map manager database across regions. This form of replication runs periodically and is more suitable if the shard map changes infrequently. Additionally, the shard-map manager database does not have to be created by using a Premium pricing tier.
 
-柔軟な拡張性は、shardlets へのデータのマッピングおよび破片にそれらを格納するための 2 つの方式を提供します。
+Elastic Scale provides two schemes for mapping data to shardlets and storing them in shards:
 
-- リスト シャード マップでは、1 つのキーと、shardlet 間の関連付けについて説明します。たとえば、マルチ テナント システムでテナントごとにデータ一意なキーに関連付けられているでき、独自の shardlet に格納されています。プライバシーと絶縁 (1 つのテナントの他に使用可能なデータ ストレージ リソースの浪費を防ぐ) を保証するため、独自のシャード内で各 shardlet を保持できます。
+- A List Shard Map describes an association between single key and a shardlet. For example, in a multi-tenant system, the data for each tenant could be associated with a unique key and stored in its own shardlet. To guarantee privacy and isolation (to prevent one tenant from exhausting the data storage resources available to others), each shardlet could be held within its own shard.
 
 ![](media/best-practices-data-partitioning/PointShardlet.png)
 
-_図 4。-別の破片にテナント データを格納するのにリスト シャード マップを使用_
+_Figure 4. - Using a list shard map to store tenant data in separate shards_
 
-- 範囲の破片の地図では、一連の連続したキー値と、shardlet 間の関連付けについて説明します。専用の shardlets を実装する別の方法として、前述のマルチ テナント例で同じ shardlet 内テナント (それぞれ独自のキー) のセットのデータをグループ化できます。この方式は最初のものより安価 (テナントでデータ ストレージ ・ リソース共有) するが、上のデータのプライバシーと独立性を減少します。
+- A Range Shard Map describes an association between a set of contiguous key values and a shardlet. In the multi-tenant example described previously, as an alternative to implementing dedicated shardlets, you could group the data for a set of tenants (each with their own key) within the same shardlet. This scheme is less expensive than the first (tenants share data storage resources), but at the risk of reduced data privacy and isolation.
 
 ![](media/best-practices-data-partitioning/RangeShardlet.png)
 
-_図 5。-破片のテナントの範囲のデータを格納するのに範囲シャード マップを使用_
+_Figure 5. - Using a range shard map to store data for a range of tenants in a shard_
 
-1 つのシャードがいくつか shardlets のデータを含めることができますに注意してください。たとえば、同じシャードで異なる非連続テナント データを格納するのにリストの shardlets を使用します。彼らは (地球の破片地図マネージャー データベースは、複数シャード マップを含めることができます) グローバル シャード マップ マネージャー データベースに異なるマップを通じて解決される予定が、範囲 shardlets と同じ破片のリスト shardlets を混在させることも。図 6 は、このアプローチを示しています。
+Note that a single shard can contain the data for several shardlets. For example, you could use list shardlets to store data for different non-contiguous tenants in the same shard. You can also mix range shardlets and list shardlets in the same shard, although they will be addressed through different maps in the global shard-map manager database (the global shard-map manager database can contain multiple shard maps). Figure 6 depicts this approach.
 
 ![](media/best-practices-data-partitioning/MultipleShardMaps.png)
 
-_図 6。をマップ複数の破片を実装します。_
+_Figure 6. - Implementing multiple shard maps_
 
-パーティション スキームを実装することは、あなたのシステムのパフォーマンスに大きな影響があるし、破片が追加または削除されるあるレートまたは破片間でパーティション データにも影響できます。弾性スケールを使用してデータを分割するときは、次の点を考慮してください。
+The partitioning scheme that you implement can have a significant bearing on the performance of your system, and also affect the rate at which shards have to be added or removed or the data repartitioned across shards. You should consider the following points when using Elastic Scale to partition data:
 
 - Group data that is used together into the same shard and avoid operations that need to access data held in multiple shards. Bear in mind that with Elastic Scale a shard is a SQL database in its own right, and Azure SQL Database does not support cross-database joins; these operations have to be performed on the client-side. Also remember that with Azure SQL Database referential integrity constraints, triggers, and stored procedures in one database cannot reference objects in another, so don't design a system that has dependencies between shards. However, a SQL database can contain tables holding copies of reference data frequently used by queries and other operations, and these tables do not have to belong to any specific shardlet. Replicating this data across shards can help to remove the need to join data that spans databases. Ideally, such data should be static or slow-moving to minimize the replication effort and reduce the chances of it becoming stale.
 
-	> [AZURE。メモ] Azure の SQL データベースは、クロス データベース結合をサポートしていませんが弾性のスケール API を使用して、透過的にシャード マップによって参照されるすべての shardlets で開催されたデータを反復処理できるクロス シャード クエリを実行できます。弾性スケール API 休憩の間破片は一連の個々 のクエリ (データベースごとに 1 つ) を照会し、結果を一緒にマージします。詳細についてを参照してください、 [複数の破片を照会します。](sql-database-elastic-scale-multishard-querying.md) Microsoft の web サイト上のページ。
+	> [AZURE.NOTE] Although Azure SQL Database does not support cross-database joins, the Elastic Scale API enables you to perform cross-shard queries that can transparently iterate through the data held in all the shardlets referenced by a shard map. The Elastic Scale API breaks cross-shard queries down into a series of individual queries (one for each database) and then merges the results together. For more information, see the [Multi-Shard Querying](sql-database-elastic-scale-multishard-querying.md) page on the Microsoft website.
 
-- 同じシャード マップに属する shardlets に格納されたデータは、同じスキーマを持つ必要があります。たとえば、テナントのデータを含むいくつかの shardlets と製品情報を含む他の shardlets が指すリスト シャード マップを作成しないでください。この規則は、柔軟な拡張性、データ管理が適用されず、各 shardlet 別のスキーマを持っている場合、非常に複雑になるクエリを実行します。ちょうど引用した例では、2 つリスト シャード マップを作成する必要があります。他の 1 つの参照テナント データと製品情報をポイントします。同じシャードに異なる shardlets に属するデータを格納できることに注意してください。
+- The data stored in shardlets that belong to the same shard map should have the same schema. For example, don't create a list shard map that points to some shardlets containing tenant data and other shardlets containing product information. This rule is not enforced by Elastic Scale, but data management and querying becomes very complex if each shardlet has a different schema. In the example just cited, you should create two list shard maps; one referencing tenant data and the other point to product information. Remember that the data belonging to different shardlets can be stored in the same shard.
 
-	> [AZURE。メモ] 弾性スケール API の間破片クエリ機能は、同じスキーマを含む破片マップの各 shardlet に依存します。
-- トランザクション操作は、同じシャード内および破片の間でない情報のみサポートされます。トランザクションは、同じ破片の一部である限り、shardlets をまたがることができます。したがって、トランザクションを実行するビジネス ロジックが必要とする場合、その同じシャードに影響を受けるデータを格納、またはイベンチュアル ・ コンシステンシーを実装します。詳細については、データ整合性のガイダンスを参照してください。
-- これらの破片のデータにアクセスするユーザーの近くに破片を置く (ジオ-破片を探します)。この戦略は、待機時間を短縮するのに役立ちます。
-- 高度の混合物を避けるアクティブ (ホット スポット) や比較的アクティブな破片。試してみて、破片に負荷が均等に分散します。これは shardlet キーをハッシュする必要があります。
-- ジオロケートする破片の場合は、ハッシュのキーがそのデータにアクセスするユーザーの近くに保存されているシャードで開催された shardlets にマップすることを確認します。
-- 現在、限定型は shardlet キーとしてサポートされて SQL データの設定 _int、bigint、varbinary_ と _一意識別子_.SQL _int_ と _bigint 型_ 種類に対応、 _int_ と _長い_ c# のデータ型と同じ範囲を持っています。SQL _varbinary_ 型を使用して処理することができます、 _バイト_ c#、および SQL に配列 _uniqueidentier_ 種類に対応する、 _Guid_ .NET Framework のクラス。
+	> [AZURE.NOTE] The cross-shard query functionality of the Elastic Scale API depends on each shardlet in the shard map containing the same schema.
+- Transactional operations are only supported for data held within the same shard, and not across shards. Transactions can span shardlets as long as they are part of the same shard. Therefore, if your business logic needs to perform transactions, either store the affected data in the same shard or implement eventual consistency. For more information, see the Data Consistency guidance.
+- Place shards near to the users that access the data in those shards (geo-locate shards). This strategy will help to reduce latency.
+- Avoid having a mixture of highly active (hotspots) and relatively inactive shards. Try and spread the load evenly across shards. This may require hashing the shardlet keys.
+- If you are geo-locating shards, make sure that the hashed keys map to shardlets held in shards stored close to the users that access that data.
+- Currently, only a limited set of SQL data types are supported as shardlet keys; _int, bigint, varbinary,_ and _uniqueidentifier_. The SQL _int_ and _bigint_ types correspond to the _int_ and _long_ data types in C#, and have the same ranges. The SQL _varbinary_ type can be handled by using a _Byte_ array in C#, and the SQL _uniqueidentier_ type corresponds to the _Guid_ class in the .NET Framework.
 
-その名のとおり、柔軟な拡張性により、追加および縮小し、大きくなるとデータ量の破片を削除するシステムです。Azure SQL データベース弾性スケール クライアント ライブラリの Api 作成および破片を動的に削除するアプリケーションを有効にする (シャード マップ マネージャーを透過的に更新)、破片の取り外しは破壊的な操作もその破片ですべてのデータを削除する必要があります。アプリケーションは 2 つの独立した破片破片に分割または破片を一緒に結合する必要があります、柔軟な拡張性は別の分裂/統合サービスを提供します。このサービスは、クラウドでホストされるサービス (開発者がこのクラウドでホストされるサービスを作成する)、実行の世話と破片の間でデータを安全に移行します。詳細については、トピックを参照してください。 [分割およびマージによる柔軟な拡張性](sql-database-elastic-scale-overview-split-and-merge.md) Microsoft の web サイト。
+As the name implies, Elastic Scale enables a system to add and remove shards as the volume of data shrinks and grows. The APIs in the Azure SQL Database Elastic Scale Client Library enable an application to create and delete shards dynamically (and transparently update the shard-map manager), but removing a shard is a destructive operation that also requires deleting all the data in that shard. If an application needs to split a shard into two separate shards or combine shards together, Elastic Scale provides a separate Split/Merge service. This service runs in a cloud-hosted service (the developer has to create this cloud-hosted service), and takes care of migrating data between shards safely. For more information, see the topic [Splitting and Merging with Elastic Scale](sql-database-elastic-scale-overview-split-and-merge.md) on the Microsoft website.
 
-## Azure ストレージのパーティション分割戦略
+## Partitioning strategies for Azure Storage
 
-Azure ストレージは、データを管理するための 3 つの抽象化を提供します。
+Azure storage provides three abstractions for managing data:
 
-- テーブル ストレージは、拡張性の高い構造化ストレージの実装します。テーブルには、それぞれのプロパティと値のセットを含むことができるエンティティのコレクションが含まれています。
-- Blob ストレージは、大規模なオブジェクトやファイルの記憶域を提供します。
-- ストレージ ・ キューは、アプリケーション間の信頼性の高い非同期メッセージングをサポートします。
+- Table Storage, which implements scalable structure storage. A table contains a collection of entities, each of which can comprise a set of properties and values.
+- Blob Storage, which supplies storage for large objects and files.
+- Storage Queues, which support reliable asynchronous messaging between applications.
 
-Blob ストレージとテーブル ストレージは、構造化および非構造化データをそれぞれ保持するために最適化された本質的にキー値ストアです。ストレージ ・ キューは、疎結合でスケーラブルなアプリケーションを構築するためのメカニズムを提供します。テーブル ストレージ、Blob ストレージとストレージのキューは、Azure ストレージ アカウントのコンテキスト内で作成されます。Azure ストレージ アカウントでは、3 つの形式の冗長性をサポートします。
+Table Storage and Blob Storage are essentially key-value stores optimized to hold structured and unstructured data respectively. Storage Queues provide a mechanism for building loosely coupled, scalable applications. Table Storage, Blob Storage, and Storage Queues are created within the context of an Azure storage account. Azure storage accounts support three forms of redundancy:
 
-- ローカルの冗長ストレージでは、単一のデータ センター内のデータの 3 つのコピーを維持します。冗長のこのフォームは、ハードウェア障害に対する、データ センター全体を包含する災害に対してではなくを保護します。
-- ゾーン冗長ストレージ データの 3 つのコピーを保持する広がる同じ領域内の別のデータ センターにまたがる (または 2 つの地理的に近い地域にわたって)。冗長性のこの形態は単一のデータ センター内で発生するが、防ぐことはできませんの災害から守ることができます大規模なネットワーク切断地域全体に影響を与える。ゾーン冗長ストレージ、ブロック blob に使用できるだけ現在のみに注意してください。
-- 地理冗長ストレージ、データの六つのコピーを維持します。1 つの地域 (ローカルの地域) の 3 つのコピーとリモート地域で別の 3 つのコピー。冗長のこのフォームは、障害保護の最高レベルを提供します。
+- Locally redundant storage, which maintains three copies of data within a single datacenter. This form of redundancy protects against hardware failure but not against a disaster that encompasses the entire datacenter.
+- Zone-redundant storage which maintains three copies of data spread across different datacenters within the same region (or across two geographically close regions). This form of redundancy can protect against disasters that occur within a single datacenter, but cannot protect against large-scale network disconnects that affect an entire region. Note that zone-redundant storage is only currently only available for block blobs.
+- Geo-redundant storage, which maintains six copies of data; three copies in one region (your local region), and another three copies in a remote region. This form of redundancy provides the highest level of disaster protection.
 
-マイクロソフトは、Azure ストレージ アカウントに対するスケーラビリティ目標を公開されていますページを参照してください。 [Azure ストレージのスケーラビリティとパフォーマンスの目標](https://msdn.microsoft.com/library/azure/dn249410.aspx) Microsoft の web サイト。現在、(blob ストレージと未処理のメッセージ記憶域のキューで開催されたテーブル ストレージに保持されたデータのサイズ) の総ストレージのアカウント容量 500 TB を超えることはできません。(1 KB エンティティ、blob またはメッセージのサイズと仮定) 要求の最大レートは、1 秒あたり 20 K です。あなたのシステムがこれらの制限を超えることがほとんどの場合、複数のストレージ アカウントごとに負荷を分割を検討してください。1 つの Azure サブスクリプションは、最大 100 のストレージ アカウントを作成できます。ただし、時間の経過とともに、これらの制限が変更されます。
+Microsoft has published scalability targets for Azure storage accounts; see the page [Azure Storage Scalability and Performance Targets](https://msdn.microsoft.com/library/azure/dn249410.aspx) on the Microsoft website. Currently, the total storage account capacity (the size of data held in table storage, blob storage, and outstanding messages held in storage queue) cannot exceed 500TB. The maximum request rate (assuming a 1KB entity, blob, or message size) is 20K per second. If your system is likely to exceed these limits, then consider partitioning the load across multiple storage accounts; a single Azure subscription can create up to 100 storage accounts. However, note that these limits may change over time.
 
-## Azure テーブル ストレージのパーティション分割
+## Partitioning Azure table storage
 
-Azure テーブル ストレージが格納されているキー/値の分割のまわりで設計。すべてのエンティティは、パーティションに格納されている、パーティションは Azure テーブル ストレージによって内部で管理されます。テーブルに格納されている各エンティティは、2 つの部分のキー構成を提供する必要があります。
+Azure table storage is a key/value stored designed around partitioning. All entities are stored in a partition, and partitions are managed internally by Azure table storage. Each entity stored in a table must provide a two-part key comprising:
 
-- パーティション キーです。これはどのパーティションに Azure テーブル ストレージがエンティティの配置を指定する文字列値です。同じパーティション キーを持つすべてのエンティティは、同じパーティションに格納されます。
-- 行キー。これは、パーティション内のエンティティを識別する別の文字列値です。パーティション内のすべてのエンティティは、このキーによって昇順に字句的に並べ替えられます。パーティション キー/行キーの組み合わせは、各エンティティに対して一意である必要があり、長さは 1 KB を超えることはできません。
+- The partition key. This is a string values that determines in which partition Azure table storage will place the entity. All entities with the same partition key will be stored in the same partition.
+- The row key. This is another string value that identifies the entity within the partition. All entities within a partition are sorted lexically, in ascending order, by this key. The partition key/row key combination must be unique for each entity and cannot exceed 1KB in length.
 
-エンティティのデータの残りの部分は、アプリケーション定義のフィールドで構成されます。特定のスキーマが適用されない、各行が異なるアプリケーション定義フィールドのセットを含めることができます。唯一の制限は、エンティティ (パーティションと行のキーを含む) の最大サイズは 1 MB で、現在です。これらの数字は未来 (チェック ページで変更可能性がありますが、テーブルの最大サイズは 200 TB です。 [Azure ストレージのスケーラビリティとパフォーマンスの目標](https://msdn.microsoft.com/library/azure/dn249410.aspx) これらの制限については、最新のマイクロソフトのウェブサイト。この容量を超えるエンティティを格納しようとする場合、複数のテーブルに分割し、検討して列分割を使用し、同時にアクセスされる可能性が最も高いグループにフィールドを分割します。
+The remainder of the data for an entity consists of application-defined fields. No particular schemas are enforced, and each row can contain a different set of application-defined fields. The only limitation is that the maximum size of an entity (including the partition and row keys) is currently 1MB. The maximum size of a table is 200TB, although these figures may change in the future (check the page [Azure Storage Scalability and Performance Targets](https://msdn.microsoft.com/library/azure/dn249410.aspx) on the Microsoft website for the most recent information about these limits. If you are attempting to store entities that exceed this capacity, then consider splitting them into multiple tables; use vertical partitioning and divide the fields into the groups that are most likely to be accessed together.
 
-図 7 は、架空の e コマース アプリケーションの例ストレージ アカウント (Contoso データ) の論理構造を示しています。ストレージ アカウントに 3 つのテーブル (顧客情報、製品情報、および注文情報) が含まれているし、各テーブルには複数のパーティション。顧客情報テーブルのデータ、顧客のある都市に従ってパーティション分割および行キーには、顧客 ID が含まれています。製品情報テーブル製品を製品カテゴリ別分割および行キーには製品番号が含まれています。注文情報テーブルの注文に置かれたおよび行キーは、注文が受信された時間を指定した日付でパーティション分割されます。すべてのデータは各パーティションの行キーが順に注意してください。
+Figure 7 shows the logical structure of an example storage account (Contoso Data) for a fictitious ecommerce application. The storage accounts contains three tables (Customer Info, Product Info, and Order Info), and each table has multiple partitions. In the Customer Info table the data is partitioned according to the city in which the customer is located, and the row key contains the customer ID. In the Product Info table the products are partitioned by product category and the row key contains the product number. In the Order Info table the orders are partitioned by the date on which they were placed and the row key specified the time the order was received. Note that all data is ordered by the row key in each partition.
 
 ![](media/best-practices-data-partitioning/TableStorage.png)
 
-_図 7。● テーブルとパーティション例ストレージ アカウントの_
+_Figure 7. - The tables and partitions in an example storage account_
 
-> [AZURE。メモ] Azure テーブル ストレージは、各エンティティにタイムスタンプ フィールドを追加します。タイムスタンプ フィールドはテーブル ストレージによって維持は、エンティティを変更し、パーティションに書き戻すたびに更新されます。テーブル ストレージ サービスでは、このフィールドを使用して、オプティミスティック同時実行制御 (アプリケーションに書き込むたびにエンティティ戻ってテーブル ストレージは、テーブル ストレージ サービス テーブル ストレージに保持された値と書かれているエンティティのタイムスタンプの値を比較し、それが取得されてから、別のアプリケーション必要がありますエンティティに変更が彼らが異なる場合、書き込み操作が失敗した場合) を実装します。独自のコードでこのフィールドを変更しないでください、新しいエンティティを作成するときこのフィールドの値を指定する必要がありますどちらも。
+> [AZURE.NOTE] Azure table storage also adds a timestamp field to each entity. The timestamp field is maintained by table storage and is updated each time the entity is modified and written back to a partition. The table storage service uses this field to implement optimistic concurrency (each time an application writes an entity back to table storage, the table storage service compares the value of the timestamp in the entity being written with the value held in table storage, and if they are different another application must have modified the entity since it was retrieved and the write operation fails). You should not modify this field in your own code, and neither should you specify a value for this field when you create a new entity.
 
-Azure テーブル ストレージでは、パーティション キーを使用してデータを格納する方法を決定します。未使用のパーティション キーを持つテーブルにエンティティを追加すると、Azure テーブル ストレージにこのエンティティ用の新しいパーティションが作成されます。同じパーティション キーを持つ他のエンティティは、同じパーティションに格納されます。このメカニズムは、自動スケール アウト戦略を効果的に実装します。各パーティションは (1 つのパーティションからデータを取得するクエリがすばやく実行されることを確認のため) Azure データ センターは、単一のサーバーに保存されますが、異なるパーティション複数サーバーに分散することができます。さらに、1 台のサーバーは、これらのパーティションのサイズに制限が場合、複数のパーティションをホストできます。
+Azure table storage uses the partition key to determine how to store the data. If an entity is added to a table with a previously unused partition key, Azure table storage will create a new partition for this entity. Other entities with the same partition key will be stored in the same partition. This mechanism effectively implements an automatic scale-out strategy. Each partition will be stored on a single server in an Azure datacenter (to help ensure that queries that retrieve data from a single partition run quickly), but different partitions can be distributed across multiple servers. Additionally, a single server can host multiple partitions if these partitions are limited in size.
 
-Azure テーブル ストレージのエンティティを設計するときは、次の点を考慮してください。
+You should consider the following points when you design your entities for Azure table storage:
 
-- パーティション キーおよび行キーの値の選択は、データにアクセスするに方法で駆動する必要があります。クエリの大半をサポートするパーティション キー/行のキーの組み合わせを選択する必要があります。最も効率的なクエリ パーティション キーおよび行キーを指定することによってデータが取得されます。パーティション キーおよび行キーの範囲を指定するクエリは、1 つのパーティションをスキャンすることによって満たすことができます。行キーの順序でデータを保持するため比較的高速です。パーティション キーは、少なくとも指定しないクエリは、データのすべてのパーティションをスキャンする Azure テーブル ストレージを必要があります。
+- The selection of partition key and row key values should be driven by the way in which the data is accessed. You should choose a partition key/row key combination that supports the majority of your queries. The most efficient queries will retrieve data by specifying the partition key and the row key. Queries that specify a partition key and a range of row keys can be satisfied by scanning a single partition; this is relatively fast because the data is held in row key order. Queries that don't at least specify the partition key may require Azure table storage to scan every partition for your data.
 
-	> [AZURE。ヒント] エンティティに 1 つの自然なキーがある場合は、パーティション キーとしてそれを使用し、行キーとして空の文字列を指定します。エンティティに 2 つのプロパティで構成される複合キーがある場合は、パーティション キーおよび行キーとしてその他として最も遅い変更するプロパティを選択します。エンティティに 2 つ以上のキー プロパティがある場合は、パーティションと行のキーを提供するプロパティの連結を使用します。
+	> [AZURE.TIP] If an entity has one natural key, then use it as the partition key and specify an empty string as the row key. If an entity has a composite key comprising two properties, select the slowest changing property as the partition key and the other as the row key. If an entity has more than two key properties, use a concatenation of properties to provide the partition and row keys.
 
-- パーティションと行のキー以外のフィールドを使用してデータを検索するクエリを定期的に実行する場合は、実装を検討、 [インデックス テーブル パターン](https://msdn.microsoft.com/library/dn589791.aspx).
+- If you regularly perform queries that look up data using fields other than the partition and row keys, consider implementing the [Index Table Pattern](https://msdn.microsoft.com/library/dn589791.aspx).
 - If you generate partition keys using a monotonic increasing or decreasing sequence (such as "0001", "0002", "0003", …) and each partition only contains a limited amount of data, then Azure table storage may physically group these partitions together on the same server. This mechanism assumes that the application is most likely to perform queries across a contiguous range of partitions (range queries) and is optimized for this case. However, this approach can lead to hotspots focused on a single server as all inserts of new entities will likely be concentrated at one or other end of the contiguous ranges. It can also reduce scalability. To spread the load more evenly across servers, consider hashing the partition key to make the sequence more random.
-- Azure テーブル ストレージでは、同じパーティションに属するエンティティに対してトランザクション操作をサポートしています。これは、アプリケーションが (ない以上 100 エンティティおよびサイズの 4 MB を超えない要求のペイロードを含むトランザクション) の対象原子単位として複数の挿入、更新、削除、置換、またはマージ操作を実行できることを意味します。複数のパーティションの操作は、トランザクションではないとデータ一貫性指導によって説明するように、最終的な一貫性を実装する必要があります。テーブル ストレージのトランザクションの詳細についてを参照してください、 [エンティティ グループ トランザクションの実行](https://msdn.microsoft.com/library/azure/dd894038.aspx) Microsoft の web サイト上のページ。
-- パーティション キーの粒度に細心の注意を与えます。
-	- すべてのエンティティに同じパーティション キーを使用してスケール アウトと、代わりに 1 つのサーバーに負荷を中心からそれを防止する 1 つのサーバーに保持され 1 つの大きなパーティションを作成するテーブル ストレージ サービスになります。その結果、このアプローチは管理エンティティの数が少ないシステムに適していますのみ。ただし、このアプローチは、すべてのエンティティはエンティティ グループ トランザクションに参加できること。
-	- すべてのエンティティの一意のパーティション キーを使用して多数の小さなパーティション (によってエンティティのサイズ) を生じる可能性が、各エンティティの別のパーティションを作成するテーブル ストレージ サービスになります。このアプローチは、1 つのパーティション キーを使用するよりも拡張性が、エンティティ グループ トランザクションは利用できず、1 つ以上のエンティティをフェッチするクエリは、1 つ以上のサーバーからの読み取りを伴うことがあります。ただし、アプリケーションを実行するパーティション キーを生成する単調シーケンスを使用して範囲クエリがこれらのクエリを最適化するために役立つかもしれない。
-	- エンティティのサブセットの間でパーティションのキーを共有することができますグループ同じパーティション内のエンティティを関連します。エンティティ グループ トランザクションを使用して関連エンティティに関連する操作を行うことが、単一のサーバーへのアクセスによって満たされる関連エンティティのセットを取得するクエリ。
+- Azure table storage supports transactional operations for entities that belong to the same partition. This means that an application can perform multiple insert, update, delete, replace, or merge operations as an atomic unit (subject to the transaction not including more than 100 entities and the payload of the request not exceeding 4MB in size). Operations that span multiple partitions are not transactional, and may require you to implement eventual consistency as described by the Data Consistency Guidance. For more information about table storage and transactions, visit the [Performing Entity Group Transactions](https://msdn.microsoft.com/library/azure/dd894038.aspx) page on the Microsoft website.
+- Give careful attention to the granularity of the partition key:
+	- Using the same partition key for every entity will cause the table storage service to create a single large partition held on one server preventing it from scaling out and instead focusing the load on a single server. As a result, this approach is only suitable for systems that manage a small number of entities. However, this approach does ensure that all entities can participate in entity group transactions.
+	- Using a unique partition key for every entity will cause the table storage service to create a separate partition for each entity, possibly resulting in a large number of small partitions (depending on the size of the entities). This approach is more scalable than using a single partition key, but entity group transactions are not possible and queries that fetch more than one entity may involve reading from more than one server. However, if the application performs range queries then using a monotonic sequence to generate the partition keys might help to optimize these queries.
+	- Sharing the partition key across a subset of entities enables you to group related entities in the same partition. Operations that involve related entities can be performed by using entity group transactions, and queries that fetch a set of related entities may be satisfied by accessing a single server.
 
-Azure テーブル ストレージ内のデータのパーティション分割の詳細については、記事を参照してください。 [Azure テーブル ストレージの拡張性の高いパーティション分割戦略の設計](https://msdn.microsoft.com/library/azure/hh508997.aspx) Microsoft の web サイト。
+For additional information on partitioning data in Azure table storage, see the article [Designing a Scalable Partitioning Strategy for Azure Table Storage](https://msdn.microsoft.com/library/azure/hh508997.aspx) on the Microsoft website.
 
-## Azure のブロブ ストレージのパーティション分割
+## Partitioning Azure blob storage
 
-Azure のブロブ ストレージは、ページ blob のバイナリ ラージ オブジェクト、ブロック blob のサイズを現在 200 GB または 1 TB を保持することができます (最新の情報を参照してください、 [Azure ストレージのスケーラビリティとパフォーマンスの目標](https://msdn.microsoft.com/library/azure/dn249410.aspx) Microsoft の web サイト上のページ)。アップロードまたは大量のデータを迅速にダウンロードするストリーミングする必要があるなど、ブロック blob を使用します。ページ blob をランダムではなく、データの部分へのシリアル アクセスを必要とするアプリケーションに使用できます。
+Azure Blob Storage enables you to hold large binary objects, currently up to 200GB in size for block blobs, or 1TB for page blobs (for the most recent information, visit the [Azure Storage Scalability and Performance Targets](https://msdn.microsoft.com/library/azure/dn249410.aspx) page on the Microsoft website). Use block blobs in scenarios such as streaming where you need to upload or download large volumes of data quickly. Use page blobs for applications that require random rather than serial access to parts of the data.
 
-各 blob (ブロックまたはページ) は、Azure ストレージ アカウント内のコンテナーに保持されます。コンテナーを使用すると、この分類は論理ではなく、物理的な一緒に、同じセキュリティ要件を持つ関連 blob をグループ化することができます。コンテナーの内部は、各 blob は、ユニークな名前を持ちます。
+Each blob (either block or page) is held in a container in an Azure storage account. You can use containers to group related blobs that have the same security requirements together, although this grouping is logical rather than physical. Inside a container each blob has a unique name.
 
-Blob ストレージは、blob 名に基づいて自動的に分割されます。各 blob は、独自のパーティションに保持されて、同じコンテナー内の blob がパーティションを共有しません。このアーキテクチャにより、異なるサーバーに分散可能性があります同じコンテナーに異なる blob として透過的にサーバー間で負荷を分散する Azure のブロブ ストレージです。
+Blob storage is automatically partitioned based on the blob name. Each blob is held in its own partition, and blobs in the same container do not share a partition. This architecture enables Azure blob storage to balance the load across servers transparently as different blobs in the same container may be distributed across different servers.
 
-1 つのブロック (ブロック blob) またはページ (ページ blob) の書き込みの操作、原子、ブロック、ページ、または blob にまたがる操作はありません。ブロック、ページ、および blob の間で書き込み操作を行う際に、一貫性を確保する必要がある場合、は、blob のリースを使用して、書き込みロックを取得する必要があります。
+The actions of writing a single block (block blob) or page (page blob) are atomic, but operations that span blocks, pages, or blobs are not. If you need to ensure consistency when performing write operations across blocks, pages, and blobs, you will need to take out a write lock by using a blob lease.
 
-Azure のブロブ ストレージは、各 blob の 1 秒あたりの要求数 2 番目または 500 あたり最大 60 MB の転送速度をサポートします。これらの制限を超えると予想される場合、blob データが比較的静的な Azure コンテンツ配信ネットワーク (CDN) を使用して、blob のレプリケーションを考慮しなさい。詳細については、ページを参照してください。 [Azure の CDN を使用してください。](cdn-how-to-use.md) Microsoft の web サイト。追加のガイダンスおよび考慮事項については、「コンテンツ配信ネットワーク (CDN)」を参照してください。
+Azure blob storage supports transfer rates of up to 60MB per second or 500 requests per second for each blob. If you anticipate surpassing these limits, and the blob data is relatively static, then consider replicating blobs by using the Azure Content Delivery Network (CDN). For more information, see the page [Using CDN for Azure](cdn-how-to-use.md) on the Microsoft website. For additional guidance and considerations, see the article Content Delivery Network (CDN).
 
-## Azure ストレージ キューを分割
+## Partitioning Azure storage queues
 
-Azure ストレージ キューは、プロセス間の非同期メッセージングを実装することができます。Azure ストレージ アカウントの任意の数のキューを含めることができます、各キューは、任意数のメッセージを含めることができます。唯一の制限は、ストレージ アカウントで利用できるスペースです。個々 のメッセージの最大サイズは 64 KB です。これよりも大きなメッセージが必要な場合は、代わりに Azure サービス バス キューを使用することを考慮しなさい。
+Azure storage queues enable you to implement asynchronous messaging between processes. An Azure storage account can contain any number of queues, and each queue can contain any number of messages. The only limitation is the space available in the storage account. The maximum size of an individual message is 64KB. If you require messages bigger than this, then consider using Azure Service Bus queues instead.
 
 Each storage queue has a unique name within the storage account in which it is contained. Azure partitions queues based on the name, and all messages for the same queue are stored in the same partition, controlled by a single server. Different queues can be managed by different servers to help balance the load. The allocation of queues to servers is transparent to applications and users. In a large scale application, don't use the same storage queue for all instances of the application as this approach may cause the server hosting the queue to become a hotspot; use different queues for different functional areas of the application. Azure storage queues do not support transactions, so directing messages to different queues should have little impact on messaging consistency.
 
-Azure ストレージ キューは最大 2000年 1 秒あたりのメッセージ処理できます。 これよりも大きな割合でメッセージを処理する必要があります複数のキューを作成することを検討してください。たとえば、グローバル アプリケーションの各領域で実行されているアプリケーションのインスタンスを処理する別のストレージ アカウント内の別のストレージ ・ キューを作成します。
+An Azure storage queue can handle up to 2000 messages per second.  If you need to process messages at a greater rate than this then consider creating multiple queues. For example, in a global application, create separate storage queues in separate storage accounts to handle application instances running in each region.
 
-## Azure のサービス バスのパーティション分割戦略
+## Partitioning strategies for Azure Service Bus
 
-Azure のサービス バスは、サービス バス キューまたはトピックに送信されたメッセージを処理するのにメッセージ ブローカーを使用します。既定では、キューまたはトピックに送信されるすべてのメッセージは、同じメッセージ ブローカー プロセスによって処理されます。このアーキテクチャでは、メッセージ キューの全体的なスループットに制限を配置できます。ただし、分割できます、キューまたはトピックを設定して作成する場合、 _EnablePartitioning_ キューまたはトピックの説明のプロパティ _場合は true。_. A partitioned queue or topic is divided up into multiple fragments, each of which is backed by a separate message store and message broker. Service Bus takes responsibility for creating and managing these fragments. When an application posts a message to a partitioned queue or topic, Service Bus assigns the message to a fragment for that queue or topic. When an application receives a message from a queue or subscription, Service Bus checks each fragment for the next available message and then passes it to the application for processing. This structure helps to distribute the load across message brokers and message stores, increasing scalability and improving availability; if the message broker or message store for one fragment is temporarily unavailable, Service Bus can retrieve messages from one of the remaining available fragments.
+Azure Service Bus uses a message broker to handle messages sent to a Service Bus queue or topic. By default, all messages sent to a queue or topic are handled by the same message broker process. This architecture can place a limitation on the overall throughput of the message queue. However, you can also partition a queue or topic when it is created by setting the _EnablePartitioning_ property of the queue or topic description to _true_. A partitioned queue or topic is divided up into multiple fragments, each of which is backed by a separate message store and message broker. Service Bus takes responsibility for creating and managing these fragments. When an application posts a message to a partitioned queue or topic, Service Bus assigns the message to a fragment for that queue or topic. When an application receives a message from a queue or subscription, Service Bus checks each fragment for the next available message and then passes it to the application for processing. This structure helps to distribute the load across message brokers and message stores, increasing scalability and improving availability; if the message broker or message store for one fragment is temporarily unavailable, Service Bus can retrieve messages from one of the remaining available fragments.
 
-サービス バスは、ようにフラグメントにメッセージを割り当てます。
+Service Bus assigns a message to a fragment as follows:
 
-- 同じ値を持つすべてのメッセージ メッセージがセッションに所属している場合、 _ SessionId_  プロパティは、同じフラグメントに送信されます。
-- メッセージがセッションに属していないが、送信者が指定の値、 _PartitionKey_ プロパティ、し、すべてのメッセージを同じ _PartitionKey_ 値は、同じフラグメントに送られます。
+- If the message belongs to a session, all messages with the same value for the _ SessionId_  property are sent to the same fragment.
+- If the message does not belong to a session but the sender has specified a value for the _PartitionKey_ property, then all messages with the same _PartitionKey_ value are send to the same fragment.
 
-	> [AZURE。メモ] 場合は、 _SessionId_ と _PartitionKey_ プロパティが両方指定されて、し、同じ値のそれ以外の場合、メッセージが拒否されるように設定する必要があります。
-- 場合は、 _SessionId_ と _PartitionKey_ メッセージのプロパティが指定されていないが、重複データ検出が有効になっている、 _MessageId_ プロパティが使用されます。すべてのメッセージを同じ _MessageId_ 同じフラグメントに指示されます。
-- メッセージが含まれない場合、 _SessionId、PartitionKey、_ または _MessageId_ プロパティ、し、サービス バスは、ラウンド ロビン方式でフラグメントにメッセージを割り当てます。フラグメントが利用できない場合、サービス バスは次移動します。この方法で一時的な障害メッセージング インフラストラクチャでは、メッセージ送信操作が失敗するを発生しません。
+	> [AZURE.NOTE] If the _SessionId_ and _PartitionKey_ properties are both specified, then they must be set to the same value otherwise the message will be rejected.
+- If the _SessionId_ and _PartitionKey_ properties for a message are not specified, but duplicate detection is enabled, the _MessageId_ property will be used. All messages with the same _MessageId_ will be directed to the same fragment.
+- If messages do not include a _SessionId, PartitionKey,_ or _MessageId_ property, then Service Bus assigns messages to fragments in a round-robin fashion. If a fragment is unavailable, Service Bus will move on to the next. In this way, a temporary fault in the messaging infrastructure does not cause the message-send operation to fail.
 
-決定するとき、どのように、次の点を考慮する必要がありますか、パーティション Service Bus メッセージ キューまたはトピックに。
+You should consider the following points when deciding and how, or whether, to partition a Service Bus message queue or topic:
 
-- サービス バスのキューおよびトピックは、サービス バスの名前空間のスコープ内で作成されます。サービス バスは現在、最大 100 分割キューまたは名前空間あたりのトピックをことができます。
-- 各サービス バス名前空間は同時送信数、トピックあたりのサブスクリプション数などのリソースのクォータを課し、確立できる同時接続の最大数、1 秒あたりの要求を受け取る。これらのクォータは、ページ上のマイクロソフト web サイトに記載されて [サービス バスのクォータ](https://msdn.microsoft.com/library/azure/ee732538.aspx).これらの値を超える場合は、キュー、トピック、追加の名前空間を作成し、これらの名前空間にまたがる仕事。たとえば、グローバル アプリケーション各地域別の名前空間を作成し、最も近い名前空間内のキューおよびトピックを使用してアプリケーション インスタンスを構成します。
-- トランザクションの一部として送信されるメッセージは、パーティション キーを指定しなければなりません。これは、 _SessionId、PartitionKey、_ または _MessageId_.同じトランザクションの一部として送信されるすべてのメッセージは、同じメッセージ ブローカー プロセスによって処理する必要がありますので、同じパーティション キーを指定しなければなりません。別のキューまたはトピック同じトランザクション内でメッセージを送信できません。
-- パーティション分割されたキューまたはアイドル状態になるときに自動的に削除するトピックを構成できません。
-- クロス プラットフォームまたはハイブリッド ソリューションを構築する場合現在使用できませんパーティションのキューおよびトピックで、高度なメッセージ キュー プロトコル (AMQP)。
+- Service Bus queues and topics are created within the scope of a Service Bus namespace. Service Bus currently allows up to 100 partitioned queues or topics per namespace.
+- Each Service Bus namespace imposes quotas on the resources available, such as the number of subscriptions per topic, the number of concurrent send and receive requests per second, and the maximum number of concurrent connections that can be established. These quotas are documented on the Microsoft website on the page [Service Bus Quotas](https://msdn.microsoft.com/library/azure/ee732538.aspx). If you expect to exceed these values, then create additional namespaces with their own queues and topics, and spread the work across these namespaces. For example, in a global application, create separate namespaces in each region and configure application instances to use the queues and topics in the nearest namespace.
+- Messages that are sent as part of a transaction must specify a partition key. This can be a _SessionId, PartitionKey,_ or _MessageId_. All messages that are sent as part of the same transaction must specify the same partition key because they must be handled by the same message broker process. You cannot send messages to different queues or topics within the same transaction.
+- You cannot configure a partitioned queue or topic to be automatically deleted when it becomes idle.
+- If you are building cross-platform or hybrid solutions, you cannot currently use partitioned queues and topics with the Advanced Message Queuing Protocol (AMQP).
 
-## Azure DocumentDB のパーティション分割戦略
+## Partitioning strategies for Azure DocumentDB
 
-紺碧の DocumentDB は、ドキュメントを保存することができます NoSQL データベースです。DocumentDB 内のドキュメントは、オブジェクトまたはデータの他の部分の JSON シリアル化表現です。すべてのドキュメントは、一意の ID を含める必要があることを除いて固定スキーマは適用されません。
+Azure DocumentDB is a NoSQL database that can store documents. A document in DocumentDB is a JSON-serialized representation of an object or other piece of data. No fixed schemas are enforced except that every document must contain a unique ID.
 
-ドキュメントは、コレクションに編成されます。コレクションは、関連するドキュメントをグループ化することができます。たとえば、ブログの投稿を維持するシステムでの [各ブログの記事の内容をコレクション内のドキュメントとして保存でき、各サブジェクトの種類のコレクションを作成します。また、異なった著者を可能にするシステムなどのマルチ テナント アプリケーションで記事を自分のブログを管理する、著者によるブログを分割して各著者ごとに別個のコレクションを作成します。コレクションに割り当てられた記憶領域弾性は、縮小、または必要に応じて拡張できます。
+Documents are organized into collections. A collection enables you to group related documents together. For example, in a system that maintains blog postings, you could store the contents of each blog post as a document in a collection, and create collections for each subject type. Alternatively, in a multitenant application such as a system that enables different authors to control and manage their own blog posts, you could partition blogs by author and create a separate collection for each author. The storage space allocated to collections is elastic and can shrink or grow as needed.
 
-ドキュメントのコレクションは、単一のデータベース内のデータを分割する自然のメカニズムを提供します。内部的には、DocumentDB データベースは、複数のサーバーにまたがることができます、DocumentDB コレクションをサーバー間で分散して負荷を分散しようとする可能性があります。Sharding を実装する最も簡単な方法は、各シャードのコレクションを作成することです。
+Document collections provide a natural mechanism to partition data within a single database. Internally, a DocumentDB database can span several servers, and DocumentDB may attempt to spread the load by distributing collections across servers. The simplest way to implement sharding is to create a collection for each shard.
 
-> [AZURE。メモ] 各 DocumentDB は、の面でリソースを割り当てられる、 _パフォーマンス レベル_.パフォーマンス レベルに関連付けられて、 _要求単位_ (RU) レートの制限。RU レートの制限は、そのコレクションのために予約されます、そのコレクションが排他的に使用できるリソースの量を指定します。コレクションのコストは、そのコレクションの選択パフォーマンス レベルによって異なります。性能が高いレベル (および RU レートの制限) が高いほどの料金。Azure 管理ポータルを使用して、コレクションのパフォーマンス レベルを調整できます。詳細については、ページを参照してください。 [DocumentDB のパフォーマンス ・ レベル](documentdb-performance-levels.md) Microsoft の web サイト。
+> [AZURE.NOTE] Each DocumentDB is allocated resources in terms of a _performance level_. A performance level is associated with with a _request unit_ (RU) rate limit. The RU rate limit specifies the volume of resources that will be reserved for that collection and is available for exclusive use by that collection. The cost of a collection depends on the performance level selected for that collection; the higher the performance level (and RU rate limit) the higher the charge. You can adjust the performance level of a collection by using the Azure management portal. For more information, see the page [Performance levels in DocumentDB](documentdb-performance-levels.md) on the Microsoft website.
 
-DocumentDB アカウントのコンテキストでは、すべてのデータベースが作成されます。1 つの DocumentDB アカウントは、複数のデータベースを含めることができ、どの領域でデータベースが作成されますを指定します。各 DocumentDB アカウントはまた、独自のアクセス制御を適用します。ゲオと DocumentDB アカウントを使用することができます-、それらにアクセスする必要があるユーザーの近くに (データベース内のコレクション) の破片を見つけて、それらにユーザーのみが接続できるように制限を適用します。
+All databases are created in the context of a DocumentDB account. A single DocumentDB account can contain several databases, and specifies in which region the databases are created. Each DocumentDB account also enforces its own access control. You can use DocumentDB accounts to geo-locate shards (collections within databases) close to the users that need to access them, and enforce restrictions so that only those users can connect to them.
 
-各 DocumentDB のアカウントには、データベースと、格納できるコレクションの数、使用できるドキュメント ストレージの量を制限するクォータがあります。これらの制限は、変更されるが、ページに記載して [DocumentDB 制限とクォータ](documentdb-limits.md) Microsoft の web サイト。それは理論的に可能なすべてのサーバーが同じデータベースに属しているシステムを実装する場合は、アカウントの記憶域の容量制限を達する可能性があります。この場合、追加 DocumentDB アカウントとデータベースを作成し、これらのデータベース間で破片を配布する必要があります。ただし、データベースのストレージ容量をヒットする可能性がない場合でも、複数のデータベースを使用するための良い理由は各データベースにユーザーとアクセス許可の独自のセットがあります。このメカニズムを使用すると、データベースごとにコレクションへのアクセスを分離することができます。
+Each DocumentDB account has a quota that limits the number of databases and collections that it can contain and the amount of document storage available. These limits are subject to change, but are described on the page [DocumentDB limits and quotas](documentdb-limits.md) on the Microsoft website. It is theoretically possible that if you implement a system where all shards belong to the same database you might reach the storage capacity limit of the account. In this case, you may need to create additional DocumentDB accounts and databases, and distribute the shards across these databases. However, even if you are unlikely to hit the storage capacity of a database, a good reason for using multiple databases is that each database has its own set of users and permissions. You can use this mechanism to isolate access to collections on a per-database basis.
 
-図 8 は、DocumentDB アーキテクチャの高レベルな構造を示しています。
+Figure 8 illustrates the high-level structure of the DocumentDB architecture.
 
 ![](media/best-practices-data-partitioning/DocumentDBStructure.png)
 
-_図 8。● DocumentDB の構造_
+_Figure 8. - The structure of DocumentDB_
 
-それは通常シャードのキーを定義するデータのいくつかの属性に基づいた独自のマッピング メカニズムを実装することによって適切なサーバに要求を直接クライアント アプリケーションの責任です。図 9 は、破片として 2 つのコレクションを含むそれぞれ 2 つの DocumentDB データベースを示しています。データは、テナント ID で sharded は、特定テナントのデータが含まれています。テナントが含まれているデータと同じ地域にある別の DocumenDB アカウントのデータベースが作成されます。クライアント アプリケーションでのルーティング ロジックは、破片のキーとしてテナント ID を使用します。
+It is the responsibility of the client application to direct requests to the appropriate shard, usually by implementing its own mapping mechanism based on some attributes of the data that define the shard key. Figure 9 shows two DocumentDB databases, each containing two collections acting as shards. The data is sharded by tenant ID and contains the data for a specific tenant. The databases are created in separate DocumenDB accounts which are located in the same region as the tenants whose data they contain. The routing logic in the client application uses the tenant ID as the shard key.
 
 ![](media/best-practices-data-partitioning/DocumentDBPartitions.png)
 
-_図 9。Azure DocumentDB を使用して分割を実装します。_
+_Figure 9. - Implementing sharding using Azure DocumentDB_
 
-DocumentDB を使用してデータをパーティション分割する方法を決定するときは、次の点を考慮してください。
+You should consider the following points when deciding how to partition data with DocumentDB:
 
-- DocumentDB データベースに利用可能なリソースは、DocumentDB アカウントのクォータの制限が適用されます。各データベースはコレクションの数を保持できる (また、限界がある) 各コレクション、そのコレクションの RU レートの制限 (予約スループット) を支配するパフォーマンス レベルと関連付けられる。詳細についてを参照してください、 [DocumentDB 制限とクォータ](documentdb-limits.md) Microsoft の web サイト上のページ。
-- 各ドキュメントは、それが開催されますコレクション内でそのドキュメントを一意に識別するために使用できる属性が必要です。これは、ドキュメントを保持するコレクションで定義するシャード キーが違います。コレクションは、多数のドキュメント、理論的にはドキュメント ID の最大の長さによってのみ制限を含めることができます。ドキュメント ID は、最大 255 文字を使用できます。
-- ドキュメントに対するすべての操作は、ドキュメントが含まれているコレクションのスコープはトランザクションのコンテキスト内で実行されます。操作が失敗すると、それが実行した作業はロールバックされます。 文書は、操作の対象は、行われた変更は予告無くスナップショット レベルの分離されることがあります。たとえば、新規ドキュメントの作成が失敗した場合、別のユーザーが同時にデータベースにクエリを実行するための要求が削除されます部分的なドキュメント表示されない場合は、このメカニズムを保証します。
-- DocumentDB クエリのスコープは、コレクション レベルにも。1 つのクエリのみ 1 つのコレクションからデータを取得できます。複数のコレクションからデータを取得する場合に、各コレクションを個別に照会し、アプリケーション コードで結果をマージする必要があります。
+- The resources available to a DocumentDB database are subject to the quota limitations of the DocumentDB account. Each database can hold a number of collections (again, there is a limit) and each collection is associated with a performance level that governs the RU rate limit (reserved throughput) for that collection. For more information, visit the [DocumentDB limits and quotas](documentdb-limits.md) page on the Microsoft website.
+- Each document must have an attribute that can be used to uniquely identify that document within the collection in which it is held. This is different from the shard key which defines in which collection the document is held. A collection can contain a large number of documents, in theory only limited by the maximum length of the document ID. The document ID can be up to 255 characters.
+- All operations against a document are performed within the context of a transaction that is scoped to the collection in which the document is contained. If an operation fails, the work that it has performed is rolled back.  While a document is subject to an operation, any changes made are subject to snapshot level isolation. This mechanism guarantees that if, for example, a request to create a new document fails, another user querying the database simultaneously will not see a partial document that is then removed.
+- DocumentDB queries are also scoped to the collection level. A single query can only retrieve data from one collection. If you need to retrieve data from multiple collections you must query each collection individually and merge the results in your application code.
 - DocumentDB supports programmable items that can all be stored in a collection alongside documents: stored procedures, user-defined functions, and triggers (written in JavaScript). These items can access any document within the same collection. Furthermore, these items execute either inside the scope of the ambient transaction (in the case of a trigger that fires as the result of a create, delete, or replace operation performed against a document), or by starting a new transaction (in the case of a stored procedure that is executed as the result of an explicit client request). If the code in a programmable item throws an exception, the transaction is rolled back. You can use stored procedures and triggers to maintain integrity and consistency between documents, but these documents must all be part of the same collection.
-- DocumentDB アカウントのデータベースで保持する場合は、コレクションが、コレクションのパフォーマンス ・ レベルで定義されているスループットの限界を超える可能性がないことを確認してください。これらの制限は、記載されて、 [DocumentDB 容量ニーズを管理します。](documentdb-manage.md) Microsoft の web サイト上のページ。これらの制限に達することが予想される場合は、コレクションをコレクションごとに負荷を軽減する別の DocumentDB アカウントにデータベースに分割することを検討してください。
+- You should ensure that the collections that you intend to hold in the databases in a DocumentDB account are unlikely to exceed the throughput limits defined by the performance levels of the collections. These limits are described on the [Manage DocumentDB capacity needs](documentdb-manage.md) page on the Microsoft website. If you anticipate reaching these limits, consider splitting collections across databases in different DocumentDB accounts to reduce the load per collection.
 
-## 紺碧の検索パーティション分割戦略
+## Partitioning Strategies for Azure Search
 
-データを検索する機能は多くの場合プライマリ ナビゲーションと検索条件の組み合わせに基づいて、リソース (たとえば、e コマース アプリケーションで製品) をすばやく検索するユーザーを有効にする、多くの web アプリケーションによって提供される探索法です。Azure 検索サービスは、web コンテンツのフルテキスト検索機能を提供します、マッチ、およびファセット ナビゲーションの近くに基づく先行入力、提案されたクエリなどの機能が含まれています。これらの機能の完全な説明が要、 [紺碧の検索の概要](https://msdn.microsoft.com/library/azure/dn798933.aspx) Microsoft の web サイト上のページ。
+The ability to search for data is often the primary method of navigation and exploration provided by many web applications, enabling users to quickly find resources (for example, products in an ecommerce application) based on combinations of search criteria. The Azure Search service provides full-text search capabilities over web content, and includes features such as type-ahead, suggested queries based on near matches, and faceted navigation. A full description of these capabilities is available on the [Azure Search Overview](https://msdn.microsoft.com/library/azure/dn798933.aspx) page on the Microsoft website.
 
-検索サービスは、検索可能なコンテンツをデータベース内で JSON ドキュメントとして格納します。これらのドキュメントの検索可能なフィールドを指定し、検索サービスにこれらの定義を提供するインデックスを定義します。ユーザーは、検索要求を送信する、検索サービスは適切なインデックスを使用して、一致する項目を検索します。
+The Search service stores searchable content as JSON documents in a database. You define indexes that specify the searchable fields in these documents and provide these definitions to the Search service. When a user submits a search request, the Search service uses the appropriate indexes to find matching items.
 
-Search サービスによって使用されているストレージの競合を減らすためには、分けることができるを 1、2、3、4、6、または 12 のパーティションと各パーティション レプリケートできます 6 回まで。パーティションのレプリカの数を掛けた数の製品と呼ばれる、 _検索単位_ (SU)。検索サービスの単一のインスタンスは、最大 36 SUs (12 のパーティションを含むデータベースは、最大 3 のレプリカをサポート) を含めることができます。あなたのサービスに割り当てられている各スに課金されます。検索可能なコンテンツの増加量または検索要求の数が大きくなると、余分な負荷を処理する検索サービスの既存のインスタンスに SUs を追加できます。検索サービス自体は、パーティション間で均等にドキュメントを配布するための責任を受け取り、手動パーティション分割戦略は、現在サポートされていません。
+To reduce contention, the storage used by the Search service can be divided into up into 1, 2, 3, 4, 6, or 12 partitions, and each partition can be replicated up to 6 times. The product of the number of partitions multiplied by the number of replicas is called the _Search Unit_ (SU). A single instance of the Search Service can contain a maximum of 36 SUs (a database with 12 partitions only supports a maximum of 3 replicas). You are billed for each SU that is allocated to your service. As the volume of searchable content increases or the rate of search requests grows, you can add SUs to an existing instance of the Search service to handle the extra load. The Search Service itself takes responsibility for distributing the documents evenly across the partitions, and no manual partitioning strategies are currently supported.
 
-各パーティション最大 1500 万のドキュメントまたは 300 GB の記憶域 (ドキュメントおよびインデックスのサイズによっては、低いほう) を占有できます。50 までインデックスを作成できます。サービスのパフォーマンスは、ドキュメント、利用可能なインデックス、およびネットワークの遅延の影響の複雑さによって異なります。平均では、単一のレプリカ (1SU) のスループットのより正確な測定を取得する独自のデータでベンチマークを実行する必要がありますが 15 クエリ/秒 (QPS) を処理することがする必要があります。詳細についてを参照してください、 [制限および制約 (紺碧検索 API)]( https://msdn.microsoft.com/library/azure/dn798934.aspx) Microsoft の web サイト上のページ。
+Each partition can contain a maximum of 15 million documents or occupy 300GB of storage space (whichever is the lower, depending on the size of your documents and indexes). You can create up to 50 indexes. The performance of the service will vary depending on the complexity of the documents, the available indexes, and the effects of network latency. On average, a single replica (1SU) should be able to handle 15 queries per second (QPS), although you should perform benchmarking with your own data to obtain a more precise measure of throughput. For more information, see the [Limits and Constraints (Azure Search API)]( https://msdn.microsoft.com/library/azure/dn798934.aspx) page on the Microsoft website.
 
-> [AZURE。メモ] 検索可能なドキュメント内データ型の限定されたセットを格納することができます。文字列、ブール値、数値、datetime データ、およびいくつかの地理的なデータ。詳細についてを参照してください、 [サポートされるデータ型 (紺碧検索)]( https://msdn.microsoft.com/library/azure/dn798938.aspx) Microsoft の web サイト上のページ。
+> [AZURE.NOTE] You can store a limited set of data types in searchable documents; strings, Booleans, numeric data, datetime data, and some geographical data. For more details, see the [Supported Data Types (Azure Search)]( https://msdn.microsoft.com/library/azure/dn798938.aspx) page on the Microsoft website.
 
-Azure の検索サービスが、サービスの各インスタンスのデータにパーティション分割制御を限られています。ただし、グローバル環境でパフォーマンスが向上し、いずれかの次の方法を使用して自身のサービスを分割することで待機時間とさらに競合を削減することができます。
+You have limited control over how the Azure Search service partitions data for each instance of the service. However, in a global environment you may be able to improve performance and reduce latency  and contention further by partitioning the service itself using either of the following strategies:
 
-- 各地域の検索サービスのインスタンスを作成し、クライアント アプリケーションに向けていることを確認、最も近い利用可能なインスタンス。この戦略では、サービスのすべてのインスタンス間でタイムリーに検索可能なコンテンツの更新がレプリケートされることが必要です。
-- 検索サービスの 2 層を作成します。その地域のユーザーが最も頻繁にアクセスするデータを含む各領域とすべてのデータを含むグローバル サービスでローカル サービス。ユーザーは、ローカル サービス (高速、限られた結果) のためにまたは (より遅いより完全な結果) のグローバル サービスに要求を送信できます。この方法は、検索対象のデータの重要な地方変化があるときに最適です。
+- Create an instance of the Search service in each geographic region, and ensure that client applications are directed towards the nearest available instance. This strategy requires that any updates to searchable content are replicated in a timely manner across all instances of the service.
+- Create two-tiers of Search service; a local service in each region that contains the data most frequently accessed by users in that region, and a global service that encompasses all of the data. Users can direct requests either to the local service (for fast but limited results), or to the global service (for slower but more complete results). This approach is most suitable when there is a significant regional variation in the data being searched.
 
-## Azure Redis キャッシュのパーティション分割戦略
+## Partitioning strategies for Azure Redis Cache
 
-紺碧 Redis キャッシュ Redis キー/値データ ストアに基づいているクラウドで共有キャッシュ サービスを提供します。その名の通り、Azure Redis キャッシュ キャッシュ ソリューションでは、そうする必要がありますのみ使用して、永続的なデータ ストアではなく、一時的なデータを保持するためAzure Redis キャッシュを使用するアプリケーションは、キャッシュが利用可能な場合は機能し続けることができるはずです。紺碧 Redis キャッシュは、高可用性を実現するプライマリ/セカンダリ レプリケーションをサポートしていますが、現在 53 GB に最大キャッシュ サイズの制限します。これよりもより多くのスペースを必要がある場合、追加キャッシュを作成する必要があります。詳細については"を参照してください、 [Microsoft Azure キャッシュ](http://azure.microsoft.com/services/cache/) Microsoft の web サイト上のページ。
+Azure Redis Cache provides a shared caching service in the cloud that is based on the Redis key/value data store. As its name implies, Azure Redis Cache is intended as a caching solution and so should only be used for holding transient data rather than as a permanent data store; applications that utilize Azure Redis Cache should be able to continue functioning if the cache is unavailable. Azure Redis Cache supports primary/secondary replication to provide high availability, but currently limits the maximum cache size to 53GB. If you need more space than this, you must create additional caches. For more information visit the [Microsoft Azure Cache](http://azure.microsoft.com/services/cache/) page on the Microsoft website.
 
 Partitioning a Redis data store involves splitting the data across instances of the Redis service. Each instance constitutes a single partition. Azure Redis Cache abstracts the Redis services behind a façade and does not expose them directly. The simplest way to implement partitioning is to create multiple Azure Redis caches and spread the data across them. You can associate each data item with an identifier (a partition key) that specifies in which cache it should be stored. Your client application logic can use this identifier to route requests to the appropriate partition. This scheme is very simple, but if the partitioning scheme changes (if additional Azure Redis Caches are created, for example), client applications may need to be reconfigured.
 
-Native Redis (not Azure Redis Cache) supports server-side partitioning based on Redis clustering. In this approach, the data is divided evenly across servers by using a hashing mechanism. Each Redis server stores metadata that describes the range of hash keys that the partition holds, and also contains information about which hash keys are located in the partitions on other servers. Client applications simply send requests to any of the participating Redis servers (probably the closest server).The Redis server examines the client request and if it can be resolved locally it will perform the requested operation, otherwise it will forward the request on to the appropriate server. This model is implemented by using Redis clustering, and is described in more detail on the [Redis クラスター チュートリアル](http://redis.io/topics/cluster-tutorial) Redis ウェブサイトのページ。Redis のクラスタ リングは、クライアント アプリケーションに透過的と Redis サーバーをクライアントを再構成することを必要とせず追加クラスター (およびデータの再分割) することができます。
+Native Redis (not Azure Redis Cache) supports server-side partitioning based on Redis clustering. In this approach, the data is divided evenly across servers by using a hashing mechanism. Each Redis server stores metadata that describes the range of hash keys that the partition holds, and also contains information about which hash keys are located in the partitions on other servers. Client applications simply send requests to any of the participating Redis servers (probably the closest server).The Redis server examines the client request and if it can be resolved locally it will perform the requested operation, otherwise it will forward the request on to the appropriate server. This model is implemented by using Redis clustering, and is described in more detail on the [Redis cluster tutorial](http://redis.io/topics/cluster-tutorial) page on the Redis website. Redis clustering is transparent to client applications, and additional Redis servers can be added to the cluster (and the data re-partitioned) without requiring that you reconfigure the clients.
 
-> [AZURE。重要です] 紺碧 Redis キャッシュは現在 Redis のクラスタ リングをサポートしていません。Azure ではこのアプローチを実装したい場合は、Azure の仮想マシンのセットに Redis をインストールし、それらを手動で構成する Redis サーバーを実装しなければなりません。ページ [Azure の CentOS Linux VM 上 Redis で実行](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) マイクロソフトの web サイトの構築し、Azure の VM として実行している Redis ノードを構成する方法を示す例について説明します。
+> [AZURE.IMPORTANT] Azure Redis Cache does not currently support Redis clustering. If you wish to implement this approach with Azure then you must implement your own Redis servers by installing Redis on a set of Azure virtual machines and configuring them manually. The page [Running Redis on a CentOS Linux VM in Azure](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) on the Microsoft website walks through an example showing how to build and configure a Redis node running as an Azure VM.
 
-ページ [Redis の複数のインスタンス間でデータを分割する方法の分割。](http://redis.io/topics/partitioning) Redis のウェブサイトは Redis でパーティショニングの実装に関する詳細を提供します。このセクションの残りの部分では、クライアント側またはプロキシによるパーティション分割を実装することを前提としています。
+The page [Partitioning: how to split data among multiple Redis instances](http://redis.io/topics/partitioning) on the Redis website provides further information about implementing partitioning with Redis. The remainder of this section assumes that you are implementing client-side or proxy-assisted partitioning.
 
-Azure Redis キャッシュを使用してデータをパーティション分割する方法を決定するときは、次の点を考慮してください。
+You should consider the following points when deciding how to partition data with Azure Redis Cache:
 
-- 紺碧 Redis キャッシュを実装するどのようなパーティション構成、アプリケーション コードは、データがキャッシュに見つからないことを受け入れるために準備する必要があり、他の場所から取得する必要がので、永続的なデータ ストアとして機能するものではありません。
-- 頻繁にアクセスされるデータを同じパーティションにまとめます。Redis は単純な文字列から範囲内のデータを構築するためのいくつかの高度に最適化されたメカニズムを提供する強力なキー/値ストア (実際には、バイナリ データの長さが 512 MB) (キューやスタックとして使用できます) のリスト、セット (注文し、順不同)、ハッシュ (つまり、オブジェクト内のフィールドを表す項目など一緒に、関連分野をグループすることができます) などの集約型に。集計の種類は、同じキーを持つ多くの関連する値を関連付けることができますを有効にします。Redis キーは、それに含まれるデータ項目ではなく、リスト、セット、またはハッシュを識別します。これらのタイプは Azure Redis キャッシュで利用可能なすべて、によって記述される、 [データ型](http://redis.io/topics/data-types) Redis ウェブサイトのページ。たとえば、一部の顧客による注文を追跡する e コマース システム、各顧客の詳細に格納できます顧客 ID を使って、キー Redis ハッシュそれぞれのハッシュは、お客様の注文 Id のコレクションを保持できます。別 Redis セットの注文、注文 ID を使用して、キー ハッシュとして再び構造を保持することが 図 10 は、この構造を示しています。Redis しませんので、顧客と注文の間のリレーションシップを維持するために開発者は、参照整合性の任意のフォームを実装しないことに注意してください。
+- Azure Redis Cache is not intended to act as a permanent data store, so whatever partitioning scheme you implement your application code should be prepared to accept that the data is not found in the cache and has to be retrieved from elsewhere.
+- Keep data that is frequently accessed together in the same partition. Redis is a powerful key/value store that provides several highly-optimized mechanisms for structuring data, ranging from simple strings (actually, binary data up to 512MB in length) to aggregate types such as lists (that can act as queues and stacks), sets (ordered and unordered), and hashes (that can group related fields together, such as the items that represent the fields in an object). The aggregate types enable you to associate many related values with the same key; a Redis key identifies a list, set, or hash rather than the data items that it contains. These types are all available with Azure Redis Cache and are described by the [Data Types](http://redis.io/topics/data-types) page on the Redis website. For example, in part of an ecommerce system that tracks the orders placed by customers, the details of each customer could be stored in a Redis hash keyed by using the customer ID. Each hash could hold a collection of order IDs for the customer. A separate Redis set could hold the orders, again structured as hashes, keyed by using the order ID.  Figure 10 shows this structure. Note that Redis does not implement any form of referential integrity, so it is the developer's responsibility to maintain the relationships between customers and orders.
 
 ![](media/best-practices-data-partitioning/RedisCustomersandOrders.png)
 
-_図 10。-Redis ストレージ顧客の注文とその詳細を記録するために提案された構造_
+_Figure 10. - Suggested structure in Redis storage for recording customer orders and their details_
 
-> [AZURE。メモ] Redis のすべてのキーは (Redis 文字列) のようなバイナリ データ値、理論的にはキーは、ほとんどの情報を含めることができますので、512 MB までのデータを含めることができます。ただし、データの種類の説明ですと、エンティティを識別する、それは過度に長いではないキー用の一貫性のある命名規約を採用すべき。一般的なアプローチは、フォーム"エンティティのキーを使用するには_タイプ: ID"、「顧客: 99」に顧客 ID 99 のキーを示すなど。
+> [AZURE.NOTE] In Redis, all keys are binary data values (like Redis strings) and can contain up to 512MB of data, so in theory a key can contain almost any information. However, you should adopt a consistent naming convention for keys that is descriptive of the type of data and that identifies the entity, but that is not excessively long. A common approach is to use keys of the form "entity_type:ID", such as "customer:99" to indicate the key for customer with the ID 99.
 
-- 同じデータベース内の別の集計の関連情報を格納することによって列方向の分割を実装できます。たとえば、e コマースの一般的格納できます。 アプリケーション アクセス Redis ハッシュは 1 つの製品に関する情報および別のより少なく頻繁に使用される詳細情報。両方のハッシュがたとえば同じプロダクト ID キーの一部として使用できる"製品。_nn_「どこで _nn_ 製品情報や"製品の製品 ID です。_詳細: _nn_」の詳細なデータ。この戦略は、ほとんどのクエリが取得する可能性があるデータの量を減らすために助けることができます。
+- You can implement vertical partitioning by storing related information in different aggregations in the same database. For example, in an ecommerce application you could store commonly accessed information about products in one Redis hash and the less frequently used detailed information in another. Both hashes could use the same product ID as part of the key, for example "product:_nn_" where _nn_ is the product ID for product information and "product_details: _nn_" for the detailed data. This strategy can help to reduce the volume of data that most queries are likely to retrieve.
 - Repartitioning a Redis data store is a complex and time-consuming task. Redis clustering can repartition data automatically, but this facility is not available with Azure Redis Cache. Therefore, when you design your partitioning scheme, you should endeavor to leave sufficient free space in each partition to allow for expected data growth over time. However, remember that Azure Redis Cache is intended to cache data temporarily, and that data held in the cache can have a limited lifetime specified as a time-to-live (TTL) value. For relatively volatile data the TTL should be short, but for static data the TTL can be a lot longer. You should avoid storing large amounts of long-lived data in the cache if the volume of this data is likely to fill the cache. You can specify an eviction policy that causes Azure Redis Cache to remove data if space is at a premium.
 
-	> [AZURE。メモ] 紺碧 Redis キャッシュでは、適切な価格の区分を選択することによって (53 GB 250 MB) からキャッシュの最大サイズを指定できます。ただし、Azure Redis キャッシュが作成されると、ことはできません (増減する) のサイズ。
+	> [AZURE.NOTE] Azure Redis cache enables you to specify the maximum size of the cache (from 250MB to 53GB) by selecting the appropriate pricing tier. However, once an Azure Redis Cache has been created, you cannot increase (or decrease) its size.
 
-- Redis バッチとトランザクションは、バッチまたはトランザクションの影響を受けるすべてのデータが同じデータベース (破片) に開催されなければならないので、複数の接続をまたがることができません。
+- Redis batches and transactions cannot span multiple connections, so all data affected by a batch or transaction should be held in the same database (shard).
 
-	> [AZURE。メモ] Redis トランザクションの操作の順序は必ずしも原子ではないです。トランザクションを構成するコマンドが確認され、実行する前にキューし、キュー全体が破棄されますこのフェーズでエラーが発生した場合。ただし、トランザクションが正常に送信されるキューに登録されたコマンドはシーケンスで実行されます。任意のコマンドは、そのコマンドだけを失敗した場合は中止されます。キュー内のすべての以前およびそれ以降のコマンドが実行されます。場合は、分割不可能な操作を実行する必要があります。詳細についてを参照してください、 [トランザクション](http://redis.io/topics/transactions) Redis ウェブサイトのページ。
+	> [AZURE.NOTE] A sequence of operations in a Redis transaction is not necessarily atomic. The commands that comprise a transaction are verified and queued prior to execution, and if an error occurs during this phase the entire queue is discarded. However, once the transaction has been successfully submitted, the queued commands will be executed in sequence. If any command fails only that command is aborted; all previous and subsequent commands in the queue are performed. If you need to perform atomic operations. For more information, visit the [Transactions](http://redis.io/topics/transactions) page on the Redis website.
 
-- Redis アトミック操作の限られた数をサポートしています、このタイプの操作複数のキーと値をサポートするが、(これはキーの指定されたリストの値のコレクションを返します) MGET、MSET (これはキーの指定されたリストの値のコレクションを格納することができます)。これらの操作を使用する場合に MSET と MGET コマンドによって参照されるキーと値のペアは、同じデータベース内で貯えられなければなりません。
+- Redis supports a limited number of atomic operations, and the only operations of this type that support multiple keys and values are MGET (which returns a collection of values for a specified list of keys), and MSET (which can store a collection of values for a specified list of keys). If you need to use these operations, the key/value pairs referenced by the MSET and MGET commands must be stored within the same database.
 
-## パーティションをリバランス
+## Rebalancing partitions
 
-システムが成熟しての使用パターンを把握するなり、パーティションの構成を調整する必要がありますされる可能性です。個々 のパーティションの不均衡な量のトラフィックを集めているとホット、過度な競合になる可能性があります。さらに、可能性がありますの下で-予定していたいくつかのパーティション内のデータの量これらのパーティションで記憶容量の限界をアプローチする原因します。何が原因で、負荷をより均等に分散するためのパーティションを再調整する必要があります。
+As a system matures and the pattern of usage becomes better understood, it is possible that it may be necessary to adjust the partitioning scheme. This could be due to individual partitions attracting a disproportionate volume of traffic and becoming hot, leading to excessive contention. Additionally, you might have under-estimated the volume of data in some partitions, causing you to approach the limits of the storage capacity in these partitions. Whatever the cause, it is sometimes necessary to rebalance partitions to spread the load more evenly.
 
-いくつかのケースで利用可能なリソースの限界内のパーティションも公開データはサーバーに割り当てられている方法を公開しないデータのストレージ ・ システムに自動的に再配分できます。状況によっては、2 つの段階で構成される管理タスクをリバランスです。
+In some cases, data storage systems which do not publicly expose the way in which data is allocated to servers can automatically rebalance partitions within the limits of the resources available. In other situations, rebalancing is an administrative task that consists of two stages:
 
-1. どのパーティション分割 (または多分結合こと)、必要があります、新しいパーティション キーを設計することによってこれらの新しいパーティションにデータを割り当てる方法を確認するために新しいパーティション分割ストラテジを決定します。
-2. 古いパーティション構成から影響を受けるデータを新しいパーティションのセットに移行します。
+1. Determining the new partitioning strategy to ascertain which partitions may need to be split (or possibly combined), and how to allocate data to these new partitions by designing new partition keys.
+2. Migrating the affected data from the old partitioning scheme to the new set of partitions.
 
-> [AZURE。メモ] DocumentDB コレクション サーバーへのマッピングが透明でしかしまだ DocumentDB アカウントの記憶域の容量とスループットの制限に到達する可能性があります、その場合、パーティション スキームを再設計し、データを移行する必要があります。
+> [AZURE.NOTE] The mapping of DocumentDB collections to servers is transparent, but you might still reach the storage capacity and throughput limits of a DocumentDB account, in which case you may need to redesign your partitioning scheme and migrate the data.
 
-データ ・ ストレージ ・ テクノロジー、データ ストレージ システムの設計によって、(オンライン移行) の使用中のパーティション間でデータを移行することができます。これが可能でない場合は、データの再配置 (オフライン移行) 中影響を受けるパーティションを一時的に使用できないようにする必要があります。
+Depending on the data storage technology and the design of your data storage system, you may be able to migrate data between partitions while they are in use (online migration). If this is not possible, you may need to make the affected partitions temporarily unavailable while the data is relocated (offline migration).
 
-## オフライン移行
+## Offline migration
 
-競合が発生している可能性が減るためオフライン移行は恐らく間違いなく最も簡単な方法されている間、移行対象のデータを変更しないでくださいに移動し、再構築します。
+Offline migration is arguably the simplest approach as it reduces the chances of contention occurring; the data being migrated should not change while it is being moved and restructured.
 
-概念的には、このプロセスでは、次の手順から構成されます。
+Conceptually, this process comprises the following steps:
 
-1. オフラインでの破片をマークします。
-2. 分割/マージし、新しいシャードに移動データ
-3. データを確認します。
-4. オンラインでの新しい破片をもたらす
-5. 古い破片を削除します。
+1. Mark the shard offline,
+2. Split/merge and move the data to the new shards,
+3. Verify the data,
+4. Bring the new shards online,
+5. Remove the old shard.
 
-いくつかの可用性を保持するには、それを使用できないようにするのではなく、ステップ 1 で読み取り専用として元の破片をマークする可能性があります。これは移動中に、データの読み取りをアプリケーションに許可するだろうが、それを変更できません。
+To retain some availability, it could be possible to mark the original shard as read-only in step 1 rather than making it unavailable. This would allow applications to read the data while it is being moved but not change it.
 
-## オンライン移行
+## Online migration
 
-オンライン移行ですが実行するより複雑な全体の手順中に、データが使用可能で、ユーザーに及ぼす影響が少なく。プロセスは、元の破片は、オフライン (ステップ 1) をマークされていないことを除いてオフライン移行で使用に似ています。読書を処理する必要がありますクライアント アプリケーションでのデータ アクセス コード、(項目または破片の破片による) 移行プロセスの粒度によって、2 つの場所 (元の破片と新しいシャード) で開催されたデータの書き込み
+Online migration is more complex to perform but is less disruptive to users as data remains available during the entire procedure. The process is similar to that used by offline migration, except that the original shard is not marked offline (step 1). Depending on the granularity of the migration process (item by item or shard by shard), the data access code in the client applications may have to handle reading and writing data held in two locations (the original shard and the new shard)
 
-オンラインでの移行をサポートするソリューションの例についてを参照してください、 [弾性スケールの分割/マージ サービス](sql-database-elastic-scale-overview-split-and-merge.md)、Microsoft のウェブサイトでオンライン記録。
+For an example of a solution that supports online migration, see the [Split/Merge Service for Elastic Scale](sql-database-elastic-scale-overview-split-and-merge.md), documented online on the Microsoft website.
 
-## 関連するパターンと指導
+## Related patterns and guidance
 
-次のパターンは、データの整合性を実装するための戦略を検討する際のシナリオに関連あります。
+The following patterns may also be relevant to your scenario when considering strategies for implementing data consistency:
 
-- データ整合性ガイダンスのページでは、Microsoft の web サイトで利用可能なクラウドなど分散環境での一貫性を維持するための戦略を説明します。
-- 、 [データ パーティション分割指導](https://msdn.microsoft.com/library/dn589795.aspx) Microsoft の web サイト上のページは、分散ソリューションで様々 な条件を満たすためのパーティション デザインの一般的な概要を提供します。
-- 、 [分割パターン](https://msdn.microsoft.com/library/dn589797.aspx)、Microsoft の web サイトに記載されている、分割データのいくつかの一般的な戦略の概要を示します。
-- 、 [インデックス テーブル パターン](https://msdn.microsoft.com/library/dn589791.aspx) 記載されているマイクロソフトの web サイトは、データ上のセカンダリ インデックスを作成する方法を示しています。この方法は、すぐにコレクションの主キーを参照しないクエリを使用してデータを取得するアプリケーションをできます。
-- 、 [マテリアライズド ビュー パターン](https://msdn.microsoft.com/library/dn589782.aspx) 説明したマイクロソフトのウェブサイトは、高速なクエリ操作をサポートするデータを要約するあらかじめ設定されているビューを生成する方法を説明します。このアプローチは、要約するデータを含むパーティションが複数のサイトに分散されて場合パーティション分割されたデータ ストアで便利に使えます。
-- 記事コンテンツ配信ネットワーク (CDN) は、構成および azure CDN を使用の追加のガイダンスを提供します。
+- The Data Consistency Guidance page, available on the Microsoft website, describes strategies for maintaining consistency in a distributed environment such as the cloud.
+- The [Data Partitioning Guidance](https://msdn.microsoft.com/library/dn589795.aspx) page on the Microsoft website provides a general overview of designing partitions to meet various criteria in a distributed solution.
+- The [Sharding Pattern](https://msdn.microsoft.com/library/dn589797.aspx), described on the Microsoft website, summarizes some common strategies for sharding data.
+- The [Index Table Pattern](https://msdn.microsoft.com/library/dn589791.aspx) described on the Microsoft website illustrates how to create secondary indexes over data. This approach enables an application to quickly retrieve data by using queries that do not reference the primary key of a collection.
+- The [Materialized View Pattern](https://msdn.microsoft.com/library/dn589782.aspx) discussed on the Microsoft website describes how to generate pre-populated views that summarize data to support fast query operations. This approach can be useful in a partitioned data store if the partitions containing the data being summarized are distributed across multiple sites.
+- The article Content Delivery Network (CDN) provides additional guidance on configuring and using CDN with Azure.
 
-## 詳細については
+## More Information
 
-- 、 [Azure の SQL データベース](https://msdn.microsoft.com/library/azure/ee336279.aspx) Microsoft の web サイト上のページを作成し、SQL データベースを使用する方法を説明する詳細なドキュメントを提供します。
-- ページ [SQL azure データベースの柔軟な拡張性の概要](sql-database-elastic-scale-introduction.md) マイクロソフトのウェブサイトは、柔軟な拡張性の包括的な概要を提供します。
-- トピック [分割およびマージによる柔軟な拡張性](sql-database-elastic-scale-overview-split-and-merge.md) マイクロソフトのウェブサイトには、分割/マージ サービスを使って柔軟な拡張性の破片を管理する情報が含まれています。
-- ページ [Azure ストレージのスケーラビリティとパフォーマンスの目標](https://msdn.microsoft.com/library/azure/dn249410.aspx) マイクロソフトのウェブサイトは、Azure ストレージの現在のサイズとスループットの限界を説明します。
-- 、 [エンティティ グループ トランザクションの実行](https://msdn.microsoft.com/library/azure/dd894038.aspx) Microsoft の web サイト上のページでは、Azure テーブル ストレージに格納されているエンティティ経由のトランザクション操作の実装に関する詳細情報を提供します。
-- 記事 [Azure テーブル ストレージの拡張性の高いパーティション分割戦略の設計](https://msdn.microsoft.com/library/azure/hh508997.aspx) マイクロソフトのウェブサイトには Azure テーブル ストレージ内のデータのパーティション分割の詳細情報が含まれています。
-- ページ [Azure の CDN を使用してください。](cdn-how-to-use.md) マイクロソフトのウェブサイトは、Azure コンテンツ配信ネットワーク (CDN) を使用して、Azure Blob ストレージに保持されたデータをレプリケートする方法をについて説明します。
-- ページ [プレビュー リリースの DocumentDB 制限](documentdb-limits.md) マイクロソフトのウェブサイトでは、Microsoft DocumentDB の現在の制限やクォータを説明します。
-- ページ [DocumentDB 容量とパフォーマンスを管理します。](documentdb-manage.md) マイクロソフトの web サイトには、Azure DocumentDB がデータベースにリソースを割り当てる方法に関する情報が含まれています。
-- 、 [紺碧の検索の概要](https://msdn.microsoft.com/library/azure/dn798933.aspx) Microsoft web サイト上のページでは、Azure の検索サービスで利用できる機能の完全な説明を提供します。
-- 、 [制限および制約 (紺碧検索 API)](https://msdn.microsoft.com/library/azure/dn798934.aspx) Microsoft の web サイト上のページには、Azure の検索サービスの各インスタンスの容量に関する情報が含まれています。
-- 、 [サポートされるデータ型 (紺碧検索)](https://msdn.microsoft.com/library/azure/dn798938.aspx) Microsoft の web サイト上のページは、検索可能なドキュメントおよびインデックスで使用できるデータ型をまとめたものです。
-- 、 [Microsoft Azure キャッシュ](http://azure.microsoft.com/services/cache.md) Microsoft の web サイト上のページでは、Azure Redis キャッシュについて紹介します。
-- ページ [Redis の複数のインスタンス間でデータを分割する方法の分割。](http://redis.io/topics/partitioning) Redis のウェブサイトは Redis でパーティショニングの実装に関する情報を提供します。
-- ページ [Azure の CentOS Linux VM 上 Redis で実行](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) マイクロソフトの web サイトの構築し、Azure の VM として実行している Redis ノードを構成する方法を示す例について説明します。
-- 、 [データ型](http://redis.io/topics/data-types) Redis ウェブサイト上のページでは、Redis と Azure Redis キャッシュで使用可能なデータ型について説明します。
+- The [Azure SQL Database](https://msdn.microsoft.com/library/azure/ee336279.aspx) page on the Microsoft website provides detailed documentation describing how to create and use SQL databases.
+- The page [Azure SQL Database Elastic Scale Overview](sql-database-elastic-scale-introduction.md) on the Microsoft website provides a comprehensive introduction to Elastic Scale.
+- The topic [Splitting and Merging with Elastic Scale](sql-database-elastic-scale-overview-split-and-merge.md) on the Microsoft website contains information on using the Split/Merge service to manage Elastic Scale shards.
+- The page [Azure Storage Scalability and Performance Targets](https://msdn.microsoft.com/library/azure/dn249410.aspx) on the Microsoft website documents the current sizing and throughput limits of Azure storage.
+- The [Performing Entity Group Transactions](https://msdn.microsoft.com/library/azure/dd894038.aspx) page on the Microsoft website provides detailed information about implementing transactional operations over entities stored in Azure table storage.
+- The article [Designing a Scalable Partitioning Strategy for Azure Table Storage](https://msdn.microsoft.com/library/azure/hh508997.aspx) on the Microsoft website contains detailed information on partitioning data in Azure table storage.
+- The page [Using CDN for Azure](cdn-how-to-use.md) on the Microsoft website describes how to replicate data held in Azure Blob Storage by using the Azure Content Delivery Network (CDN).
+- The page [DocumentDB Limits for the Preview Release](documentdb-limits.md) on the Microsoft website describes the current limits and quotas for Microsoft DocumentDB.
+- The page [Manage DocumentDB Capacity and Performance](documentdb-manage.md) on the Microsoft website contains information about how Azure DocumentDB allocates resources to databases.
+- The [Azure Search Overview](https://msdn.microsoft.com/library/azure/dn798933.aspx) page on the Microsoft website provides a full description of the capabilities available with the Azure Search service.
+- The [Limits and Constraints (Azure Search API)](https://msdn.microsoft.com/library/azure/dn798934.aspx) page on the Microsoft website contains information on the capacity of each instance of the Azure Search service.
+- The [Supported Data Types (Azure Search)](https://msdn.microsoft.com/library/azure/dn798938.aspx) page on the Microsoft website summarizes the data types that you can use in searchable documents and indexes.
+- The [Microsoft Azure Cache](http://azure.microsoft.com/services/cache.md) page on the Microsoft website provides an introduction to Azure Redis Cache.
+- The page [Partitioning: how to split data among multiple Redis instances](http://redis.io/topics/partitioning) on the Redis website provides information on implementing partitioning with Redis.
+- The page [Running Redis on a CentOS Linux VM in Azure](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) on the Microsoft website walks through an example showing how to build and configure a Redis node running as an Azure VM.
+- The [Data Types](http://redis.io/topics/data-types) page on the Redis website describes the data types that are available with Redis and Azure Redis Cache.

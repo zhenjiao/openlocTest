@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Insights API for custom events and metrics" 
 	description="Insert a few lines of code in your device or desktop app, web page or service, to track usage and diagnose issues." 
 	services="application-insights"
@@ -188,7 +188,7 @@ There are some [limits on the number of properties, property values, and metrics
     telemetry.trackEvent("WinGame", properties, metrics2/7/2015 12:05:25 AM );
 
 
-> [AZURE。注意] Take care not to log personally identifiable information in properties.
+> [AZURE.NOTE] Take care not to log personally identifiable information in properties.
 
 **If you used metrics**, open Metric Explorer and select the metric from the Custom group:
 
@@ -753,7 +753,7 @@ There are some limits on the number of metrics and events per application.
 
     Yes, but we aren't publishing it yet.
 
-## <a name="next"></a>接下来的步骤
+## <a name="next"></a>Next steps
 
 
 [Search events and logs][diagnostic]

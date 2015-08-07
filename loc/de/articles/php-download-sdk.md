@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Download the Azure SDK for PHP"
 	description="Learn how to download and install the Azure SDK for PHP."
 	documentationCenter="php"
@@ -16,29 +16,29 @@
 	ms.date="03/20/2015"
 	ms.author="tomfitz"/>
 
-#Download Azure SDK für PHP
+#Download the Azure SDK for PHP
 
-## Übersicht
+## Overview
 
-Das Azure SDK für PHP enthält Komponenten, mit denen Sie entwickeln, bereitstellen und Verwalten von PHP-Anwendungen für Azure. Das Azure SDK für PHP umfasst insbesondere Folgendes:
+The Azure SDK for PHP includes components that allow you to develop, deploy, and manage PHP applications for Azure. Specifically, the Azure SDK for PHP includes the following:
 
-* **Die PHP-Client-Bibliotheken für Azure**. Diese Klassenbibliotheken bieten eine Schnittstelle für den Zugriff auf Azure Features wie Daten-Management-Services und cloud-Dienste.  
-* **Die azurblaue Befehlszeilenschnittstelle für Mac, Linux und Windows (himmelblau CLI)**. Dies ist eine Sammlung von Befehlen für das Bereitstellen und Verwalten von Azure Services wie Azure Websites und Azure virtuelle Maschinen. Die Azure-CLI-Arbeit auf allen Plattformen, einschließlich Windows, Mac und Linux.
-* **Azurblaue PowerShell (nur Windows)**. Dies ist eine Sammlung von PowerShell-Cmdlets für die Bereitstellung und Verwaltung von Azure Services wie Cloud-Services und virtuelle Maschinen.
-* **Die azurblauen Emulatoren (nur Windows)**. Die Compute und Speicher-Emulatoren sind lokale Emulatoren für Cloud-Dienste und Daten-Management-Services, mit denen Sie eine Anwendung lokal testen. Die Azure-Emulatoren laufen nur unter Windows.
+* **The PHP client libraries for Azure**. These class libraries provide an interface for accessing Azure features, such as data management services and cloud services.  
+* **The Azure Command-Line Interface for Mac, Linux, and Windows (Azure CLI)**. This is a set of commands for deploying and managing Azure services, such as Azure Websites and Azure Virtual Machines. The Azure CLI work on any platform, including Mac, Linux, and Windows.
+* **Azure PowerShell (Windows Only)**. This is a set of PowerShell cmdlets for deploying and managing Azure Services, such as Cloud Services and Virtual Machines.
+* **The Azure Emulators (Windows Only)**. The compute and storage emulators are local emulators of cloud services and data management services that allow you to test an application locally. The Azure Emulators run on Windows only.
 
-In den folgenden Abschnitten wird beschrieben, wie zu die oben beschriebenen Komponenten heruntergeladen und installiert.
+The sections below describe how to download and install the components described above.
 
-Die Anweisungen in diesem Thema annehmen, dass Sie [PHP][install-php] installiert.
+The instructions in this topic assume that you have [PHP][install-php] installed.
 
-> [AZURBLAU. HINWEIS]
-> Sie müssen PHP 5.3 oder höher, um PHP-Client-Bibliotheken für Azure zu verwenden.
+> [AZURE.NOTE]
+> You must have PHP 5.3 or higher to use the PHP client libraries for Azure.
 
-##PHP-Client-Bibliotheken für Azure
+##PHP client libraries for Azure
 
 The PHP Client Libraries for Azure provide an interface for accessing Azure features, such as data management services and cloud services, from any operating system. These libraries can be installed via the Composer or PEAR package managers or manually.
 
-For information about how to use the PHP Client Libraries for Azure, see [How to Use the Blob Service][blob-service], [How to Use the Table Service][table-service] und [How to Use the Queue Service][queue-service].
+For information about how to use the PHP Client Libraries for Azure, see [How to Use the Blob Service][blob-service], [How to Use the Table Service][table-service] and [How to Use the Queue Service][queue-service].
 
 ###Install via Composer
 
@@ -92,7 +92,7 @@ To download and install the PHP Client Libraries for Azure manually, follow thes
 1. Download a .zip archive that contains the libraries from [GitHub][php-sdk-github]. Alternatively, fork the repository and clone it to your local machine. (The latter option requires a GitHub account and having Git installed locally.)
 
 	> [AZURE.NOTE]
-	> The PHP Client Libraries for Azure have a dependency on the [HTTP_Request2](http://pear.php.net/package/HTTP_Request2), [Mail_mime](http://pear.php.net/package/Mail_mime), und [Mail_mimeDecode](http://pear.php.net/package/Mail_mimeDecode) PEAR packages. The recommended way to resolve these dependencies is to install these packages using the [PEAR package manager](http://pear.php.net/manual/en/installation.php)
+	> The PHP Client Libraries for Azure have a dependency on the [HTTP_Request2](http://pear.php.net/package/HTTP_Request2), [Mail_mime](http://pear.php.net/package/Mail_mime), and [Mail_mimeDecode](http://pear.php.net/package/Mail_mimeDecode) PEAR packages. The recommended way to resolve these dependencies is to install these packages using the [PEAR package manager](http://pear.php.net/manual/en/installation.php)
 
 2. Copy the `WindowsAzure` directory of the downloaded archive to your application directory structure and reference classes from your application.
 

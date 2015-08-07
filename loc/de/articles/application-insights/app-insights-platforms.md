@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Insights: platforms" 
 	description="Can I use Application Insights with...?" 
 	services="application-insights" 
@@ -17,7 +17,7 @@
  
 # Application Insights: platforms
 
-[AZURBLAU. ENTHALTEN [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
+[AZURE.INCLUDE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
 
 #### Can I use Application Insights with ...?
 

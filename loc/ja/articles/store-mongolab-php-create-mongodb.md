@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to use MongoLab to Create a MongoDB database in Azure" 
 	description="Learn how to use MongoLab to create a MongoDB database in Azure." 
 	documentationCenter="php" 
@@ -16,4 +16,4 @@
 	ms.date="11/17/2014" 
 	ms.author="chris@mongolab.com"/>
 
-[AZURE。含まれます [create-mongolab-mongodb](../includes/create-mongolab-mongodb.md)]
+[AZURE.INCLUDE [create-mongolab-mongodb](../includes/create-mongolab-mongodb.md)]

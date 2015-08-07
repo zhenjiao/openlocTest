@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Monitoring and diagnostics guidance | Microsoft Azure"
    description="Best practices for monitoring distributed applications in the cloud."
    services=""
@@ -17,603 +17,603 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# 監視と診断の手引き
+# Monitoring and diagnostics guidance
 
 ![](media/best-practices-monitoring/pnp-logo.png)
 
-## 概要
-分散アプリケーションと、クラウドで実行されるサービスは、その性質、多くの可動部分を構成するソフトウェアの複雑な部分が。運用環境でユーザーがシステム、トレース リソース使用率を利用する方法を追跡することができるし、一般的に健康とシステムのパフォーマンスを監視することが重要です。この情報は、検出し、問題を修正、さらに潜在的な問題を助けるおよび発生を防ぐ診断の補助として使用できます。
+## Overview
+Distributed applications and service running in the cloud are, by their very nature, complex pieces of software that comprise many moving parts. In a production environment, it is important to be able to track the way in which users utilize your system, trace resource utilization, and generally monitor the health and performance of your system. This information can be used as a diagnostic aid to detect and correct issues, and also to help spot potential problems and prevent them from occurring.
 
-## 監視と診断のシナリオ
-監視を有効にどれだけシステムへの洞察力を得るためには機能しているし、保守サービスの品質目標の重要な一部です。監視データを収集するためのいくつかの一般的なシナリオがあります。
+## Monitoring and diagnostics scenarios
+Monitoring enables you to gain an insight into how well a system is functioning, and is a crucial part in maintaining quality-of-service targets. Some common scenarios for collecting monitoring data include:
 
-- システムが健康な状態であることを確認します。
-- システムとそのコンポーネントの要素の可用性を追跡します。
-- システムのスループットが、仕事の増加量として予期せず劣化しないことを確保するための性能を維持します。
-- システムは顧客と合意した Sla を満たしていることを保証します。
-- システム、ユーザー、およびそのデータのセキュリティとプライバシーの保護。
-- 監査実行される操作または規制目的を追跡します。
-- システムやヘルプ スポット動向、対処しない場合に問題につながる可能性の日常的な使用量の監視。
-- 考えられる原因、整流、結果としてソフトウェアの更新、および展開の分析を通じて最初の報告から、発生する問題を追跡します。
-- 操作のトレースとデバッグのソフトウェア リリース。
+- Ensuring that the system remains healthy.
+- Tracking the availability of the system and its component elements.
+- Maintaining performance to ensure that the throughput of the system does not degrade unexpectedly as the volume of work increases.
+- Guaranteeing that the system meets any SLAs agreed with customers.
+- Protecting the privacy and security of the system, users, and their data.
+- Tracking the operations that are performed auditing or regulatory purposes.
+- Monitoring the day-to-day usage of the system and help spot trends that could lead to problems if they are not addressed.
+- Tracking issues that occur, from initial report through to analysis of possible causes, rectification, consequent software updates, and deployment.
+- Tracing operations and debugging software releases.
 
-> [AZURE。メモ] このリストは包括的なものではありません。このドキュメント、監視を実行する最も一般的な状況としてこれらのシナリオに焦点を当てがあるかもしれないより少なく共通または各自の環境に固有の他。
+> [AZURE.NOTE] This list is not intended to be comprehensive. This document focusses on these scenarios as the most common situations for performing monitoring, but there may well be others that are less common or specific to your own environment.
 
-これらのシナリオの詳細について説明します。各シナリオの情報は次の形式で説明します。
+The following sections describe these scenarios in more detail. The information for each scenario is discussed in the following format:
 
-- シナリオの簡単な概要。
-- このシナリオの一般的な要件。
-- シナリオでは、この情報の原因をサポートするために必要な生のインストルメンテーション データ。
-- どのようにこの生データを分析および有意義な診断情報を生成するために結合できます。
+- A brief overview of the scenario.
+- The typical requirements of this scenario.
+- The raw instrumentation data required to support the scenario, and possible sources of this information.
+- How this raw data can be analyzed and combined to generate meaningful diagnostic information.
 
-## 稼働状態の監視
-システムは、それが実行中の要求を処理できる場合は健康です。健康を監視する目的は、システムのすべてのコンポーネントが期待どおりに機能していることを確認することを可能にするシステムの現在の状態のスナップショットを生成します。
+## Health monitoring
+A system is healthy if it is running and capable of processing requests. The purpose of health monitoring is to generate a snapshot of the current health of the system to enable you to verify that all components of the system are functioning as expected.
 
-### 健康を監視するための要件
-オペレーターは、システムの任意の部分は健康とみなされる場合、すぐに (秒数) 以内警告必要があります。オペレーターは、システムのどの部分が正常とのどの部分に問題が発生を確認できる必要があります。トラフィック ライト システムを使用してシステムの正常性を強調できます。赤 (、システムが停止した)、不健康な黄色 (システムの機能制限で実行)、部分的に健康と緑の完全に健康な。
+### Requirements for health monitoring
+An operator should be alerted quickly (within a matter of seconds) if any part of the system is deemed to be unhealthy. The operator should be able to ascertain which parts of the system are functioning normally, and which parts are experiencing problems. System health can be highlighted by using a traffic-light system; red for unhealthy (the system has stopped), yellow for partially healthy (the system is running with reduced functionality), and green for completely healthy.
 
-包括的な健康監視システムにより、オペレーターのサブシステムおよびコンポーネントの正常性状態を表示するシステムをドリル ・ ダウンします。たとえば、システム全体は、部分的に正常として描かれている、演算子は、ズーム インして機能が現在利用できない特定ができる必要があります。
+A comprehensive health-monitoring system enables an operator to drill down through the system to view the health status of subsystems and components. For example, if the overall system is depicted as partially healthy, the operator should be able to zoom in and determine which functionality is currently unavailable.
 
-### データ ソース、計測器、およびデータ収集の要件
-正常性の監視をサポートするために必要な生のデータは、結果として生成できます。
+### Data sources, instrumentation, and data collection requirements
+The raw data required to support health monitoring can be generated as a result of:
 
-- ユーザーの要求の実行をトレースします。この情報は、どの要求が成功した、失敗したが、各要求にかかる時間を決定する使用できます。
-- 合成ユーザーを監視します。このプロセスは、ユーザーの実行手順をシミュレートし、定義済みの一連の手順に従います。各ステップの結果をキャプチャする必要があります。
-- 例外、エラー、および警告をログに記録します。この情報は、アプリケーション コードに埋め込まれているだけでなく、システムによって参照されているすべてのサービスのイベント ログから情報を取得するトレース ステートメントの結果としてキャプチャできます。
-- システムで使用される任意のサードパーティ製のサービスの状態を監視します。これは取得と、これらのサービスが提供する健康データを解析を必要があります、この情報は、さまざまな形式を取ることができます。
-- エンドポイントを監視します。このメカニズムは、可用性監視セクションで詳細で説明です。
-- I/o (ネットワークを含む) やバック グラウンドの CPU 使用率などの周囲のパフォーマンス情報を収集します。
+- Tracing execution of user requests. This information can be used to determine which requests have succeeded, which have failed, and how long each request takes.
+- Synthetic user monitoring. This process simulates the steps performed by a user and follows a predefined series of steps. The results of each step should be captured.
+- Logging exceptions, faults, and warnings. This information can be captured as a result of trace statements embedded into the application code, as well as retrieving information from the event logs of any services referenced by the system.
+- Monitoring the health of any third-party services used by the system. This may require retrieving and parsing health data supplied by these services, and this information could take a variety of formats.
+- Endpoint monitoring. This mechanism is described in more detail in the Availability monitoring section.
+- Collecting ambient performance information, such as background CPU utilization or I/O (including network) activity.
 
-### 健康データの分析
-ヘルスモニタ リングの主な焦点は、すぐにシステムが実行されているかどうかを示すことです。(それはたとえば連続 ping の応答に失敗する) の健康する重要なコンポーネントが検出された場合、即時データのホットの分析はアラートをトリガーできます。演算子は、適切な是正措置を実行できます。
+### Analyzing health data
+The primary focus of health monitoring is to quickly indicate whether the system is running. Hot analysis of the immediate data can trigger an alert if a critical component is detected to be unhealthy (it fails to respond to a consecutive series of pings, for example). The operator can then take the appropriate corrective action.
 
 A more advanced system might include a predictive element that performs a cold analysis over recent and current workloads to spot trends and determine whether the system is likely to remain healthy or whether additional resources are going to be required. This predictive element should be based on critical performance metrics, such as the rate of requests directed at each service or subsystem, the response times of these requests, and the volume of data flowing into and out of each service. If the value of any metric exceeds a defined threshold the system can raise an alert to enable an operator or auto-scaling (if available) to take the preventative actions necessary to maintain system health. These actions might involve adding resources, restarting one or more services that are failing, or applying throttling to lower-priority requests.
 
-## 可用性の監視
-本当に健康的なシステムでは、コンポーネントおよびシステムを構成するサブシステムが使用できる必要があります。正常性の監視、密接に関連して、可用性の監視が、可用性の監視は、システムとそのコンポーネントに関するシステムの稼働時間の統計情報を生成するための可用性を追跡にかかわっている健康監視システムの現在の状態の即時ビューを提供するのに対し。
+## Availability monitoring
+A truly healthy system requires that the components and subsystems that comprise the system are available. Availability monitoring is closely related to health monitoring, but whereas health monitoring provides an immediate view of the current health of the system, availability monitoring is concerned with tracking the availability of the system and its components to generate statistics concerning the uptime of the system.
 
-多くのシステムでいくつかのコンポーネント (データベースなど) は、重大な過失または接続の切断が発生した場合迅速なフェイル オーバーを許可するように冗長性が組み込まれてで構成されます。理想的には、ユーザーは、このような障害が発生しましたが、可用性監視の観点からしようと、原因を特定し、再発を防ぐための是正措置を取るような失敗についてできるだけ多くの情報を収集する必要がある必要がありますできません。
+In many systems, some components (such as a database) are configured with built-in redundancy to permit rapid failover in the event of a serious fault or loss of connectivity. Ideally, users should not be aware that such a failure has occurred, but from an availability monitoring perspective it is necessary to gather as much information as possible about such failures to try and determine the cause and take corrective actions to prevent them from recurring.
 
-可用性を追跡するために必要なデータは、アプリケーション、システム、および環境に固有の可能性があります、下位レベルの要因の数に依存してあります。効果的な監視システムでは、これらの低レベルの要因に対応し、システムの全体像を与えるためにそれらを集約し、可用性データをキャプチャします。たとえば、e コマース システム、注文するお客様のビジネス機能を注文の詳細が格納され、これらの注文の支払いのための金融取引を処理する決済システムのリポジトリに依存します。システムの発注一部の可用性したがってリポジトリおよび支払システムの可用性の機能です。
+The data required to track availability may be dependent on a number of lower-level factors, many of which may be specific to the application, system, and environment. An effective monitoring system captures the availability data that corresponds to these low-level factors and then aggregates them to give an overall picture of the system. For example, in an ecommerce system, the business functionality that enables a customer to place orders might depend on the repository in which order details are stored and the payment system that handles the monetary transactions for paying for these orders. The availability of the order-placement part of the system is therefore a function of the availability of the repository and the payment sub-system.
 
-### 可用性の監視のための要件
-オペレーターは各システムおよびサブシステムの歴史的な空室状況を表示し、定期的に失敗する 1 つまたは複数のサブシステムを引き起こす可能性のあるトレンドを発見するこの情報を使用することもする必要があります (サービス開始か処理のピーク時に対応する日の特定時に失敗?)
+### Requirements for availability monitoring
+An operator should also be able to view the historical availability of each system and subsystem, and use this information to spot any trends that may be causing one or more subsystem to periodically fail (do services start to fail at a particular time of day that corresponds to peak processing hours?)
 
-空室状況の即時および歴史的なビューを提供するだけでなく、あるいは各サブシステムの監視ソリューションできる必要がありますも 1 つオペレーターにすぐに警告またはより多くのサービスが失敗したりユーザーがサービスに接続することができます。これは単に各サービスを監視するが、サービスとの通信を試みると、これらの操作が失敗した場合に、各ユーザーによって実行されるアクションも検討の問題ではありません。ある程度、接続障害の程度は通常、一時的なエラーが原因である可能性がありますが、それは特定の時間期間中に指定されたサブシステムに障害が発生した接続数の警告を出すシステムを許可する役に立つかもしれません。
+As well as providing an immediate and historical view of the availability or otherwise of each subsystem, a monitoring solution should also be capable of quickly alerting an operator when one or more services fail or users are unable to connect to services. This is not simply a matter of monitoring each service, but also examining the actions being performed by each user if these actions fail when they attempt to communicate with a service. To some extent, a degree of connectivity failure is normal and may be due to transient errors, but it may be useful to allow the system to raise an alert of the number of connectivity failures to a specified subsystem occur during a specific time period.
 
-### データ ソース、計測器、およびデータ収集の要件
-同様に正常性の監視、監視とロギング例外、エラー、警告が発生する可能性があります合成ユーザーの結果として raw データの可用性の監視をサポートする必要を生成できます。さらに、可用性データは、エンドポイントの監視を実行するから入手できます。アプリケーションは、1 つまたは複数の健康エンドポイント、各システム内の機能領域へのテストを公開できます。監視システムは、定義されたスケジュールに従って各エンドポイントに ping を実行し、結果 (成功または失敗) を収集できます。
+### Data sources, instrumentation, and data collection requirements
+As with health monitoring, the raw data required to support availability monitoring can be generated as a result of synthetic user monitoring and logging any exceptions, faults, and warnings that may occur. In addition, availability data can be obtained from performing endpoint monitoring. The application can expose one or more health endpoints, each testing access to a functional area within the system. The monitoring system can ping each endpoint following a defined schedule and collect the results (success or fail).
 
-タイムアウトとネットワーク接続性の障害、接続の再試行回数を記録する必要があります。すべてのデータは、タイムスタンプする必要があります。
+All timeouts and network connectivity failures, and connection retry attempts must be recorded. All data should be time-stamped.
 
 <a name="analyzing-availablity-data"></a>
-### 可用性データの分析
-インストルメンテーション データを集計、相関分析の次の種類をサポートする必要があります。
+### Analyzing availability data
+The instrumentation data must be aggregated and correlated to support the following types of analysis:
 
-- システムとサブシステムの当面の空室状況。
-- システムとサブシステムの可用性故障率。理想的にはオペレーターが特定活動に障害を関連付けることする必要があります。システムが失敗したとき、何が起こっていたか。
-- 史観のシステムまたは任意のサブシステムすべてにわたって故障率のときに指定した期間、および読み込みシステム (たとえばユーザー要求数) にエラーが発生しました。
-- システムまたはサブシステムの利用できない理由。たとえば、サービス、接続、接続の切断を実行していないが、タイムアウト、エラー接続ですが返される。
+- The immediate availability of the system and subsystems.
+- The availability failure rates of the system and subsystems. Ideally an operator should be able to correlate failures with specific activities; what was happening when the system failed?
+- An historical view of failure rates of the system or any subsystems across any specified time period, and the loading on the system (number of user requests for example) when a failure occurred.
+- The reasons for unavailability of the system or any subsystems. For example, service not running, loss of connectivity, connected but timing out, and connected but returning errors.
 
-数式を使用して時間の期間にわたって、サービスの可用性の割合を計算できます。
+You can calculate the percentage availability of a service over a period of time by using the formula:
 
 ```
 %Availability =  ((Total Time – Total Downtime) / Total Time ) * 100
 ```
 
-これは、SLA の目的 (便利[SLA の監視](#SLA-monitoring) 記載されてこのガイドで後述)。定義 _ダウンタイム_ サービスによって異なります。たとえば、Visual Studio のオンラインはその期間内に接続が確立された後その中にお客様のサービスに接続しよう取る 120 秒とすべてのベーシックの読み取りおよび書き込み操作の失敗よりも長い期間とダウンタイムを定義します。
+This is useful for SLA purposes ([SLA monitoring](#SLA-monitoring) is described in more detail later in this guidance). The definition of _Downtime_ depends on the service. For example, Visual Studio Online defines downtime as the period during which a customer's attempts to connect to the service take longer than 120 seconds and all basic read and write operations fail after the connection is established within that period.
 
-## パフォーマンスの監視
-システムとしては、ユーザーの増加の量とこれらのユーザー アクセスの成長、1 つまたは複数のコンポーネントが可能な故障なる可能性がデータセットのサイズとしてより多くのストレスの下で配置されます。多くの場合、コンポーネントの障害、パフォーマンスの低下続きます。できる場合は、状況を改善するための積極的な措置を取ることができるそのような減少を検出します。
+## Performance monitoring
+As the system is placed under more and more stress as the volume of users increase and the size of the datasets that these users access grows, the possible failure of one or more components becomes likely. Frequently, component failure is preceded by a decrease in performance. If you are able detect such a decrease you can take proactive steps to remedy the situation.
 
-システムのパフォーマンスは、いくつかの要因に依存しています。各因子は、通常 1 秒間にデータベース トランザクションの数など一定の期間で正常にネットワーク要求のボリューム主要業績評価指標 (Kpi) を使用して測定されます。他はメトリックの組み合わせに由来するかもしれないがこれらの Kpi のいくつかは特定のパフォーマンス対策として利用できるかもしれない。
+System performance is dependent on a number of factors. Each factor is typically measured by using Key Performance Indicators (KPIs), such as the number of database transactions per second, or the volume of network requests that are successfully serviced in a given timeframe. Some of these KPIs may be available as specific performance measures, while others may be derived from a combination of metrics.
 
-> [AZURE。メモ] 悪い、または良いパフォーマンスを決定するでシステムを実行する必要がありますパフォーマンスのレベルを理解することが必要です。これは、典型的な負荷の下で機能している間、システムを観察し、各 KPI の時間の期間にわたってデータをキャプチャに必要です。これは、テスト環境でシミュレートされた負荷の下でシステムを実行し、システムを運用環境に展開する前に適切なデータの収集を伴う場合があります。
+> [AZURE.NOTE] Determining poor or good performance requires that you understand the level of performance at which the system should be capable of running. This requires observing the system while it is functioning under a typical load and capturing the data for each KPI over a period of time. This might involve running the system under a simulated load in a test environment and gathering the appropriate data before deploying the system to a production environment.
 
-> また、パフォーマンスのための監視があるシステム上の不当な負担にしてください。プロセスの監視パフォーマンスの収集データに関する詳細情報のレベルを動的に調整することができます。
+> You should also ensure that monitoring for performance purposes does not become an unwarranted burden on the system. You may be able to dynamically adjust the level of detail concerning the data that the performance monitoring process gathers.
 
-### パフォーマンスを監視するための要件
-システムのパフォーマンスを調べる演算子通常などの情報を参照してくださいする必要があります。
+### Requirements for performance monitoring
+To examine system performance, an operator would typically need to see information including:
 
-- ユーザーの要求の応答速度。
-- 同時ユーザー要求の数。
-- ネットワーク トラフィックのボリューム。
-- ビジネスで取引が完了している料金です。
-- 要求の平均処理時間。
+- The response rates for user requests.
+- The number of concurrent user requests.
+- The volume of network traffic.
+- The rates at which business transactions are being completed.
+- The average processing time for requests.
 
-スポットの相関を助けるようにオペレーターを有効にするツールを提供するために役立つことができます。
+It can also be helpful to provide tools that enable an operator to help spot correlations, such as:
 
-- 要求の待ち時間と同時ユーザーの数 (どのくらいユーザーがそれを送信した後、要求の処理を開始する)。
-- 平均応答時間に対する同時接続ユーザー数 (どのくらい処理が開始された後は、要求を完了する)。
-- 処理エラーの数と要求の量。
+- The number of concurrent users versus request latency times (how long does it take to start processing a request after the user has sent it).
+- The number of concurrent users versus the average response time (how long does it take to complete a request after it has started processing).
+- The volume of requests versus the number of processing errors.
 
-この高度な機能については、だけでなく、オペレーターがシステムの各コンポーネントのパフォーマンスの詳細なビューを取得することがあります。このデータは、追跡情報など、低レベルのパフォーマンス カウンターを使用して通常提供されます。
+As well as this high-level functional information, an operator should also be able to obtain a detailed view of the performance for each component in the system. This data is typically provided by using low-level performance counters tracking information such as:
 
-- メモリ使用率
-- スレッドの数
-- CPU の処理時間
-- 要求キューの長さ
-- ディスクまたはネットワーク I/O レートとエラー、
-- 書き込みまたは読み取りバイト数
-- キューの長さなどのミドルウェアの指標。
+- Memory utilization,
+- Number of threads,
+- CPU processing time,
+- Request queue length,
+- Disk or network I/O rates and errors,
+- Number of bytes written or read,
+- Middleware indicators, such as queue length.
 
-すべての視覚エフェクト期間; を指定する演算子を許可する必要があります。表示されるデータは、現在の状況のスナップショットおよび/またはパフォーマンスの履歴が表示可能性があります。
+All visualizations should allow an operator to specify a time period; the data displayed could be a snapshot of the current situation and/or an historical view of the performance.
 
-演算子は、任意の指定した時間間隔の間にある特定の値の任意のパフォーマンスの測定に基づくアラートを生成することができるはず。
+An operator should be able to raise an alert based on any performance measure for any given value during any specified time interval.
 
-### データ ソース、計測器、およびデータ収集の要件
-彼らが到着し、システムを通過するとユーザーの要求の進行状況を監視することによって (スループット、同時接続ユーザー数、取引数、エラー ・ レートなど)、高度なパフォーマンス データを収集できます。これは、タイミング情報とアプリケーション コードの主要ポイントでトレース ステートメントを組み込むことを含みます。すべてのエラー、例外、および警告は、それらの原因となった要求と関連付けるようにするのに十分なデータでキャプチャする必要があります。IIS ログは別の有用なソースです。
+### Data sources, instrumentation, and data collection requirements
+The high-level performance data (throughput, number of concurrent users, number of business transactions, error rates, and so on) can be gathered by monitoring the progress of users' requests as they arrive and pass through the system. This involves incorporating tracing statements at key points in the application code together with timing information. All faults, exceptions, and warnings should be captured with sufficient data to enable them to be correlated with the requests that caused them. The IIS log is another useful source.
 
-可能であれば、またアプリケーションが使用する外部システムはすべてのパフォーマンス データをキャプチャする必要があります。これらの外部システム パフォーマンス データを要求するため、独自のパフォーマンス カウンターやその他の機能を提供しました。できない場合、開始時間や操作のステータス (成功、失敗、または警告) と共に、外部システムへの各要求の終了時間などの情報を記録する必要があります。時間要求にストップウォッチのアプローチを使用できますたとえば、起動時に要求を実行する timer を起動し、要求が完了するときにタイマーを停止します。
+If possible, you should also capture performance data for any external systems that the application uses. These external systems might provide their own performance counters or other features for requesting performance data. If this is not possible, you should record information such as the start time and end time of each request made to an external system, together with the status (success, fail, or warning) of the operation. For example, you can use a stopwatch approach to time requests; start a timer running when the request starts and then stop the timer when the request completes.
 
-システムの個々 のコンポーネントの低レベルのパフォーマンス データは、Windows パフォーマンス カウンターや Azure 診断などの機能を通じて利用可能なあります。
+Low-level performance data for individual components in a system may be available through features such as Windows performance counters and Azure diagnostics.
 
-### パフォーマンス データの分析
-ユーザー要求の種類 (ショッピング カートにアイテムを追加する、電子商取引システムでチェック アウト プロセスを実行するなど) またはサブシステム、各要求が送信されるサービスによってパフォーマンス データの集計分析作業の多くで構成されています。
+### Analyzing performance data
+Much of the analysis work consists of aggregating performance data by user request type (such as adding an item to a shopping cart, or performing the checkout process in an ecommerce system) and/or the subsystem or service to which each request is sent.
 
-もう 1 つの一般的な要件が選択された百分位数のパフォーマンス データを集計します。たとえば、リクエストの 99%、95% の要求、要求の 70% に応答時間を決定します。SLA の目標があるか、各パーセン タイルの他の目標を設定します。両方で継続的な結果を報告するべきである即時の問題を検出するためにリアルタイムに近いだけでなく、統計目的のため長い時間をかけて集計されています。
+Another common requirement is summarizing performance data in selected percentiles. For example, determining the response times for 99% of requests, 95% of requests, and 70% of requests. There may be SLA targets or other goals set for each percentile. The ongoing results should be reported in both near real-time to help detect immediate issues, as well as being aggregated over the longer time for statistical purposes.
 
-待ち時間の問題は、パフォーマンスに影響を与える、場合オペレーターは迅速に各要求によって実行される各手順の遅延を調べることによって、ボトルネックの原因を特定することができますする必要があります。パフォーマンス データしたがって特定の要求にそれらを結ぶ各ステップのパフォーマンス測定値を関連付けるための手段を用意します。
+In the case of latency issues impacting performance, an operator should be quickly able to identify the cause of the bottleneck by examining the latency of each step performed by each request. The performance data must therefore provide a means of correlating performance measures for each step to tie them to a specific request.
 
-可視化の要件に応じて生成し、複雑なアドホック クエリを実行できるように raw データのビューとパフォーマンス情報の分析を含むデータ キューブに格納すると便利場合があります。
+Depending on the visualization requirements, it may be useful to generate and store a data cube containing views of the raw data to allow complex ad-hoc querying and analysis of the performance information.
 
-## セキュリティの監視
-機密性の高いデータを含むすべての商業システムは、セキュリティ構造を実装する必要があります。セキュリティ メカニズムの複雑さは通常データの機密性の機能です。ユーザーを認証を必要とするシステム、彼らは失敗するか成功するかどうかすべてのログイン試行を記録する必要があります。また、すべての操作の実行、認証済みのユーザーによってアクセスされるすべてのリソースの詳細を記録する必要があります。ユーザーが自分のセッションが終了するし、ログアウトする、この情報も記録されなければなりません。
+## Security monitoring
+All commercial systems that include sensitive data must implement a security structure. The complexity of the security mechanism is usually a function of the sensitivity of the data. In a system that requires users to be authenticated, you should record all login attempts, whether they fail or succeed. Additionally, all operations performed and the details of all resources accessed by an authenticated user should be logged. When the user terminates their session and logs out, this information should also be recorded.
 
-監視システムに攻撃を検出することができるかもしれません。たとえば、失敗したログイン試行の数が多いは、ブルート フォース攻撃を示す可能性があります。 または要求で予期せぬサージは、DDoS 攻撃の結果かもしれない。あなたはこれらの要求のソースに関係なくすべてのリソースに対するすべての要求を監視する準備する必要があります。ログインの脆弱性を持つシステムは、ユーザーが実際にログインしなくても外の世界にリソースを公開誤って可能性があります。
+Monitoring may be able to help detect attacks on the system. For example, a large number of failed login attempts might indicate a brute-force attack, or an unexpected surge in requests could be the result of a DDoS attack. You must be prepared to monitor all requests to all resources regardless of the source of these requests; a system with a login vulnerability may accidentally expose resources to the outside world without requiring that a user actually logs in.
 
-### セキュリティの監視の要件
-セキュリティ監視の最も重要な側面は、すぐに演算子は、有効にする必要があります。
+### Requirements for security monitoring
+The most critical aspects of security monitoring should enable an operator to quickly:
 
-- 認証されていないエンティティによって試みられた侵入を検出します。
-- 与えられていないアクセス、データに対して操作を実行するエンティティによって試みを識別します。
-- システム、またはシステムの一部は、外部または内部からの攻撃の下でかどうかを決定する (たとえば、認証された悪意のあるユーザーがしようとシステムをダウンさせる)。
+- Detect attempted intrusions by an unauthenticated entity,
+- Identify attempts by entities to perform operations on data for which they have not been granted access,
+- Determine whether the system, or some part of the system, is under attack from outside or inside (for example, a malicious authenticated user may be attempting to bring the system down).
 
-これらの要件をサポートするには、オペレーターに通知する必要があります。
+To support these requirements, an operator should be notified:
 
-- 繰り返される任意の指定された時間期間内の同じアカウントにログイン試行に失敗しました。
-- 場合は、同じ認証されたアカウントは、繰り返し指定された期間中に禁止されているリソースにアクセスしようとします。
-- 場合は、多数の認証または承認されていない要求は、指定された期間中に発生します。
+- Of any repeated failed login attempts made by the same account within a specified time period.
+- If the same authenticated account repeatedly tries to access a prohibited resource during a specified time period.
+- If a large number of unauthenticated or unauthorized requests occur during a specified time period.
 
-オペレーターに提供される情報は、要求ごとにソースのホスト アドレスを含める必要があります。特定のアドレスの範囲から定期的にセキュリティ違反が発生した場合は、これらのホストが禁止でした。
+The information provided to an operator should include the host address of the source for each request. If security violations regularly arise from a particular range of addresses, then these hosts could be blocked.
 
 A key part in maintaining the security of a system is being able to quickly detect actions that deviate from the usual pattern. Information such as the number of failed and/or successful login requests can be displayed visually to help detect whether there is a spike in activity at an unusual time (such as users logging in at 3am and performing a large number of operations when their working day starts at 9am). This information can also be used to help configure time-based autoscaling, For example, if an operator observes that a large number of users regularly log in at a particular time of day, the operator can arrange to start additional authentication services to handle the volume of work, and then shut these additional services down when the peak has passed.
 
-### データ ソース、計測器、およびデータ収集の要件
-セキュリティは、ほとんどの分散システムのすべての包括的な側面と関連データがシステム全体の複数の場所で生成される可能性があります。アプリケーション、ネットワーク機器、サーバー、ファイアウォール、ウイルス対策ソフトウェア、およびその他の侵入防止の要素で発生したイベントに起因するセキュリティ関連の情報を収集するために、セキュリティ情報およびイベント管理 (SIEM) アプローチを採用することを検討してください。
+### Data sources, instrumentation, and data collection requirements
+Security is an all-encompassing aspect of most distributed systems, and the pertinent data is likely to be generated at multiple points throughout a system. You should consider adopting a Security Information and Event Management (SIEM) approach to gather the security-related information resulting from events raised by the application, network equipment, servers, firewalls, antivirus software, and other intrusion prevention elements.
 
-セキュリティの監視は、外部格付機関、または、アプリケーションおよびデータへの認証されていないアクセスの試みを検出するネットワーク フィルターによってポート スキャン アクティビティを特定するユーティリティなどのアプリケーションの一部ではないツールからのデータを組み込むことができます。
+Security monitoring can incorporate data from tools that are not part of your application, such as utilities that identify port scanning activities by external agencies, or network filters that detect attempts to gain unauthenticated access to your application and data.
 
-すべてのケースで収集されたデータは、管理者が任意の攻撃の性質を判断し、適切な対策を取るを有効にしなければなりません。
+In all cases the data gathered must enable an administrator to determine the nature of any attack and take the appropriate counter-measures.
 
-### セキュリティ データの分析
-セキュリティの監視の機能は、さまざまなソースのデータが発生します。異なるフォーマットと詳細のレベルは、情報の一貫したスレッドにまとめるにキャプチャ データの複雑な分析を多く必要です。(多数のログインに失敗した、または重要なリソースへの不正アクセスを得るために繰り返された試みを検出) などの場合の最も簡単な離れてそれできない可能性があります、セキュリティ データの複雑な自動処理を実行して、代わりにタイムスタンプが、それ以外の専門家が手動解析できるようにするセキュリティで保護されたリポジトリに、元の形式で、このデータを記述することが望ましいがあります。
+### Analyzing security data
+A feature of security monitoring is the variety of sources from which the data arises. The different formats and level of detail often require complex analysis of the data captured to tie it together into a coherent thread of information. Apart from the simplest of cases (such as detecting a large number of failed logins, or repeated attempts to gain unauthorized access to critical resources), it might not be possible to perform any complex automated processing of the security data, and instead it may be preferable to write this data, time-stamped but otherwise in its original form, to a secure repository to allow for expert manual analysis.
 
 <a name="SLA-monitoring"></a>
 
-## SLA の監視
-多くの商用システムの有料顧客をサポートする Sla の形でシステムのパフォーマンスに関する保証もします。基本的に、Sla は、システムが重要な情報を失うことがなく合意された期間内の仕事の定義済みのボリュームを処理できる状態します。SLA の監視システムには測定可能な sla を確保することです。
+## SLA monitoring
+Many commercial systems that support paying customers make guarantees about the performance of the system in the form of SLAs. Essentially, SLAs state that the system can handle a defined volume of work within an agreed timeframe and without losing critical information. SLA monitoring is concerned with ensuring that the system can meet measurable SLAs.
 
-> [AZURE。メモ] SLA の監視密接に関連してパフォーマンスの監視、パフォーマンスの監視は、システムの機能を確保することにかかわっているに対し、 _最適な_、何を定義する契約上の義務によって支配される SLA の監視 _最適な_ 実際に意味します。
+> [AZURE.NOTE] SLA monitoring is closely related to performance monitoring, but whereas performance monitoring is concerned with ensuring that the system functions _optimally_, SLA monitoring is governed by a contractual obligation that defines what _optimally_ actually means.
 
-Sla の定義は頻繁です。
+SLAs are frequently defined in terms of:
 
-- システム全体の可用性。たとえば、組織は、システムは、時間の 99.9% のため使用できる保証場合があります。これは、年間では、ダウンタイムは 1 週間約 10 分の 9 時間以上に相当します。
-- 操作のスループット。この面は、1 つまたは複数キー高ウォーターマーク、システムは最大 100,000 の同時ユーザー要求をサポートまたは 10,000 の同時取引を処理することができることを保証するなどとして表されます。
-- 操作の応答時間。システムはビジネス トランザクションのすべての 99% は 2 秒以内に完了の要求が処理される速度をに関する保証をすることができるも、1 つのトランザクションがない 10 秒より長くかかります。
+- Overall system availability. For example, an organization may guarantee that the system will be available for 99.9% of the time; this equates to no more than 9 hours of downtime per year, or approximately 10 minutes a week.
+- Operational throughput. This aspect is often expressed as one or more key high-water marks, such as guaranteeing that the system will be able to support up to 100,000 concurrent user requests or handle 10,000 concurrent business transactions.
+- Operational response time. The system may also make guarantees concerning the rate at which requests are processed, such as 99% of all business transactions will complete within 2 seconds, and no single transaction will take longer than 10 seconds.
 
-> [AZURE。メモ] 商用システムのいくつかの契約は、Sla に関するカスタマー サポートなどすべてのヘルプ デスク要求は 5 分以内で応答を引き出すと、すべての問題の 99% は、一営業日以内に完全に対処する必要がもあります。効果的です [懸案事項の管理](#issue-tracking) (このセクションで後述) が sla をこれらのように重要です。
+> [AZURE.NOTE] Some contracts for commercial systems might also include SLAs concerning customer support, such as all help desk requests will elicit a response within 5 minutes, and that 99% of all problems should be fully addressed within 1 working day. Effective [issue tracking](#issue-tracking) (described later in this section) is key to meeting SLAs such as these.
 
-### SLA を監視するための要件
-オペレーターは、最高レベルのシステムが合意された Sla を満たしてしているかどうか、かどうかおよびドリル ダウンしパフォーマンスの低下の理由を決定する根本的な要因を検討していない場合を一目で確認できる必要があります。
+### Requirements for SLA monitoring
+At the highest level, an operator should be able to determine at a glance whether the system is meeting the agreed SLAs or not, and if not then to drill down and examine the underlying factors to determine the reasons for substandard performance.
 
-視覚的に描くことができます典型的なの大まかな指標が含まれます。
+Typical high-level indicators that can be depicted visually include:
 
-- サービスの稼働時間の割合です。
-- アプリケーションのスループット (取引の成功および/または 1 秒あたりの操作の面で測定される)。
-- 成功した/失敗したアプリケーション要求の数。
-- アプリケーションおよびシステムのエラー、例外、および警告の数。
+- The percentage of service uptime.
+- The application throughput (measured in terms of successful transactions and/or operations per second).
+- The number of successful/failing application requests.
+- The number of application and system faults, exceptions, and warnings.
 
-すべてのこれらの指標の一定の時間によってフィルター処理されてできる必要があります。
+All of these indicators should be capable of being filtered by a specified period of time.
 
-クラウド アプリケーションのサブシステムおよびコンポーネントの数で構成される可能性があります。オペレーターは、大まかな表示を選択し、基になる要素の健康からで構成される方法を参照してくださいすることがする必要があります。たとえば、システム全体の稼働率を下回る許容値、演算子は、ズームインし、どの要素がこの障害に貢献している判断ができる必要があります。
+A cloud application will likely comprise a number of subsystems and components. An operator should be able to select a high-level indicator and see how it is composed from the health of the underlying elements. For example, if the uptime of the overall system falls below an acceptable value, an operator should be able to zoom in and determine which element(s) are contributing to this failure.
 
-> [AZURE。メモ] システムの稼働時間は慎重に定義する必要があります。最大の可用性を確保するための冗長性を使用するシステムでは、要素の個々 のインスタンスが失敗することがありますがシステム機能を維持することができます。正常性の監視によって表されるシステムの稼働時間は、システムが実際に停止したかどうかとは必ずしも各要素の総稼働時間を示す必要があります。また、障害があります分離での機能低下が特定システムが利用できない場合でも、システムの残りの部分は使用可能な場合がありますので (e コマース システム、システムで障害が発生は注文から顧客を防ぐ可能性がありますが、顧客が製品カタログを参照することがあります)。
+> [AZURE.NOTE] System uptime needs to be defined carefully. In a system that uses redundancy to ensure maximum availability, individual instances of elements may fail, but the system can remain functional. System uptime as presented by health monitoring should indicate the aggregate uptime of each element and not necessarily whether the system has actually halted. Additionally, failures may be isolated, so even if a specific system is unavailable the remainder of the system might remain available, although with decreased functionality (in an ecommerce system, a failure in the system might prevent a customer from placing orders but the customer might still be able to browse the product catalog.)
 
-目的を警告するため、システムは大まかな指標のいずれかが指定したしきい値を超えた場合にイベントを発生させることができるはず。高レベルのインジケーターを構成するさまざまな要素の下位レベルの詳細コンテキスト データを警告システムとして利用できます。
+For alerting purposes, the system should be able to raise an event if any of the high-level indicators exceed a specified threshold. The lower-level details of the various factors that comprise the high-level indicator should be available as contextual data to the alerting system.
 
-### データ ソース、計測器、およびデータ収集の要件
-SLA の監視をサポートするために必要な生データ、パフォーマンスの状態と可用性の監視のいくつかの側面と共に監視を必要とすると似ています (詳細については、これらのセクションを参照してください)。このデータをキャプチャすることができます。
+### Data sources, instrumentation, and data collection requirements
+The raw data required to support SLA monitoring is similar to that required for performance monitoring together with some aspects of health and availability monitoring (see those sections for more details). You can capture this data by:
 
-- エンドポイントの監視を実行します。
-- 例外、エラー、および警告をログに記録します。
-- ユーザーの要求の実行をトレースします。
-- システムで使用される任意のサードパーティ製のサービスの可用性を監視します。
-- パフォーマンス メトリックおよびカウンターを使用します。
+- Performing endpoint monitoring.
+- Logging exceptions, faults, and warnings.
+- Tracing execution of user requests.
+- Monitoring the availability of any third-party services used by the system.
+- Using performance metrics and counters.
 
-すべてのデータは、タイミングし、タイムスタンプする必要があります。
+All data must be timed and time-stamped.
 
-### SLA データの分析
-インストルメンテーション データは、システムの全体的なパフォーマンスの画像を生成する、基になるサブシステムの性能の検討を可能にするドリル ダウンをサポートするために集約する必要があります。たとえば、することができます。
+### Analyzing SLA data
+The instrumentation data must be aggregated to generate a picture of the overall performance of the system and to support drill-down to enable examination of the performance of the underlying subsystems. For example, you should be able to:
 
-- 一定期間ユーザー要求の合計数を計算し、これらの要求の成功と失敗の率を決定します。
-- システム応答時間の全体的なビューを生成、ユーザー要求の応答時間を組み合わせます。
-- 進捗状況を分析ユーザー要求がブレークポイントの要求の全体的な応答時間をその要求の個々 の作業項目の応答時間に。  
-- 任意の一定の割合の稼働時間として、システムの全体的な可用性を決定します。
-- システムの個々 のコンポーネントやサービスのそれぞれの時間の可用性の割合を分析します。これはサード パーティのサービスで生成するログの解析を伴うことがあります。
+- Calculate the total number of user requests during a given period and determine the success and failure rate of these requests.
+- Combine the response times of user requests to generate an overall view of system response times.
+- Analyze the progress of user requests break the overall response time of a given request down into the response times of the individual work items in that request.  
+- Determine the overall availability of the system as a percentage uptime for any specific period.
+- Analyze the percentage time availability of each of the individual components and services in the system. This may involve parsing logs generating by third-party services.
 
-多くの商用システムは、指定された期間、通常月の合意された Sla に対する実際のパフォーマンスの数字を報告する必要があります。この情報は、その期間中に、Sla が満たされない場合顧客にクレジットまたは返済の他の形態を計算する使用ことができます。セクションで説明する手法を使用してサービスの可用性を計算できます。 [可用性データの分析](#analyzing-availability-data).
+Many commercial systems are required to report real performance figures against agreed SLAs for a specified period, typically a month. This information can be used to calculate credits or other forms of repayments for customers if the SLAs are not met during that period. You can calculate availability for a service by using the technique described in the section [Analyzing Availability Data](#analyzing-availability-data).
 
-内部目的組織も数とサービスの失敗の原因となった事件の性質を追跡可能性があります。ダウンタイムを短縮し、Sla の達成を助けるこれらの問題を迅速に解決したり、完全に排除する方法を学習します。
+For internal purposes, an organization might also track the number and nature of incidents that caused services to fail. Learning how to resolve these issues quickly, or eliminate them completely, will help to reduce downtime and meet SLAs.
 
-## 監査
-アプリケーションの性質に応じて、ユーザーとすべてのデータ アクセスの記録によって実行される操作の監査の要件を指定する法定またはその他の法的規制があります。特定の要求に対して顧客をリンクする証拠を提供できる監査否認は、顧客とアプリケーションまたはサービスを担当する組織の信頼を維持するために多くの e ビジネス システムの重要な要因があるとあります。
+## Auditing
+Depending on the nature of the application, there may be statutory or other legal regulations that specify requirements for auditing the operations performed by users and recording all data access. Auditing can provide evidence linking customers to specific requests; non-repudiation is an important factor in many e-business systems to help maintain trust be between a customer and the organization responsible for the application or service.
 
-### 監査の要件
-アナリストは、ユーザーの行動を再構築することができますは、ユーザーが実行している業務の過程を追跡できる必要があります。これは、レコードの問題として単にまたはフォレンジック調査の一部として必要があります。
+### Requirements for auditing
+An analyst must be able to trace the sequence of business operations being performed by users so that you can reconstruct users' actions. This may be necessary simply as a matter of record, or as part of a forensic investigation.
 
-監査情報があります機密性の高い可能性が実行しているタスクと共にシステムのユーザーを識別するデータが含まれます。このため、ドリル ダウン グラフィカル操作をサポートする対話型システムを使用してなく監査情報はのみ可能な信頼されたアナリスト レポートの形で可視化される可能性が最も高いです。アナリストは、たとえば単一ユーザーの活動年表の詳細またはシーケンス操作が 1 つまたは複数のリソースに対して実行特定の期間中に発生したすべてのユーザーの活動をリスト、レポートの範囲を生成することができるはず。
+Audit information is highly sensitive as it will likely include data that identifies the users of the system together with the tasks that they are performing. For this reason, it is most likely that audit information will be visualized in the form of reports only available to trusted analysts rather than by using an interactive system that supports drill-down graphical operations. An analyst should be able to generate a range of reports, for example listing all users' activities occurring during a specified time-frame, detailing the chronology of activity for a single user, or listing the sequence operations performed against one or more resources.
 
-### データ ソース、計測器、およびデータ収集の要件
-監査のための情報の主要な情報源があります。
+### Data sources, instrumentation, and data collection requirements
+The primary sources of information for auditing can include:
 
-- ユーザー認証を管理するセキュリティ システムです。
-- ユーザーの利用状況を記録するログをトレースします。
-- セキュリティは、すべての個人情報と非個人のネットワーク要求を追跡記録します。
+- The security system that manages user authentication.
+- Trace logs recording user activity.
+- Security logs tracking all identifiable and non-identifiable network requests.
 
-監査データが格納されている方法の形式は、規制要件によって駆動する可能性があります。たとえば、それは (それは元の形式で記録される必要があります) 何らかの方法でデータをきれいにすることができない場合があり、改ざんを防止するそれが開催されますリポジトリへのアクセスを保護する必要があります。
+The format of the audit data and the way in which it is stored might be driven by regulatory requirements. For example, it may not be possible to clean the data in any way (it must be recorded in its original format), and access to the repository in which it is held must be protected to prevent tampering.
 
-### 監査データの分析
-アナリストは、そのまま元の形式の生のデータにアクセスできる必要があります。別に共通する要件監査レポート、このデータを分析に使用するツールは特化しシステムに外部保存可能性が高い。
+### Analyzing audit data
+An analyst must be able to access the raw data in its entirety in its original form. Aside from the requirement to generate common audit reports, the tools used to analyze this data are likely to be specialized and kept external to the system.
 
-## 利用状況の監視
-利用状況の監視機能と、アプリケーションのコンポーネントの使用方法を追跡します。収集したデータを利用することができます。
+## Usage monitoring
+Usage monitoring tracks how the features and components of an application are used. The data gathered can be utilized to:
 
-- 機能の使用頻度が高いとシステムの潜在的なホット スポットを確認決定します。高トラフィックの要素は、機能分割またはもレプリケーション負荷をより均等に分散するから寄与できます。この情報は、機能の使用頻度の低いと可能な候補者は、退職またはシステムの将来のバージョンで置換を確認するためにも使用できます。
-- 通常の使用の下でシステムの稼働中のイベントに関する情報を取得します。たとえば、e コマース サイトのトランザクションの数とそれらのための責任がある顧客の量に関する統計情報を記録します。この情報は、容量計画のお客様の数が増えるにつれて使用可能性があります。
-- パフォーマンスとシステムの機能にユーザーの満足度検出 (多分間接的に) します。たとえば、e-コマース システムの顧客の多数は定期的に、ショッピング カートを放棄する場合、これはチェック アウト機能の問題が原因かもしれない。
-- 課金情報を生成します。商用アプリケーションやマルチ テナント サービスは、彼らが使用するリソースのための顧客を満たすかもしれない。
-- クォータを適用します。マルチ テナント システム内のユーザーは、指定された期間中に時間やリソースの使用状況を処理する彼らの有料のクォータを超えた場合、そのアクセス制限できるまたは処理の調整。
+- Determine which features are heavily used and determine any potential hotspots in the system. High-traffic elements could benefit from functional partitioning or even replication to spread the load more evenly. This information can also be used to ascertain which features are infrequently used and are possible candidates for retirement or replacement in a future version of the system.
+- Obtain information about the operational events of the system under normal use. For example, in an e-commerce site you could record the statistical information about the number of transactions and the volume of customers that are responsible for them. This information could be used for capacity planning as the number of customers grows.
+- Detect (possibly indirectly) user satisfaction with the performance or functionality of the system. For example, if a large number of customers in an e-commerce system regularly abandon their shopping carts this could be due to a problem with the checkout functionality.
+- Generate billing information. A commercial application or multi-tenant service may charge customers for the resources that they use.
+- Enforce quotas. If a user in a multi-tenant system exceeds their paid quota of processing time or resource usage during a specified period, their access can be limited or processing throttled.
 
-### 使用状況を監視するための要件
-システムの使用状況を調べる演算子通常などの情報を参照してくださいする必要があります。
+### Requirements for usage monitoring
+To examine system usage, an operator would typically need to see information including:
 
-- 各サブシステムによって処理され、各リソースに指示されている要求の数。
-- 各ユーザーによって実行される作業。
-- 各ユーザーによって占められるデータ ストレージのボリューム。
-- 各ユーザーによってアクセスされるリソース。
+- The number of requests being processed by each subsystem and directed to each resource.
+- The work being performed by each user.
+- The volume of data storage occupied by each user.
+- The resources being accessed by each user.
 
-オペレーター必要があります、グラフを生成することができますたとえば、最もリソースを消費したり、最も頻繁にアクセスされるリソースを表示します。
+An operator should also be able to generate graphs, for example, displaying the most resource-hungry users, or the most frequently accessed resources.
 
-### データ ソース、計測器、およびデータ収集の要件
-利用状況の追跡は、各要求の開始と終了の時刻と (読み取り、書き込み、およびように、問題のリソースによって) 要求の性質を指摘し、比較的高いレベルで実行できます。この情報を取得できます。
+### Data sources, instrumentation, and data collection requirements
+Usage tracking can be performed at a relatively high level, noting the start and end time of each request and the nature of the request (read, write, and so on, depending on the resource in question). You can obtain this information by:
 
-- ユーザーの利用状況をトレースします。
-- キャプチャのパフォーマンス カウンターは、各リソースの使用率を測定します。
-- 各ユーザーによって実行される操作の CPU や I/O の使用率を監視します。
+- Tracing user activity.
+- Capturing performance counters measuring the utilization for each resource.
+- Monitoring the CPU and I/O utilization of operations performed by each user.
 
-目的を計量のためまたアイデンティティをどのユーザーが実行する操作、およびこれらの操作を利用するリソースを担当することができる必要があります。収集した情報は、正確な請求を有効にするのに十分な詳細。
+For metering purposes, you also need to be able to identity which users are responsible for performing which operations and the resources that these operations utilize. The information gathered should be detailed enough to enable accurate billing.
 
 <a name="issue-tracking"></a>
-## 懸案事項の管理
-お客様および他のユーザーは、システムで予期しないイベントや動作が発生した場合に問題を報告する場合があります。問題追跡はこれらの問題を管理する、システムで任意の根本的な問題を解決するための努力にそれらを関連付ける、可能な解像度の顧客を知らせることにかかわっています。
+## Issue tracking
+Customers and other users may report issues if unexpected events or behavior occurs in the system. Issue tracking is concerned with managing these issues, associating them with efforts to resolve any underlying problems in the system, and informing customers of possible resolutions.
 
-### 問題追跡の要件
-懸案はしばしば演算子を記録し、ユーザーによって報告された問題の詳細を報告することができます別のシステムを使用して実行されます。これらの詳細には、ユーザーが実行しようとして症状の問題、一連のイベント、およびエラー メッセージや警告メッセージに発行されたタスクなどの情報を含めることができます。
+### Requirements for issue tracking
+Issue tracking is often performed by using a separate system that enables operators to record and report the details of problems reported by users. These details can include information such as the tasks that the user was attempting to perform, symptoms of the problem, the sequence of events, and any error or warning messages that were issued.
 
-### データ ソース、計測器、およびデータ収集の要件
-問題追跡データの初期データ ソースは、最初の場所で問題を報告したユーザーです。クラッシュ ダンプ (存在する場合は、アプリケーションは、ユーザーのデスクトップで実行されるコンポーネントを含む)、画面スナップショット、日付、場所などその他の環境情報と共にエラーが発生した時刻などの追加データを提供することができます。
+### Data sources, instrumentation, and data collection requirements
+The initial data source for issue tracking data is the user that reported the issue in the first place. The user may be able to provide additional data such as a crash dump (if the application includes a component that runs on the user's desktop), a screen snapshot, and the date and time at which the error occurred together with any other environmental information such as their location.
 
-この情報は、デバッグ作業にフィードを使用できます、ソフトウェアの今後のリリースのバックログを構築するのに役立ちます。
+This information can be used to feed in to the debugging effort and help to construct a backlog for future releases of the software.
 
-### 問題の追跡データの分析
-別のユーザーが同じ問題を報告ことがあります、問題追跡システムは、一緒に共通のレポートを関連付ける必要があります。
+### Analyzing issue tracking data
+Different users may report the same problem, and the issue tracking system should associate common reports together.
 
-各問題レポートに対してデバッグ作業の進行状況を記録して、ソリューションの顧客を通知ことができます問題を解決する場合。
+The progress of the debugging effort should be recorded against each issue report, and when the problem is resolved the customer can be informed of the solution.
 
-ユーザーは、問題追跡システムの知られているソリューションと認識された問題を報告する場合オペレーターはソリューションのユーザーにすぐに通知することができるはず。
+If a user reports a recognized issue with a known solution in the issue tracking system, the operator should be able to inform the user of the solution immediately.
 
-## 操作のトレースとデバッグのソフトウェア リリース
-ユーザーは、問題を報告、ユーザーは彼または彼女の操作に、ユーザーのみ報告できます自分の経験の結果システムの保守を担当オペレーターに直接的な影響を認識して頻繁にただ。これらの経験は、通常、1 つまたは複数の基本的な問題の目に見える症状だけです。(このプロセスと呼ばれます問題の根本的な原因を確立する基盤となる操作の年表を掘るする必要があります多くの場合、アナリスト _根本原因の解析_).
+## Tracing operations and debugging software releases
+When a user reports an issue, the user is often only aware of the immediate impact that it has on his or her operations, and the user can only report the results of their own experience back to an operator responsible for maintaining the system. These experiences are usually just a visible symptom of one or more fundamental problems. In many cases, an analyst will need to dig through the chronology of the underlying operations to establish the root cause of the problem (this process is referred to as _Root Cause Analysis_).
 
-> [AZURE。メモ] 根本原因解析アプリケーションのデザインの非効率な部分が明らかに。これらの状況では、影響を受ける要素を手直しし、後続のリリースの一部として配置可能ながあります。このプロセスは、注意制御を必要とし、更新されたコンポーネントを密接に監視する必要があります。
+> [AZURE.NOTE] Root Cause Analysis may uncover inefficiencies in the design of an application. In these situations, it may be possible to rework the affected elements and deploy them as part of a subsequent release. This process requires careful control, and the updated components should be monitored closely.
 
-### トレースとデバッグの要件
-予期せぬ出来事やその他の問題をトレースするための監視データは高レベルで発生する問題についてだけの十分な情報を提供しますが、またアナリストがこれらの問題の起源に戻るトレースを有効にして、発生したイベントのシーケンスを再構築するための十分な詳細が含まれていますが重要です。この情報は、開発者は、再発を防ぐために必要な変更を加えることができるように、問題の根本的な原因を診断するアナリストを有効にするのに十分でなければなりません。
+### Requirements for tracing and debugging
+For tracing unexpected events and other problems, it is vital that the monitoring data provides enough information not just about issues that occur at the high level, but also includes sufficient detail to enable an analyst to trace back to the origins of these issues and reconstruct the sequence of events that occurred. This information must be sufficient to enable an analyst to diagnose the root cause of any problems so that a developer can make the necessary modifications to prevent them from recurring.
 
-### データ ソース、計測器、およびデータ収集の要件
-トラブルシューティング トレース、顧客が特定の要求をするときは、システム内の論理の流れを描いたツリーを構築する処理の一部として呼び出されるすべてのメソッド (とそのパラメーター) を含むことができます。例外は、この流れの結果としてシステムによって生成された警告記録、キャプチャする必要があります。
+### Data sources, instrumentation, and data collection requirements
+Troubleshooting can involve tracing all the methods (and their parameters) invoked as part of an operation to build up a tree depicting the logical flow through the system when a customer makes a specific request. Exceptions and warnings generated by the system as a result of this flow need to be captured and logged.
 
-デバッグをサポートするには、システムは、システムの重大なポイントで状態情報をキャプチャする演算子を有効にするフックを提供または選択された操作の進行状況として詳細なステップバイ ステップの情報をお届けできます。さらに課すことができるこの詳細レベルでデータをキャプチャ システムの負荷は、複製が困難である非常に珍しい一連のイベントが発生したとき、または 1 つの新しいリリースを主に使用される一時的なプロセスをする必要がありますまたは期待どおりに機能することを確保するため見極めシステムにより多くの要素が必要です。
+To support debugging, the system can provide hooks that enable an operator to capture state information at crucial points in the system, or deliver detailed step-by-step information as selected operations progress. Capturing data at this level of detail can impose an additional load on the system should be a temporary process, mainly used when a highly unusual series of events occur that is difficult to replicate, or when a new release of one or more elements into a system require careful monitoring to ensure that they function as expected.
 
-## 監視と診断のパイプライン
-重要な課題を提起する大規模な分散システムを監視し、前のセクションで説明するシナリオのそれぞれ見なす必要がありますいない必ずしも単独で。このデータが処理され、さまざまな方法で提示する必要がありますが、それぞれの状況に必要な監視および診断データの重要な重複をする可能性があります。これらの理由から、監視と診断の全体的なビューを取る必要があります。
+## The monitoring and diagnostics pipeline
+Monitoring a large-scale distributed system poses a significant challenge, and each of the scenarios described in the previous section should not necessarily be considered in isolation. There is likely to be a significant overlap in the monitoring and diagnostic data required for each situation, although this data may need to be processed and presented in different ways. For these reasons, you should take a holistic view of monitoring and diagnostics.
 
-施設は図 1 に示す段階パイプラインとして全体の監視と診断のプロセスを想定することができます。
+You can envisage the entire monitoring and diagnostics process as a pipeline that comprises the stages shown in Figure 1.
 
 ![](media/best-practices-monitoring/Pipeline.png)
 
-_図 1。
-監視と診断のパイプラインの段階_
+_Figure 1.
+The stages in the monitoring and diagnostics pipeline_
 
 Figure 1 highlights how the data for monitoring and diagnostics can come from a variety of data sources. The Instrumentation/Collection stage is concerned with instrumentation; determining which data to capture, how to capture it, and how to format this data so that it can be easily examined. The Analysis/Diagnosis phase takes the raw data and uses it to generate meaningful information that can be used to determine the state of the system. This information can be used to make decisions about possible actions to take, and the results can be fed back into the Instrumentation/Collection phase. The Visualization/Alerting stage phase presents a consumable view of the system state; it could display information in near real-time by using a series of dashboards, and it could generates reports, graphs, and charts to provide a historical view of the data that can help identify long-term trends. If information indicates that a KPI is likely to exceed acceptable bounds, then this stage can also trigger an alert to an operator. In some cases, an alert can also be used to trigger an automated process that attempts to take corrective actions, such as auto-scaling.
 
-手順が段階を並列で発生している連続的なフロー プロセスを構成することに注意してください。理想的には、すべての段階を動的に構成可能でする必要があります。いくつかの点でシステムが新しく展開されているまたは、問題が発生している場合は特により頻繁に拡張データを収集するために必要な場合があること。他の回でそれはシステムが正常に機能していることを確認する重要な情報の基本レベルをキャプチャすることが可能する必要があります。
+Note that these steps constitute a continuous-flow process where the stages are happening in parallel. Ideally, all the phases should be dynamically configurable; at some points, especially when a system has been newly deployed or is experiencing problems, it may be necessary to gather extended data on a more frequent basis. At other times, it should be possible to revert to capturing a base-level of essential information to verify that the system is functioning properly.
 
-さらに、全体の監視プロセスの微調整とフィードバックの結果として改善されるライブ、継続的なソリューションと見なさ必要があります。たとえば、システムの状態を判断する多くの要因を測定する場合の開始可能性があります時間をかけて分析につながる可能性しますが、洗練無関係で対策を破棄するより正確に必要なデータに焦点を当てるようにすること、任意のバック グラウンド ノイズを最小限に抑えながら。
+Additionally, the entire monitoring process should be considered a live, ongoing solution that is subject to fine-tuning and improvements as a result of feedback. For example, you might start with measuring many factors to determine system health, but analysis over time might lead to a refinement as you discard measures that are not relevant, enabling you to more precisely focus on the data that you need while minimizing any background noise.
 
-## 監視および診断データのソース
+## Sources of monitoring and diagnostic data
 The information used by the monitoring process can come from several sources, as illustrated in Figure 1. At the application level, information comes from trace logs incorporated into the code of the system. Developers should follow a standard approach for tracking the flow of control through their code (for example, on entry to a method emit a trace message that specifies the name of the method, the current time, the value of each parameter, and any other pertinent information. Recording the entry and exit times could also prove useful). You should log all exceptions and warnings, and ensure that you retain a full trace of any nested exceptions and warnings. Ideally, you should also capture information that identifies the user running the code together with activity correlation information (to track requests as they pass through the system), and log attempts to access all resources such as message queues, databases, files, and other dependent services; this information can be used for metering and auditing purposes.
 
-多くのアプリケーションを作るライブラリとフレームワークを使用して、データ ストアへのアクセスや、ネットワークを介した通信などの一般的なタスクを実行します。これらのフレームワークは、独自のトレース メッセージとトランザクション ・ レート、データ伝送成功と失敗など生の診断情報の出力に設定可能します。
+Many applications make use of libraries and frameworks to perform common tasks such as accessing a data store or communicating over a network. These frameworks may be configurable to output their own trace messages and raw diagnostic information such as transaction rates, data transmission successes and failures, and so on.
 
-> [AZURE。メモ] 現代の多くのフレームワークは自動的にパフォーマンスとトレース イベントを公開し、単に取得して処理や分析することができますそれを格納する手段を提供するは、この情報をキャプチャします。
+> [AZURE.NOTE] Many modern frameworks automatically publish performance and trace events, and capturing this information is simply a matter of providing a means to retrieve and store it where it can be processed and analyzed.
 
-アプリケーションが実行されているオペレーティング システムは、I/O レート、メモリ使用率と CPU 使用率を示すパフォーマンス カウンターなどの低レベルのシステム全体の情報のソースにすることができます。(ファイルが正しく開く障害) などのオペレーティング システム エラーも報告される可能性があります。
+The operating system on which the application is running can be a source of low-level system-wide information, such as performance counters indicating I/O rates, memory utilization, and CPU usage. Operating system errors (such as the failure to open a file correctly) may also be reported.
 
-また、基になるインフラストラクチャとシステムを実行するコンポーネントを検討してください。仮想マシン、仮想ネットワーク、ストレージ サービス、重要なインフラストラクチャ レベルのパフォーマンス カウンターのソースおよび他の診断データをするすべてのことができます。
+You should also consider the underlying infrastructure and components on which your system runs. Virtual machines, virtual networks, and storage services can all be sources of important infrastructure-level performance counters and other diagnostic data.
 
-アプリケーションが web サーバーまたはデータベース管理システムなどの他の外部サービスを使用している場合これらのサービスは、独自のトレース情報、ログ、およびパフォーマンス カウンターを公開したり。SQL Server データベースに対して実行された操作を追跡するため SQL Server の動的管理ビューがあります、インターネット インフォメーション サーバー トレース ログは、web サーバーに対する要求を記録するため。
+If your application uses other external services, such as a web server or database management system, these services might publish their own trace information, logs, and performance counters. Examples include SQL Server Dynamic Management Views for tracking operations performed against a SQL Server database, and Internet Information Server trace logs for recording requests made to a web server.
 
-システムのコンポーネントは変更し、新しいバージョンを展開、属性、イベント、および各バージョンに指標することができることが重要です。この情報は、コンポーネントの特定のバージョンで問題をすばやく追跡して修正できるようにリリース パイプラインに結合する必要があります。
+As the components of a system are modified and new versions deployed, it is important to be able to attribute issues, events, and metrics to each version. This information should be tied back to the release pipeline so that problems with a specific version of a component can be tracked quickly and rectified.
 
-セキュリティ上の問題は、システムで任意の時点で発生する可能性があります。ユーザーが無効なユーザー ID またはパスワードを使用してログインを試みる可能性がありますたとえば、認証済みのユーザーがリソースに無許可でアクセスしてみてください。または、ユーザーが無効なまたは古いキーで暗号化された情報にアクセスを提供可能性があります。成功および失敗した要求のセキュリティ関連情報を記録常にする必要があります。
+Security issues might occur at any point in the system. For example, a user might attempt to log in with an invalid user ID or password; an authenticated user might try and obtain unauthorized access to a resource; or a user might provide an invalid or outdated key to access encrypted information. Security-related information for successful and failing requests should always be logged.
 
-セクション [アプリケーションのインストルメント化](#instrumenting-an-application) あなたをキャプチャする必要があります、しかし、最初の場所でこの情報を収集するために使用することができます戦略のさまざまな情報をさらにガイダンスが含まれています。
+The section [Instrumenting an Application](#instrumenting-an-application) contains further guidance on the information that you should capture, but there are a variety of strategies that you can use to gather this information in the first place:
 
-- **アプリケーション/システム監視**.この戦略は、アプリケーション、アプリケーション フレームワーク、オペレーティング システム、およびインフラストラクチャ内の内部ソースを使用しています。アプリケーション コード自体を生成独自のクライアント要求のライフ サイクルの中に注目すべき点のデータを監視できます。アプリケーションは、選択的に有効または無効も状況に応じて可能性がありますトレース ステートメントを含めることができます。それは診断フレームワークを使用して診断を動的に挿入することもできます。これらのフレームワークでは、プラグインは、コード内のさまざまな計測ポイントに接続し、これらのポイントでトレース データをキャプチャできます通常提供します。
+- **Application/System Monitoring**. This strategy uses internal sources within the application, the application frameworks, operating system, and infrastructure. The application code itself can generate its own monitoring data at notable points during the lifecycle of a client request. The application can include tracing statements which may be selectively enabled or disabled as circumstances dictate. It may also be possible to inject diagnostics dynamically by using a diagnostics framework. These frameworks typically provide plugins that can attach to various instrumentation points in your code and capture trace data at these points.
 
-さらに、あなたのコードおよび基盤となるインフラストラクチャの重要なポイントでイベントを発生させる可能性があります。これらのイベントをリッスンするように構成されたエージェントを監視すると、イベント情報が記録できます。
+Additionally, your code and/or the underlying infrastructure may raise events at critical points. Monitoring agents that are configured to listen for these events can record the event information.
 
-- **実ユーザの監視**.このアプローチは、ユーザーとアプリケーションの相互作用を記録し、各要求と応答の流れを観察します。この情報は、二つの目的を持つことができます: 各ユーザーが、使用量を計量するため使用されることができます、ユーザーが適切な品質のサービス (たとえば、高速な応答時間、低レーテンシー、そして発生する最小限のエラー) を受けているかどうかを決定する使用できます。キャプチャされたデータは、システムが遅く、おそらくボトルネックのいくつかの他のフォームまたはアプリケーションのホット スポットのための最もよく障害が発生する懸念や要素の領域を識別する使用できます。このアプローチが慎重に実装されている場合、デバッグとテストの目的でアプリケーション ユーザーの流れを再構築することが可能かもしれません。
+- **Real User Monitoring**. This approach records the interactions between a user and the application and observes the flow of each request and response. This information can have a two-fold purpose: it can be used for metering usage by each user, and it can be used to determine whether users are receiving a suitable quality of service (for example, fast response times, low latency, and minimal errors occurring). The data captured can be used to identify areas of concern where failures most frequently occur, and elements where the system slows down, possibly due to hotspots in the application or some other form of bottleneck. If this approach is carefully implemented, it may be possible to reconstruct users' flows through the application for debugging and testing purposes.
 
-	> [AZURE。重要です] 実際のユーザーを監視することによってキャプチャされたデータは、機密情報が含まれる場合、機密性の高い考慮されなければなりません。キャプチャしたデータを保存する場合は、安全に格納する必要があります。パフォーマンスの監視、またはデバッグの目的のためのデータを使用している場合は、すべての個人を特定できる情報を最初に取り除く必要が。
+	> [AZURE.IMPORTANT] The data captured by monitoring real users should be considered highly sensitive as it may include confidential material. If the captured data is saved it must be stored securely. If the data is being used for performance monitoring or debugging purposes, all personally identifiable information should be stripped out first.
 
-- **合成ユーザーの監視**.このアプローチは、ユーザーをシミュレートし、構成可能な典型的な一連の操作を実行するテスト クライアントを記述します。システムの状態を確認するためのテスト クライアントのパフォーマンスを追跡することができます。ロード テストの操作の一部としてテスト クライアントの複数のインスタンスを使用して、ストレスの下でのシステムの応答方法およびこれらの条件下でどのような出力を監視が生成されますを確立することができますも。
+- **Synthetic User Monitoring**. In this approach, you write your own test client that simulates a user and performs a configurable but typical series of operations. You can track the performance of the test client to help determine the state of the system. You can also use multiple instances of the test client as part of a load-testing operation to establish how the system responds under stress, and what sort of monitoring output is generated under these conditions.
 
-	> [AZURE。メモ] 現実と合成ユーザーのコードをトレースし、メソッドの呼び出しとアプリケーションの他の重要な部分の実行時間を含む監視を実装できます。
+	> [AZURE.NOTE] You can implement real and synthetic user monitoring by including code that traces and times the execution of method calls and other critical parts of an application.
 
-- **プロファイリング**.このアプローチは主に対象のモニタリングとアプリケーションのパフォーマンスを改善に。なく、現実と合成ユーザーの監視によって採用の機能レベルで動作し、アプリケーションの実行中に低レベル情報を捕捉します。(時間で特定の時点でアプリケーションが実行されているコードのどの部分の決定)、アプリケーションの実行状態の周期的なサンプリングまたは (開始およびメソッド呼び出しの最後) など重要な局面でコードにプローブを挿入し、何時、どのメソッドが呼び出されたことを記録するインストルメンテーションを使用して、プロファイリングをによって実装できます。、各呼び出しに要したとします。このデータは、アプリケーションのどの部分でパフォーマンス問題を引き起こす可能性を決定する分析できます。
+- **Profiling**. This approach is primarily targeted at monitoring and improving application performance. Rather than operating at the functional level employed by real and synthetic user monitoring, it captures lower-level information as the application runs. Profiling can be implemented by periodic sampling of the execution state of an application (determining which piece of code that the application is running at a given point in time), or by using instrumentation that inserts probes into the code at important junctures (such as the start and end of a method call) and records which methods were invoked, at what time, and how long each call took. This data can then be analyzed to determine which parts of the application could cause performance problems.
 
-- **エンドポイントの監視**.この技法は、監視を有効にする具体的には、アプリケーションによって公開された 1 つまたは複数の診断エンドポイントを使用します。エンドポイントはアプリケーション コードに経路を提供し、システムの状態に関する情報を返すことができます。さまざまなエンドポイントは、機能のさまざまな側面に集中できました。定期的な要求をこれらのエンドポイントに送信する独自の診断クライアントを記述して、応答を吸収します。この方法の詳細に説明してで、 [健康エンドポイント監視パターン](https://msdn.microsoft.com/library/dn589789.aspx) Microsoft の web サイト。
+- **Endpoint Monitoring**. This technique uses one or more diagnostic endpoints exposed by the application specifically to enable monitoring. An endpoint provides a pathway into the application code and can return information about the health of the system. Different endpoints could focus on various aspects of the functionality. You can write your own diagnostics client that sends periodic requests to these endpoints and assimilate the responses. This approach is described more fully by the [Health Endpoint Monitoring Pattern](https://msdn.microsoft.com/library/dn589789.aspx) on the Microsoft website.
 
-最大範囲は、お互いとの組み合わせでこれらのテクニックを使わなければなりません。
+For maximum coverage, you should use these techniques in combination with each other.
 
 <a name="instrumenting-an-application"></a>
-## アプリケーションのインストルメント化
-計装、監視プロセスの重要な部分最初の場所でこれらの決定をすることを可能にするデータをキャプチャする場合、パフォーマンスとシステムの正常性について意味のある決定はできるのみです。インストルメンテーションを使用して収集する情報は、パフォーマンスを評価し、問題を診断トレースを実行するリモートの運用サーバーへのログインにあるかしなくても、意思決定を行うことができるように十分な (およびデバッグ) を手動でする必要があります。
+## Instrumenting an application
+Instrumentation is a critical part of the monitoring process; you can only make meaningful decisions about the performance and health of a system if you capture the data that enables you to make these decisions in the first place. The information that you gather by using instrumentation should be sufficient to enable you to assess performance, diagnose problems and make decisions without necessitating that you have to log in to a remote production server to perform tracing (and debugging) manually.
 
-インストルメンテーション データは通常、トレース ログ、およびメトリックに書き込まれた情報を構成します。
+The instrumentation data will typically comprise information written to trace logs, and metrics:
 
 - The contents of a trace log can be the result of textual data written by the application, binary data created as the result of a trace event (if the application is using Event Tracing for Windows – ETW), or they can be generated from system logs that record events arising from parts of the infrastructure, such as a web server. Textual log messages are often designed to be human-readable, but they should also be written in a format that enables them to be easily parsed by an automated system. You should also categorize logs; don't write all trace data to a single log but use separate logs to record the trace output from different operational aspects of the system. This enables you to quickly filter log messages by reading from the appropriate log rather than having to process a single lengthy file. Never write information that has different security requirements (such as audit information and debugging data) to the same log.
 
-	> [AZURE。メモ] ログは、ファイル システム上のファイルとして実装されるかもしれないまたは blob ストレージ内の blob などいくつかの他の形式で開催できます。ログ情報は、テーブル内の行より構造化されたストレージで開催されるかもしれない。
+	> [AZURE.NOTE] A log may be implemented as a file on the file system, or it could be held in some other format such as a blob in blob storage. Log information might also be held in more structured storage, such as rows in a table.
 
-- メトリック一般的に単にメジャーまたはいくつかの側面またはリソースの数になりますシステム特定の時に 1 つまたは以上のタグまたはディメンションを関連付ける (とも呼ばれます、 _サンプル_).メトリックの 1 つのインスタンスは通常分離; で役に立ちません代わりに時間をかけて取得するメトリックがあります。考慮する重要な問題は、メトリクスを記録する必要がありますどのように頻繁。あまりにも頻繁メトリックス データを生成するはキャプチャ統計情報まれ可能性があります欠場する原因と重要なイベントにつながる状況に対しシステムの大幅な追加の負荷を課すことができます。考慮事項は、メトリックのメトリックに異なります。たとえば、サーバーの CPU 使用率は 2 番目、2 番目から大幅に異なる場合がありますが、人数分以上長い場合のみ問題となる使用率が高い。
+- Metrics will generally simply be a measure or count of some aspect or resource in the system at a specific time with one or more associated tags or dimensions (sometimes referred to as a _sample_). A single instance of a metric is usually not useful in isolation; instead metrics have to be captured over time. The key issue to consider is which metrics should you record and how frequently. Generating data for metrics too often can impose a significant additional load on the system, whereas capturing metrics infrequently may cause you to miss the circumstances leading to a significant event. The considerations will vary from metric to metric. For example, CPU utilization on a server may vary significantly from second to second, but high utilization only becomes an issue if it is long-lived over a number of minutes.
 
 <a name="information-for-correlating-data"></a>
-### データの相関について
+### Information for correlating data
 You can easily monitor individual system-level performance counters, capture metrics for resources, and obtain application trace information from various log files, but some forms of monitoring require the analysis and diagnostics stage in the monitoring pipeline to correlate the data retrieved from several sources. This data may take several forms in the raw data, and the analysis process must be provided with sufficient instrumentation data to be able to map these different forms. For example, at the application framework level, a task might be identified by a thread ID but within an application the same work might be associated with the user ID for the user performing that task. Furthermore, there is unlikely to be a 1:1 mapping between threads and user requests as asynchronous operations may reuse the same threads to perform operations on behalf of more than one user.  To complicate matters further, a single request may be handled by more than one thread as execution flows through the system. If possible, associate each request with a unique activity ID that is propagated through the system as part of the request context (the technique for generating and including activity IDs in trace information will be dependent on the technology being used to capture the trace data).
 
-すべての監視データは、同じ方法でタイムスタンプする必要があります。一貫性を保つのためには、世界協定時刻を使用して、すべての日付と時刻を記録します。これは、イベントのトレース シーケンスより簡単にできるようにするに役立ちます。
+All monitoring data should be time-stamped in the same way. For consistency, record all dates and times by using Coordinated Universal Time. This will help to enable you to more easily trace sequences of events.
 
-> [AZURE。メモ] 異なるタイムゾーンとネットワークで動作しているコンピューターでの複数のマシンにわたる計測データの相関だけでタイムスタンプを使用して依存しないでくださいを同期できません可能性があります。
+> [AZURE.NOTE] Computers operating in different timezones and networks might not be synchronized, so you should not depend on using timestamps alone for correlating instrumentation data that spans multiple machines.
 
-### インストルメンテーション データはどのような情報を含める必要がありますか。
-インストルメンテーション データを収集する必要がありますを決定するときは、次の点を考慮してください。
+### What information should the instrumentation data include?
+Consider the following points when deciding which instrumentation data you need to collect:
 
-- トレース イベントによって取り込まれた情報は、マシンと人間が読めるはずです。 この情報システム、ログ データの自動処理を容易にするための明確に定義されたスキーマを採用し、操作し、エンジニア リング スタッフ、ログの読み取りの一貫性を提供する必要があります。展開の環境は、プロセスを実行する、プロセス、およびコール スタックの詳細マシンなどの環境情報を含めます。  
-- プロファイリング システムに大きなオーバーヘッドを課すことができるおよび必要な場合にのみ有効にする必要があります。インストルメンテーションを使用するプロファイリングと、(メソッドの呼び出し) などのイベントが選択されたイベントを記録サンプリングのみに対しに、それが発生するたびに記録されます。選択できる時間ベース-N 秒ごとに 1 回、または周波数に基づく-すべての n 個の要求したら。イベントが非常に頻繁に発生する場合インストルメンテーションによってプロファイリングも負担の多くを引き起こす可能性があり、全体的なパフォーマンスに影響を与えるそれ自身。この場合、サンプリング アプローチは望ましいかもしれません。ただし、イベントの頻度が低い場合、サンプリングがそれらを逃す可能性があります、この場合はインストルメンテーションより適切な方法があります。
-- 各要求のソースを決定するには、開発者または管理者を有効にするための十分なコンテキストを提供します。これは、要求、および計算作業と使用リソースこのアクティビティを関連付けるために使用することができます情報の特定のインスタンスを識別するアクティビティ ID のいくつかのフォームを含めることができます。この作品がプロセスやマシンの境界を越える可能性がありますに注意してください。コンテキストを含める必要がありますまた、メータリング (直接または間接的他を介して情報を相関) 可能にする要求の原因となった顧客への参照。このコンテキストでは、監視データをキャプチャした時にアプリケーションの状態に関する貴重な情報を提供します。
-- すべての要求や場所からこれらの要求が行われる領域を記録します。この情報は任意の場所に固有のホット スポットがあるかどうかを決定するを支援、アプリケーションまたはそれを使用してデータをパーティション分割するかどうかを決定する際に役立つことができるデータを提供できます。
-- 記録し、慎重に例外の詳細をキャプチャします。多くの場合重要なデバッグ情報が悪い例外処理の結果として失われます。すべての内部例外と呼び出し履歴を可能な場合など、他のコンテキスト情報を含む、アプリケーションによってスローされた例外の完全な詳細情報をキャプチャします。
+- Information captured by trace events should be machine and human readable.  You should adopt well-defined schemas for this information to facilitate automated processing of log data across systems, and provide consistency to operations and engineering staff reading the logs. Include environmental information, such as the deployment environment, the machine on which the process is running, the details of the process, and the call stack.  
+- Profiling can impose a significant overhead on the system and should only be enabled when necessary. Profiling by using instrumentation records an event (such as a method call) every time it occurs, whereas sampling only records selected events. The selection could be time-based – once every N seconds, or frequency-based – once every N requests. If events occur very frequently, profiling by instrumentation may cause too much of a burden and itself impact overall performance. In this case, the sampling approach may be preferable. However, if the frequency of events is low, then sampling might miss them and in this case instrumentation might be the better approach.
+- Provide sufficient context to enable a developer or administrator to determine the source of each request. This may include some form of activity ID identifying a specific instance of a request, and information that can be used to correlate this activity with the computational work performed and the resources used. Note that this work may cross process and machine boundaries. For metering, the context should also include (either directly or indirectly via other correlated information) a reference to the customer that caused the request to be made. This context provides valuable information about the application state at the time the monitoring data was captured.
+- Record all requests, and the locations or regions from which these requests are made. This information can assist in determining whether there are any location-specific hotspots, and provide data that can be useful in determining whether to repartition an application or the data that it uses.
+- Record and capture the details of exceptions carefully. Often critical debug information is lost as a result of poor exception handling. Capture the full details of exceptions thrown by the application, including any inner exceptions and other context information, including the call stack if possible.
 - Be consistent in the data that the different elements of your application capture as this can assist in analyzing events and correlating them with user requests. Consider utilizing a comprehensive and configurable logging package to gather information rather than depending on developers implementing different parts of the system all adopting the same approach. Gather data from key performance counters, such as the volume of I/O being performed, network utilization, number of requests, memory use, and CPU utilization. Some infrastructure services may provide their own specific performance counters, such as the number of connections to a database, the rate at which transactions are being performed, and the number of transactions that succeed or fail. Applications might also define their own specific performance counters.
-- データベース システムなどの外部サービス、web サービス、またはインフラストラクチャ (たとえばキャッシュ Azure) の一部として提供されるその他のシステム レベルのサービスに対して行われたすべての呼び出しをログに記録します。各呼び出しの実行にかかった時間に関する情報を記録呼び出しの成否と。可能であれば、すべての再試行回数と発生する一時的なエラーの障害に関する情報をキャプチャします。
+- Log all calls made to external services, such as database systems, web services, or other system-level services provided as part of the infrastructure (Azure caching for example). Record information about the time taken to perform each call, and the success or failure of the call. If possible, capture information about all retry attempts and failures for any transient errors that occur.
 
-### テレメトリ システムとの互換性を確保します。
-多くの場合、インストルメンテーションによって生成される情報は一連のイベントとして生成され、処理と解析のため独立したテレメトリ システムに渡されます。テレメトリ システムが通常、特定のアプリケーションまたはテクノロジの独立した通常、スキーマによって定義された特定の形式に従うこと情報を受け取る。スキーマは、効果的にデータ フィールドおよびテレメトリ システムを摂取することができる型を定義するコントラクトを指定します。スキーマは、様々 なプラットフォームやデバイスからデータを使用できるように一般化する必要があります。
+### Ensuring compatibility with telemetry systems
+In many cases, the information produced by instrumentation is generated as a series of events and passed to a separate telemetry system for processing and analysis. A telemetry system is typically independent of any specific application or technology, but expects information to follow a specific format usually defined by a schema. The schema effectively specifies a contract defining the data fields and types that the telemetry system can ingest. The schema should be generalized to allow for data arriving from a range of platforms and devices.
 
-共通のスキーマには、イベント名、イベントの時刻、送信者、およびその他のイベント (ユーザー ID、デバイス ID、アプリケーション ID など) に関連付けるために必要な詳細の IP アドレスなどのすべてのインストルメンテーション イベントに共通するフィールドを含める必要があります。スキーマをデバイスの種類に依存すべきではない、デバイスの任意の数でイベントが発生することに注意してください。異なるデバイスの数によって、同じアプリケーションのイベントが発生するさらに、アプリケーションは、デバイス間の分布の移動またはいくつかの他のフォームをサポート可能性があります。理想的にはこれらのフィールドの大半は、イベントをキャプチャするために使用するロギング ライブラリの出力にマップします。
+A common schema should include fields that are common to all instrumentation events, such as the event name, the event time, the IP address of the sender, and the details required for correlating with other events (such as a user ID, a device ID, and an application ID). Remember that events may be raised by any number of devices, so the schema should not be dependent on the device type. Additionally, events for the same application might be raised by a number of different devices; the application might support roaming or some other form of cross-device distribution. Ideally the majority of these fields should map to the output of the logging library used to capture the events.
 
-スキーマでは、異なるアプリケーション間で一般的な特定のシナリオに関連するドメイン フィールドもあります。これは例外、アプリケーションの開始や終了イベントと web サービス API の呼び出しの成功または失敗に関する情報可能性があります。同じドメイン フィールドのセットを使用するすべてのアプリケーションは、一連の共通のレポートおよびビルドする analytics を有効にするイベントの同じセットを出力します。
+The schema might also include domain fields that are relevant to a particular scenario common across different applications. This could be information about exceptions, application start and end events, and web services API call success and/or failure. All applications that use the same set of domain fields should emit the same set of events, enabling a set of common reports and analytics to be built.
 
-最後に、スキーマは、アプリケーション固有のイベントの詳細をキャプチャするためのカスタム フィールドを含めることができます。
+Finally, a schema could contain custom fields for capturing the details of application-specific events.
 
-### アプリケーションを実装するためのベスト プラクティス
-クラウドで実行されている分散アプリケーションをインストルメント化するためのベスト プラクティスを次に示します。
+### Best practices for instrumenting applications
+The following list summarizes best practices for instrumenting a distributed application running in the cloud.
 
-- 読むと簡単に解析するログを簡単にします。使用可能なログ構造化されました。簡潔になり、ログ ・ メッセージの説明。
-- すべてのログで原因を特定し、各ログ レコードが書き込まれると、コンテキストとタイミング情報を提供します。
-- すべてのタイムスタンプの同じタイムゾーンおよびフォーマットを使用します。これは、ハードウェアとサービスが異なる地理的地域にまたがる操作のイベントを関連付けるに役立ちます。
-- ログを分類し、適切なログ ファイルにメッセージを書き込みます。
-- システムに関する機密情報またはユーザーに関する個人情報を開示しません。それは記録される、前に、この情報をスクラブが、関連する詳細が保持されます。たとえば、ID とパスワード、データベース接続文字列から削除、システムが適切なデータベースにアクセスしているアナリストが判断できるように、残りの情報をログに書き込みます。すべての重要な例外が、例外と警告の下位レベルのログを有効または無効にする管理者を有効にします。また、キャプチャし、再試行ロジックのすべての情報をログに記録します。このデータは、システムの過渡状態を監視するのに役立ちます。
-- アウト プロセスの呼び出し、外部 web サービスまたはデータベースへのリクエストなどをトレースします。
-- 異なるセキュリティ要件が同じログ ファイルにログ メッセージを混在させないでください。たとえば、デバッグの書き込みしないし、情報を同じログを監査します。
-- イベントの監査を除くすべてのログ呼び出しは業務の進行状況をブロックする必要があります火災を忘れて操作でなければなりません。監査イベントは、ビジネスに不可欠なビジネス運用の基本部分として分類することができますので例外です。
-- ログは、拡張できる必要があります、ない具体的な目標に直接依存関係を持ちます。たとえばを使用して、情報を書くのではなく _System.Diagnostics.Trace_、(よう抽象インタ フェースを定義 _ILogger_) 公開ログ メソッドと任意の適切な手段を使用して実装できます。
-- すべてのログは、フェール セーフである必要があり、カスケード エラーをトリガーする必要があることはありません。ログ記録は、例外をスローしないでください。
-- 進行中の反復的なプロセスとして計装を扱うし、問題があるときにだけではなく、定期的にログを確認します。
+- Make logs easy to read and easy to parse. Use structured logging where possible. Be concise and descriptive in log messages.
+- In all logs, identify the source and provide context and timing information as each log record is written.
+- Use the same time zone and format for all timestamps. This will help to correlate events for operations that span hardware and services running in different geographic regions.
+- Categorize logs and write messages to the appropriate log file.
+- Do not disclose sensitive information about the system or personal information about users. Scrub this information before it is logged, but ensure that the relevant details are retained. For example, remove the ID and password from any database connection strings, but write the remaining information to the log so that an analyst can determine that the system is accessing the correct database. Log all critical exceptions, but enable the administrator to turn logging on and off for lower levels of exceptions and warnings. Also, capture and log all retry logic information. This data can be useful in monitoring the transient health of the system.
+- Trace out of process calls, such as requests to external web services or database.
+- Don’t mix log messages with different security requirements in the same log file. For example, don't write debug and audit information to the same log.
+- With the exception of auditing events, all logging calls should be fire-and-forget operations that must not block the progress of business operations. Auditing events are exceptional because they are critical to the business and can be classified as a fundamental part of business operations.
+- Logging should be extensible and not have any direct dependencies on concrete target. For example, rather than writing information by using _System.Diagnostics.Trace_, define an abstract interface (such as _ILogger_) which exposes logging methods and that can be implemented by using any appropriate means.
+- All logging must be fail-safe and should never trigger any cascading errors. Logging must not throw any exceptions.
+- Treat instrumentation as an ongoing iterative process and review logs regularly, not just when there is a problem.
 
-## 収集およびデータを格納します。
+## Collecting and storing data
 The collection stage of the monitoring process is concerned with retrieving the information generated by instrumentation, formatting this data to make it easier to consume by the analysis/computation phase, and saving the transformed data in reliable and accessible storage. The instrumentation data that you gather from different parts of a distributed system could be held in a variety of locations and with varying formats. For example, your application code might generate trace log files, and generate application event log data, while performance counters that monitor key aspects of the infrastructure that your application uses could be captured by using other technologies.  Any third-party components and services that your application uses may provide instrumentation information in different formats, using separate trace files, blob storage, or even a custom data store.
 
-データ収集はしばしばインストルメンテーション データを生成するアプリケーションから自律的に実行できるコレクション サービスを実装することによって実行されます。図 2 は、このアーキテクチャは、計測データ収集サブシステムを強調表示の例を示します。
+Data collection is often performed by implementing a collection service which can run autonomously from the application that generates the instrumentation data. Figure 2 illustrates an example of this architecture, highlighting the instrumentation data collection subsystem.
 
 ![](media/best-practices-monitoring/TelemetryService.png)
 
-_図 2。
-計測データの収集_
+_Figure 2.
+Collecting instrumentation data_
 
-これは簡易表示に注意してください。コレクション サービスは必ずしも単一のプロセスおよび次のセクションで説明するように別のマシンで実行されている多くの構成部品を含むことができます。さらに、すぐに実行する必要がありますいくつかのテレメトリ データの解析 (熱解析、セクションで説明したよう [熱い、暖かい、冷たい分析をサポート](#supporting-hot-warm-and-cold-analysis) 後述)、すぐにローカル コンポーネント コレクション サービス外営業分析タスクの実行可能性があります。図 2 は、選択したイベントのためこのような状況を示しています分析処理後の可視化と警告サブシステムに直接結果を送信できます。温かい、または冷たい解析データは、それが処理を待つ間、ストレージで開催されます。
+Note that this is a simplified view. The collection service is not necessarily a single process and may comprise many constituent parts running on different machines, as described in the following sections. Additionally, if the analysis of some telemetry data needs to be performed quickly (hot analysis, as described in the section [Supporting Hot, Warm, and Cold Analysis](#supporting-hot-warm-and-cold-analysis) later in this document), local components operating outside of the collection service might perform the analysis tasks immediately. Figure 2 depicts this situation for selected events; after analytical processing the results can be sent directly to the visualization and alerting subsystem. Data subjected to warm or cold analysis is held in storage while it awaits processing.
 
-Azure アプリケーションおよびサービスについては、Azure 診断 (かたまり) は、データのキャプチャに 1 つの可能な解決策を提供します。札束は、各計算ノードでは、次のソースからのデータが一緒にそれを集約し、Azure ストレージにアップロードして、収集します。
+For Azure applications and services, Azure Diagnostics (WAD) provides one possible solution for capturing data. WAD gathers data from the following sources for each compute node, aggregates it together, and then uploads it to Azure storage:
 
-- 紺碧のログ
-- IIS ログ
-- IIS の失敗した要求のログ
-- Windows イベント ログ
-- パフォーマンス カウンター
-- クラッシュ ダンプ
-- Azure 診断インフラストラクチャのログ  
-- カスタム エラー ログ
+- Azure logs
+- IIS logs
+- IIS Failed Request logs
+- Windows Event logs
+- Performance counters
+- Crash dumps
+- Azure Diagnostic infrastructure logs  
+- Custom error logs
 
-詳細については、記事を参照してください。 [Azure: 遠隔測定の基礎とトラブルシューティング](http://social.technet.microsoft.com/wiki/contents/articles/18146.windows-azure-telemetry-basics-and-troubleshooting.aspx) Microsoft の web サイト。
+For more information, see the article [Azure: Telemetry Basics and Troubleshooting](http://social.technet.microsoft.com/wiki/contents/articles/18146.windows-azure-telemetry-basics-and-troubleshooting.aspx) on the Microsoft website.
 
-### インストルメンテーション データを収集するための戦略
-クラウドと手動でシステム内のすべてのノードからテレメトリ データを取得する必要性を避けるために弾性の性質を考慮して、データを中央の場所に転送する必要があります手配し、連結。複数のデータ センターにまたがるシステム、それとで役立つ最初の収集、統合、および地域によって地域ごとにデータを格納する 1 つの中央システムに地域のデータを集計します。
+### Strategies for collecting instrumentation data
+Given the elastic nature of the cloud, and to avoid the necessity of manually retrieving telemetry data from every node in the system, you should arrange for the data to be transferred to a central location and consolidated. In a system that spans multiple datacenters, it may be useful to first collect, consolidate, and store data on a region by region basis, and then aggregate the regional data into a single central system.
 
-帯域幅の使用を最適化するには、バッチ単位で緊急度の低いデータを転送することができます。ただし、データする必要がありますいないは延期する、時間-敏感な情報が含まれている場合は特に。
+To optimize the use of bandwidth, you can elect to transfer less urgent data in chunks, as batches. However, the data must not be delayed indefinitely, especially if it contains time-sensitive information.
 
-#### _引っ張り、インストルメンテーション データを押す_
-計測データ収集サブシステムか積極的に計測器からデータを取得様々 なログと他のソース (アプリケーションのインスタンスごとに _プル モデル_)、または (、アプリケーションの各インスタンスを構成しているコンポーネントから送信されるデータを待っている受動的なレシーバーとして動作できます。 _プッシュ モデル_).
+#### _Pulling and pushing instrumentation data_
+The instrumentation data collection subsystem can either actively retrieve instrumentation data from the various logs and other sources for each instance of the application (the _pull model_), or it can act as a passive receiver waiting for the data to be sent from the components that constitute each instance of the application (the _push model_).
 
-プル モデルを実装する方法の 1 つは、アプリケーションの各インスタンスにローカルに実行されている監視エージェントを使用することです。監視エージェントは、定期的に取得 (プル) テレメトリ データがローカル ノードで収集され、一元的なストレージ ・ アプリケーションのすべてのインスタンスで共有されるこの情報を直接書き込む別のプロセスです。これ札束によって実装されるメカニズムです。Azure の web またはワーカー ロールの各インスタンスは、診断キャプチャおよびローカルに格納されているその他のトレース情報を構成できます。Azure ストレージを指定したデータごとのコピーと一緒に実行される監視エージェント。ページ [Azure クラウド サービスと仮想マシンの構成診断](https://msdn.microsoft.com/library/azure/dn186185.aspx) Microsoft の web サイトにこのプロセスについての詳細を提供します。IIS ログなどの一部の要素では、クラッシュ ダンプとテーブル ストレージの blob ストレージは、Windows イベント ログ、ETW イベント、およびパフォーマンス カウンターのデータ中にログが書き込まれるカスタムのエラーが記録されます。図 3 は、このメカニズムを示しています。
+One approach to implementing the pull model is to use monitoring agents running locally with each instance of the application. A monitoring agent is a separate process that periodically retrieves (pulls) telemetry data collected at the local node and writes this information directly to centralized storage that is shared by all instances of the application. This is the mechanism implemented by WAD. Each instance of an Azure web or worker role can be configured to capture diagnostic and other trace information which is stored locally. The monitoring agent that runs alongside each copies the specified data to Azure storage. The page [Configuring Diagnostics for Azure Cloud Services and Virtual Machines](https://msdn.microsoft.com/library/azure/dn186185.aspx) on the Microsoft website provide more details on this process. Some elements, such as IIS logs, crash dumps, and custom error logs are written to blob storage, while data from the Windows Event log, ETW events, and performance counters is recorded in table storage. Figure 3 illustrates this mechanism:
 
 ![](media/best-practices-monitoring/PullModel.png)
 
-_図 3。
-監視エージェントを使用して情報を取得し、共有ストレージへの書き込み_
+_Figure 3.
+Using a monitoring agent to pull information and write to shared storage_
 
-> [AZURE。メモ] 監視エージェントを使用して SQL Server 管理ビュー、または Azure サービス バス キューの長さからの情報など、データ ソースからプルは当然計測データのキャプチャに最適です。
+> [AZURE.NOTE] Using a monitoring agent is ideally suited to capturing instrumentation data that is naturally pulled from a data source, such as information from SQL Server Management Views, or the length of an Azure Service Bus Queue.
 
-構成して、Azure 診断を使用してについてを参照してください、 [Azure 診断を使用してログ データを収集します。](https://msdn.microsoft.com/library/azure/gg433048.aspx) Microsoft の web サイト上のページ。
+For information about configuring and using Azure Diagnostics, visit the [Collect Logging Data by Using Azure Diagnostics](https://msdn.microsoft.com/library/azure/gg433048.aspx) page on the Microsoft website.
 
-ノード数の制限で動作する小規模アプリケーションのテレメトリ データは、ここで説明したアプローチを使用して 1 つの場所でうまく格納できます。ただし、複雑で拡張性の高い、グローバル クラウド アプリケーションは web ロールおよびワーカー ロール、データベースの破片、およびその他のサービスの数百から大量のデータを簡単に生成可能性があります。データのこの洪水は、中央の場所で使用可能な I/O 帯域幅を簡単に圧倒でした。したがってテレメトリ ソリューションはシステムの拡大、ボトルネックになってそれを防止し、システムの一部が失敗した場合 (監査や請求データ) など重要な監視情報が失われるリスクを軽減するための冗長性の程度を理想的に組み込むスケーラブルでなければなりません。
+Telemetry data for a small-scale application running on a limited number of nodes can feasibly be stored in a single location using the approach just described. However, a complex, highly scalable, global cloud application might easily generate huge volumes of data from hundreds of web and worker roles, database shards, and other services. This flood of data could easily overwhelm the I/O bandwidth available with a single, central location. Therefore your telemetry solution must be scalable to prevent it acting as a bottleneck as the system expands, and ideally incorporate a degree of redundancy to reduce the risks of losing important monitoring information (such as auditing or billing data) if part of the system fails.
 
-これらの問題に対処するためには、待ち行列を実装できます。図 4 は、この構造を示しています。このアーキテクチャ、ローカル監視エージェント (場合それを適切に構成することができます) またはカスタム データ コレクション サービス (ない場合) 投稿データをキュー、および非同期的に実行している別のプロセス (図 4 にストレージの書き込みサービス) でこのキューからデータを取り出し、それを共有ストレージに書き込みます。メッセージ キューは、少なくとも 1 回を投稿後、キューに置かれたデータがない失われることを確保するセマンティクスを提供します、このシナリオに適しています。ストレージの作成サービスは、個別のワーカー ロールを使用して実装できます。
+To address these issues, you can implement queueing. Figure 4 shows this structure. In this architecture, the local monitoring agent (if it can be configured appropriately) or custom data collection service (if not) posts data to a queue, and a separate process running asynchronously (the Storage Writing Service in Figure 4) takes the data in this queue and writes it to shared storage. A message queue is suitable for this scenario as it provides at least once semantics ensuring that once posted, queued data will not be lost. The Storage Writing Service can be implemented by using a separate worker role.
 
 ![](media/best-practices-monitoring/BufferedQueue.png)
 
-_図 4。
-インストルメンテーション データをバッファーするキューを使用_
+_Figure 4.
+Using a queue to buffer instrumentation data_
 
-ローカル データ収集サービスは、すぐに受信キューにデータを追加できます。キューのバッファーとして機能し、ストレージ サービスの記述を取得したり、独自のペースでデータを書き込みます。既定では、キューは先入れ先出しごとに動作しますが、メッセージ キューをより迅速に行う必要があるデータが含まれている場合それらを加速する優先順位を設定することができます。詳細についてを参照してください、 [優先度キュー](https://msdn.microsoft.com/library/dn589794.aspx) パターン。また、必要な解析処理の形式に応じて異なる目的地へ直接データを (サービス バスのトピック) などの異なるチャネルを使用できます。
+The local data collection service can add data to a queue immediately it is received. The queue acts as a buffer and the storage writing service can retrieve and write the data at its own pace. By default, a queue operates on a first-in-first-out basis, but you can prioritize messages to accelerate them through the queue if they contain data that must be handled more quickly. For more information, see the [Priority Queue](https://msdn.microsoft.com/library/dn589794.aspx) pattern. Alternatively, you could use different channels (such as Service Bus Topics) to direct data to different destinations depending on the form of analytical processing required.
 
-スケーラビリティは、サービスを書くストレージの複数のインスタンスを実行できます。大量のイベントがある場合、データ処理とストレージのための別のコンピューティング リソースを派遣するイベント ハブを使用できます。
+For scalability, you could run multiple instances of the storage writing service. If there is a high volume of events, you could use an event hub to dispatch the data to different compute resources for processing and storage.
 
 <a name="consolidating-instrumentation-data"></a>
-#### _計測データを統合します。_
+#### _Consolidating instrumentation data_
 The instrumentation data retrieved by the data collection service from a single instance of an application gives a localized view of the health and performance of that instance. To assess the overall health of the system, it is necessary to consolidate some aspects of the data in the local views together. This can be performed after the data has been stored, but in some cases it could also be achieved as the data is collected. Rather than being written directly to shared storage, the instrumentation data could pass through a separate data consolidation service which combines data and acts as a filter and cleanup process. For example, instrumentation data that includes the same correlation information such as an activity ID can be amalgamated (it is possible that a user starts performing a business operation on one node, and then gets transferred to another node in the event of node failure or depending on how load-balancing is configured). This process can also detect and remove any duplicated data (always a possibility if the telemetry service uses message queues to push instrumentation data out to storage). Figure 5 illustrates an example of this structure.
 
 ![](media/best-practices-monitoring/Consolidation.png)
 
-_図 5。
-別のサービスを使用して統合、インストルメンテーション データをクリーンアップするには_
+_Figure 5.
+Using a separate service to consolidate and clean up instrumentation data_
 
-### 計測データの保存
+### Storing instrumentation data
 The previous discussions have depicted a rather simplistic view of the way in which instrumentation data is stored. In reality, it can make sense to store the different types of information by using technologies that are most appropriate to the way in which each type is likely to be used. For example, Azure blob and table storage have some similarities in the way in which they are accessed, but have limitations concerning the operations that you can perform using them and the granularity of the data that they hold is quite different. If you need to perform more analytical operations or require full-text search capabilities on the data, it may be more appropriate to use data storage that provides capabilities that are optimized for specific types of queries and data access. For example, performance counter data could be stored in a SQL database to enable ad-hoc analysis; trace logs might be better stored in Azure DocumentDB; security information could be written to HDFS; information requiring full-text search could be stored by using Elastic Search (which can also speed searches by using rich indexing.) You can implement an additional service that periodically retrieves the data from shared storage, partitions and filters the data according to its purpose, and then writes it to an appropriate set of data stores as shown in Figure 6. An alternative approach is to include this functionality in the consolidation and cleanup process and write the data directly to these stores as it is retrieved rather than saving it in an intermediate shared storage area. Each approach has its advantages and disadvantages. Implementing a separate partitioning service lessens the load on the consolidation and cleanup service, and enables at least some of the partitioned data to be regenerated if necessary (depending on how much data is retained in shared storage). However, it consumes additional resources, and there may be a delay between the instrumentation data being received from each application instance and this data being converted into actionable information.
 
 ![](media/best-practices-monitoring/DataStorage.png)
 
-_図 6。
-パーティションのデータ分析によると、ストレージの要件_
+_Figure 6.
+Partitioning data according to analytical and storage requirements_
 
-同じインストルメンテーション データは、1 つ以上の目的のために要求されるかもしれない。たとえば、パフォーマンス カウンターは、時間をかけて、システム パフォーマンスの歴史的概観を提供するために使用できますが、この情報がお客様の課金情報を生成するその他の使用状況データと組み合わせることも。これらの状況で同じデータを課金情報を保持するため長期的なストアと複雑なパフォーマンス分析を処理するための多次元ストアとして機能できるドキュメント データベースなどの 1 つ以上の宛先に送信できます。
+The same instrumentation data might be required for more than one purpose. For example, performance counters can be used to provide an historical view of system performance over time, but this information might also be combined with other usage data to generate customer billing information. In these situations, the same data might be sent to more than one destination, such as a document database which can act as a long-term store for holding billing information, and a multi-dimensional store for handling complex performance analytics.
 
-また、どのように緊急必要があるデータを検討してください。データを迅速にアクセスする必要がありますを警告するための情報を提供し、そうで開催される必要がありますデータ記憶域を高速インデックスや警告システムが実行するクエリを最適化する構造します。いくつかのケースでは、書式設定し、データをローカル コンピューターに保存して、警告システムのローカル インスタンスすぐにすべての問題の通知できますので各ノードでデータを集めるテレメトリー サービスの必要があります。同じデータは、前の図に示すように、それがまた他の目的のため必要な場合を一元的にサービスを書くストレージにディスパッチできます。
+You should also consider how urgently the data is required. Data that provides information for alerting needs to be accessed quickly, and so should be held in fast data storage and indexed or structured to optimize the queries that the alerting system performs. In some cases, it may be necessary for the telemetry service that gathers the data on each node to format and save data locally so that a local instance of the alerting system can quickly notify of any issues. The same data can be dispatched to the storage writing service shown in the previous diagrams and stored centrally if it is also required for other purposes.
 
-多くのために使用される情報分析検討した、レポート、スポッティングの動向については、緊急度の低い、データ マイニングとアドホック クエリをサポートする方法で保存することができます。詳細については、のセクションを参照してください。 [熱い、暖かい、冷たい分析をサポート](#supporting-hot-warm-and-cold-analysis) 後で述べる。
+Information that is used for more considered analysis, for reporting, and for spotting historical trends is less urgent and can be stored in a manner that supports data mining and ad-hoc queries. For more information, see the section [Supporting Hot, Warm, and Cold Analysis](#supporting-hot-warm-and-cold-analysis) later in this document.
 
-#### _ログのローテーションとデータ保持_
+#### _Log rotation and data retention_
 Instrumentation can generate considerable volumes of data. This data can be held in several places, starting with the raw log files, trace files, and other information captured at each node to the consolidated, cleaned, and partitioned view of this data held in shared storage. In some cases, once the data has been processed and transferred the original raw source data can be removed from each node. In other cases, it may be necessary or simply useful to save the raw information. For example, data generated for debugging purposes may be best left available in its raw form but can then be discarded quite quickly once any bugs have been rectified. Performance data often has a longer life to enable it to be used to spot performance trends and for capacity planning. The consolidated view of this data is usually kept on-line for a finite period to enable fast access, after which it might be archived or discarded. Data gathered for metering and billing customers may need to be saved indefinitely. Additionally, regulatory requirements might dictate that information collected for auditing and security purposes will also need to be archived and saved. This data is also sensitive and may need to be encrypted or otherwise protected to prevent tampering. You should never record information such as users' passwords or other information that could be used to commit identity fraud; such details should be scrubbed from the data before it is stored.
 
-#### _ダウン サンプリング_
-頻繁に長期的な傾向を分析することができる履歴データを格納すると便利です。そっくりそのままで古いデータを保存するのではなくダウン サンプル データの解像度を削減し、ストレージ コストを節約することがあります。例としてよりもむしろ分ごとの業績評価指標、保存データ 1 ヶ月以上古い統合した時間単位で時間のビューを形成します。
+#### _Down-sampling_
+Frequently it is useful to store historical data to be able to spot long-term trends. Rather than saving old data in its entirety, it may be possible to down-sample the data to reduce its resolution and save storage costs. As an example, rather than saving minute-by-minute performance indicators, data more than a month old could be consolidated to form an hour-by-hour view.
 
-### 収集し、ログ情報を格納するためのベスト プラクティス
-キャプチャし、ログ情報を格納するためのベスト プラクティスを次に示します。
+### Best practices for collecting and storing logging information
+The following list summarizes best practices for capturing and storing logging information.
 
-- 監視エージェントやデータ収集サービスのプロセス外サービスとして実行する必要があります展開する単純なする必要があります。
-- すべての監視エージェントから出力またはデータ収集サービスは、コンピューター、オペレーティング システム、またはネットワーク プロトコルに依存しない柔軟なフォーマットをする必要があります。たとえば、ETL/ETW ではなく、JSON、MessagePack、または Protobuf などの自己記述形式で情報を出力します。標準フォーマットを使用すると、処理のパイプラインを構築します。読み取り、変換、および合意された形式でデータを出力するコンポーネントと簡単に統合できます。
-- 監視とデータ収集のプロセスは、フェイル セーフである必要があり、カスケード エラー条件をトリガーする必要があります。
-- 一時的な障害監視エージェントまたはデータ収集サービス データ シンクに情報を送信しながら最新の情報が最初に送信されるようにテレメトリ データの順序を変更する準備があります (監視エージェント/データ収集サービスは古いデータをドロップまたはローカルに保存し、独自の裁量で、追いつくに後でそれを送信場合もあります)。
+- The monitoring agent or data collection service should run as an out-of-process service and should be simple to deploy.
+- All output from the monitoring agent or data collection service should be an agnostic format that is independent of the machine, operating system, or network protocol. For example, emit information in a self-describing format such as JSON, MessagePack, or Protobuf rather than ETL/ETW. Using a standard format enables the system to construct processing pipelines; components that read, transform, and output data in the agreed format can be easily integrated.
+- The monitoring and data collection process must be fail-safe and must not trigger any cascading error conditions.
+- In the event of a transient failure while sending information to a data sink the monitoring agent or data collection service should be prepared to reorder telemetry data so that the newest information is sent first (the monitoring agent/data collection service may elect to drop the older data, or save it locally and transmit it later to catch up, at its own discretion.)
 
-## データを分析し、問題を診断します。
-監視と診断のプロセスの重要な部分はシステムの全面的な福利の画像を取得する収集したデータを分析します。Kpi とパフォーマンス メトリックを定義する必要があり、分析の要件を満たすために収集されているデータを構成する方法を理解することが重要です。また、データ別のメトリックにキャプチャ ログ ファイルが関連付けられて、この情報は、イベントのシーケンスを追跡するキー、発生する問題の診断に役立つ方法を理解することが重要です。
+## Analyzing data and diagnosing issues
+An important part of the monitoring and diagnostics process is analyzing the data gathered to obtain a picture of the overall wellbeing of the system. You should have defined your own KPIs and performance metrics, and it is important to understand how you can structure the data that has been gathered to meet your analysis requirements. It is also important to understand how the data captured in different metrics and log files is correlated, as this information can be key to tracking a sequence of events and help diagnose problems that arise.
 
-セクションで説明されているよう [計測データを統合します。](#consolidating-instrumentation-data), the data for each part of the system is typically captured locally, but generally needs to be combined with data generated at other sites that participate in the system. This information requires careful correlation to ensure that data is combined accurately. For example, the usage data for an operation may span a node hosting a web site to which a user connects, a node running a separate service accessed as part of this operation, and data storage held on a further node. This information needs to be tied together to provide an overall view of the resource and processing usage for the operation. Some pre-processing and filtering of data might occur on the node on which the data is captured, while aggregation and formatting is more likely to occur on a central node.
+As described in the section [Consolidating Instrumentation Data](#consolidating-instrumentation-data), the data for each part of the system is typically captured locally, but generally needs to be combined with data generated at other sites that participate in the system. This information requires careful correlation to ensure that data is combined accurately. For example, the usage data for an operation may span a node hosting a web site to which a user connects, a node running a separate service accessed as part of this operation, and data storage held on a further node. This information needs to be tied together to provide an overall view of the resource and processing usage for the operation. Some pre-processing and filtering of data might occur on the node on which the data is captured, while aggregation and formatting is more likely to occur on a central node.
 
 <a name="supporting-hot-warm-and-cold-analysis"></a>
-### 熱い、暖かい、冷たい分析をサポート
-分析と可視化のためのデータを再フォーマット、レポート作成、および警告の目的は、リソースのセットを消費する複雑なプロセスをすることができます。監視のいくつかのフォーム タイム クリティカル効果を発揮するデータの即時解析を必要とされます。これと呼びます _ホットの分析_.アラートと監視システム (システムへの攻撃を検出) などのいくつかの側面に必要な解析があります。これらの目的のために必要なデータはすぐに利用可能な効率的な処理構造化する必要があります。それいくつかのケース分析データが保持されている個別のノードに処理を移動が必要になる場合があります。
+### Supporting hot, warm, and cold analysis
+Analyzing and reformatting data for visualization, reporting, and alerting purposes can be a complex process that consumes its own set of resources. Some forms of monitoring are time critical and require immediate analysis of data to be effective. This is known as _hot analysis_. Examples include the analyses required for alerting and some aspects of security monitoring (such as detecting an attack on the system). Data required for these purposes must be quickly available and structured for efficient processing; it some cases it may be necessary to move the analysis processing to the individual nodes on which the data is held.
 
-分析の他の形態は、時間重要度の低い、raw データが受信された後、いくつかの計算や集計を必要があります。これと呼びます _暖かい解析_.パフォーマンス分析は多くの場合このカテゴリに分類します。この場合、一連のイベントのデータする必要がありますシステムのパフォーマンスのより信頼性の高い画像を提供するのに対し、分離、1 つのパフォーマンス イベントです (それがによって引き起こされる突然のスパイクやグリッチ)、統計的に有意な可能性が高い。温かみのある分析は、健康上の問題を診断するためにも使用できます。健康イベント ホット解析を実行することによって処理は通常、すぐにアラートを上げることができます。オペレーターは温かみのあるパスからデータを調べて健康イベントの理由にドリルダウンすることができるはずこのデータは、健康イベントの原因となった問題に至るまでのイベントに関する情報を含める必要があります。
+Other forms of analysis are less time-critical and may require some computation and aggregation once the raw data has been received. This is known as _warm analysis_. Performance analysis often  falls into this category. In this case, an isolated, single performance event is unlikely to be statistically significant (it could be caused by a sudden spike or glitch), whereas the data from a series of events should provide a more reliable picture of system performance. Warm analysis can also be used to help diagnose health issues. A health event is typically processed by performing hot analysis and can raise an alert immediately. An operator should be able to drill into the reasons for the health event by examining the data from the warm path; this data should contain information about the events leading up to the issue that caused the health event.
 
-監視のいくつかの種類を生成より長期的なデータと分析は定義済みのスケジュールに従っておそらく後日、実行します。場合によっては、分析期間にわたってキャプチャ データの大量の複雑なフィルターを実行する必要があります。これと呼びます _寒さの分析_.重要な要件は、それを取り込んだ後に、データを安全に保存、です。たとえば、利用状況の監視と監査に必要には、定期的なポイントでシステムの状態を正確に把握、収集されているすぐに処理できるようにこの状態情報はありません。 寒さの分析は、予測の健康分析データを提供するためにも利用できます。健康上の問題を引き起こす可能性がありますすぐにトレンド (ホット パスから取得した) 現在の健康データを指定した期間にわたって収集された歴史的情報は組み合わせて使用できます。これらのケースでは、撮影するための是正処置を有効にするアラートを生成する必要があります。
+Some types of monitoring generate more long-term data, and the analysis can be performed at a later date, possibly according to a predefined schedule. In some cases, the analysis may need to perform complex filtering of large volumes of data captured over a period of time. This is known as _cold analysis_. The key requirement is that the data is stored safely once it has been captured. For example usage monitoring and auditing require an accurate picture of the state of the system at regular points in time, but this state information does not have to be available for processing immediately it has been gathered.  Cold analysis can also be utilized to provide the data for predictive health analysis. The historical information gathered over a specified period of time can be used in conjunction with the current health data (retrieved from the hot path) to spot trends that may soon cause health issues. In these cases, it may be necessary to raise an alert to enable corrective action to be taken.
 
-### データの相関
+### Correlating data
 The data captured by instrumentation can provide a snapshot of the system state, but the purpose of analysis is to make this data actionable. For example, what has caused an intense I/O loading at the system level at a specific time? Is it the result of a large number of database operations? Is this reflected in the database response times, the number of transactions per second, and application response times at the same juncture? If so, then one remedial action that may reduce the load could be to shard the data over more servers. In addition, exceptions can arise as a result of a fault in any level of the system, and an exception in one level often triggers another fault in the level above. For these reasons you need to be able to correlate the different types of monitoring data at each level to produce an overall view of the state of the system and the applications that are executing on it. You can then use this information to make decisions about whether the system is functioning acceptably or not, and determine what can be done to improve the quality of the system.
 
-セクションで説明されているよう [データの相関について](#information-for-correlating-data)、生インストルメンテーション データにイベントを関連付けるために必要な集計をサポートするための十分なコンテキストとアクティビティ ID 情報が含まれているを確認する必要があります。さらに、このデータは、さまざまな形式で開催されるかもしれないし、分析のために標準化された形式に変換するこの情報を解析する必要があります。
+As described in the section [Information for Correlating Data](#information-for-correlating-data), you must ensure that the raw instrumentation data includes sufficient context and activity ID information to support the required aggregations for correlating events. Additionally, this data might be held in different formats, and it may be necessary to parse this information to convert it into a standardized format for analysis purposes.
 
-### トラブルシューティングおよび問題の診断
-診断は、障害の根本原因の分析を実行するなど、予期しない動作の原因を決めることができる必要があります。通常必要な情報は次のとおりです。
+### Troubleshooting and diagnosing issues
+Diagnosis requires being able to determine the cause of faults or unexpected behavior, including performing root cause analysis. The information required typically includes:
 
-- 指定された期間中にイベント ログやトレース システム全体または指定したサブシステムのいずれかから詳細情報を。
-- 完全なスタック トレースは、例外と時間の指定された期間中に発生すること、システムまたは指定したサブシステム内で指定したレベルのエラーに起因します。
-- 指定された時間ウィンドウの中に、障害が発生したプロセスのダンプをシステムの任意の場所または指定したサブシステムのクラッシュします。
-- 活動記録時間の指定された期間中にすべてのユーザーまたは選択したユーザーのために実行中の操作を記録します。
+- Detailed information from event logs and traces either for the entire system or for a specified subsystem during a specified time window.
+- Complete stack traces resulting from exceptions and faults of any specified level that occur either within the system or a specified subsystem during a specified period of time.
+- Crash dumps for any failed processes either anywhere in the system or for a specified subsystem during a specified time window.
+- Activity logs recording the operations being performed either by all users or for selected users during a specified period of time.
 
-トラブルシューティングの目的で多くのデータを分析するシステム アーキテクチャとソリューションを構成するさまざまなコンポーネントの深い技術的な理解が必要です。その結果、データを解釈し、問題の原因を確立、それらを修正する適切な戦略をお勧めします手作業の大部分よく必要があります。単にこの情報のコピーを元の形式で保存し、専門家によって寒さの分析のため利用できるように適切な場合があります。
+Analyzing data for troubleshooting purposes often requires a deep technical understanding of the system architecture and the various components that comprise the solution. As a result, it frequently requires a large degree of manual intervention to interpret the data, establish the cause of problems, and recommend an appropriate strategy to correct them. It may be appropriate simply to store a copy of this information in its original format and make it available for cold analysis by an expert.
 
-## データを視覚化して警告の生成
-どのモニタリング システムの重要な側面は、このような方法で任意の傾向や問題点、オペレーターが見つけることができますすぐに、すぐにオペレーター場合重要なイベントを通知するためが発生しました注意が必要なデータを表示する機能です。
+## Visualizing data and raising alerts
+An important aspect of any monitoring system is the ability to present the data in such a way that an operator can quickly spot any trends or problems, and to quickly inform an operator if a significant event has occurred that may require attention.
 
-データのプレゼンテーションは、ダッシュ ボードを使用して可視化を含む、いくつかの形式を取ることができるアラート、およびレポートします。
+Data presentation can take several forms, including visualization by using dashboards, alerting, and reporting.
 
-### ダッシュ ボードとビジュアル化
+### Visualization with dashboards
 The most common way to visualize data is to use dashboards that can display information as a series of charts, graphs, or some other pictorial manner. These items could be parameterized, and an analyst should be able to select the important parameters (such as the time period) for any specific situation. Dashboards can be organized hierarchically, with top-level dashboards giving an overall view of each aspect of the system but with the facility to enable an operator to drill down to the details. For example, a dashboard that depicts the overall disk I/O for the system should allow an analyst to dig into the data and view the I/O rates for each individual disk to ascertain whether one or more specific devices account for a disproportionate volume of traffic. Ideally the dashboard should also display related information, such as the source of each request (the user or activity) that is generating this I/O. This information could then be used to determine whether (and how) to spread the load more evenly across devices, and whether the system would perform better if more devices were added. A dashboard might also be able to use color-coding or some other visual cues to indicate values that appear anomalous or that are outside an expected range. Using the previous example, a disk with an I/O rate approaching its maximum capacity over an extended period (a hot disk) could be highlighted in red, a disk with an I/O rate that periodically runs at its maximum limit over short periods (a warm disk) could be highlighted in yellow, and a disk exhibiting normal usage could be displayed in green.
 
-効果的に動作するようにダッシュ ボード システムのため、それは作業に使用する生データする必要がありますに注意してください。独自のダッシュ ボード システムを構築する場合、別の組織が開発したダッシュ ボードを利用した粒度とそれが書式設定方法消費のためダッシュ ボードがどのようなレベルで収集する必要がありますどのインストルメンテーション データを理解する必要があります。
+Note that for a dashboard system to work effectively, it must have the raw data with which to work. If you are building your own dashboard system, or utilizing a dashboard developed by another organization, you must understand which instrumentation data you need to collect, at what level(s) of granularity, and how it should be formatted for consumption by the dashboard.
 
-良いダッシュ ボードのみ情報は表示されません、それはアドホックな問いその情報にアナリストを許可する手段を提供します。いくつかのシステムでは、これらのタスクを実行し、基になるデータを探索するためにオペレーターが使用できる管理ツールを提供します。また、この情報を保持するために使用されるリポジトリによっては直接、このデータをクエリまたはさらに分析とレポートを Microsoft Excel などのツールにインポートすることがあります。
+A good dashboard does not only display information, it provides a means to allow an analyst to pose ad-hoc questions about that information. Some systems provide management tools that an operator can use to perform these tasks and explore the underlying data. Alternatively, depending on the repository used to hold this information it may be possible to query this data directly, or import it into tools such as Microsoft Excel for further analysis and reporting.
 
-> [AZURE。メモ] 権限のある担当者にダッシュ ボードへのアクセスを制限する必要があります。この情報は、商業上微妙な可能性があります。また、それを変更するからユーザーを防ぐためにダッシュ ボードで表される基になるデータを保護する必要があります。
+> [AZURE.NOTE] You should restrict access to dashboards to authorized personnel; this information may be commercially sensitive. You should also protect the underlying data presented by the dashboard to prevent users from changing it.
 
-### 警告の生成
-アラートは、監視および計測データを分析し、重要なイベントが検出された場合に通知を生成するプロセスです。
+### Raising alerts
+Alerting is the process of analyzing the monitoring and instrumentation data and generating a notification if a significant event is detected.
 
-警告は、システムの健康、応答性、およびセキュリティで保護されたであることを確認する使用されます。ユーザーにパフォーマンス、可用性、およびプライバシーの保証を行うシステムの重要な部分であり、データがすぐに行動する必要があります。オペレーターは、警告をトリガーするイベントを通知する必要があります。警告は、自動スケーリングなどのシステム関数を呼び出す使用できます。
+Alerting is used to ensure that the system remains healthy, responsive, and secure. It is an important part of any system that makes performance, availability, and privacy guarantees to the users, and the data may need to be acted on immediately. An operator may need to be notified of the event that triggered the alert. Alerting can also be used to invoke system functions such as autoscaling.
 
-通常警告は次のインストルメンテーション データによって異なります。
+Alerting usually depends on the following instrumentation data:
 
-- セキュリティ イベント。イベント ログが示している場合認証が繰り返し承認エラーが発生すると、システムは攻撃の下であるかもしれないおよびオペレーターを通知する必要があります。
-- パフォーマンス メトリック。システムは、特定のパフォーマンス メトリックが指定されたしきい値を超えたかどうか迅速に対応する必要があります。
-- 空き時間情報。障害を検出するには、1 つまたは複数のサブシステムまたはバックアップ リソースへのフェールオーバーを迅速に再起動する必要があります。 場合、サブシステムに繰り返し違反より深刻な懸念を可能性があります。
+- Security events. If the event logs indicate that repeated authentication and/or authorization failures are occurring, the system may be under attack and an operator should be informed.
+- Performance metrics. The system must quickly respond if a particular performance metric exceeds a specified threshold.
+- Availability information. If a fault is detected it may be necessary to quickly restart one or more subsystems, or failover to a backup resource. Repeated faults in a subsystem may indicate more serious concerns.
 
-オペレーターが電子メール、ポケットベル デバイス、または SMS テキスト メッセージなど多くの配信チャネルを使用してアラート情報を受信します。アラートが生じている状況の重大度の表示もあります。多くの警告システム サポート サブスクライバー グループと同じグループのメンバーであるすべての演算子は、同じ一連の警告を送信できます。
+Operators may receive alert information by using many delivery channels such as email, a pager device, or an SMS text message. An alert might also include an indication of how critical the situation is that has arisen. Many alerting systems support subscriber groups, and all operators that are members of the same group can be sent the same set of alerts.
 
 An alerting system should be customizable and the appropriate values from the underlying instrumentation data could be provided as parameters. This approach enables an operator to filter data and focus on those thresholds or combinations of values which are of interest. Note that in some cases, the raw instrumentation data could be provided to the alerting system, while in other situations it might be more appropriate to supply aggregated data (for example, an alert could be triggered if the CPU utilization for a node exceeded 90% over the last 10 minutes). The details provided to the alerting system should also include any appropriate summary and context information; this data can help to reduce the possibility of false-positive events tripping an alert.
 
-### レポート
-報告システムの全体的なビューを生成するために使用、現在の情報と同様に、過去のデータを組み込むことができます。報告要件自体が 2 つの広範なカテゴリに分類: 運用レポートとセキュリティ レポートします。
+### Reporting
+Reporting is used to generate an overall view of the system, and may incorporate historical data as well as current information. Reporting requirements themselves fall into two broad categories: operational reporting and security reporting.
 
-オペレーション レポート通常次の側面が含まれます。
+Operational reporting typically includes the following aspects:
 
-- 指定された時間ウィンドウの中にシステム全体または指定されたサブシステムのリソース使用率を理解することを可能にする統計情報を集約します。
-- 一定の時間の間にシステム全体または指定されたサブシステムのリソース使用率の傾向を識別します。
-- システム全体で発生したかで一定期間中にサブシステムを指定する例外を監視します。
-- 人員配置の観点からアプリケーションの効率性を判断し、リソースのボリューム (および彼らのコスト) を不必要にパフォーマンスに影響を与えずに縮小できるかどうかを理解することです。
+- Aggregating statistics which enable you to understand resource utilization of the overall system or specified subsystems during a specified time window.
+- Identifying trends in resource usage for the overall system or specified subsystems during a given period of time.
+- Monitoring the exceptions that have occurred throughout the system or in specified subsystems during a given period of time.
+- Determining the efficiency of the application in terms of the deployed resources, and understanding whether the volume of resources (and their associated cost) can be reduced without impacting performance unnecessarily.
 
-セキュリティ レポートは、お客様がシステムの使用状況の追跡にかかわって、含めることができます。
+Security reporting is concerned with tracking use of the system by customer, and can include:
 
-- ユーザー操作の監査日付と時刻と共にそれぞれのユーザーによって実行される個々 の要求の記録が必要です。データは、管理者が指定した期間に特定のユーザーによって実行される操作のシーケンスを迅速に再構築できるように構成する必要があります。
-- ユーザーによるリソース使用状況を追跡各要求する方法ユーザー アクセス、システムを構成する様々 なリソースとどのように長い記録が必要です。管理者は、請求の目的のためにおそらく指定した期間にわたってユーザーが使用率レポートを生成するこのデータを使用できる必要があります。
+- Auditing user operations; this requires recording the individual requests performed by each user together with dates and times. The data should be structured to enable an administrator to quickly reconstruct the sequence of operations performed by a specific user over a specified time period.
+- Tracking resource use by user; this requires recording how each request for a user accesses the various resources that comprise the system, and for how long. An administrator must be able to use this data to generate a utilization report by user over a specified time period, possibly for billing purposes.
 
-多くの場合、定義済みのスケジュールに従ってバッチ処理によってレポートを生成する (待ち時間が通常問題) が、またに世代アドホック的に必要な場合に使用可能なはず。 Azure SQL データベースなどのリレーショナル データベースにデータを格納する場合、例として抽出してデータの書式を設定し、レポートのセットとして提示する SQL Server Reporting Services などツールを使用できます。
+In many cases, reports can be generated by batch processes according to a defined schedule (latency is not normally an issue), but they should also be available for generation on an ad-hoc basis if needed.  As an example, if you are storing data in a relational database such as Azure SQL Database, you can use a tool such as SQL Server Reporting Services to extract and format data and present it as a set of reports.
 
-## 関連するパターンと指導
-- 自動スケーリングのガイダンスでは、継続的にシステムのパフォーマンスを監視し、追加またはリソースを削除することについて決定を下すにオペレーターの必要性を減らすことによってオーバーヘッド管理の負担軽減について説明します。
-- 、 [健康エンドポイント監視パターン](https://msdn.microsoft.com/library/dn589789.aspx) 外部ツールは、一定の間隔で公開されているエンドポイントを通じてアクセスできるアプリケーション内の機能のチェックを実装する方法について説明します。
-- 、 [優先度キュー](https://msdn.microsoft.com/library/dn589794.aspx) パターンは、キュー内のメッセージの優先順位を決める、緊急要求が受信し、緊急度の低いメッセージの前に処理することができますを示しています。
+## Related patterns and guidance
+- The Autoscaling guidance describes how to decrease management overhead by reducing the need for an operator to continually monitor the performance of a system and make decisions about adding or removing resources.
+- The [Health Endpoint Monitoring Pattern](https://msdn.microsoft.com/library/dn589789.aspx) describes how to implement functional checks within an application that external tools can access through exposed endpoints at regular intervals.
+- The [Priority Queue](https://msdn.microsoft.com/library/dn589794.aspx) pattern shows how to prioritize queued messages so that urgent requests are received and can be processed before less urgent messages.
 
-## 詳細については
-- 記事 [監視、診断、およびトラブルシューティング Microsoft Azure ストレージ](storage-monitoring-diagnosing-troubleshooting.md) Microsoft の web サイト。
-- 記事 [Azure: 遠隔測定の基礎とトラブルシューティング](http://social.technet.microsoft.com/wiki/contents/articles/18146.windows-azure-telemetry-basics-and-troubleshooting.aspx) Microsoft の web サイト。
-- ページ [Azure 診断を使用してログ データを収集します。](https://msdn.microsoft.com/library/azure/gg433048.aspx) Microsoft の web サイト。
-- ページ [Azure クラウド サービスと仮想マシンの構成診断](https://msdn.microsoft.com/library/azure/dn186185.aspx) Microsoft の web サイト。
-- 、 [紺碧 Redis キャッシュ](http://azure.microsoft.com/services/cache/), [紺碧の DocumentDB](http://azure.microsoft.com/services/documentdb/)、と [HDInsight](http://azure.microsoft.com/services/hdinsight/) Microsoft の web サイト上のページ。
-- ページ [サービス バス キューを使用する方法](http://azure.microsoft.com/) Microsoft の web サイト。
-- 記事 [Azure の仮想マシンで SQL Server ビジネス インテリジェンス](https://msdn.microsoft.com/library/azure/jj992719.aspx) Microsoft の web サイト。
-- ページ [Azure でアラートおよび通知の監視について](https://msdn.microsoft.com/library/azure/dn306639.aspx) Microsoft の web サイト。
-- 、 [アプリケーションのインサイト](app-insights-get-started/) Microsoft の web サイト上のページ。
+## More information
+- The article [Monitor, Diagnose, and Troubleshoot Microsoft Azure Storage](storage-monitoring-diagnosing-troubleshooting.md) on the Microsoft website.
+- The article [Azure: Telemetry Basics and Troubleshooting](http://social.technet.microsoft.com/wiki/contents/articles/18146.windows-azure-telemetry-basics-and-troubleshooting.aspx) on the Microsoft website.
+- The page [Collect Logging Data by Using Azure Diagnostics](https://msdn.microsoft.com/library/azure/gg433048.aspx) on the Microsoft website.
+- The page [Configuring Diagnostics for Azure Cloud Services and Virtual Machines](https://msdn.microsoft.com/library/azure/dn186185.aspx) on the Microsoft website.
+- The [Azure Redis Cache](http://azure.microsoft.com/services/cache/), [Azure DocumentDB](http://azure.microsoft.com/services/documentdb/), and [HDInsight](http://azure.microsoft.com/services/hdinsight/) pages on the Microsoft website.
+- The page [How to use Service Bus Queues](http://azure.microsoft.com/) on the Microsoft website.
+- The article [SQL Server Business Intelligence in Azure Virtual Machines](https://msdn.microsoft.com/library/azure/jj992719.aspx) on the Microsoft website.
+- The page [Understanding Monitoring Alerts and Notifications in Azure](https://msdn.microsoft.com/library/azure/dn306639.aspx) on the Microsoft website.
+- The [Application Insights](app-insights-get-started/) page on the Microsoft website.

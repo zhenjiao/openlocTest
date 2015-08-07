@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="PowerShell script to create an Application Insights resource" 
 	description="Automate creation of Application Insights resources." 
 	services="application-insights" 

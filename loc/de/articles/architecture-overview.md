@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Architecture on Microsoft Azure" 
 	description="Architecture overview that covers common design patterns" 
 	services="" 
@@ -16,60 +16,60 @@
 	ms.date="07/06/2015" 
 	ms.author="robb"/>
 
-#Application Architektur auf Microsoft Azure
-Ressourcen zum Erstellen von Anwendungen, die Microsoft Azure zu verwenden.
+#Application Architecture on Microsoft Azure
+Resources for building applications that use Microsoft Azure.
 
-##Azure-architektonisches Design-Patterns
-Microsoft veröffentlicht Serie architektonischen Design Patterns helfen Ihnen Ihre eigenen benutzerdefinierten Designs zu komponieren. Die Muster sollen prägnant sein architektonische Guides, die zusammen in der Reihenfolge zusammengesetzt werden können geben Hinweise, wie man am besten nutzen die Microsoft Azure-Plattform, um die Geschäftsanforderungen Ihres Unternehmens zu lösen.
+##Azure Architectural Design Patterns
+Microsoft publishes series of architectural design patterns to help you compose your own custom designs. The patterns are intended to be concise architectural guides which can be composed together in order provide guidance on how to best leverage the Microsoft Azure platform to solve your organization’s business needs.
 
 
-[Übersicht](../azure-architectures-cpif-overview/) - 
-[Hybrid-Vernetzung](../azure-architectures-cpif-infrastructure-hybrid-networking/) - 
-[Offsite-Batch-Verarbeitung](../azure-architectures-cpif-foundation-offsite-batch-processing-tier/) -
-[Multisite Datenebene](../azure-architectures-cpif-foundation-multi-site-data-tier/) -
-[Globale Belastung ausgeglichen Webschicht](../azure-architectures-cpif-foundation-global-load-balanced-web-tier/) -
-[Himmelblau-Suche-tier](../azure-architectures-cpif-foundation-azure-search-tier/)
+[Overview](../azure-architectures-cpif-overview/) - 
+[Hybrid networking](../azure-architectures-cpif-infrastructure-hybrid-networking/) - 
+[Offsite batch processing](../azure-architectures-cpif-foundation-offsite-batch-processing-tier/) -
+[Multi-site data tier](../azure-architectures-cpif-foundation-multi-site-data-tier/) -
+[Global load balanced web tier](../azure-architectures-cpif-foundation-global-load-balanced-web-tier/) -
+[Azure search tier](../azure-architectures-cpif-foundation-azure-search-tier/)
  
-Jedes Muster enthält
+Each  pattern contains
  
-- Eine Dienstbeschreibung
-- Eine Liste der Azure Services benötigen, um das Muster zu profitieren
-- Blockdiagrammen
-- Architektonische Abhängigkeiten
-- Design-Einschränkungen oder Überlegungen, die das Muster auswirken können
-- Schnittstellen und Endpunkte
-- -Anti-patterns
-- Wichtige allgemeine Architektur Überlegungen einschließlich der Verfügbarkeit und Ausfallsicherheit, zusammengesetzte SLAs für bezogene Leistungen, Umfang und Leistung, Kosten und operativen Überlegungen.
+- A service description
+- A list of Azure Services required to leverage the pattern
+- Architectural diagrams
+- Architectural dependencies
+- Design limitations or considerations that may impact the pattern
+- Interfaces and endpoints
+- Anti-patterns
+- Key high-level architecture considerations including availability and resiliency, composite SLAs for services used, scale and performance, cost and operational considerations.
 
 ##Microsoft Architecture Blueprints
 
-Microsoft veröffentlicht eine Reihe von hohen Level-Architektur-Entwürfe zeigen, wie bestimmte Arten von Systemen zu bauen, die Microsoft-Produkte und Microsoft Azure Services umfassen. Jeder Entwurf umfasst eine 2D Visio-basierte Datei, die Sie herunterladen und bearbeiten können, ein bunter 3D PDF-Datei zum einführen, die Blaupause und ein Video, die durch die 3D-Version geht. Finden Sie unter 
+Microsoft publishes a set of high level architecture blueprints showing how to build specific types of systems which include  Mirosoft products and Microsoft Azure services. Each blueprint includes a 2D Visio-based file that you can download and modify, a more colorful 3D PDF file to introduce the blueprint, and a video that walks through the 3D version. See 
 [Microsoft Architecture Blueprints](http://msdn.microsoft.com/dn630664). 
 
-Die 2D Blueprint-Diagramme benutzen die Wolke und unten genannten Unternehmen Symbol festgelegt.  
+The 2D Blueprint diagrams use the Cloud and Enterprise Symbol Set mentioned below.  
 
-Die 3D Blueprint-PDFs werden in einem nicht-Microsoft-Tool erstellt, aber eine Visio-Vorlage ist in der Entwicklung. Finden Sie ein [BETA-Schulungsvideo der Vorlage hier.](http://aka.ms/3dBlueprintTemplate). Die Visio-3d Blueprint Vorlage Beta, e-Mail abrufen [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com). 
+The 3D Blueprint PDFs are created in a non-Microsoft tool, but a Visio template is under development. See a [BETA training video of the template here.](http://aka.ms/3dBlueprintTemplate). To obtain the Visio 3d Blueprint Template beta, email [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com). 
 
-![Microsoft Architecture Blueprint 3D Diagramm](./media/architecture-overview/BluePrintThumb.jpg)
+![Microsoft Architecture Blueprint 3D diagram](./media/architecture-overview/BluePrintThumb.jpg)
 
-##Cloud und Enterprise Symbol/Icon set
+##Cloud and Enterprise Symbol/Icon set
 
-[Herunterladen Sie das Wolke und Enterprise Symbol/Icon set](http://aka.ms/CnESymbols) technische Materialien erstellen, die beschreiben, Azure, Windows Server, SQL Server und andere Microsoft-Produkte. Sie können sie in Architektur-Diagramme, Schulungsmaterialien, Präsentationen, Datenblätter, Infografiken, Whitepapers und sogar dritte Partei Bücher verwenden, wenn das Buch Menschen schult zu Microsoft-Produkten zu verwenden. Die Symbole sind in Visio und PNG Formate. Anweisungen zur Verwendung die PNG-Dateien in PowerPoint sind eingeschlossen. 
+[Download the Cloud and Enterprise Symbol/Icon set](http://aka.ms/CnESymbols) to create technical materials that describe Azure, Windows Server, SQL Server and other Microsoft products. You can use them in architecture diagrams, training materials, presentations, datasheets, infographics, whitepapers and even 3rd party books if the book trains people to use Microsoft products. The symbols are in Visio and PNG formats. Instructions on how to use the PNGs in PowerPoint are included. 
 
-Die Symbolsatz Schiffe vierteljährlich und wird aktualisiert, sobald neue Dienstleistungen freigegeben werden. Wenn Sie eine Vorschau der neuesten Version, die Azure Zusatzleistungen umfassen können wollen, email [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com).  
+The symbol set ships quarterly and is updated as new services are released. If you want a preview of the newest release, which may include additional Azure services, email [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com).  
 
-Wir würden gerne wissen, was Sie denken, so Anweisungen zum Bereitstellen von Feedback im Download gibt. Wenn Sie die Symbole verwendet haben, füllen Sie die kurze 5-Frage [Umfrage](http://aka.ms/azuresymbolssurveyv2) oder schicken Sie eine e-Mail an die Adresse oben, lassen uns wissen, wenn sie nützlich sind und wie Sie sie benutzen.  
+We’d like to know what you think, so there are instructions for providing feedback in the download. If you've used the symbols, fill out the short 5 question [survey](http://aka.ms/azuresymbolssurveyv2) or email us at the address above to let us know if they are useful and how you use them.  
 
-Zusätzliche Symbole stehen in der [Microsoft Office Visio-Schablone](http://www.microsoft.com/en-us/download/details.aspx?id=35772), obwohl sie nicht für Blockdiagrammen wie der CnE ist optimiert sind.  
+Additional symbols are available in the [Microsoft Office Visio stencil](http://www.microsoft.com/en-us/download/details.aspx?id=35772), though they are not optimized for architectural diagrams like the CnE set is.  
 
-![Wolke und Enterprise Symbol/Icon set](./media/architecture-overview/CnESymbols.png)
+![Cloud and Enterprise Symbol/Icon set](./media/architecture-overview/CnESymbols.png)
 
-##Design Muster
-Microsoft Patterns &amp; Practices hat das Buch veröffentlicht [Wolke-Entwurfsmuster](http://msdn.microsoft.com/library/dn568099.aspx) auf MSDN und im PDF-Download verfügbar ist. Es gibt auch eine großformatige Poster der die Muster aufgelistet sind. 
+##Design patterns
+Microsoft Patterns and Practices has published the book [Cloud Design Patterns](http://msdn.microsoft.com/library/dn568099.aspx) which is available both on MSDN and in PDF download. There is also a large format poster available which lists all the patterns. 
 
-![Patterns und Practices Wolke Muster Poster](./media/architecture-overview/PnPPatternPosterThumb.jpg)
+![Patterns and Practices Cloud Patterns Poster](./media/architecture-overview/PnPPatternPosterThumb.jpg)
 
-##Architecture Infografiken
-Microsoft veröffentlicht mehrere Architektur ähnliche Plakate/Infografiken. Dazu gehören [Gebäude-reale Cloud-Anwendungen](http://azure.microsoft.com/documentation/infographics/building-real-world-cloud-apps/) und [Skalierung mit Cloud-Services](http://azure.microsoft.com/documentation/infographics/cloud-services/) . 
+##Architecture Infographics
+Microsoft publishes several architecture related posters/infographics. They include [Building Real-World Cloud Applications](http://azure.microsoft.com/documentation/infographics/building-real-world-cloud-apps/) and [Scaling with Cloud Services](http://azure.microsoft.com/documentation/infographics/cloud-services/) . 
 
-![Azurblaue Architektur Infografiken](./media/architecture-overview/AzureArchInfographicThumb.jpg)
+![Azure Architecture Infographics](./media/architecture-overview/AzureArchInfographicThumb.jpg)

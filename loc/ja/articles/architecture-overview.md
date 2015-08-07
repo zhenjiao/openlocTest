@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Architecture on Microsoft Azure" 
 	description="Architecture overview that covers common design patterns" 
 	services="" 
@@ -16,60 +16,60 @@
 	ms.date="07/06/2015" 
 	ms.author="robb"/>
 
-#Application Microsoft Azure アーキテクチャ
-Microsoft Azure を使用するアプリケーションを構築するためのリソース。
+#Application Architecture on Microsoft Azure
+Resources for building applications that use Microsoft Azure.
 
-##Azure 建築設計パターン
-マイクロソフトは、独自のカスタム デザインを作成するためのアーキテクチャ設計パターンのシリーズを発行しています。簡潔にするためのパターンは、順序で一緒に構成することがでく建築ガイドは、最大限に活用する方法についてのガイダンスを提供する組織のビジネス ニーズを解決するためにマイクロソフト Azure プラットフォーム。
+##Azure Architectural Design Patterns
+Microsoft publishes series of architectural design patterns to help you compose your own custom designs. The patterns are intended to be concise architectural guides which can be composed together in order provide guidance on how to best leverage the Microsoft Azure platform to solve your organization’s business needs.
 
 
-[概要](../azure-architectures-cpif-overview/) - 
-[ハイブリッド ネットワーク](../azure-architectures-cpif-infrastructure-hybrid-networking/) - 
-[オフサイト バッチ処理](../azure-architectures-cpif-foundation-offsite-batch-processing-tier/) -
-[マルチサイトのデータ層](../azure-architectures-cpif-foundation-multi-site-data-tier/) -
-[グローバル ロード バランスの取れた web 層](../azure-architectures-cpif-foundation-global-load-balanced-web-tier/) -
-[紺碧検索層](../azure-architectures-cpif-foundation-azure-search-tier/)
+[Overview](../azure-architectures-cpif-overview/) - 
+[Hybrid networking](../azure-architectures-cpif-infrastructure-hybrid-networking/) - 
+[Offsite batch processing](../azure-architectures-cpif-foundation-offsite-batch-processing-tier/) -
+[Multi-site data tier](../azure-architectures-cpif-foundation-multi-site-data-tier/) -
+[Global load balanced web tier](../azure-architectures-cpif-foundation-global-load-balanced-web-tier/) -
+[Azure search tier](../azure-architectures-cpif-foundation-azure-search-tier/)
  
-各パターンが含まれています
+Each  pattern contains
  
-- サービスの説明
-- パターンを活用するために必要な Azure サービスの一覧
-- アーキテクチャの図
-- 建築の依存関係
-- 設計上の制限やパターンに影響を与える可能性の考慮事項
-- インターフェイスとエンドポイント
-- アンチ パターン
-- キーの高度なアーキテクチャの考慮事項が可用性と復元、使用されるサービスの複合 Sla、スケール、パフォーマンス、コスト、運用に関する考慮事項を含みます。
+- A service description
+- A list of Azure Services required to leverage the pattern
+- Architectural diagrams
+- Architectural dependencies
+- Design limitations or considerations that may impact the pattern
+- Interfaces and endpoints
+- Anti-patterns
+- Key high-level architecture considerations including availability and resiliency, composite SLAs for services used, scale and performance, cost and operational considerations.
 
-##Microsoft アーキテクチャを青写真します。
+##Microsoft Architecture Blueprints
 
-マイクロソフトは、Mirosoft 製品、Microsoft Azure サービス システムの特定の種類をビルドする方法を示す高レベルのアーキテクチャの青写真のセットを公開します。各設計図には Visio ベースの 2D ファイル ダウンロードし、変更にはが含まれています, よりカラフルな 3 D の PDF ファイル、青写真と 3 D 版を歩くビデオを紹介します。参照してください。 
-[Microsoft アーキテクチャの青写真](http://msdn.microsoft.com/dn630664). 
+Microsoft publishes a set of high level architecture blueprints showing how to build specific types of systems which include  Mirosoft products and Microsoft Azure services. Each blueprint includes a 2D Visio-based file that you can download and modify, a more colorful 3D PDF file to introduce the blueprint, and a video that walks through the 3D version. See 
+[Microsoft Architecture Blueprints](http://msdn.microsoft.com/dn630664). 
 
-2次元の設計図を使用して、クラウドと下記企業シンボルを設定します。  
+The 2D Blueprint diagrams use the Cloud and Enterprise Symbol Set mentioned below.  
 
-Microsoft 以外のツールでは、3 D の設計図 Pdf が作成されますが、Visio テンプレートの開発中です。参照してください、 [ここでテンプレートのベータ版トレーニング ビデオ。](http://aka.ms/3dBlueprintTemplate).Visio 3 d 設計テンプレートのベータ版は、電子メールを取得するには [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com). 
+The 3D Blueprint PDFs are created in a non-Microsoft tool, but a Visio template is under development. See a [BETA training video of the template here.](http://aka.ms/3dBlueprintTemplate). To obtain the Visio 3d Blueprint Template beta, email [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com). 
 
-![Microsoft アーキテクチャ ・ ブルー プリント 3 D 図](./media/architecture-overview/BluePrintThumb.jpg)
+![Microsoft Architecture Blueprint 3D diagram](./media/architecture-overview/BluePrintThumb.jpg)
 
-##Cloud と企業シンボル/アイコン セット
+##Cloud and Enterprise Symbol/Icon set
 
-[クラウドと企業シンボル/アイコンのセットをダウンロードします。](http://aka.ms/CnESymbols) Azure、Windows Server、SQL Server、他のマイクロソフト製品について説明する技術資料を作成します。本は、マイクロソフト製品を使用する人々 を訓練する場合、アーキテクチャ図、トレーニング資料、プレゼンテーション、データシート、インフォ グラフィック、ホワイト ペーパーなども第 3 パーティの書籍でそれらを使用できます。シンボルは、Visio と PNG 形式です。PowerPoint で、Png を使用する方法の手順が含まれます。 
+[Download the Cloud and Enterprise Symbol/Icon set](http://aka.ms/CnESymbols) to create technical materials that describe Azure, Windows Server, SQL Server and other Microsoft products. You can use them in architecture diagrams, training materials, presentations, datasheets, infographics, whitepapers and even 3rd party books if the book trains people to use Microsoft products. The symbols are in Visio and PNG formats. Instructions on how to use the PNGs in PowerPoint are included. 
 
-シンボル セットは、四半期ごとに発送、新サービスがリリースされるに更新されます。場合は、最新のリリースでは、追加の Azure サービス、電子メールを含めることができますのプレビュー [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com).  
+The symbol set ships quarterly and is updated as new services are released. If you want a preview of the newest release, which may include additional Azure services, email [CnESymbols@microsoft.com](mailto:CnESymbols@microsoft.com).  
 
-ダウンロードでのフィードバックを提供するための説明がありますのであなたの考えを知っているしたいと思います。シンボルを使用した、ショートの 5 つの質問にご記入します。 [調査](http://aka.ms/azuresymbolssurveyv2) またはメールでお問い合わせ私たちは有用なかどうか知っているように上記のアドレスとどのようにそれらを使用します。  
+We’d like to know what you think, so there are instructions for providing feedback in the download. If you've used the symbols, fill out the short 5 question [survey](http://aka.ms/azuresymbolssurveyv2) or email us at the address above to let us know if they are useful and how you use them.  
 
-追加のシンボルで利用できる、 [Microsoft Office Visio ステンシル](http://www.microsoft.com/en-us/download/details.aspx?id=35772)、CnE のセットのようなアーキテクチャの図には最適化されていませんが。  
+Additional symbols are available in the [Microsoft Office Visio stencil](http://www.microsoft.com/en-us/download/details.aspx?id=35772), though they are not optimized for architectural diagrams like the CnE set is.  
 
-![クラウドと企業シンボル/アイコン セット](./media/architecture-overview/CnESymbols.png)
+![Cloud and Enterprise Symbol/Icon set](./media/architecture-overview/CnESymbols.png)
 
-##Design パターン
-Microsoft パターンとプラクティスが本を出版しました。 [クラウド デザイン パターン](http://msdn.microsoft.com/library/dn568099.aspx) MSDN と pdf ファイルをダウンロードの両方利用可能であります。また、大判ポスター使用可能なすべてのパターンの一覧です。 
+##Design patterns
+Microsoft Patterns and Practices has published the book [Cloud Design Patterns](http://msdn.microsoft.com/library/dn568099.aspx) which is available both on MSDN and in PDF download. There is also a large format poster available which lists all the patterns. 
 
-![パターンとプラクティス雲パターン ポスター](./media/architecture-overview/PnPPatternPosterThumb.jpg)
+![Patterns and Practices Cloud Patterns Poster](./media/architecture-overview/PnPPatternPosterThumb.jpg)
 
-##Architecture インフォ グラフィック
-マイクロソフトは、いくつかのアーキテクチャを発行し関連のポスター/インフォ グラフィック。彼らは含まれて [リアルなクラウド アプリケーションの構築](http://azure.microsoft.com/documentation/infographics/building-real-world-cloud-apps/) と [クラウド サービスとスケーリング](http://azure.microsoft.com/documentation/infographics/cloud-services/) . 
+##Architecture Infographics
+Microsoft publishes several architecture related posters/infographics. They include [Building Real-World Cloud Applications](http://azure.microsoft.com/documentation/infographics/building-real-world-cloud-apps/) and [Scaling with Cloud Services](http://azure.microsoft.com/documentation/infographics/cloud-services/) . 
 
-![Azure アーキテクチャ インフォ グラフィック](./media/architecture-overview/AzureArchInfographicThumb.jpg)
+![Azure Architecture Infographics](./media/architecture-overview/AzureArchInfographicThumb.jpg)

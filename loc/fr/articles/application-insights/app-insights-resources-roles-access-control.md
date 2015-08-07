@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Resources, roles and access control in Application Insights" 
 	description="Owners, contributors and readers of your organization's insights." 
 	services="application-insights" 
@@ -17,9 +17,9 @@
  
 # Resources, roles, and access control in Application Insights
 
-You can control who has read and update access to your data in Visual Studio [Aperçus de l'application][start], by using [Role-based access control in Microsoft Azure](../role-based-access-control-configure.md).
+You can control who has read and update access to your data in Visual Studio [Application Insights][start], by using [Role-based access control in Microsoft Azure](../role-based-access-control-configure.md).
 
-> [AZURE. IMPORTANT] Assign access to users in the **resource group or subscription** to which your application resource belongs - not in the resource itself. Assign the **Application Insights component contributor** role. This ensures uniform control of access to web tests and alerts along with your application resource. [Learn more](#access).
+> [AZURE.IMPORTANT] Assign access to users in the **resource group or subscription** to which your application resource belongs - not in the resource itself. Assign the **Application Insights component contributor** role. This ensures uniform control of access to web tests and alerts along with your application resource. [Learn more](#access).
 
 
 ## Resources, groups and subscriptions
@@ -84,7 +84,7 @@ Reader | Can view but not change anything
 
 * Resources
 * Web tests
-* Alertes
+* Alerts
 * Continuous export
 
 #### Select the user

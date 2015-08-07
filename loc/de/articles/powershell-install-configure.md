@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="How to install and configure Azure PowerShell"
 	description="Learn how to install and configure Azure PowerShell."
 	editor="tysonn"
@@ -30,16 +30,16 @@ This guide provides basic information about installing and setting up Azure Powe
 
 Azure is a subscription-based platform. This means that a subscription is required to use the platform. In most cases, it also means that the cmdlets require subscription information to perform the tasks with your subscription. (Some of the storage-related cmdlets can be used without this information.) You provide this by configuring your computer to connect to your subscription. Instructions are provided in this article, under "How to: Connect to your subscription."
 
-> [AZURBLAU. HINWEIS] Beginning in version 0.8.5, the Azure PowerShell modules require Microsoft .NET Framework 4.5.
+> [AZURE.NOTE] Beginning in version 0.8.5, the Azure PowerShell modules require Microsoft .NET Framework 4.5.
 
 When you install the module, the installer checks your system for the required software and installs all dependencies, such as the correct version of Windows PowerShell and .NET Framework.
 
 <a id="Install"></a>
 ## How to: Install Azure PowerShell
 
-You can download and install the Azure PowerShell modules by running the [Microsoft Web Platform Installer](http://go.microsoft.com/fwlink/p/?LinkId=320376). When prompted, click **Ausführen**. The Web Platform Installer installs the Azure PowerShell modules and all dependencies. Follow the prompts to complete the installation.
+You can download and install the Azure PowerShell modules by running the [Microsoft Web Platform Installer](http://go.microsoft.com/fwlink/p/?LinkId=320376). When prompted, click **Run**. The Web Platform Installer installs the Azure PowerShell modules and all dependencies. Follow the prompts to complete the installation.
 
-> [AZURBLAU. HINWEIS] If you just want to download the PowerShell installer, please visit https://github.com/Azure/azure-powershell/releases.
+> [AZURE.NOTE] If you just want to download the PowerShell installer, please visit https://github.com/Azure/azure-powershell/releases.
 Source code for the PowerShell cmdlets can be found at this repo as well
 
 For more information about the command-line tools available for Azure, see [Command-line tools]( http://go.microsoft.com/fwlink/?LinkId=320796).
@@ -50,7 +50,7 @@ The method you use to open either console depends on the version of Windows you'
 
 - On a computer running at least Windows 8 or Windows Server 2012, you can use the built-in Search. From the Start screen, begin typing **power**. This returns a scoped list of apps that includes Windows PowerShell and Azure PowerShell. To open the console, click either app. (To pin the app to the Start screen, right-click the icon.)
 
-- On a computer running a version earlier than Windows 8 or Windows Server 2012, use the Start menu. From the Start menu, click **All Programs**, click **Azure**, and then click **Azurblaue PowerShell**.
+- On a computer running a version earlier than Windows 8 or Windows Server 2012, use the Start menu. From the Start menu, click **All Programs**, click **Azure**, and then click **Azure PowerShell**.
 
 <a id="Connect"></a>
 ## How to: Connect to your subscription
@@ -83,9 +83,9 @@ For more information about authentication and subscription management in Azure, 
         $cred = Get-Credential
         Add-AzureAccount -Credential $cred
 
-	> [AZURBLAU. HINWEIS] For more information on security and using credentials, see [Best practices for deploying passwords and other sensitive data to ASP.NET and Azure Websites](http://www.asp.net/identity/overview/features-api/best-practices-for-deploying-passwords-and-other-sensitive-data-to-aspnet-and-azure).
+	> [AZURE.NOTE] For more information on security and using credentials, see [Best practices for deploying passwords and other sensitive data to ASP.NET and Azure Websites](http://www.asp.net/identity/overview/features-api/best-practices-for-deploying-passwords-and-other-sensitive-data-to-aspnet-and-azure).
 
-	> [AZURBLAU. HINWEIS] This non-interactive login method only works with a work or school account.  A work or school account is a user that is managed by your work or school, and defined in the Azure Active Directory instance for your work or school. If you do not currently have a work or school account, and are using a Microsoft account to log in to your Azure subscription, you can easily create one using the following steps.
+	> [AZURE.NOTE] This non-interactive login method only works with a work or school account.  A work or school account is a user that is managed by your work or school, and defined in the Azure Active Directory instance for your work or school. If you do not currently have a work or school account, and are using a Microsoft account to log in to your Azure subscription, you can easily create one using the following steps.
 	>
 	> 1. Login to the [Azure Management Portal](https://manage.windowsazure.com), and click on **Active Directory**.
 	>
@@ -105,16 +105,16 @@ For more information about authentication and subscription management in Azure, 
 
 The Azure module includes cmdlets that help you download and import the certificate.
 
-> [AZURBLAU. HINWEIS] The cmdlets in the AzureResourceManager module require the Azure AD method (Add-AzureAccount). These cmdlets do not support publish settings files. For more information about the cmdlets in the AzureResourceManager module, see [Azure Resource Manager Cmdlets](http://go.microsoft.com/fwlink/?LinkID=394765).
+> [AZURE.NOTE] The cmdlets in the AzureResourceManager module require the Azure AD method (Add-AzureAccount). These cmdlets do not support publish settings files. For more information about the cmdlets in the AzureResourceManager module, see [Azure Resource Manager Cmdlets](http://go.microsoft.com/fwlink/?LinkID=394765).
 
 
-- Die **Get-AzurePublishSettingsFile** cmdlet opens a web page on the
+- The **Get-AzurePublishSettingsFile** cmdlet opens a web page on the
 Azure Management Portal, from which you can
 download the subscription information. The information is contained in a .publishsettings file.
 
-- Die **Import-AzurePublishSettingsFile** imports the .publishsettings file for use by the module. This file includes a management certificate that has security credentials.
+- The **Import-AzurePublishSettingsFile** imports the .publishsettings file for use by the module. This file includes a management certificate that has security credentials.
 
-> [AZURBLAU. WICHTIG] We recommend that you delete the publishing profile that you
+> [AZURE.IMPORTANT] We recommend that you delete the publishing profile that you
 downloaded using <b>Get-AzurePublishSettingsFile</b> after you import those
 settings. Because the management certificate includes security credentials, it
 should not be accessed by unauthorized users. If you need information
@@ -139,7 +139,7 @@ location and file name format is:
 
 		Import-AzurePublishSettingsFile C:\Users\<UserProfile>\Downloads\<SubscriptionName>-credentials.publishsettings
 
-> [AZURBLAU. HINWEIS] If you are added to other subscriptions as a co-administrator after you import your publish settings, you'll need to repeat this
+> [AZURE.NOTE] If you are added to other subscriptions as a co-administrator after you import your publish settings, you'll need to repeat this
 process to download a new .publishsettings file, and then import those
 settings. For information about adding co-administrators to help manage
 services for a subscription, see [Add and Remove Co-Administrators for Your Azure Subscriptions](http://msdn.microsoft.com/library/windowsazure/gg456328.aspx).
@@ -251,7 +251,7 @@ For help from the community, try these popular forums:
 - [Stackoverflow](http://go.microsoft.com/fwlink/?LinkId=320213)
 
 
-## <a id="Resources"></a>Zusätzliche Ressourcen ##
+## <a id="Resources"></a>Additional Resources ##
 
 These are some of the resources available that you can use to learn to use Azure and Windows PowerShell.
 

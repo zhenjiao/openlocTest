@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Create an Azure account" 
 	description="Create an account" 
 	authors="tfitzmac" 
@@ -16,6 +16,6 @@
     ms.date="06/03/2015"
 	ms.author="tomfitz"/>
 
-# Azure Konto erstellen und Vorschau-Features aktivieren
+# Create an Azure account and enable preview features
 
-[AZURBLAU. ENTHALTEN [ein-Azurblau-Konto erstellen](../includes/create-an-azure-account.md)]
+[AZURE.INCLUDE [create-an-azure-account](../includes/create-an-azure-account.md)]

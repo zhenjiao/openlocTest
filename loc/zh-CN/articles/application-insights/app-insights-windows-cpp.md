@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
     pageTitle="Application Insights for C++ apps" 
     description="Analyze usage and performance of your C++ app with Application Insights." 
     services="application-insights" 
@@ -123,7 +123,7 @@ Click on any chart to get more detail. For example, crashes:
 ![Click the crash chart](./media/app-insights-windows-cpp/23-crashes.png)
 
 
-## <a name="usage"></a>接下来的步骤
+## <a name="usage"></a>Next Steps
 
 [Track usage of your app][track]
 

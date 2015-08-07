@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
     pageTitle="Application Insights for Android apps" 
     description="Analyze usage and performance of your Android app with Application Insights." 
     services="application-insights" 
@@ -66,7 +66,7 @@ The blade that opens is the place where you'll see performance and usage data ab
     
     (Additional information is available from the [usage page](http://go.microsoft.com/fwlink/?LinkID=533220). )
     
-At this point the following reference has been added to the modules build.gradle, permissions for `INTERNET` et `ACCESS_NETWORK_STATE`, and a meta-data tag containing the component's instrumentation key were added to the modules's `AndroidManifest.xml`
+At this point the following reference has been added to the modules build.gradle, permissions for `INTERNET` and `ACCESS_NETWORK_STATE`, and a meta-data tag containing the component's instrumentation key were added to the modules's `AndroidManifest.xml`
 
 ```java
 
@@ -121,7 +121,7 @@ And add the following to the activity's `onCreate` callback.
 
 Once `ApplicationInsights.start()` is called, the SDK will begin tracking android lifecycle activity and any unhandled exceptions. 
 
-> [AZURE. REMARQUE] Application lifecycle events are only collected in Android SDK version 15 and up (Ice Cream Sandwich+).
+> [AZURE.NOTE] Application lifecycle events are only collected in Android SDK version 15 and up (Ice Cream Sandwich+).
 
 In addition to this, custom events, traces, metrics, and handled exceptions can be collected. 
 Use any of the [Application Insights API][api] to send telemetry. 
@@ -177,7 +177,7 @@ Click on any chart to get more detail. For example, crashes:
 ![Click the crash chart](./media/app-insights-android/23-crashes.png)
 
 
-## <a name="usage"></a>Prochaines étapes
+## <a name="usage"></a>Next Steps
 
 [Track usage of your app][track]
 

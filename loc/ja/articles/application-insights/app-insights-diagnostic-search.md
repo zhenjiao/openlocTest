@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Using Diagnostic Search" 
 	description="Search and filter individual events, requests, and log traces." 
 	services="application-insights" 
@@ -17,7 +17,7 @@
  
 # Using Diagnostic Search in Application Insights
 
-Diagnostic Search is the blade in [アプリケーションのインサイト][start] that you use to find and explore individual telemetry items, such as page views, exceptions, or web requests. And you can view log traces and events that you have coded.
+Diagnostic Search is the blade in [Application Insights][start] that you use to find and explore individual telemetry items, such as page views, exceptions, or web requests. And you can view log traces and events that you have coded.
 
 ## When do you see Diagnostic Search?
 
@@ -123,10 +123,10 @@ You might want to set a time range, as searches over a shorter range are faster.
 
 Search for terms, not substrings. Terms are alphanumeric strings including some punctuation such as '.' and '_'. For example:
 
-term|is *ない* matched by|but these do match
+term|is *not* matched by|but these do match
 ---|---|---
 HomeController.About|about<br/>home|h\*about<br/>home\*
-IsLocal|local<br/>は<br/>\*local|isl\*<br/>islocal<br/>i\*l\*
+IsLocal|local<br/>is<br/>\*local|isl\*<br/>islocal<br/>i\*l\*
 New Delay|w d|new<br/>delay<br/>n\* AND d\*
 
 
@@ -162,7 +162,7 @@ If you saved with Relative time range, the re-opened blade has the latest data. 
 
 In addition to the out-of-the-box telemetry sent by Application Insights SDK, you can:
 
-* Capture log traces from your favorite logging framework in [.NET][netlogs] または [Java][javalogs]. This means you can search through your log traces and correlate them with page views, exceptions, and other events. 
+* Capture log traces from your favorite logging framework in [.NET][netlogs] or [Java][javalogs]. This means you can search through your log traces and correlate them with page views, exceptions, and other events. 
 * [Write code][track] to send custom events, page views, and exceptions. 
 
 [Learn how to send logs and custom telemetry to Application Insights][trace].
@@ -178,7 +178,7 @@ Up to 500 events per second from each application. Events are retained for seven
 
 We don't log the POST data automatically, but you can use [TrackTrace or log calls][trace]. Put the POST data in the message parameter. You can't filter on the message the way you can properties, but the size limit is longer.
 
-## <a name="add"></a>次のステップ
+## <a name="add"></a>Next steps
 
 * [Send logs and custom telemetry to Application Insights][trace]
 * [Set up availability and responsiveness tests][availability]

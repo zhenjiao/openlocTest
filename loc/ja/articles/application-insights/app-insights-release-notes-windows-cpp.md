@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Release notes for Application Insights C++ SDK" 
 	description="The latest updates." 
 	services="application-insights" 
@@ -16,7 +16,7 @@
  
 # Release Notes for Application Insights C++ SDK for Windows
 
-、 [Application Insights SDK](app-insights-windows-cpp.md) sends telemetry about your live app to [アプリケーションのインサイト](http://azure.microsoft.com/services/application-insights/), where you can analyze its usage and performance.
+The [Application Insights SDK](app-insights-windows-cpp.md) sends telemetry about your live app to [Application Insights](http://azure.microsoft.com/services/application-insights/), where you can analyze its usage and performance.
 
 
 #### To install the SDK in your application

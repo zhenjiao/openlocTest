@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Introduction to Application Gateway | Microsoft Azure"
    description="This page provides an overview of the Application Gateway service for layer 7 load balancing, including gateway sizes, HTTP load balancing, cookie based session affinity, and SSL offload."
    documentationCenter="na"
@@ -18,7 +18,7 @@
 # Application Gateway technical overview 
 
 
-Microsoft Azure Application Gateway is an Azure-managed service similar to the Azure VPN Gateway. Application Gateway provides an Azure-managed HTTP load balancing solution based on IIS Application Request Routing (ARR). The application gateway service is highly available and metered. For the SLA and Pricing, please refer to the [SLA](http://azure.microsoft.com/support/legal/sla/) と [Pricing](https://azure.microsoft.com/pricing/details/application-gateway/) pages.
+Microsoft Azure Application Gateway is an Azure-managed service similar to the Azure VPN Gateway. Application Gateway provides an Azure-managed HTTP load balancing solution based on IIS Application Request Routing (ARR). The application gateway service is highly available and metered. For the SLA and Pricing, please refer to the [SLA](http://azure.microsoft.com/support/legal/sla/) and [Pricing](https://azure.microsoft.com/pricing/details/application-gateway/) pages.
 
 Application Gateway currently supports layer 7 application delivery for the following:
 
@@ -49,7 +49,7 @@ You can create up to 10 application gateways per subscription and each applicati
 
 You can create and manage the application gateway by using REST APIs and by using PowerShell cmdlets.
 
-## 次のステップ
+## Next Steps
 
 Create an Application Gateway. See [Create an Application Gateway](application-gateway-create-gateway.md).
 

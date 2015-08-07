@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Create, start, or delete an Application Gateway | Microsoft Azure"
    description="This page provides instructions to create, configure, start, and delete an Azure Application Gateway"
    documentationCenter="na"
@@ -53,7 +53,7 @@ This sample shows the cmdlet on the first line followed by the output.
 
 **To validate** that the gateway was created, you can use the `Get-AzureApplicationGateway` cmdlet. 
 
-In the sample, *Description*, *InstanceCount*, et *GatewaySize* are optional parameters. The default value for *InstanceCount* is 2, with a maximum value of 10. The default value for *GatewaySize* is Medium. Small and Large are other available values. *Vip* et *DnsName* are shown as blank because the gateway has not started yet. These will be created once the gateway is in the running state. 
+In the sample, *Description*, *InstanceCount*, and *GatewaySize* are optional parameters. The default value for *InstanceCount* is 2, with a maximum value of 10. The default value for *GatewaySize* is Medium. Small and Large are other available values. *Vip* and *DnsName* are shown as blank because the gateway has not started yet. These will be created once the gateway is in the running state. 
 
 
 
@@ -80,7 +80,7 @@ The values are:
 - **Backend server pool settings:** Every pool has settings like port, protocol, and cookie based affinity. These settings are tied to a pool and are applied to all servers within the pool.
 - **Frontend Port:** This port is the public port opened on the application gateway. Traffic hits this port, and then gets redirected to one of the backend servers.
 - **Listener:** The listener has a frontend port, a protocol (Http or Https, these are case-sensitive), and the SSL certificate name (if configuring SSL offload). 
-- **Rule:** The rule binds the listener and the backend server pool and defines which backend server pool the traffic should be directed to when it hits a particular listener. Currently, only the *base* rule is supported. The *base* rule is round-robin load distribution.
+- **Rule:** The rule binds the listener and the backend server pool and defines which backend server pool the traffic should be directed to when it hits a particular listener. Currently, only the *basic* rule is supported. The *basic* rule is round-robin load distribution.
 
 You can construct your configuration either by creating a configuration object, or by using a configuration XML file. 
 To construct your configuration by using a configuration XML file, use the sample below.
@@ -148,7 +148,7 @@ Next, you'll set the application gateway. You can use the `Set-AzureApplicationG
 Once the gateway has been configured, use the `Start-AzureApplicationGateway` cmdlet to start the gateway. Billing for an application gateway begins after the gateway has been successfully started. 
 
 
-**Note:** Le `Start-AzureApplicationGateway` cmdlet might take up to 15-20 minutes to complete. 
+**Note:** The `Start-AzureApplicationGateway` cmdlet might take up to 15-20 minutes to complete. 
 
 
 
@@ -162,7 +162,7 @@ Once the gateway has been configured, use the `Start-AzureApplicationGateway` cm
 
 ## Verify the gateway status
 
-Utilisation du `Get-AzureApplicationGateway` cmdlet to check the status of gateway. If *Start-AzureApplicationGateway* succeeded in the previous step, the State should be *En cours d'exécution*, and the Vip and DnsName should have valid entries. 
+Use the `Get-AzureApplicationGateway` cmdlet to check the status of gateway. If *Start-AzureApplicationGateway* succeeded in the previous step, the State should be *Running*, and the Vip and DnsName should have valid entries. 
 
 This sample shows an application gateway that is up, running, and is ready to take traffic destined to `http://<generated-dns-name>.cloudapp.net`. 
 
@@ -185,8 +185,8 @@ This sample shows an application gateway that is up, running, and is ready to ta
 
 To delete an application gateway, you'll need to do the following in order:
 
-1. Utilisation du `Stop-AzureApplicationGateway` cmdlet to stop the gateway. 
-2. Utilisation du `Remove-AzureApplicationGateway` cmdlet to remove the gateway.
+1. Use the `Stop-AzureApplicationGateway` cmdlet to stop the gateway. 
+2. Use the `Remove-AzureApplicationGateway` cmdlet to remove the gateway.
 3. Verify the gateway has been removed by using the `Get-AzureApplicationGateway` cmdlet.
 
 This sample shows the `Stop-AzureApplicationGateway` cmdlet on the first line, followed by the output. 
@@ -220,7 +220,7 @@ To verify that the service has been removed, you can use the `Get-AzureApplicati
 	Get-AzureApplicationGateway : ResourceNotFound: The gateway does not exist. 
 	.....
 
-## Prochaines étapes
+## Next Steps
 
 If you want to configure SSL offload, see [Configure Application Gateway for SSL offload](application-gateway-ssl.md).
 

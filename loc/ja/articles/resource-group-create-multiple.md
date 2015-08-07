@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Create Multiple Instances of Resources"
    description="Describes how to use the copy operation in an Azure Resource Manager template to iterate multiple times when deploying resources."
    services="na"
@@ -110,7 +110,7 @@ Use the following template:
       } 
     ]
 
-## 次のステップ
+## Next Steps
 - [Authoring Azure Resource Manager Templates](./resource-group-authoring-templates.md)
 - [Azure Resource Manager Template Functions](./resource-group-template-functions.md)
 - [Deploy an application with Azure Resource Manager Template](azure-portal/resource-group-template-deploy.md)

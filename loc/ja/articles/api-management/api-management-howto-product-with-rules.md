@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Protect your API with rate limits using Azure API Management"
 	description="Learn how to protect your API with quotas and throttling (rate-limiting) policies."
 	services="api-management"
@@ -22,7 +22,7 @@ This guide shows you how easy it is to add protection for your backend API by co
 
 In this tutorial you will create a 'Free Trial' API product that allows developers to make up to 10 calls per minute and up to a maximum of 200 calls per week to your API. You will then publish the API, and test the rate limit policy.
 
->[AZURE。メモ] If you already have a product configured and want to use it for this tutorial, you can jump ahead to [Configure call rate limit and quota policies][] and follow the tutorial from there using your product in place of the **Free Trial** product.
+>[AZURE.NOTE] If you already have a product configured and want to use it for this tutorial, you can jump ahead to [Configure call rate limit and quota policies][] and follow the tutorial from there using your product in place of the **Free Trial** product.
 
 ## <a name="create-product"> </a>Create a product
 
@@ -34,7 +34,7 @@ To get started, click **Manage** in the Azure Portal for your API Management ser
 
 >If you have not yet created an API Management service instance, see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
-Click **Products** in the **API の管理** menu on the left to display the **Products** page.
+Click **Products** in the **API Management** menu on the left to display the **Products** page.
 
 ![Add product][api-management-add-product]
 
@@ -46,7 +46,7 @@ Type **Free Trial** into the **Title** text box.
 
 Type **Subscribers will be able to run 10 calls/minute up to a maximum of 200 calls/week after which access is denied.** into the **Description** text box.
 
-Products in API Management can be **Open** または **Protected**. Protected products must be subscribed to before they can be used, while open products can be used without a subscription. Ensure that **Require subscription** is checked to create a protected product that requires a subscription. This is the default setting.
+Products in API Management can be **Open** or **Protected**. Protected products must be subscribed to before they can be used, while open products can be used without a subscription. Ensure that **Require subscription** is checked to create a protected product that requires a subscription. This is the default setting.
 
 If you want an administrator to review and accept or reject subscription attempts to this product, check **Require subscription approval**. If the box is unchecked, subscription attempts will be auto-approved. In this example subscriptions are automatically approved, so do not check the box.
 
@@ -70,7 +70,7 @@ In this step of the tutorial, we will add the Echo API to the new Free Trial pro
 
 >Each API Management service instance comes pre-configured with an Echo API that can be used to experiment with and learn about API Management. For more information, see [Get started with Azure API Management][].
 
-Click **Products** から、 **API の管理** menu on the left, and click **Free Trial** to configure the product.
+Click **Products** from the **API Management** menu on the left, and click **Free Trial** to configure the product.
 
 ![Configure product][api-management-configure-product]
 
@@ -84,7 +84,7 @@ Check the box beside **Echo API** and click **Save**.
 
 ## <a name="policies"> </a>Configure call rate limit and quota policies
 
-Rate limits and quotas are configured in the policy editor. Click **ポリシー** under the **API の管理** menu on the left, and select **Free Trial** から、 **Policy Scope Product** drop-down.
+Rate limits and quotas are configured in the policy editor. Click **Policies** under the **API Management** menu on the left, and select **Free Trial** from the **Policy Scope Product** drop-down.
 
 ![Product policy][api-management-product-policy]
 
@@ -92,11 +92,11 @@ Click **Add Policy** to import the policy template and begin creating the rate l
 
 ![Add policy][api-management-add-policy]
 
-To insert policies, position the cursor into either the **inbound** または **outbound** section of the policy template. Rate limit and quota policies are inbound policies, so position the cursor in the inbound element.
+To insert policies, position the cursor into either the **inbound** or **outbound** section of the policy template. Rate limit and quota policies are inbound policies, so position the cursor in the inbound element.
 
 ![Policy editor][api-management-policy-editor-inbound]
 
-The two policies we are adding in this tutorial are the [Limit call rate][] と [Set usage quota][] policies.
+The two policies we are adding in this tutorial are the [Limit call rate][] and [Set usage quota][] policies.
 
 ![Policy statements][api-management-limit-policies]
 
@@ -108,7 +108,7 @@ Once the cursor is positioned in the **inbound** policy element, click the arrow
 	</api>
 	</rate-limit>
 
-**Limit call rate** can be used at the product level, and can also be used at the API and individual operation name levels. In this tutorial only product level policies are used, so delete the **api** と **operation** elements from the **rate-limit** element, so only the outer **rate-limit** element remains, as shown in the following example.
+**Limit call rate** can be used at the product level, and can also be used at the API and individual operation name levels. In this tutorial only product level policies are used, so delete the **api** and **operation** elements from the **rate-limit** element, so only the outer **rate-limit** element remains, as shown in the following example.
 
 	<rate-limit calls="number" renewal-period="seconds">
 	</rate-limit>
@@ -126,7 +126,7 @@ To configure the **Set usage quota** policy, position your cursor immediately be
 	</api>
 	</quota>
 
-Because this policy is also intended to be at the product level, delete the **api** と **operation** name elements, as shown in the following example.
+Because this policy is also intended to be at the product level, delete the **api** and **operation** name elements, as shown in the following example.
 
 	<quota calls="number" bandwidth="kilobytes" renewal-period="seconds">
 	</quota>
@@ -167,7 +167,7 @@ Once the desired policies are configured, click **Save**.
 
 ## <a name="publish-product"> </a> Publish the product
 
-Now that the the APIs are added and the policies configured, the product is ready to be used by developers. Before the product can be used by developers, it must be published. Click **Products** から、 **API の管理** menu on the left, and click **Free Trial** to configure the product.
+Now that the the APIs are added and the policies configured, the product is ready to be used by developers. Before the product can be used by developers, it must be published. Click **Products** from the **API Management** menu on the left, and click **Free Trial** to configure the product.
 
 ![Configure product][api-management-configure-product]
 
@@ -181,7 +181,7 @@ Now that the product is published, it is available to be subscribed to and used 
 
 >Administrators of an API Management instance are automatically subscribed to every product. In this tutorial step we will subscribe one of the non-administrator developer accounts to the Free Trial product. If your developer account is part of the Administrators role then you can follow along with this step, even though you are already subscribed.
 
-Click **Users** on the **API の管理** menu on the left, and click the name of your developer account. In this example we are using the **Clayton Gragg**  developer account.
+Click **Users** on the **API Management** menu on the left, and click the name of your developer account. In this example we are using the **Clayton Gragg**  developer account.
 
 ![Configure developer][api-management-configure-developer]
 
@@ -193,7 +193,7 @@ Check the box beside **Free Trial** and click **Subscribe**.
 
 ![Add subscription][api-management-add-subscription]
 
->[AZURE。メモ] In this tutorial, multiple simultaneous subscriptions are not enabled for the **Free Trial** product. If they were, you would be prompted to name the subscription, as shown in the following example.
+>[AZURE.NOTE] In this tutorial, multiple simultaneous subscriptions are not enabled for the **Free Trial** product. If they were, you would be prompted to name the subscription, as shown in the following example.
 
 ![Add subscription][api-management-add-subscription-multiple]
 
@@ -219,7 +219,7 @@ Keep the default parameter values, and select your subscription key for the **Fr
 
 ![Subscription key][api-management-select-key]
 
->[AZURE。メモ] If you have multiple subscriptions be sure to select the key for **Free Trial**, or else the policies that were configured in the previous steps won't be in effect.
+>[AZURE.NOTE] If you have multiple subscriptions be sure to select the key for **Free Trial**, or else the policies that were configured in the previous steps won't be in effect.
 
 Click **HTTP Get** and view the response. Note the **Response status** of **200 OK**.
 
@@ -229,11 +229,11 @@ Click **HTTP Get** at a rate greater than the rate limit policy of 10 calls per 
 
 ![Operation results][api-management-http-get-429]
 
-、 **Response Headers** and the **Response content** indicate the remaining interval before retries will be successful.
+The **Response Headers** and the **Response content** indicate the remaining interval before retries will be successful.
 
 When the rate limit policy of 10 calls per minute in effect, subsequent calls will fail until 60 seconds have elapsed from the first of the 10 successful calls to the product before the rate limit was exceeded. In this example the remaining interval is 43 seconds.
 
-## <a name="next-steps"> </a>次のステップ
+## <a name="next-steps"> </a>Next steps
 
 -	Check out the other topics in the [Get started with advanced API configuration][] tutorial.
 -	Watch a demo of setting rate limits and quotas in the following video.

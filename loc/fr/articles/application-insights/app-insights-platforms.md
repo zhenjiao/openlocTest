@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Insights: platforms" 
 	description="Can I use Application Insights with...?" 
 	services="application-insights" 
@@ -17,7 +17,7 @@
  
 # Application Insights: platforms
 
-[AZURE. INCLURE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
+[AZURE.INCLUDE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
 
 #### Can I use Application Insights with ...?
 
@@ -40,7 +40,7 @@
 + [ASP.NET 5](app-insights-asp-net-five.md)
 + [Android](https://github.com/Microsoft/ApplicationInsights-Android)
 + [Azure web apps and VMs](../insights-perf-analytics.md)
-+ [Services en nuage bleu azur](app-insights-cloudservices.md) including both web and worker roles
++ [Azure Cloud Services](app-insights-cloudservices.md) including both web and worker roles
 + [iOS](https://github.com/Microsoft/ApplicationInsights-iOS)
 + [OSX](https://github.com/Microsoft/ApplicationInsights-OSX)
 + [Angular](https://www.npmjs.com/package/angular-applicationinsights)

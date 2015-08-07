@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Authentication in Azure App Service API apps and mobile apps" 
 	description="Learn how to configure and use authentication for API apps and mobile apps in Azure app service." 
 	services="app-service" 
@@ -18,15 +18,15 @@
 
 # Authentication for API apps and mobile apps in Azure App Service
 
-## 概述
+## Overview
 
-This article explains the built-in authentication features for [API apps](../app-service-api/app-service-api-apps-why-best-platform.md) 和 [mobile apps](../app-service-mobile/app-service-mobile-value-prop-preview.md). 
+This article explains the built-in authentication features for [API apps](../app-service-api/app-service-api-apps-why-best-platform.md) and [mobile apps](../app-service-mobile/app-service-mobile-value-prop-preview.md). 
 
-的 [接下来的步骤](#next-steps) section at the end of the article provides links to related how-to documentation.
+The [Next steps](#next-steps) section at the end of the article provides links to related how-to documentation.
 
 ## Azure App Service gateway
 
-Azure App Service offers built-in authentication services that implement [OAuth 2.0](#oauth) 和 [OpenID Connect](#oauth) and work with multiple *identity providers*. An identity provider is an external service, trusted by Azure App Service, that authenticates your app's users. App Service supports the most popular identity providers:
+Azure App Service offers built-in authentication services that implement [OAuth 2.0](#oauth) and [OpenID Connect](#oauth) and work with multiple *identity providers*. An identity provider is an external service, trusted by Azure App Service, that authenticates your app's users. App Service supports the most popular identity providers:
 
 * Azure Active Directory
 * Microsoft Account
@@ -60,7 +60,7 @@ The gateway authentication services offer several advantages over running your o
 
 ## Server flow vs. client flow
 
-The App Service gateway offers two ways to authenticate clients:  *client flow* 和 *server flow*. In both flows, the client application sends the user credentials (typically, user name and password) directly to the identity provider. Neither the gateway nor your application receives user credentials in either flow.
+The App Service gateway offers two ways to authenticate clients:  *client flow* and *server flow*. In both flows, the client application sends the user credentials (typically, user name and password) directly to the identity provider. Neither the gateway nor your application receives user credentials in either flow.
 
 ### Client flow
 
@@ -156,7 +156,7 @@ If the gateway authentication services don't meet the needs of your app, you can
 
 ### <a id="doityourself"></a>Do-it-yourself authentication
 
-You can run an authentication framework such as [ASP.NET Identity](http://www.asp.net/identity) 或 [Thinktecture](http://www.thinktecture.com/identityAndAccessControl) on Azure. This gives you control over how everything works, but you also have to spend more time developing and testing authentication functionality. Also, if you have multiple apps to protect with multiple redirect URLs, you have to configure multiple client IDs and client secrets with third-party authentication providers such as Facebook, Google, and Twitter.
+You can run an authentication framework such as [ASP.NET Identity](http://www.asp.net/identity) or [Thinktecture](http://www.thinktecture.com/identityAndAccessControl) on Azure. This gives you control over how everything works, but you also have to spend more time developing and testing authentication functionality. Also, if you have multiple apps to protect with multiple redirect URLs, you have to configure multiple client IDs and client secrets with third-party authentication providers such as Facebook, Google, and Twitter.
 
 At present App Service does not support using a do-it-yourself solution alongside gateway authentication, as is possible in [Mobile Services](mobile-services-dotnet-backend-get-started-custom-authentication.md). 
 
@@ -164,7 +164,7 @@ At present App Service does not support using a do-it-yourself solution alongsid
 
 If you have existing APIs that you want to protect with authentication, you can do that with the Azure API Management service. For information about using API Management with API apps, see this blog post by Panos Kefalidis: [Taking advantage of API Management for API Apps](http://www.kefalidis.me/2015/06/taking-advantage-of-api-management-for-api-apps/) 
 
-## 接下来的步骤
+## Next steps
 
 This article has explained the authentication services provided by Azure App Service for API Apps and Mobile Apps. Here are some links to resources for learning about the underlying authentication protocols, and documentation about how to use the App Service authentication features.
 

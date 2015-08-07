@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Exploring Metrics in Application Insights" 
 	description="Analyze usage, availability and performance of your on-premises or Microsoft Azure web application with Application Insights." 
 	services="application-insights" 
@@ -17,7 +17,7 @@
  
 # Exploring Metrics in Application Insights
 
-Metrics in [アプリケーションのインサイト][start] are measured values and counts of events that are sent in telemetry from your application. They help you detect performance issues and watch trends in how your application is being used. There's a wide range of standard metrics, and you can also create your own custom metrics and events.
+Metrics in [Application Insights][start] are measured values and counts of events that are sent in telemetry from your application. They help you detect performance issues and watch trends in how your application is being used. There's a wide range of standard metrics, and you can also create your own custom metrics and events.
 
 Metrics and event counts are displayed in charts of aggregated values such as sums, averages, or counts.
 
@@ -182,7 +182,7 @@ What you see is what gets exported. Change the time range or filters if you want
 If you want data continuously exported so that you can process it externally, consider using [Continous export](app-insights-export-telemetry.md).
 
 
-## 次のステップ
+## Next steps
 
 * [Monitoring usage with Application Insights](app-insights-overview-usage.md)
 * [Using Diagnostic Search](app-insights-diagnostic-search.md)

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Logs, exceptions and custom diagnostics for ASP.NET in Application Insights" 
 	description="Diagnose issues in ASP.NET web apps by searching requests, exceptions and logs generated with Trace, NLog, or Log4Net." 
 	services="application-insights" 
@@ -17,7 +17,7 @@
  
 # Logs, exceptions and custom diagnostics for ASP.NET in Application Insights
 
-[Anwendung-Einblicke][start] includes a powerful [Diagnostic Search][diagnostic] tool that enables you to explore and drill in to telemetry sent by the Application Insights SDK from your application. Many events such as user page views are automatically sent by the SDK.
+[Application Insights][start] includes a powerful [Diagnostic Search][diagnostic] tool that enables you to explore and drill in to telemetry sent by the Application Insights SDK from your application. Many events such as user page views are automatically sent by the SDK.
 
 You can also write code to send custom events, exception reports, and traces. And if you already use a logging framework such as log4J, log4net, NLog, or System.Diagnostics.Trace, you can capture those logs and include them in the search. This makes it easy to correlate log traces with user actions, exceptions and other events.
 
@@ -223,7 +223,7 @@ You can also open Diagnostic Search directly, filter on exceptions, and choose t
 
 ### Reporting unhandled exceptions
 
-Application Insights reports unhandled exceptions where it can, from devices, [web browsers][usage], or web servers, whether instrumented by [Status Monitor][redfield] oder [Application Insights SDK][greenbrown]. 
+Application Insights reports unhandled exceptions where it can, from devices, [web browsers][usage], or web servers, whether instrumented by [Status Monitor][redfield] or [Application Insights SDK][greenbrown]. 
 
 However, it isn't always able to do this in some cases because the .NET framework catches the exceptions.  To make sure you see all exceptions, you therefore have to write a small exception handler. The best procedure varies with the technology. See [Exception telemetry for ASP.NET][exceptions] for details. 
 
@@ -271,7 +271,7 @@ In Solution Explorer, right-click `ApplicationInsights.config` and choose **Upda
 
 Up to 500 events per second from each application. Events are retained for seven days.
 
-## <a name="add"></a>Die nächsten Schritte
+## <a name="add"></a>Next steps
 
 * [Set up availability and responsiveness tests][availability]
 * [Troubleshooting][qna]

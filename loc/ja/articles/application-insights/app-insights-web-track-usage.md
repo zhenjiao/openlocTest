@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Usage analysis for web applications with Application Insights" 
 	description="Overview of usage analytics with Application Insights" 
 	services="application-insights" 
@@ -30,7 +30,7 @@ Usage data from a web application comes from the client browser.
 
 #### Set up an Application Insights resource 
 
-An Application Insights resource is a place in Microsoft Azure where telemetry data from your app is analyzed and displayed. You might already have set up one to display data from your app's server side in [ASP.NET][greenbrown] または [J2EE][java]. If not, you might want to do that now.
+An Application Insights resource is a place in Microsoft Azure where telemetry data from your app is analyzed and displayed. You might already have set up one to display data from your app's server side in [ASP.NET][greenbrown] or [J2EE][java]. If not, you might want to do that now.
 
 It's usually best to display the usage data from the web client in the same resource as the data from the server. That way, you can easily correlate diagnostics and metrics from the two ends. So, if you already have a resource, skip to the next step.
 
@@ -78,7 +78,7 @@ Session is a fundamental concept in Application Insights, which strives to assoc
 
 Rich context information is collected about each session, such as device characteristics, geo location, operating system, and so on.
 
-If you instrument both the client and server ([ASP.NET][greenbrown] または [J2EE][java]), the SDKs will propagate the session id between client and server, so that events on both sides can be correlated.
+If you instrument both the client and server ([ASP.NET][greenbrown] or [J2EE][java]), the SDKs will propagate the session id between client and server, so that events on both sides can be correlated.
 
 When [diagnosing problems][diagnostic], you can find all the telemetry related to the session in which a problem occurred, including all requests, and any events, exceptions or traces that were logged.
 
@@ -113,7 +113,7 @@ Each user session is associated with a unique user id.
 
 By default, the user is identified by placing a cookie. In this case, a user who uses multiple browsers or devices will be counted more than once.
 
-、 **user count** metric in a certain interval is defined as the number of unique users with recorded activity during this interval. As a result, users with long sessions may be accounted multiple times, when you set a time range so that the grain is less than an hour or so.
+The **user count** metric in a certain interval is defined as the number of unique users with recorded activity during this interval. As a result, users with long sessions may be accounted multiple times, when you set a time range so that the grain is less than an hour or so.
 
 **New Users** counts the users whose first sessions with the app occurred during this interval. If the default method of counting by users by cookies is used, then this will also include users who have cleared their cookies, or who are using a new device or browser to access your app for the first time.
 ![From the usage blade, click on Users chart to examine New Users.](./media/app-insights-web-track-usage/031-dual.png)

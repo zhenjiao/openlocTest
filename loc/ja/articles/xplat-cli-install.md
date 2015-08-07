@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Install Azure CLI for Mac, Linux, and Windows"
 	description="Install the Azure CLI for Mac, Linux, and Windows to start using Azure Services"
 	editor="tysonn"
@@ -20,7 +20,7 @@
 
 This document describes how to install the Azure Command-Line Interface (Azure CLI). The Azure CLI provides a set of open source shell-based commands for managing resources on Microsoft Azure.
 
-> [AZURE。メモ] If you've already installed the Azure CLI, connect it with your Azure resources. For more, see [How to connect to your Azure Subscription](xplat-cli-connect.md#configure).
+> [AZURE.NOTE] If you've already installed the Azure CLI, connect it with your Azure resources. For more, see [How to connect to your Azure Subscription](xplat-cli-connect.md#configure).
 
 The Azure CLI is written in JavaScript, and requires [Node.js](https://nodejs.org). It is implemented using the [Azure SDK for Node](https://github.com/azure/azure-sdk-for-node), and released under an Apache 2.0 license. The project repository is located at [https://github.com/azure/azure-xplat-cli](https://github.com/azure/azure-xplat-cli).
 
@@ -52,7 +52,7 @@ If Node.js is already installed on your system, use the following command to ins
 
 	npm install azure-cli -g
 
-> [AZURE。メモ] On Linux distributions, you may need to use `sudo` to successfully run the __npm__ command.
+> [AZURE.NOTE] On Linux distributions, you may need to use `sudo` to successfully run the __npm__ command.
 
 ### Installing node.js and npm on Linux distributions that use [dpkg](http://en.wikipedia.org/wiki/Dpkg) package management
 The most common of these distributions use either the [advanced packaging tool (apt)](http://en.wikipedia.org/wiki/Advanced_Packaging_Tool) or other tools based on the `.deb` package format. Some examples are Ubuntu and Debian.
@@ -65,7 +65,7 @@ Most of the more recent of these distributions require installing **nodejs-legac
 
 Some of the older distributions, such as Ubuntu 12.04, require installing the current binary distribution of node.js. The following code shows how to do that by installing and using **curl**.
 
->[AZURE。メモ] The commands here are taken from the Joyent installation instructions found [ここで](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager). However, when using **sudo** as a pipe target, you should always check the scripts that you are installing and validate that they do exactly what you expect before running them through **sudo**. With great power comes great responsibility.
+>[AZURE.NOTE] The commands here are taken from the Joyent installation instructions found [here](https://github.com/joyent/node/wiki/installing-node.js-via-package-manager). However, when using **sudo** as a pipe target, you should always check the scripts that you are installing and validate that they do exactly what you expect before running them through **sudo**. With great power comes great responsibility.
 
 	sudo apt-get install curl
 	curl -sL https://deb.nodesource.com/setup | sudo bash -
@@ -114,7 +114,7 @@ Once the Azure CLI has been installed, you will be able to use the **azure** com
 	|-- kuduscript@0.1.2 (commander@1.1.1, streamline@0.4.11)
 	|-- azure@0.7.13 (dateformat@1.0.2-1.2.3, envconf@0.0.4, mpns@2.0.1, mime@1.2.10, validator@1.4.0, xml2js@0.2.8, wns@0.5.3, request@2.25.0)
 
->[AZURE。メモ] For Linux systems, you can also install the Azure CLI by building it from the [source](http://go.microsoft.com/fwlink/?linkid=253472&clcid=0x409). For more information on building from source, see the INSTALL file included in the archive.
+>[AZURE.NOTE] For Linux systems, you can also install the Azure CLI by building it from the [source](http://go.microsoft.com/fwlink/?linkid=253472&clcid=0x409). For more information on building from source, see the INSTALL file included in the archive.
 
 ## Using Docker Container
 

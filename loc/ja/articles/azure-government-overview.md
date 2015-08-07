@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Azure Government Overview" 
    description="This article provides an overview of the Azure Government Cloud capabilities and the trustworthy design and security used to support compliance applicable to federal, state, and local government organizations and their partners. " 
    services="Azure-Government" 
@@ -16,77 +16,77 @@
    ms.date="03/13/2015"
    ms.author="john.harvey@microsoft.com"/>
 
-#  Microsoft Azure 政府概要 
+#  Microsoft Azure Government Overview 
 
 <p> Microsoft Azure Government is a physically and network isolated instance of Microsoft Azure.  This developers guide will provide details on the differences that application developers and administrators would need to interact and work with these seperate regions of Azure.
 
 
-## <a name="Overview"></a>概要
+## <a name="Overview"></a>Overview
 
-紺碧の政府は政府コミュニティ クラウド (GCC) の米国政府機関の速度、規模、セキュリティ、コンプライアンス、経済学を必要とする戦略的な政府のシナリオをサポートするように設計。  それは、Microsoft CRM オンライン等 O365 GCC、Office 365 Azure パブリックなど他のマイクロソフト クラウド製品のソフトウェア、セキュリティ、コンプライアンス、およびコントロールを提供するマイクロソフトの広範な経験に基づいて開発されました。 
+Azure Government is a government-community cloud (GCC) designed to support strategic government scenarios that require speed, scale, security, compliance and economics for U.S. government organizations.   It was developed based on Microsoft’s extensive experience delivering software, security, compliance, and controls in other Microsoft cloud offerings such as Azure public, Office 365, O365 GCC, Microsoft CRM Online etc. 
 
-さらに、Azure の政府はより高いレベルのセキュリティを満たすために設計されています、コンプライアンスを必要と敏感な専用の米国公共部門の作業負荷の発見アメリカ合衆国連邦リスクおよび承認管理プログラム (FedRAMP)、部門の防衛企業クラウド サービス ブローカー (ECSB)、刑事正義の情報サービス (CJIS) などの規制でセキュリティ ポリシーおよび健康保険の携行性と責任に関する法律 (HIPAA)。     
+In addition, Azure Government is designed to meet the higher level security and compliance needs for sensitive, dedicated, U.S. Public Sector workloads found in regulations such as United States Federal Risk and Authorization Management Program (FedRAMP), Department of Defense Enterprise Cloud Service Broker (ECSB), Criminal Justice Information Services (CJIS) Security Policy and Health Insurance Portability and Accountability Act (HIPAA).     
 
-以下、Azure 政府クラウド インフラストラクチャ、ファブリック、サービス、政府組織の目標を満たすためにハイブリッド クラウド ソリューションを構築を支援する利用可能なフレームワークの概要ビューです。 以下のいくつかのサービスは、プレビューで使用可能なのみを参照してください、 [地域ページ](http://azure.microsoft.com/regions/#services) 一般的に利用可能な最新の状態で、ほとんどのサービスが一覧表示されます。
+Below is a summary view of the Azure Government Cloud infrastructure, fabric, services and frameworks that are available to help government organizations build hybrid cloud solutions to meet their goals.  As some services below are only available in preview, please see the [regions page](http://azure.microsoft.com/regions/#services) as the most up to date services that are generally available are listed.
 
 ![][2]
 
-紺碧の政府には、サービスとしてのインフラストラクチャ (IaaS)、サービスとしてのプラットフォーム (PaaS) のコア コンポーネントが含まれています。 これには、インフラストラクチャ、ネットワーク、ストレージ、データ管理、id 管理、その他の多くのサービスが含まれます。 紺碧の政府は、公共紺碧顧客が静止のデータ レプリケーションと自動スケーリングのような活用して同じの偉大な機能をサポートします。マイクロソフトは両方のリーダーとして識別されています。 <a href="https://www.gartner.com/doc/2575715/magic-quadrant-cloud-infrastructure-service" target="_new">IaaS</a> と <a href="https://www.gartner.com/doc/2645317/magic-quadrant-enterprise-application-platform" target="_new">イースター<a/> で業界をリードするアナリストです。
+Azure Government includes the core components of Infrastructure-as-a-Service (IaaS) and Platform-as-a-Service (PaaS).  This includes infrastructure, network, storage, data management, identity management and many other services.  Azure Government supports the same great features that public Azure customers have leveraged like Geo-Synchronous data replication and auto scaling. Microsoft has been identified as the leader in both <a href="https://www.gartner.com/doc/2575715/magic-quadrant-cloud-infrastructure-service" target="_new">IaaS</a> and <a href="https://www.gartner.com/doc/2645317/magic-quadrant-enterprise-application-platform" target="_new">PaaS<a/> by leading industry analysts.
 
-信頼性の高いサービスおよび公共 Azure の機能のほかに、Azure 政府はいくつかの米国政府機関は自分のデータを提供することにより安全を確保するために機能を提供します。
+In addition to providing the robust services and features of public Azure, Azure Government provides a number of features to assure US government entities that their data is secure by providing:
 
-- **物理とネットワーク分離のインスタンス** -紺碧政府環境は、修飾された米国政府機関およびソリューション ・ プロバイダーで使用される Microsoft Azure パブリックとだけから完全に独立したインスタンスです。
+- **Physical and network-isolated instance** – The Azure Government environment is a completely separate instance from Microsoft Azure public and only used by qualified U.S. government organizations and solution providers.
 
-- **セキュリティ、プライバシー & コンプライアンス** マイクロソフトは、その堅牢なセキュリティ、プライバシー、およびコンプライアンス コントロール フレームワークに加え、ECSB 影響レベルとその CJIS より高いレベルの要件を満たすために追加の厳格なコントロールを実施しています。 
+- **Security, Privacy & Compliance** - Microsoft has implemented its robust security, privacy, and compliance controls framework plus additional stringent controls to meet the higher level requirements found in ECSB Impact Levels and CJIS. 
 
-- **データ ストレージ** -紺碧の政府の環境は、離れて 2 データ センター 500 マイル以上を維持します。コンチネンタル アメリカ合衆国 (イモガイ) データ センター内にあるすべての顧客管理データを格納します。
+- **Data Storage** – The Azure Government environment maintains 2 datacenters over 500 miles apart. All customer managed data is stored within the Continental United States (CONUS) datacenters
 
-- **米国の人員** -Azure すべての政府オペレーターと管理者は、スクリーンの米国市民です。
+- **U.S. Personnel** – All Azure Government operators and administrators are screened U.S. citizens.
 
-- **アイデンティティ管理** -Azure の政府の環境の中で id 管理は、Azure Active Directory の個別のインスタンスです。
+- **Identity Management** – Identity Management within the Azure Government environment is a separate instance of Azure Active Directory.
 
-- **コンプライアンス** -マイクロソフトでは継続的に満たすために、厳格な維持、および FedRAMP などの連邦、州、および地方のコンプライアンス要件の変更、CJIS、ECSB、および HIPAA 米国政府のクラウド ソリューション。 
+- **Compliance** – Microsoft is continuously investing to meet and maintain rigorous and changing federal, state, and local compliance requirements such as FedRAMP, CJIS, ECSB, and HIPAA for U.S. government cloud solutions. 
 
-- **クラウド統合** -紺碧の政府は、クラウド サービスと 1 TB の OneDrive ストレージ容量など高度なサービス間で記号の 1 つを可能にする O365 政府との統合環境を提供します。
+- **Cloud Integration** – Azure Government provides an integrated environment with O365 Government allowing for a single sign-on across cloud services and enhanced services such as 1TB of OneDrive storage space.
 
-紺碧の政府組織は、既存のテクノロジへの投資を維持し、クラウド サービスのメリットを実現ができます。 Azure 政府は製品との相互運用可能なクラウド プラットフォームとテクノロジ組織を構築することができますので地面からより多くのアプリケーションを開きます。 機関には、ツール、サービス、オペレーティング システム、アーキテクチャ、およびクラウド ソリューションの Windows、Linux、Oracle、SharePoint、.NET、Java、PHP、Node.js を含むフレームワークを選択できます。Azure 政府プラットフォームの柔軟性により、複数機関の協力、アプリケーション開発、および統合の新たな形態の。  
+Azure Government also enables organizations to maintain their existing technology investments and realize the benefits of cloud services.  Since Azure Government is an interoperable cloud platform, with products and technologies organizations can build applications that are more open from the ground up.  Agencies can choose the tools, services, operating system, architecture, and frameworks including Windows, Linux, Oracle, SharePoint, .NET, Java, PHP and Node.js, for their cloud solutions. The flexibility of the Azure Government platform allows for new forms of cross-agency collaboration, application development, and integration.  
 
-米国政府機関のクラウド サービスに興味を持っては、Azure 政府が膨大な規模および発展的なニーズを満たすために厳格なセキュリティを提供する自信を持ってすることができます。 
-
-
+U.S. government organizations interested in cloud services can be confident that Azure Government provides enormous scale and rigorous security practices to meet their evolving needs. 
 
 
 
 
 
-## <a name="Features"></a> 現在、Microsoft Azure 政府で利用できる機能
-紺碧政府現在アイオワ米国政府と米国政府ヴァージニアの地域で利用可能な次のサービスがあります。
 
-- 仮想マシン
-- クラウド サービス
-- ストレージ
-- アクティブ ディレクトリ
-- スケジューラ
-- 仮想ネットワーク
-- SQL データベース
-- 紺碧のファイル
-- メディア サービス
-- トラフィック マネージャー
-- サービス バス
 
-他のサービスが利用できるとより多くのサービスを継続的に追加されます。 サービスの最新の一覧を参照してくださいしてください、 [地域ページ](http://azure.microsoft.com/regions/#services) それぞれの利用可能な領域およびサービスを強調します。  
+## <a name="Features"></a> Features currently available in Microsoft Azure Government
+Azure Government currently has the following services available in both US GOV IOWA and US GOV VIRGINIA regions:
 
-現在、米国 GOV アイオワ、米国 GOV バージニア州は、Azure の政府を支えるデータ センター。 現在のデータ センターとサービスの上記地域のページをご覧ください。
+- Virtual Machines
+- Cloud Services
+- Storage
+- Active Directory
+- Scheduler
+- Virtual Networking
+- SQL Database
+- Azure Files
+- Media Services
+- Traffic Manager
+- Service Bus
+
+Other services are available, and more services will be added on a continuous basis.  For the most current list of services, please see the [regions page](http://azure.microsoft.com/regions/#services) which will highlight each available region and their services.  
+
+Currently, US GOV Iowa and US GOV Virginia are the data centers supporting Azure Government.  Please refer to the regions page above for current data centers and services available.
 
 <!--Every topic should have next steps and links to the next logical set of content to keep the customer engaged -->
 
-## <a name="next"></a>次のステップ
+## <a name="next"></a>Next steps
 
-詳細と Azure の政府についての学習に興味があるなら以下のリンクのいくつかを活用してください。
+If you are interested in learning more and about Azure Government please leverage some of the links below.
 
-- **<A href="http://azure.com/gov">取得し、Azure の政府へのアクセス</a>**
+- **<A href="http://azure.com/gov">Acquiring and accessing Azure Government</a>**
 
-- **<A href="/azure-government-developer-guide">紺碧政府開発者ガイド</a>**
+- **<A href="/azure-government-developer-guide">Azure Government Developer Guide</a>**
 
 <!--- **<A href="/azure-government-service-description">Azure Government Service Descriptions</a>**-->
 

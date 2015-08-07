@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Download the Azure SDK for PHP"
 	description="Learn how to download and install the Azure SDK for PHP."
 	documentationCenter="php"
@@ -16,29 +16,29 @@
 	ms.date="03/20/2015"
 	ms.author="tomfitz"/>
 
-#Download PHP の Azure SDK
+#Download the Azure SDK for PHP
 
-## 概要
+## Overview
 
-PHP の Azure SDK には、開発、展開、および Azure の PHP アプリケーションを管理することができますコンポーネントが含まれています。具体的には、PHP の Azure SDK は以下含まれています。
+The Azure SDK for PHP includes components that allow you to develop, deploy, and manage PHP applications for Azure. Specifically, the Azure SDK for PHP includes the following:
 
-* **Azure に PHP クライアント ライブラリ**.これらのクラス ライブラリは Azure などデータ管理サービスにアクセスするためのインターフェイスを提供し、クラウド サービス。  
-* **Mac、Linux、および Windows (紺碧 CLI) 紺碧のコマンド ライン インターフェイス**.これは、Azure のウェブサイトと Azure バーチャル マシンなどの Azure サービス展開および管理用のコマンドのセットです。Mac、Linux、および Windows を含むすべてのプラットフォーム上の Azure CLI 作業。
-* **紺碧 PowerShell (Windows のみ)**.これは、クラウド サービスや仮想マシンなどの Azure サービス展開および管理のための PowerShell コマンドレットのセットです。
-* **Azure エミュレーター (Windows のみ)**.コンピューティングとストレージ エミュレーターは、クラウド サービスとローカルでアプリケーションをテストすることができますデータ管理サービスのローカル エミュレーターです。Azure エミュレーター Windows 上でのみ実行します。
+* **The PHP client libraries for Azure**. These class libraries provide an interface for accessing Azure features, such as data management services and cloud services.  
+* **The Azure Command-Line Interface for Mac, Linux, and Windows (Azure CLI)**. This is a set of commands for deploying and managing Azure services, such as Azure Websites and Azure Virtual Machines. The Azure CLI work on any platform, including Mac, Linux, and Windows.
+* **Azure PowerShell (Windows Only)**. This is a set of PowerShell cmdlets for deploying and managing Azure Services, such as Cloud Services and Virtual Machines.
+* **The Azure Emulators (Windows Only)**. The compute and storage emulators are local emulators of cloud services and data management services that allow you to test an application locally. The Azure Emulators run on Windows only.
 
-ダウンロードして、上記のコンポーネントをインストールする方法について説明します。
+The sections below describe how to download and install the components described above.
 
-このトピックの手順は、あなたが持っていると仮定します。 [PHP][install-php] インストールされています。
+The instructions in this topic assume that you have [PHP][install-php] installed.
 
-> [AZURE。メモ]
-> PHP 5.3 以降 Azure に PHP クライアント ライブラリを使用する必要があります。
+> [AZURE.NOTE]
+> You must have PHP 5.3 or higher to use the PHP client libraries for Azure.
 
-Azure の ##PHP クライアント ライブラリ
+##PHP client libraries for Azure
 
 The PHP Client Libraries for Azure provide an interface for accessing Azure features, such as data management services and cloud services, from any operating system. These libraries can be installed via the Composer or PEAR package managers or manually.
 
-For information about how to use the PHP Client Libraries for Azure, see [How to Use the Blob Service][blob-service], [How to Use the Table Service][table-service] と [How to Use the Queue Service][queue-service].
+For information about how to use the PHP Client Libraries for Azure, see [How to Use the Blob Service][blob-service], [How to Use the Table Service][table-service] and [How to Use the Queue Service][queue-service].
 
 ###Install via Composer
 
@@ -92,7 +92,7 @@ To download and install the PHP Client Libraries for Azure manually, follow thes
 1. Download a .zip archive that contains the libraries from [GitHub][php-sdk-github]. Alternatively, fork the repository and clone it to your local machine. (The latter option requires a GitHub account and having Git installed locally.)
 
 	> [AZURE.NOTE]
-	> The PHP Client Libraries for Azure have a dependency on the [HTTP_Request2](http://pear.php.net/package/HTTP_Request2), [Mail_mime](http://pear.php.net/package/Mail_mime)、と [Mail_mimeDecode](http://pear.php.net/package/Mail_mimeDecode) PEAR packages. The recommended way to resolve these dependencies is to install these packages using the [PEAR package manager](http://pear.php.net/manual/en/installation.php)
+	> The PHP Client Libraries for Azure have a dependency on the [HTTP_Request2](http://pear.php.net/package/HTTP_Request2), [Mail_mime](http://pear.php.net/package/Mail_mime), and [Mail_mimeDecode](http://pear.php.net/package/Mail_mimeDecode) PEAR packages. The recommended way to resolve these dependencies is to install these packages using the [PEAR package manager](http://pear.php.net/manual/en/installation.php)
 
 2. Copy the `WindowsAzure` directory of the downloaded archive to your application directory structure and reference classes from your application.
 

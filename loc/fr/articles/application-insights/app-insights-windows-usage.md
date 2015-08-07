@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Monitor usage in Windows Store and Phone apps with Application Insights" 
 	description="Analyze usage of your Windows device app with Application Insights." 
 	services="application-insights" 
@@ -113,7 +113,7 @@ However, when you explore shorter time ranges such as hourly grain, a long sessi
 
 Each user session is associated with a unique user id, generated on the app's use and kept in device local storage. A user who uses multiple devices will be counted more than once.
 
-Le **user count** metric in a certain interval is defined as the number of unique users with recorded activity during this interval. As a result, users with long sessions may be accounted multiple times, when you set a time range so that the grain is less than an hour or so.
+The **user count** metric in a certain interval is defined as the number of unique users with recorded activity during this interval. As a result, users with long sessions may be accounted multiple times, when you set a time range so that the grain is less than an hour or so.
 
 **New Users** counts the users whose first sessions with the app occurred during this interval. 
 
@@ -128,7 +128,7 @@ If you build in debug mode, events are sent as soon as they are generated. If yo
 
 If you build in release configuration, events are stored in the device and sent when the application resumes. Data is also sent on the application's first use. If there is no internet connectivity upon startup, previous telemetry as well as telemetry for the current lifecycle is stored and sent on the next resume.
 
-## <a name="next"></a>Prochaines étapes
+## <a name="next"></a>Next steps
 
 [Know your users][knowUsers]
 

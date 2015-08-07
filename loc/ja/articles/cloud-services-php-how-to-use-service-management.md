@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="How to use Azure service management APIs (PHP)"
 	description="Learn how to use the Azure PHP Service Management APIs to manage cloud services and other Azure applications."
 	services="web-sites"
@@ -16,17 +16,17 @@
 	ms.date="11/17/2014"
 	ms.author="tomfitz"/>
 
-# PHP からのサービスの管理を使用する方法
+# How to use Service Management from PHP
 
-このガイドでは、PHP から一般的なサービスの管理タスクをプログラムで実行する方法を示します。、 [ServiceManagementRestProxy] クラスの [PHP は、azure SDK][download-SDK-PHP] 利用可能なサービス管理関連の機能の多くにプログラムによるアクセスをサポートする、 [管理ポータル][management-portal] (など、 **作成、更新、およびクラウド サービス、展開、ストレージ サービス、およびアフィニティ グループを削除します。**).この機能は、サービス管理へのプログラムによるアクセスを必要とするアプリケーションを構築する上で役立ちます。
+This guide will show you how to programmatically perform common service management tasks from PHP. The [ServiceManagementRestProxy] class in the [Azure SDK for PHP][download-SDK-PHP] supports programmatic access to much of the service management-related functionality that is available in the [management portal][management-portal] (such as **creating, updating, and deleting cloud services, deployments, storage services, and affinity groups**). This functionality can be useful in building applications that need programmatic access to service management.
 
-## サービスを管理します。
-サービス管理 API を通じて使用可能なサービス管理機能の多くにプログラムによるアクセスを提供します、 [管理ポータル][management-portal].PHP の Azure SDK では、クラウド サービス、ストレージ アカウント、およびアフィニティ グループを管理できます。
+## What is Service Management
+The Service Management API provides programmatic access to much of the service management functionality available through the [management portal][management-portal]. The Azure SDK for PHP allows you to manage your cloud services, storage accounts, and affinity groups.
 
-サービス管理 API を使用する必要があります。 [Azure アカウントを作成します。][win-azure-account].
+To use the Service Management API, you will need to [create an Azure account][win-azure-account].
 
-## 概念
-AZURE の PHP のラップ、 [Azure のサービス管理 API][svc-mgmt-rest-api], which is a REST API. All API operations are performed over SSL and mutually authenticated using X.509 v3 certificates. The management service may be accessed from within a service running in Azure, or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
+## Concepts
+The Azure SDK for PHP wraps the [Azure Service Management API][svc-mgmt-rest-api], which is a REST API. All API operations are performed over SSL and mutually authenticated using X.509 v3 certificates. The management service may be accessed from within a service running in Azure, or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
 
 ## Create a PHP application
 
@@ -36,11 +36,11 @@ In this guide, you will use service features which can be called within a PHP ap
 
 ## Get the Azure Client Libraries
 
-[AZURE。含まれます [get-client-libraries](../includes/get-client-libraries.md)]
+[AZURE.INCLUDE [get-client-libraries](../includes/get-client-libraries.md)]
 
 ## How to: Connect to service management
 
-To connect to the Service Management endpoint, you need your Azure subscription ID and the path to a valid management certificate. You can obtain your subscription ID through the [管理ポータル][management-portal], and you can create management certificates in a number of ways. In this guide [OpenSSL](http://www.openssl.org/) is used, which you can [download for Windows](http://www.openssl.org/related/binaries.html) and run in a console.
+To connect to the Service Management endpoint, you need your Azure subscription ID and the path to a valid management certificate. You can obtain your subscription ID through the [management portal][management-portal], and you can create management certificates in a number of ways. In this guide [OpenSSL](http://www.openssl.org/) is used, which you can [download for Windows](http://www.openssl.org/related/binaries.html) and run in a console.
 
 You actually need to create two certificates, one for the server (a `.cer` file) and one for the client (a `.pem` file). To create the `.pem` file, execute this:
 
@@ -54,7 +54,7 @@ For more information about Azure certificates, see [Overview of Certificates in 
 
 If you have downloaded and imported your publish settings file using the [Azure Command-Line Interface][Azure CLI], you can use the `.pem` file that the tools create instead of creating your own. The tools create a `.cer` for you and upload it to Azure, and they put the corresponding `.pem` file in the `.azure` directory on your computer (in your user directory).
 
-After you have created these files, you will need to upload the `.cer` file to Azure via the [管理ポータル][management-portal], and you will need to make note of where you saved the `.pem` file.
+After you have created these files, you will need to upload the `.cer` file to Azure via the [management portal][management-portal], and you will need to make note of where you saved the `.pem` file.
 
 After you have obtained your subscription ID, created a certificate, and uploaded the `.cer` file to Azure, you can connect to the Azure management endpoint by creating a connection string and passing it to the **createServiceManagementService** method on the **ServicesBuilder** class:
 
@@ -66,7 +66,7 @@ After you have obtained your subscription ID, created a certificate, and uploade
 
 	$serviceManagementRestProxy = ServicesBuilder::getInstance()->createServiceManagementService($conn_string);
 
-In the example above, `$serviceManagementRestProxy` is a [ServiceManagementRestProxy] オブジェクト。、 **ServiceManagementRestProxy** class is the primary class used to manage Azure services.
+In the example above, `$serviceManagementRestProxy` is a [ServiceManagementRestProxy] object. The **ServiceManagementRestProxy** class is the primary class used to manage Azure services.
 
 ## How to: List Available Locations
 
@@ -115,7 +115,7 @@ In the code examples that follow, locations are passed to methods as strings. Ho
 
 ## How to: Create a cloud service
 
-When you create an application and run it in Azure, the code and configuration together are called an Azure [cloud service]  - known as a *hosted service* in earlier Azure releases. The **createHostedServices** method allows you to create a new hosted service by providing a hosted service name (which must be unique in Azure), a label (the base 64-endcoded hosted service name), and a **CreateServiceOptions** オブジェクト。、 [CreateServiceOptions] object allows you to set the location *または* the affinity group for your service.
+When you create an application and run it in Azure, the code and configuration together are called an Azure [cloud service]  - known as a *hosted service* in earlier Azure releases. The **createHostedServices** method allows you to create a new hosted service by providing a hosted service name (which must be unique in Azure), a label (the base 64-endcoded hosted service name), and a **CreateServiceOptions** object. The [CreateServiceOptions] object allows you to set the location *or* the affinity group for your service.
 
 	require_once 'vendor\autoload.php';
 
@@ -170,7 +170,7 @@ If you want to get information about a particular hosted service, you can do so 
 	echo "Affinity group: ".$hosted_service->getAffinityGroup()."<br />";
 	echo "Location: ".$hosted_service->getLocation()."<br />";
 
-After you have created a cloud service, you can deploy your code to the service with the [createDeployment](#CreateDeployment) メソッドです。
+After you have created a cloud service, you can deploy your code to the service with the [createDeployment](#CreateDeployment) method.
 
 ##<a id="DeleteCloudService"></a>How to: Delete a cloud service
 
@@ -182,12 +182,12 @@ Note that before you can delete a service, all deployments for the the service m
 
 ## How to: Create a deployment
 
-、 **createDeployment** method uploads a new [service package] and creates a new deployment in the staging or production environment. The parameters for this method are as follows:
+The **createDeployment** method uploads a new [service package] and creates a new deployment in the staging or production environment. The parameters for this method are as follows:
 
 * **$name**: The name of the hosted service.
 * **$deploymentName**: The name of the deployment.
 * **$slot**: An enumeration indicating the staging or production slot.
-* **$packageUrl**: The URL for the deployment package (a .cspgk file). The package file must be stored in an Azure Blob Storage account under the same subscription as the hosted service to which the package is being uploaded. You can create a deployment package with the [紺碧の PowerShell コマンドレット], or with the [cspack commandline tool].
+* **$packageUrl**: The URL for the deployment package (a .cspgk file). The package file must be stored in an Azure Blob Storage account under the same subscription as the hosted service to which the package is being uploaded. You can create a deployment package with the [Azure PowerShell cmdlets], or with the [cspack commandline tool].
 * **$configuration**: The service configuration file (.cscfg file).
 * **$label**: The base 64-encoded hosted service name.
 
@@ -230,7 +230,7 @@ The following example creates a new deployement in the production slot of a host
 		echo $code.": ".$error_message."<br />";
 	}
 
-Note in the example above that the status of the **createDeployment** operation can be retrieved by passing the result returned by **createDeployment** to the **getOperationStatus** メソッドです。
+Note in the example above that the status of the **createDeployment** operation can be retrieved by passing the result returned by **createDeployment** to the **getOperationStatus** method.
 
 You can access deployment properties with the **getDeployment** method. The following example retrieves a deployment by specifying the deployment slot in the [GetDeploymentOptions] object, but you could instead specify the deployment name. The example also iterates through all the instances for the deployment:
 
@@ -254,9 +254,9 @@ You can access deployment properties with the **getDeployment** method. The foll
 
 ## How to: Update a deployment
 
-A deployment can be updated by using the **changeDeploymentConfiguration** method or the **updateDeploymentStatus** メソッドです。
+A deployment can be updated by using the **changeDeploymentConfiguration** method or the **updateDeploymentStatus** method.
 
-、 **changeDeploymentConfiguration** method allows you to upload a new service configuration (`.cscfg`) file, which will change any of several service settings (including the number of instances in a deployment). For more information, see [Azure Service Configuration Schema (.cscfg)]. The following example demonstrates how to upload a new service configuration file:
+The **changeDeploymentConfiguration** method allows you to upload a new service configuration (`.cscfg`) file, which will change any of several service settings (including the number of instances in a deployment). For more information, see [Azure Service Configuration Schema (.cscfg)]. The following example demonstrates how to upload a new service configuration file:
 
 	require_once 'vendor\autoload.php';
 
@@ -288,9 +288,9 @@ A deployment can be updated by using the **changeDeploymentConfiguration** metho
 		echo $code.": ".$error_message."<br />";
 	}
 
-Note in the example above that the status of the **changeDeploymentConfiguration** operation can be retrieved by passing the result returned by **changeDeploymentConfiguration** to the **getOperationStatus** メソッドです。
+Note in the example above that the status of the **changeDeploymentConfiguration** operation can be retrieved by passing the result returned by **changeDeploymentConfiguration** to the **getOperationStatus** method.
 
-、 **updateDeploymentStatus** method allows you to set a deployment status to RUNNING or SUSPENDED. The following example demonstrates how to set the status to RUNNING for a deployment in the production slot of a hosted service called `myhostedservice`:
+The **updateDeploymentStatus** method allows you to set a deployment status to RUNNING or SUSPENDED. The following example demonstrates how to set the status to RUNNING for a deployment in the production slot of a hosted service called `myhostedservice`:
 
 	require_once 'vendor\autoload.php';
 
@@ -322,7 +322,7 @@ Note in the example above that the status of the **changeDeploymentConfiguration
 
 Azure provides two deployment environments: staging and production. Typically a service is deployed to the staging environment to test it before deploying the service to the production environment. When it is time to promote the service in staging to the production environment, you can do so without redeploying the service. This can be done by swapping the deployments. (For more information on swapping deployments, see [Overview of Managing Deployments in Azure].)
 
-The following example shows how to use the **swapDeployment** method to swap two deployments (with deployment names `v1` と `v2`). In the example, prior to calling **swapDeployment**, deployment `v1` is in the production slot and deployment `v2` is in the staging slot. After calling **swapDeployment**, `v2` is in production and `v1` is in staging.  
+The following example shows how to use the **swapDeployment** method to swap two deployments (with deployment names `v1` and `v2`). In the example, prior to calling **swapDeployment**, deployment `v1` is in the production slot and deployment `v2` is in the staging slot. After calling **swapDeployment**, `v2` is in production and `v1` is in staging.  
 
 	require_once 'vendor\autoload.php';
 
@@ -375,7 +375,7 @@ To delete a deployment, use the **deleteDeployment** method. The following examp
 
 ## How to: Create a storage service
 
-A [storage service] gives you access to Azure [Blobs][azure-blobs], [Tables][azure-tables]、と [Queues][azure-queues]. To create a storage service, you need a name for the service (between 3 and 24 lowercase characters and unique within Azure), a label (a base-64 encoded name for the service, up to 100 characters), and either a location or an affinity group. Providing a description for the service is optional. The location, affinity group, and description are set in a [CreateServiceOptions] object, which is passed to the **createStorageService** method. The following example shows how to create a storage service by specifying a location. If you want to use an affinity group, you have to create an affinity group first (see [How to: Create an affinity group](#CreateAffinityGroup)) and set it with the **CreateServiceOptions->setAffinityGroup** メソッドです。
+A [storage service] gives you access to Azure [Blobs][azure-blobs], [Tables][azure-tables], and [Queues][azure-queues]. To create a storage service, you need a name for the service (between 3 and 24 lowercase characters and unique within Azure), a label (a base-64 encoded name for the service, up to 100 characters), and either a location or an affinity group. Providing a description for the service is optional. The location, affinity group, and description are set in a [CreateServiceOptions] object, which is passed to the **createStorageService** method. The following example shows how to create a storage service by specifying a location. If you want to use an affinity group, you have to create an affinity group first (see [How to: Create an affinity group](#CreateAffinityGroup)) and set it with the **CreateServiceOptions->setAffinityGroup** method.
 
 	require_once 'vendor\autoload.php';
 
@@ -408,7 +408,7 @@ A [storage service] gives you access to Azure [Blobs][azure-blobs], [Tables][azu
 		echo $code.": ".$error_message."<br />";
 	}
 
-Note in the example above that the status of the **createStorageService** operation can be retrieved by passing the result returned by **createStorageService** to the **getOperationStatus** メソッドです。  
+Note in the example above that the status of the **createStorageService** operation can be retrieved by passing the result returned by **createStorageService** to the **getOperationStatus** method.  
 
 You can list your storage accounts and their properties with the **listStorageServices** method:
 

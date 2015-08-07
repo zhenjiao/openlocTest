@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Retry general guidance | Microsoft Azure"
    description="Guidance on retry for transient fault handling."
    services=""
@@ -17,36 +17,36 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# Réessayer d'orientations générales
+# Retry general guidance
 
 ![](media/best-practices-retry-general/pnp-logo.png)
 
-## Vue d'ensemble
+## Overview
 
-Toutes les applications qui communiquent avec les ressources et les services à distance doivent être sensibles aux pannes passagères. C'est particulièrement le cas pour les applications qui s'exécutent dans le nuage, où la nature de l'environnement et de la connectivité sur Internet signifie que ces types d'erreurs sont susceptibles d'être rencontrées le plus souvent. Anomalies transitoires comprennent la perte momentanée de la connectivité réseau aux services et composants, l'indisponibilité temporaire d'un service, ou les délais d'attente qui se posent lorsqu'un service est occupé. Ces failles sont souvent autocorrectifs, et si l'action est répétée après un délai approprié, il est probablement réussir.
+All applications that communicate with remote services and resources must be sensitive to transient faults. This is especially the case for applications that run in the cloud, where the nature of the environment and connectivity over the Internet means these types of faults are likely to be encountered more often. Transient faults include the momentary loss of network connectivity to components and services, the temporary unavailability of a service, or timeouts that arise when a service is busy. These faults are often self-correcting, and if the action is repeated after a suitable delay it is likely succeed.
 
-Ce document décrit les lignes directrices générales pour la gestion des pannes passagères. Pour plus d'informations sur la gestion des anomalies transitoires lors de l'utilisation des services Microsoft Azure, consultez [Lignes directrices d'Azur à un service particulier réessayer](best-practices-retry-service-specific.md).
+This document covers general guidance for transient fault handling. For information about handling transient faults when using Microsoft Azure services, see [Azure service-specific retry guidelines](best-practices-retry-service-specific.md).
 
-## Pourquoi transitoires défauts se produisent dans le nuage ?
+## Why do transient faults occur in the cloud?
 
-Anomalies transitoires peuvent apparaître dans n'importe quel environnement, sur toute plate-forme ou le système d'exploitation et dans tout type d'application. Dans les solutions qui s'exécutent sur local, infrastructure locale, de performances et de disponibilité de l'application et ses composants est généralement maintenue par redondance matérielle coûteuse et souvent sous-utilisés et composants et ressources sont situés à proximité de chaque autre. Même si cela rend un échec moins probable, il peut entraîner encore transitoires fautes - et même une panne grâce à des événements imprévus tels que le bloc d'alimentation externe ou de problèmes réseau ou d'autres scénarios de catastrophes.
+Transient faults can occur in any environment, on any platform or operating system, and in any kind of application. In solutions that run on local, on-premises infrastructure, performance and availability of the application and its components is typically maintained through expensive and often under-used hardware redundancy, and components and resources are located close to each another. While this makes a failure less likely, it can still result in transient faults - and even an outage through unforeseen events such as external power supply or network issues, or other disaster scenarios.
 
-Hébergement Cloud, y compris les systèmes de cloud privé, peut offrir une plus grande disponibilité globale en utilisant les ressources partagées, redondance, basculement automatique, et les nœuds de calcul d'allocation dynamique des ressources à travers un grand nombre de produits de base. Toutefois, la nature de ces milieux peut signifier que les erreurs transitoires sont plus susceptibles de survenir. Il y a plusieurs raisons à cela :
+Cloud hosting, including private cloud systems, can offer a higher overall availability by using shared resources, redundancy, automatic failover, and dynamic resource allocation across a huge number of commodity compute nodes. However, the nature of these environments can mean that transient faults are more likely to occur. There are several reasons for this:
 
-* Beaucoup de ressources dans un environnement de Cloud Computing est partagées, et accès à ces ressources est soumis à limitation afin de protéger la ressource. Certains services vont refuser des connexions lorsque la charge s'élève à un niveau spécifique, ou un débit maximal est atteint, afin de permettre le traitement des demandes existantes et pour maintenir les performances du service pour tous les utilisateurs. La limitation contribue à maintenir la qualité du service pour les voisins et les autres locataires à l'aide de la ressource partagée.
-* Environnements de Cloud sont construits à l'aide d'un grand nombre d'unités de matériel produit. Ils performances en distribuant dynamiquement la charge sur plusieurs unités de calcul et les composants d'infrastructure et livrer fiabilité de recyclage automatiquement ou au remplacement ayant échoué. Cette nature dynamique signifie que transitoires défauts et pannes de connexion temporaire peuvent occasionnellement se produire.
-* Il y a souvent plusieurs composants matériels, y compris l'infrastructure de réseau tels que les routeurs et les équilibreurs de charge, entre l'application et les ressources et les services qu'il utilise. Cette infrastructure supplémentaire peut parfois introduire latence de connexion supplémentaires et des erreurs de connexion transitoire.
-* État du réseau entre le client et le serveur peut être variable, surtout lorsque la communication traverse l'Internet. Même dans des endroits locaux, les charges de trafic très intense peuvent ralentir la communication et provoquer des échecs de connexion intermittente.
+* Many resources in a cloud environment are shared, and access to these resources is subject to throttling in order to protect the resource. Some services will refuse connections when the load rises to a specific level, or a maximum throughput rate is reached, in order to allow processing of existing requests and to maintain performance of the service for all users. Throttling helps to maintain the quality of service for neighbors and other tenants using the shared resource.
+* Cloud environments are built using vast numbers of commodity hardware units. They deliver performance by dynamically distributing the load across multiple computing units and infrastructure components, and deliver reliability by automatically recycling or replacing failed units. This dynamic nature means that transient faults and temporary connection failures may occasionally occur.
+* There are often more hardware components, including network infrastructure such as routers and load balancers, between the application and the resources and services it uses. This additional infrastructure can occasionally introduce additional connection latency and transient connection faults.
+* Network conditions between the client and the server may be variable, especially when communication crosses the Internet. Even in on-premises locations, very heavy traffic loads may slow communication and cause intermittent connection failures.
 
-## Défis
-Anomalies transitoires peuvent avoir un impact énorme sur la disponibilité perçue d'une demande, même si elle a été testée en toutes circonstances prévisibles. Pour s'assurer que les applications hébergées par nuage de fonctionnent de manière fiable, ils doivent être en mesure de relever les défis suivants :
+## Challenges
+Transient faults can have a huge impact on the perceived availability of an application, even if it has been thoroughly tested under all foreseeable circumstances. To ensure that cloud-hosted applications operate reliably, they must be able to respond to the following challenges:
 
-* L'application doit être capable de détecter les failles lorsqu'ils se produisent et déterminer si ces défauts sont susceptibles d'être transitoire, plus durable, ou est des échecs de connexion. Différentes ressources sont susceptibles de retourner des réponses différentes lorsque survient une panne, et ces réponses peuvent également varier selon le contexte de l'opération ; par exemple, la réponse d'erreur lors de la lecture de stockage peut être différente de la réponse d'erreur lors de l'écriture au stockage. Beaucoup de ressources et de services ont des contrats de défaillance passagère bien documenté. Toutefois, lorsque ces informations ne sont pas disponibles, il peut être difficile de découvrir la nature de la faute et si elle est susceptible d'être transitoire.
-* L'application doit être en mesure de recommencer l'opération si elle détermine que la faute est susceptible d'être transitoire et suivre le nombre de fois où que l'opération a été rejugée.
-* L'application doit utiliser une stratégie appropriée pour les nouvelles tentatives. Cette stratégie spécifie le nombre de fois il faut réessayer, le délai entre chaque tentative et les mesures à prendre après un échec de la tentative. Le nombre de tentatives et le délai entre chacun d'eux est souvent difficile à déterminer et varient selon le type de ressource ainsi que les conditions actuelles d'exploitation de la ressource et l'application elle-même.
+* The application must be able to detect faults when they occur, and determine if these faults are likely to be transient, more long-lasting, or are terminal failures. Different resources are likely to return different responses when a fault occurs, and these responses may also vary depending on the context of the operation; for example, the response for an error when reading from storage may be different from response for an error when writing to storage. Many resources and services have well-documented transient failure contracts. However, where such information is not available, it may be difficult to discover the nature of the fault and whether it is likely to be transient.
+* The application must be able to retry the operation if it determines that the fault is likely to be transient and keep track of the number of times the operation was retried.
+* The application must use an appropriate strategy for the retries. This strategy specifies the number of times it should retry, the delay between each attempt, and the actions to take after a failed attempt. The appropriate number of attempts and the delay between each one are often difficult to determine, and vary based on the type of resource as well as the current operating conditions of the resource and the application itself.
 
-## Lignes directrices générales
-Les lignes directrices suivantes vous aideront à concevoir un défaut transitoire approprié remise mécanisme pour vos applications :
+## General guidelines
+The following guidelines will help you to design a suitable transient fault handing mechanism for your applications:
 
 * **Determine if there is a built-in retry mechanism:**
   * Many services provide an SDK or client library that contains a transient fault handling mechanism. The retry policy it uses is typically tailored to the nature and requirements of the target service. Alternatively, REST interfaces for services may return information that is useful in determining whether a retry is appropriate, and how long to wait before the next retry attempt.
@@ -77,7 +77,7 @@ Les lignes directrices suivantes vous aideront à concevoir un défaut transitoi
   * Prevent multiple instances of the same client, or multiple instances of different clients, from sending retries at the same times. If this is likely to occur, introduce randomization into the retry intervals.
 * **Test your retry strategy and implementation:**
   * Ensure you fully test your retry strategy implementation under as wide a set of circumstances as possible, especially when both the application and the target resources or services it uses are under extreme load. To check behavior during testing, you can:
-      * Inject transient and non-transient faults into the service. For example, send invalid requests or add code that detects test requests and responds with different types of errors. For an example using TestApi, see [Fault Injection Testing with TestApi](http://msdn.microsoft.com/magazine/ff898404.aspx) et [Introduction to TestApi – Part 5: Managed Code Fault Injection APIs](http://blogs.msdn.com/b/ivo_manolov/archive/2009/11/25/9928447.aspx).
+      * Inject transient and non-transient faults into the service. For example, send invalid requests or add code that detects test requests and responds with different types of errors. For an example using TestApi, see [Fault Injection Testing with TestApi](http://msdn.microsoft.com/magazine/ff898404.aspx) and [Introduction to TestApi – Part 5: Managed Code Fault Injection APIs](http://blogs.msdn.com/b/ivo_manolov/archive/2009/11/25/9928447.aspx).
       * Create a mock of the resource or service that returns a range of errors that the real service may return. Ensure you cover all the types of error that your retry strategy is designed to detect.
       * Force transient errors to occur by temporarily disabling or overloading the service if it is a custom service that you created and deployed (you should not, of course, attempt to overload any shared resources or shared services within Azure).
       * For HTTP-based APIs, consider using the FiddlerCore library in your automated tests to change the outcome of HTTP requests, either by adding extra roundtrip times or by changing the response (such as the HTTP status code, headers, body, or other factors). This enables deterministic testing of a subset of the failure conditions, whether transient faults or other types of failure. For more information, see [FiddlerCore](http://www.telerik.com/fiddler/fiddlercore). For examples of how to use the library, particularly the **HttpMangler** class, examine the [source code for the Azure Storage SDK](https://github.com/Azure/azure-storage-net/tree/master/Test).
@@ -102,15 +102,15 @@ Les lignes directrices suivantes vous aideront à concevoir un défaut transitoi
 
 * **Other considerations**
   * When deciding on the values for the number of retries and the retry intervals for a policy, consider if the operation on the service or resource is part of a long-running or multi-step operation. It may be difficult or expensive to compensate all the other operational steps that have already succeeded when one fails. In this case, a very long interval and a large number of retries may be acceptable as long as it does not block other operations by holding or locking scarce resources.
-  * Consider if retrying the same operation may cause inconsistencies in data. If some parts of a multi-step process are repeated, and the operations are not idempotent, it may result in an inconsistency. For example, an operation that increments a value, if repeated, will produce an invalid result. Repeating an operation that sends a message to a queue may cause an inconsistency in the message consumer if it cannot detect duplicate messages. To prevent this, ensure that you design each step as an idempotent operation. For more information about idempotency, see [Idempotence Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
+  * Consider if retrying the same operation may cause inconsistencies in data. If some parts of a multi-step process are repeated, and the operations are not idempotent, it may result in an inconsistency. For example, an operation that increments a value, if repeated, will produce an invalid result. Repeating an operation that sends a message to a queue may cause an inconsistency in the message consumer if it cannot detect duplicate messages. To prevent this, ensure that you design each step as an idempotent operation. For more information about idempotency, see [Idempotency Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/).
   * Consider the scope of the operations that will be retried. For example, it may be easier to implement retry code at a level that encompasses several operations, and retry them all if one fails. However, doing this may result in idempotency issues or unnecessary rollback operations.
   * If you choose a retry scope that encompasses several operations, take into account the total latency of all of them when determining the retry intervals, when monitoring the time taken, and before raising alerts for failures.
   * Consider how your retry strategy may affect neighbors and other tenants in a shared application, or when using shared resources and services. Aggressive retry policies can cause an increasing number of transient faults to occur for these other users and for applications that share the resources and services. Likewise, your application may be affected by the retry policies implemented by other users of the resources and services. For mission-critical applications, you may decide to use premium services that are not shared. This provides you with much more control over the load and consequent throttling of these resources and services, which can help to justify the additional cost.
 
-## Plus d'informations
+## More information
 
-* [Lignes directrices d'Azur à un service particulier réessayer](best-practices-retry-service-specific.md)
+* [Azure service-specific retry guidelines](best-practices-retry-service-specific.md)
 * [The Transient Fault Handling Application Block](http://msdn.microsoft.com/library/hh680934.aspx)
-* [Modèle de disjoncteur](http://msdn.microsoft.com/library/dn589784.aspx)
-* [Modèle de Transaction de compensation](http://msdn.microsoft.com/library/dn589804.aspx)
-* [Idempotence Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/)
+* [Circuit Breaker Pattern](http://msdn.microsoft.com/library/dn589784.aspx)
+* [Compensating Transaction Pattern](http://msdn.microsoft.com/library/dn589804.aspx)
+* [Idempotency Patterns](http://blog.jonathanoliver.com/2010/04/idempotency-patterns/)

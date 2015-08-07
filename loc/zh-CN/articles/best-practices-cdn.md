@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Content Delivery Network (CDN) guidance | Microsoft Azure"
    description="Guidance on Content Delivery Network (CDN) to deliver high bandwidth content hosted in Azure."
    services=""
@@ -17,161 +17,161 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# 内容交付网络 (CDN) 指导
+# Content Delivery Network (CDN) guidance
 
 ![](media/best-practices-cdn/pnp-logo.png)
 
-## 概述
+## Overview
 
-微软 Azure 内容交付网络 (CDN) 为开发人员提供了用于传送承载在 Azure 中的高带宽内容的全球解决方案。CDN 缓存公开可用的对象，从蔚蓝的 blob 存储加载或在应用程序文件夹策略性地点提供最大带宽为交付内容给用户。它通常用于提供静态内容，如图像、 样式表、 文档、 文件、 客户端脚本和 HTML 页面。
+The Microsoft Azure Content Delivery Network (CDN) offers developers a global solution for delivering high-bandwidth content that is hosted in Azure. The CDN caches publicly available objects loaded from Azure blob storage or an application folder at strategically placed locations to provide maximum bandwidth for delivering content to users. It is typically used for delivering static content such as images, style sheets, documents, files, client-side scripts, and HTML pages.
 
-使用 CDN 的主要优点是处理的更低的延迟和内容更快交付给用户，无论他们在何地承载了应用程序，应用程序本身的负荷减少因为它可以缓解需要访问和提供内容的数据中心的地理位置。这种减少负载可以帮助提高性能和可扩展性的应用程序，以及通过减少实现特定级别的性能和可用性所需的处理资源托管成本最小化。
+The major advantages of using the CDN are lower latency and faster delivery of content to users irrespective of their geographical location in relation to the datacenter where the application is hosted, and a reduction in the load on the application itself because it is relieved of the processing required to access and deliver the content. This reduction in load can help to increase the performance and scalability of the application, as well as minimizing hosting cost by reducing the processing resources required to achieve a specific level of performance and availability.
 
-您可能能够使用其他内容交付网络实现的系统是不由 Azure 在您的应用程序如果 Azure CDN 不能满足您的需求。或者，您可能能够使用 Azure CDN 承载与其他供应商的暴露在 Azure 存储中或在 Azure 计算实例的静态内容应用程序。  
+You may be able to use other content delivery network systems that are not implemented by Azure in your applications if the Azure CDN does not meet your needs. Alternatively, you may be able to use the Azure CDN for applications hosted with other providers by exposing the static content in Azure storage or in Azure compute instances.  
 ![](media/best-practices-cdn/CDN.png)
 
-## 如何以及为什么使用 CDN
+## How and why the CDN is used
 
-CDN 的典型用途包括:  
+Typical uses for the CDN include:  
 
-- 提供客户端应用程序，往往是从一个网站的静态资源。这些可以是图像、 样式表、 文档、 文件、 客户端脚本、 HTML 页、 HTML 片段或服务器不需要修改为每个请求的任何其他内容。应用程序可以在运行时创建项目并向他们提供 CDN (例如，通过创建当前新闻标题的列表)，但它没有为每个请求这样做。
+- Delivering static resources for client applications, often from a website. These can be images, style sheets, documents, files, client-side scripts, HTML pages, HTML fragments, or any other content that the server does not need to modify for each request. The application can create items at runtime and make them available to the CDN (for example, by creating a list of current news headlines), but it does not do so for each request.
 
-- 向设备如移动电话和平板电脑应用程序本身在哪里提供 web 服务的 API 向客户端提供公共的静态和共享内容。除了其他服务器不需要修改为每个请求的内容，CDN 可以提供静态数据集的客户端使用-也许要生成客户端 UI。例如，它可以用于传递 JSON 或 XML 文档。
+- Delivering public static and shared content to devices such as mobile phones and tablet computers where the application itself is a web service that offers an API to clients. In addition to other content that the server does not need to modify for each request, the CDN can deliver static datasets for the client to use - perhaps to generate the client UI. For example, it could be used to deliver JSON or XML documents.
 
-- 服务整个网站包含唯一的公共静态内容给客户端，而无需任何专用计算资源。
+- Serving entire websites that consist of only public static content to clients, without requiring any dedicated compute resources.
 
-- 流媒体视频文件到客户端上的需求。视频得益于低延迟和可靠的连接，从遍布全球的数据中心，提供 CDN 连接可用。
+- Streaming video files to the client on demand. Video benefits from the low latency and reliable connectivity available from the globally located datacenters that offer CDN connections.
 
-- 一般提高用户，特别是那些位于应用程序的数据中心位置，否则将遭受更高延迟的体验。大部分的 web 应用程序中的内容的总大小通常是静态的并使用 CDN 可以有助于保持性能和整体的用户体验，同时消除应用程序部署到多个数据中心的要求。
+- Generally improving the experience for users, especially those located far from the application’s datacenter location who would otherwise suffer higher latency. A large proportion of the total size of the content in a web application is often static, and using the CDN can help to maintain performance and overall user experience while eliminating the requirement to deploy the application to multiple data centers.
 
-- 应对应用程序的日益负载是物联网 (物联网) 的一部分，服务移动和固定设备。大量的这类设备和电器能够轻而易举地战胜应用程序是否需要处理广播的消息和直接管理固件更新分发。
+- Coping with the growing load on applications that service mobile and fixed devices that are part of the Internet of Things (IoT). The huge numbers of such devices and appliances could easily overwhelm the application if it was required to process broadcast messages and manage firmware update distribution directly.
 
-- 应对高峰飙升需求而无需应用程序进行扩展，避免随之增加，运行成本。例如，当更新发布到操作系统，硬件设备如特定型号的路由器，或消费者设备如智能电视，会有巨大的峰值需求，它由数以百万计的用户和设备下载在较短时间。  
+- Coping with peaks and surges in demand without requiring the application to scale, avoiding the consequent increase running costs. For example, when an update is released to an operating system, for a hardware device such as a specific model of router, or for a consumer device such as a smart TV, there will be a huge peak in demand as it is downloaded by millions of users and devices over a short period.  
 
-- 下表显示的中位数时间的例子到第一个字节，从不同的地理位置。目标 web 角色部署到 Azure 在美国西部。有很强的相关性，进一步提高由于 CDN 和 CDN 节点的接近度之间。Azure CDN 节点位置的列表是可用在 [蔚蓝的内容传送网络 (CDN) 节点位置](http://msdn.microsoft.com/library/azure/gg680302.aspx).  
+- The following table shows examples of the median time to first byte from various geographic locations. The target web role is deployed to Azure West US. There is a strong correlation between greater boost due to the CDN and proximity to a CDN node. A list of Azure CDN node locations is available at [Azure Content Delivery Network (CDN) Node Locations](http://msdn.microsoft.com/library/azure/gg680302.aspx).  
 
 <table xmlns:xlink="http://www.w3.org/1999/xlink"><tr><th><a name="_MailEndCompose" href="#"><span /></a><br /></th><th><p>Time to First Byte (Origin)</p></th><th><p>Time to First Byte (CDN)</p></th><th><p>% faster for CDN</p></th></tr><tr><td><p>* San Jose, CA</p></td><td><p>47.5</p></td><td><p>46.5</p></td><td><p>2 %</p></td></tr><tr><td><p>** Dulles, VA</p></td><td><p>109</p></td><td><p>40.5</p></td><td><p>169 %</p></td></tr><tr><td><p>Buenos Aires, AR</p></td><td><p>210</p></td><td><p>151</p></td><td><p>39 %</p></td></tr><tr><td><p>* London, UK</p></td><td><p>195</p></td><td><p>44</p></td><td><p>343 %</p></td></tr><tr><td><p>Shanghai, CN</p></td><td><p>242</p></td><td><p>206</p></td><td><p>17 %</p></td></tr><tr><td><p>* Singapore</p></td><td><p>214</p></td><td><p>74</p></td><td><p>189%</p></td></tr><tr><td><p>* Tokyo, JP</p></td><td><p>163</p></td><td><p>48</p></td><td><p>240 %</p></td></tr><tr><td><p>Seoul, KR</p></td><td><p>190</p></td><td><p>190</p></td><td><p>0 %</p></td></tr></table>* Has an Azure CDN node in the same city.  
 * Has an Azure CDN node in a neighboring city.  
 
 
-## 挑战  
+## Challenges  
 
-还有几个挑战在计划使用 CDN 时加以考虑:  
+There are several challenges to take into account when planning to use the CDN:  
 
-- **部署** 您必须决定在何处加载内容为 CDN 来源 (CDN 将从中获取内容)，以及是否需要部署多个存储系统中的内容 (如基于 CDN 和在另一个位置)。
+- **Deployment** You must decide where to load content for the CDN from (the origin from which the CDN will fetch the content), and whether you need to deploy the content in more than one storage system (such as on the CDN and in an alternative location).
 
-- 您的应用程序部署机制必须考虑到帐户部署静态内容和资源，以及部署应用程序文件如 ASPX 页面。例如，它可能需要一个单独的步骤，以将内容加载到 Azure blob 存储。
+- Your application deployment mechanism must take into account deploying static content and resources as well as deploying the application files such as ASPX pages. For example, it may require a separate step to load content into Azure blob storage.
 
-- **版本控制和缓存控制** 你必须考虑如何将更新静态内容和部署新版本。CDN 当前尚未提供冲厕内容，因此，新版本可供选择的机制。这是一个类似挑战管理客户端缓存，例如 web 浏览器。
+- **Versioning and cache-control** You must consider how you will update static content and deploy new versions. The CDN does not currently provide a mechanism for flushing content so that new versions are available. This is a similar challenge to managing client side caching, such as in a web browser.
 
-- **测试** 它可以很难执行本地测试您的 CDN 设置当开发和测试应用程序，本地或分期。
+- **Testing** It can be difficult to perform local testing of your CDN settings when developing and testing an application locally or in staging.
 
-- **SEO** 当你使用他们 CDN，会有此内容对 SEO 的影响从不同的域服务内容，如图像和文档。
+- **SEO** Content such as images and documents are served from a different domain when you use they CDN, which will have an effect on SEO for this content.
 
-- **安全** 许多的 CDN 服务，例如 Azure CDN 目前不提供任何类型的内容的访问控制。
+- **Security** Many CDN services such as Azure CDN do not currently offer any type of access control for the content.
 
-- **可恢复性** CDN 是潜在的单点故障的应用程序。它具有更低的可用性 SLA 比 blob 存储 (这可以用来直接交付内容) 所以你可能需要考虑执行的关键内容的回退机制。
+- **Resiliency** CDN is a potential single point of failure for an application. It has a lower availability SLA than blob storage (which can be used to deliver content directly) so you may need to consider implementing a fallback mechanism for critical content.
 
-- 客户端可能会从一种环境，不允许对资源的访问基于 CDN 连接。这可能是一个安全约束的环境，限制访问只有一组已知的来源，或防止从页面来源以外的任何资源的加载。因此，回退的实现将需要。
+- Clients may be connecting from an environment that does not allow access to resources on the CDN. This could be a security-constrained environment that limits access to only a set of known sources, or one that prevents loading of resources from anything other than the page origin. Therefore, a fallback implementation will be required.
 
-- 你应该实现监控您通过 CDN 的内容可用性的机制。
+- You should implement a mechanism to monitor your content availability through the CDN.
 
-场景，CDN 可能用处不包括:  
+Scenarios where CDN may be less useful include:  
 
-- 当内容具有低的命中率，所以可能访问的几次，或只是一次，期间的生存时间的有效期。第一次下载的项目你招来两个交易收费 (从原点到 CDN，然后从 CDN 给客户)。
+- When the content has a low hit rate and so may be accessed few times, or just once, during the time-to-live validity period. The first time an item is downloaded you incur two transaction charges (from the origin to the CDN, and then from the CDN to the customer).
 
-- 当数据是私有的如为大型企业或供应链生态系统。
+- When the data is private, such as for large enterprises or supply chain ecosystems.
 
 
-## 一般准则和良好做法
+## General guidelines and good practices
 
-使用 CDN 是好的方法，以尽量减少对您的应用程序，负载和最大化可用性和性能。你应该考虑这的所有适当的内容和你的应用程序使用的资源。设计您使用 CDN 的策略时，请考虑以下几点:  
+Using the CDN is a good way to minimize the load on your application, and maximize availability and performance. You should consider this for all of the appropriate content and resources you application uses. Consider the following points when designing your strategy to use the CDN:  
 
-- **起源 ** 部署通过 CDN 的内容简单地要求您指定 HTTP (端口 80) 端点 CDN 服务将用来访问和缓存的内容。+ 终结点可以指定蔚蓝 blob 存储容器包含您想要通过 CDN 提供的静态内容。容器必须标记为公共。仅有公共的读访问权限的 blob 公共容器中将通过 CDN 提供。
+- **Origin ** Deploying content through the CDN simply requires you to specify an HTTP (port 80) endpoint that the CDN service will use to access and cache the content. + The endpoint can specify an Azure blob storage container that holds the static content you want to deliver through the CDN. The container must be marked as public. Only blobs in a public container that have public read access will be available through the CDN.
 
-- 终结点可以指定一个名为文件夹 **cdn** 在一个应用程序的根计算层 (如 web 角色或虚拟机)。从对资源，包括如 ASPX 页面的动态资源的请求结果将被缓存在 CDN。最小的可缓存性周期为 300 秒。任何较短期间将阻止内容部署到 CDN (请参阅"<a href="#cachecontrol" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">高速缓存控制</a>"为更多的信息)。
+- The endpoint can specify a folder named **cdn** in the root of one of application’s compute layers (such as a web role or a virtual machine). The results from requests for resources, including dynamic resources such as ASPX pages, will be cached on the CDN. The minimum cacheability period is 300 seconds. Any shorter period will prevent the content from being deployed to the CDN (see the section "<a href="#cachecontrol" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">Cache control</a>" for more information).
 
-- 如果你使用 Azure 的 Web 站点，该终结点通过选择站点创建 CDN 实例时设置为的站点的根文件夹。所有站点的内容将通过 CDN 提供。
+- If you are using Azure Web Sites, the endpoint is set to the root folder of the site by selecting the site when creating the CDN instance. All of the content for the site will be available through the CDN.
 
-- 在大多数情况下，指向您在文件夹在您的应用程序的计算层之一的 CDN 端点将提供更多的灵活性和控制。例如，它使它易于管理当前和未来的路由需求和动态生成静态的内容，如图像的缩略图。
+- In most cases, pointing your CDN endpoint at a folder within one of the compute layers of your application will offer more flexibility and control. For instance, it makes it easier to manage current and future routing requirements, and dynamically generate static content such as image thumbnails.
 
-- 可以使用查询字符串来区分缓存中的对象，当内容交付等 ASPX 页面动态来源。然而，当你指定的 CDN 终结点可以由在管理门户中设置来禁用此行为。当从 blob 存储提供内容，查询字符串被视为字符串所以有相同的名称但不同的查询字符串的两个项目将存储作为单独的项目，对 CDN。
+- You can use query strings to differentiate objects in the cache when content is delivered from dynamic sources such as ASPX pages. However, this behavior can be disabled by a setting in the management portal when you specify the CDN endpoint. When delivering content from blob storage, query strings are treated as string literals so two items that have the same name but different query strings will be stored as separate items on the CDN.
 
-- 你可以利用的资源，如脚本和其他内容，以避免将您的文件移动到 CDN 起源文件夹 URL 重写。
+- You can utilize URL rewriting for resources such as scripts and other content to avoid moving your files to the CDN origin folder.
 
-- 使用 Azure 存储 blob 的 CDN 举行内容，blob 中的资源的 URL 时，容器和 blob 名称区分大小写。
+- When using Azure storage blobs to hold content for the CDN, the URL of the resources in blobs is case sensitive for the container and blob name.
 
-- 使用 Azure 的 Web 站点，可以在链接到资源中指定了 CDN 实例的路径。例如，以下指定的图像文件 **图像** 将通过 CDN 提供的站点文件夹:
+- When using Azure Web Sites, you specify the path to the CDN instance in the links to resources. For example, the following specifies an image file in the **Images** folder of the site that will be delivered through the CDN:
 
   ```
   <img src="http://[your-cdn-instance].vo.msecnd.net/Images/image.jpg" />
   ```
 
-- **部署** 静态内容可能需要配置和独立部署从应用程序如果不包括它在应用程序部署包或过程。考虑这将如何影响版本控制用于管理应用程序组件和静态资源内容的方法。
+- **Deployment** Static content may need to be provisioned and deployed independently from the application if you do not include it in the application deployment package or process. Consider how this will affect the versioning approach you use to manage both the application components and the static resource content.
 
-- 考虑如何将处理捆绑 (将几个文件合并为一个文件) 和缩小 (删除不必要的字符，如空格、 新行字符，注释和其他字符) 的脚本和 CSS 文件。这些通常采用的技术可以减少加载时间对于客户端，并且与交付内容通过 CDN 兼容。有关更多信息，请参见 [捆绑和缩小](http://www.asp.net/mvc/tutorials/mvc-4/bundling-and-minification).
+- Consider how bundling (combining several files into one file) and minification (removing unnecessary characters such as white space, new line characters, comments, and other characters) for script and CSS files will be handled. These commonly used techniques can reduce load times for clients, and are compatible with delivering content through the CDN. For more information, see [Bundling and Minification](http://www.asp.net/mvc/tutorials/mvc-4/bundling-and-minification).
 
-- 如果您需要将内容部署到其他位置，这将是一个额外的步骤，在部署过程中。如果应用程序更新为 CDN 的内容，也许在固定的时间间隔或在响应事件，它必须存储更新的内容在任何其他地点，以及该终结点的 CDN。
+- If you need to deploy the content to an additional location, this will be an extra step in the deployment process. If the application updates the content for the CDN, perhaps at regular intervals or in response to an event, it must store the updated content in any additional locations as well as the endpoint for the CDN.
 
-- 您不能设置为应用程序部署在 Azure 分期，或在 Visual Studio 中的本地蔚蓝模拟器的 CDN 端点。这会影响单元测试、 功能测试和最终的部署前测试。你必须允许为此通过实施一种替代机制。例如，你可以预先部署到使用临时的自定义应用程序或实用工具，CDN 内容和执行测试期间它缓存。或者，使用编译指令或全局常量来控制在应用程序加载的资源。例如，当在调试模式下运行它可以加载资源，如客户端脚本包和其他内容从本地文件夹，并使用 CDN 在发布模式下运行时。
+- You cannot set up a CDN endpoint for an application deployed in Azure staging, or in the local Azure emulator in Visual Studio. This will affect unit testing, functional testing, and final pre-deployment testing. You must allow for this by implementing an alternative mechanism. For example, you could pre-deploy the content to the CDN using a temporary custom application or utility, and perform testing during the period it is cached. Alternatively, use compile directives or global constants to control where the application loads the resources from. For example, when running in debug mode it could load resources such as client-side script bundles and other content from a local folder, and use the CDN when running in release mode.
 
-- CDN 不支持任何本机压缩功能。然而，它将提供内容已压缩，如 zip 和 gzip 文件。当作为 CDN 终结点使用的应用程序文件夹，服务器可能压缩一些内容默认方式相同时它将直接输送给 web 浏览器或其他类型的客户端。这依赖于对 **接受编码** 从客户端发送的值。在 Azure 中的默认设置是自动压缩内容，当 CPU 利用率低于 50%。更改的设置，可能需要启动任务，如果你使用云服务来承载该应用程序打开压缩的动态输出在 IIS 中使用。请参见 [启用 gzip 压缩与 Azure CDN 通过 Web 角色](http://blogs.msdn.com/b/avkashchauhan/archive/2012/03/05/enableing-gzip-compression-with-windows-azure-cdn-through-web-role.aspx) 更多的信息。
+- The CDN does not support any native compression capabilities. However, it will deliver content that is already compressed, such as zip and gzip files. When using an application folder as the CDN endpoint, the server may compress some content by default in the same way as when delivering it directly to a web browser or other type of client. This relies on the **Accept-Encoding** value sent from the client. In Azure the default is to automatically compress content when CPU utilization is below 50%. Changing the settings and may require use of a startup task to turn on compression of dynamic output in IIS if you are using Cloud Services to host the application. See [Enabling gzip compression with Azure CDN through a Web Role](http://blogs.msdn.com/b/avkashchauhan/archive/2012/03/05/enableing-gzip-compression-with-windows-azure-cdn-through-web-role.aspx) for more information.
 
-- **路由和版本控制** 您可能需要使用不同的 CDN 实例;例如，当您部署新版本的应用程序，您可能想要使用一个不同的 CDN。如果你使用 Azure blob 存储作为内容的来源，你可以简单地创建一个单独的存储帐户或一个单独的容器和 CDN 终结点指向它。如果您使用 **cdn** 在应用中你可以使用 URL 重写技术直接的 CDN 终结点的根文件夹请到不同的文件夹。
+- **Routing and versioning** You may need to use different CDN instances; for example, when you deploy a new version of the application you may want to use a different CDN. If you use Azure blob storage as the content origin, you can simply create a separate storage account or a separate container and point the CDN endpoint to it. If you use the **cdn** root folder within the application as the CDN endpoint you can use URL rewriting techniques to direct requests to a different folder.
 
-- 不要使用查询字符串来表示不同版本的应用程序中链接到 CDN 上的资源，因为，从蔚蓝的 blob 存储内容时，查询字符串是资源名称 (blob) 的一部分。它也可以影响如何客户端缓存的资源。
+- Do not use the query string to denote different versions of the application in links to resources on the CDN because, when drawing content from Azure blob storage, the query string is part of the resource name (the blob name). It can also affect how the client caches the resources.
 
-- 如果以前的资源都被缓存在 CDN 部署新版本的静态内容，当你更新的应用程序可以是一个挑战。有关详细信息，请参阅"<a href="#cachecontrol" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">高速缓存控制</a>".
+- Deploying new versions of static content when you update an application can be a challenge if the previous resources are cached on the CDN. For more information, see the section "<a href="#cachecontrol" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">Cache control</a>".
 
-<a name="cachecontrol" href="#" xmlns:xlink="http://www.w3.org/1999/xlink"><span /></a>**高速缓存控制**+ 考虑要如何管理缓存，和在什么层面上的应用程序。例如，使用一个文件夹作为 CDN 起源时你可以指定在特定的文件夹中生成的内容和所有的资源的内容到期的页的可缓存性。CDN，并使用标准的 HTTP 标头的客户机，您还可以指定缓存属性。虽然你已经应该管理服务器和客户端上缓存，将有助于使你更加意识到如何您的内容进行缓存，并在使用 CDN。
+<a name="cachecontrol" href="#" xmlns:xlink="http://www.w3.org/1999/xlink"><span /></a>**Cache control**+ Consider how you want to manage caching, and at what layers of the application. For example, when using a folder as the CDN origin you can specify the cacheability of pages that generate the content, and the content expiry for all the resources in a specific folder. You can also specify cache properties for the CDN, and for the client using standard HTTP headers. Although you should already be managing caching on the server and client, using the CDN will help to make you more aware of how your content is cached, and where.
 
-- 若要防止对象被可用基于 CDN 可以删除它们从原点 (blob 容器或应用程序 **cdn** 根文件夹)，移除或删除 CDN 端点，或者 — — 在 blob 存储的情况下 — — 使容器或 blob 私人。然而，项目将删除从 CDN 只当他们生存时间 (TTL) 过期。
+- To prevent objects from being available on the CDN you can delete them from the origin (blob container or application **cdn** root folder), remove or delete the CDN endpoint, or—in the case of blob storage—make the container or blob private. However, items will be removed from the CDN only when their time-to-live (TTL) expires.
 
-- 如果没有缓存的到期时间指定 (例如，当从 blob 存储加载内容)，它将被缓存在 CDN 长达 72 小时。
+- If no cache expiry period is specified (such as when content is loaded from blob storage), it will be cached on the CDN for up to 72 hours.
 
-- 在 web 应用程序中，您可以设置缓存和到期时间，所有的内容通过使用 **clientCache** 中的元素 **system.webServer/staticContent** web.config 文件的节。你可以将 web.config 文件放在任何文件夹中，以便它影响到该文件夹中的文件和所有子文件夹中的文件。
+- In a web application, you can set the caching and expiry for all content by using the **clientCache** element in the **system.webServer/staticContent** section of a web.config file. You can place a web.config file in any folder so that it affects the files in that folder and the files in all subfolders.
 
-- 如果你使用 ASP.NET 动态技术为 CDN 创建内容，请确保您指定 **Cache.SetExpires** 每一页上的属性。CDN 将不缓存使用公共的默认缓存设置的页面的输出。 设置为合适的值，以确保内容不被丢弃，并不会从应用程序在很短的时间间隔重新加载缓存的到期时间。  
+- If you use a dynamic technique such as ASP.NET to create the content for the CDN, ensure that you specify the **Cache.SetExpires** property on each page. The CDN will not cache the output from pages that use the default cacheability setting of public.  Set the cache expiry period to a suitable value to ensure that the content is not discarded and reloaded from the application at very short intervals.  
 
-- **安全** CDN 可以提供内容通过 HTTPS (SSL) 使用证书提供的 CDN，但它也可通过 HTTP 以及。你不能阻止 HTTP 访问 cdn 网络中的项目。您可能需要使用 HTTPS 请求通过 HTTPS 加载 (如购物车) 来避免浏览器警告关于混合内容的页中显示的静态内容。
+- **Security** The CDN can deliver content over HTTPS (SSL) using the certificate provided by the CDN, but it will also be available over HTTP as well. You cannot block HTTP access to items in the CDN. You may need to use HTTPS to request static content that is displayed in pages loaded through HTTPS (such as a shopping cart) to avoid browser warnings about mixed content.
 
-- 许多的 CDN 服务，例如 Azure CDN，目前不提供任何设施的访问控制，以确保对内容的访问。您不能使用 CDN 共享访问签名 (SAS)。
+- Many CDN services, such as the Azure CDN, do not presently offer any facilities for access control to secure access to the content. You cannot use Shared Access Signatures (SAS) with the CDN.
 
-- 如果您交付使用 CDN 的客户端脚本，你可能会遇到问题，如果这些脚本使用 **客户端代码** 打电话去 HTTP 请求的其他资源，如数据、 图像或字体在不同的域中。许多 web 浏览器防止跨源资源共享 (CORS)，除非 web 服务器配置为设置适当的响应标头。有关 CORS 的详细信息，请参阅"威胁缓解"在指南 》 <span class="highlight" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">API 的安全注意事项</span>.您可以配置 CDN 支持 CORS: + 如果从中你现在的发言内容的起源是蔚蓝 blob 存储，您可以添加 **CorsRule** 服务属性。规则可以指定允许的起源 CORS 请求、 获取，如允许的方法和最大年龄为以秒规则 (期内，客户端必须在加载原始内容之后请求链接的资源)。有关更多信息，请参见 [跨源资源共享 Azure 存储服务 (CORS) 支持](http://msdn.microsoft.com/library/azure/dn535601.aspx).
+- If you deliver client-side scripts using the CDN, you may encounter issues if these scripts use an **XMLHttpRequest** call to make HTTP requests for other resources such as data, images, or fonts in a different domain. Many web browsers prevent cross-origin resource sharing (CORS) unless the web server is configured to set the appropriate response headers. For more information about CORS, see the section "Threat mitigation" in the guide <span class="highlight" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">API security considerations</span>. You can configure the CDN to support CORS:+ If the origin from which you are delivering content is Azure blob storage, you can add a **CorsRule** to the service properties. The rule can specify the allowed origins for CORS requests, the allowed methods such as GET, and the maximum age in seconds for the rule (the period within which the client must request the linked resources after loading the original content). For more information, see [Cross-Origin Resource Sharing (CORS) Support for the Azure Storage Services](http://msdn.microsoft.com/library/azure/dn535601.aspx).
 
-- 如果从你现在的发言内容的起源是一个文件夹在应用程序中，如 **cdn** 根文件夹，您可以在应用程序配置文件以设置配置出站规则 **访问控制允许起源** 对所有响应标头。有关使用重写规则的详细信息，请参阅 [URL 重写模块](http://www.iis.net/learn/extensions/url-rewrite-module).请注意，这种技术是不可能的当使用 Azure 的 Web 站点。
+- If the origin from which you are delivering content is a folder within the application, such as the **cdn** root folder, you can configure outbound rules in the application configuration file to set an **Access-Control-Allow-Origin** header on all responses. For more information about using rewrite rules, see [URL Rewrite Module](http://www.iis.net/learn/extensions/url-rewrite-module). Note that this technique is not possible when using Azure Web Sites.
 
-- **自定义的域**+ 大多数 Cdn，包括 Azure CDN，允许你指定一个自定义的域的名称，并使用它来访问资源通过 CDN。您还可以设置自定义的子域名称使用 **CNAME** 在您的 DNS 记录。使用这种方法可以提供额外的抽象和控制层。
+- **Custom domains**+ Most CDNs, including the Azure CDN, allow you to specify a custom domain name and use it to access resources through the CDN. You can also set up a custom subdomain name using a **CNAME** record in your DNS. Using this approach can provide an additional layer of abstraction and control.
 
-- 如果您使用 **CNAME**你不能 (在撰写本指南时) 也使用了 SSL，因为 CDN 使用自己单一的 SSL 证书，并且这将与您自定义的域子域名称不匹配。
+- If you use a **CNAME**, you cannot (at the time this guide was written) also use SSL because the CDN uses its own single SSL certificate, and this will not match your custom domain/subdomain names.
 
-- **CDN 回退** 你应考虑您的应用程序将如何应付失败或暂时不可用的 CDN。客户端应用程序可以使用的资源已在以前的请求，本地 (客户端上) 缓存的副本，或者他们可以使用代码检测故障，而是请求资源来源 (应用程序文件夹或包含资源的蔚蓝 blob 容器) 如果 CDN 不可用。
+- **CDN fallback** You should consider how your application will cope with a failure or temporary unavailability of the CDN. Client applications may be able to use copies of the resources that were cached locally (on the client) during previous requests, or they can use code that detects failures and instead requests resources from the origin (the application folder or Azure blob container that holds the resources) if the CDN is unavailable.
 
-- **SEO** 如果 SEO 是一个重要的考虑，在您的应用程序，请确保你: + 包括 **Rel** 在每个页面或资源的规范标题。
+- **SEO** If SEO is an important consideration in your application, make sure you:+ Include a **Rel** canonical header in each page or resource.
 
-- 使用 **CNAME** 子域记录和访问使用该名称的资源。
+- Use a **CNAME** subdomain record and access the resources using this name.
 
-- 考虑到影响 CDN 的 IP 地址可能是一个国家或地区不同于应用程序本身的事实。
+- Consider the impact of the fact that the IP address of the CDN may be a country or region that differs from that of the application itself.
 
-- 当使用 Azure blob 存储作为原点，保持相同的文件结构上在应用程序文件夹 CDN 资源。
-
-
-- **监测 & 日志记录** 作为监控策略来检测和测量失败的应用程序的一部分包括 CDN 或扩展延迟发生。
-
-- 对 CDN 启用日志记录并将它作为您的日常操作的一部分。
-
-- **成本的含义** CDN 加载数据从您的应用程序时，你被指控为这两个从 CDN 的出站数据传输和存储交易记录。你应该设置现实缓存到期期间为内容，保证新鲜，但不是引起反复重装来自应用程序的内容太短或 blob 存储到 CDN。但是，很长的过期时间使更难以从 CDN 中删除项目，因为你必须等待他们到期。
-
-- 很少下载的项目会招致两的交易费用，无需提供任何显著减少服务器的负载。  
+- When using Azure blob storage as the origin, maintain the same file structure for resources on the CDN as in the application folders.
 
 
+- **Monitoring & Logging** Include the CDN as part of your application monitoring strategy to detect and measure failures or extended latency occurrences.
 
-## 示例代码
-本节包含一些代码和使用 CDN 技术的例子。  
+- Enable logging for the CDN and include it as part of your daily operations.
+
+- **Cost implication** You are charged for both outbound data transfers from the CDN and for storage transactions when the CDN loads data from your application. You should set realistic cache expiry periods for content to ensure freshness, but not so short as to cause repeated reloading of content from the application or blob storage to the CDN. However, very long expiry periods make it more difficult to remove items from the CDN because you must wait for them to expire.
+
+- Items that are rarely downloaded will incur the two transaction charges without providing any significant reduction in server load.  
 
 
-## URL 重写
-从一个托管的云服务应用程序的根目录中的 Web.config 文件除了以下演示如何执行 URL 重写，当使用 CDN。从它将缓存的内容 CDN 的请求重定向到特定文件夹内基于类型的资源 (如脚本和图像) 的应用程序根。  
+
+## Example code
+This section contains some examples of code and techniques for working with the CDN.  
+
+
+## URL rewriting
+The following except from a Web.config file in the root of a Cloud Services hosted application demonstrates how to perform URL rewriting when using the CDN. Requests from the CDN for content it will cache are redirected to specific folders within the application root based on the type of the resource (such as scripts and images).  
 
 ```XML
 <system.webServer>
@@ -204,23 +204,23 @@ CDN 的典型用途包括:
 </system.webServer>
 ```
 
-重写规则添加执行以下重定向:  
+The addition of the rewrite rules performs the following redirections:  
 
-- 第一条规则允许您版本嵌入的资源，然后将忽略文件的文件名中。例如， **文件名_v123.jpg **被重写为 **Filename.jpg**.
+- The first rule allows you to embed a version in the file name of a resource, which is then ignored. For example, **Filename_v123.jpg **is rewritten as **Filename.jpg**.
 
-- 接下来的四规则显示如何将请求重定向，如果你不想要在一个名为文件夹中存储的资源 **cdn** 在 web 角色的根。规则映射 **cdn/图像**, **cdn/内容**, **cdn/脚本**和 **cdn/束** 向 web 角色在他们各自的根文件夹的 Url。
-使用 URL 重写，需要对各种资源的整合进行一些更改。  
-
-
-## 捆绑和缩小 ##
-
-捆绑和缩小可以由 ASP.NET 处理。在 MVC 项目中，您定义您的包中 **BundleConfig.cs**.通过调用创建一个引用到缩小的脚本包 **Script.Render** 方法，通常在视图类中的代码。本参考包含一个查询字符串，包括哈希，基于包的内容。如果包内容发生更改，也将更改生成的哈希。  
-默认情况下，Azure CDN 的实例都可以 **查询字符串状态** 设置已禁用。在为更新的脚本包通过 CDN 妥善处理订单，您必须启用 **查询字符串状态** CDN 实例的设置。注意，它可能是一个小时或更多 CDN 在创建之前，更改的设置生效。  
+- The next four rules show how to redirect requests if you do not want to store the resources in a folder named **cdn** in the root of the web role. The rules map the **cdn/Images**, **cdn/Content**, **cdn/Scripts**, and **cdn/bundles** URLs to their respective root folders in the web role.
+Using URL rewriting requires you to make some changes to the bundling of resources.  
 
 
-## 更多的信息
-+ [蔚蓝的 CDN](http://azure.microsoft.com/services/cdn/)
-+ [蔚蓝的内容交付网络 (CDN) 的概述](http://msdn.microsoft.com/library/azure/ff919703.aspx)
-+ [从 Web 应用程序中的蔚蓝 CDN 服务内容](cdn-serve-content-from-cdn-in-your-web-application.md)
-+ [云服务结合 Azure CDN](cdn-cloud-service-with-cdn.md)
-+ [蔚蓝的内容交付网络的最佳做法](http://azure.microsoft.com/blog/2011/03/18/best-practices-for-the-windows-azure-content-delivery-network/)
+## Bundling and minification ##
+
+Bundling and minification can be handled by ASP.NET. In an MVC project, you define your bundles in **BundleConfig.cs**. A reference to the minified script bundle is created by calling the **Script.Render** method, typically in code in the view class. This reference contains a query string that includes a hash, which is based on the content of the bundle. If the bundle contents change, the generated hash will also change.  
+By default, Azure CDN instances have the **Query String Status** setting disabled. In order for updated script bundles to be handled properly by the CDN, you must enable the **Query String Status** setting for the CDN instance. Note that it may be an hour or more before creating the CDN and changing the settings takes effect.  
+
+
+## More information
++ [Azure CDN](http://azure.microsoft.com/services/cdn/)
++ [Overview of the Azure Content Delivery Network (CDN)](http://msdn.microsoft.com/library/azure/ff919703.aspx)
++ [Serve Content from Azure CDN in Your Web Application](cdn-serve-content-from-cdn-in-your-web-application.md)
++ [Integrate a cloud service with Azure CDN](cdn-cloud-service-with-cdn.md)
++ [Best Practices for the Azure Content Delivery Network](http://azure.microsoft.com/blog/2011/03/18/best-practices-for-the-windows-azure-content-delivery-network/)

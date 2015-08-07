@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Set Alerts in Application Insights" 
 	description="Get emails about crashes, exceptions, metric changes." 
 	services="application-insights" 

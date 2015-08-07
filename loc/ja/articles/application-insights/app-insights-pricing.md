@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Manage pricing and quota for Application Insights" 
 	description="Choose the price plan you need" 
 	services="application-insights" 

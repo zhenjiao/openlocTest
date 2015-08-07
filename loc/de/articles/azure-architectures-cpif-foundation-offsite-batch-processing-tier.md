@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Offsite Batch Processing Tier (Azure Architecture Patterns)" 
    description="The Offsite Batch Processing Tier pattern is part of the Infrastructure area, which is described extensively in the CPIF Architecture document." 
    services="" 
@@ -16,39 +16,39 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# Offsite-Batch-Verarbeitung Tier (himmelblau Architektur Muster)
+# Offsite Batch Processing Tier (Azure Architecture Patterns)
 
-Die [Wolke Plattform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) Arbeitslast Integration-Anleitungen für Onboarding-Anwendungen in eine Cloud-Lösung von Microsoft.  
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution.  
 
-CPIF beschreibt, wie Organisationen, Kunden und Partnern sollten entwerfen und Bereitstellen von Cloud-bezogene Arbeitslasten, die Nutzung der Hybrid Wolke Plattform und Verwaltungsfunktionen von Azure, System Center und Windows Server. 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-Die **Offsite-Batch-Verarbeitung-Tier** Muster ist Teil der **Infrastruktur** Fläche, die im Dokument CPIF Architektur ausführlich beschrieben wird. 
+The **Offsite Batch Processing Tier** pattern is part of the **Infrastructure** area, which is described extensively in the CPIF Architecture document. 
 
-##  Offsite-Batch-Verarbeitung-Tier
+##  Offsite Batch Processing Tier
 
-Die Offsite Batch-Verarbeitung-Tier design Muster Informationen die Azure Features und Dienste benötigt, um die Verarbeitung von Backend-Daten zu liefern, die beide Schuld, tolerant und skalierbar ist.  Diese Dienste werden als Worker-Funktionen in Cloud-Services auf Azure, realisiert, die derzeit für jede Azure Rechenzentrum bereitgestellt werden können.   
+The Offsite Batch Processing Tier design pattern details the Azure features and services required to deliver backend data processing that is both fault tolerant and scalable.  These services are realized as worker roles in cloud services on Azure, which currently can be deployed to any Azure data center.   
 
-Batch-Verarbeitung-Arbeitslasten sind einzigartig, dass sie in der Regel wenig oder gar keine Benutzeroberfläche bereitzustellen.  Ein Beispiel für diese Art von Belastung Räumlichkeiten wäre ein Windows-Dienst unter Windows Server ausgeführt.  Wenn diese Art der Arbeitsbelastung in einer Cloud-Umgebung in Betracht, wäre es Verschwendung, einen ganzen Server um eine Arbeitslast ausgeführt werden, wenn was wirklich erforderlich ist, zu berechnen ist, Speicher- und Netzwerk-Konnektivität bereitstellen.  Die Arbeiter-Rolle ist die Umsetzung dieser auf Azure. 
+Batch processing workloads are unique in that they typically provide little or no user interface.  An example of this type of workload on premises would be a Windows Service running on Windows Server.  When considering this type of workload in a cloud environment, it would be wasteful to deploy an entire server to run a workload, when what is really required is compute, storage and network connectivity.  The worker role is the implementation of this on Azure. 
 
-Per Definition ist eine Batchverarbeitungsauftrag, die in Azure ausgeführt ist eine Arbeitsauslastung, die auf eine Ressource verbindet, bietet einige Geschäftslogik (Datenverarbeitung) und bietet einige Ausgabe.  Die ein- und Ausgabe-Ressourcen werden vom Benutzer definiert und können reichen von Flatfiles, Blobs im Azure Blob-Speicher, eine NoSQL Datenbank oder relationale Datenbanken.   
+By definition, a batch processing job that is run in Azure is a workload that connects to a resource, provides some business logic (computing) and provides some output.  The input and output resources are defined by the user and can range from flat files, blobs in Azure blob storage, a NoSQL database, or relational databases.   
 
-Die Geschäftslogik wird in eine Rolle himmelblau Arbeitnehmer in der Regel durch die Definition der erforderlichen Business-Logik in einer .NET-Bibliothek implementiert.  Während Bereitstellung einer Arbeitnehmer-Rolle auf Azure ein einfacher Vorgang ist, erfordert die Bereitstellung einer Arbeitnehmer-Rolle, die Schuld, tolerant und skalierbar ist eine Design, die berücksichtigt, wie der Dienst ausgeführt und innerhalb Azure.  Dieses Muster wird das Design ausführlich das hält diese Anforderungen und beschreibt, wie diese umgesetzt werden können. 
+The business logic is implemented in an Azure worker role, typically by defining the required business logic in a .NET library.  While deployment of a worker role to Azure is a simple operation, deploying a worker role that is fault tolerant and scalable requires a design which takes into consideration how the service is executed and maintained within Azure.  This pattern will detail the design which considers these requirements and describes how these can be implemented. 
 
-## Architekturmuster Überblick 
+## Architectural Pattern Overview 
 
-Dieses Dokument beschreibt ein Muster für die Offsite-Stapelverarbeitung nutzen Arbeitnehmer Rolleninstanzen enthaltenen ein Cloud-Service in Azure.  Die wichtigen Komponenten für diesen Entwurf sind unten abgebildet.  Dieses Diagramm zeigt die minimalen erforderlichen Instanzen um eine höhere Fehlertoleranz zu erreichen.  Zusätzliche Instanzen können bereitgestellt werden, um die Leistung des Dienstes zu erhöhen.  Zudem kann automatische Skalierung aktiviert sein, um Unterstützung bei der Skalierung der Instanzen durch Zeit oder zusätzliche Server-Metriken. 
+This document describes a pattern for offsite batch processing utilizing worker role instances contained within a cloud service in Azure.  The critical components to this design are shown below.  This diagram illustrates the minimum required instances to achieve fault tolerance.  Additional instances can be deployed to increase performance of the service.  Additionally, auto scaling can be enabled to assisting in scaling the instances by time or additional server metrics. 
 
-##  Zusätzliche Ressourcen
-[Batch-Verarbeitung-Tier (Pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+##  Additional Resources
+[Batch Processing Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
 
-## Siehe auch
-[CPIF Architektur](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[Ausgewogene Webebene Global Load](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+[Global Load Balanced Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-[Ausgewogene Datenebene zu laden](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+[Load Balanced Data Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-[Hybrid-Vernetzung](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[Himmelblau-Suche-Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+[Azure Search Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 

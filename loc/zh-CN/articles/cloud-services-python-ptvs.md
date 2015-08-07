@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Python Web and Worker Roles with Python Tools 2.1 for Visual Studio"
 	description="Overview of using Python Tools for Visual Studio to create Azure cloud services including web roles and worker roles."
 	services=""
@@ -19,33 +19,33 @@
 
 
 
-# Python Web 和工作者角色与 Visual studio 的 Python 工具 2.1
+# Python Web and Worker Roles with Python Tools 2.1 for Visual Studio
 
-本指南提供了使用 Python web 和工作者角色使用的概述 [Visual studio 的 Python 工具][].
+This guide provides an overview of using Python web and worker roles using [Python Tools for Visual Studio][].
 
-## 系统必备组件
+## Prerequisites
 
- - Visual Studio 2012 或 2013 年
- - [Python 对 Visual Studio 工具 2.1][]
- - [Azure SDK 工具 VS 2013 年][] 或 [Azure SDK 工具 VS 2012 年][]
- - [Python 2.7 32 位][] 或 [Python 3.4 32 位][]
+ - Visual Studio 2012 or 2013
+ - [Python Tools 2.1 for Visual Studio][]
+ - [Azure SDK Tools for VS 2013][] or [Azure SDK Tools for VS 2012][]
+ - [Python 2.7 32-bit][] or [Python 3.4 32-bit][]
 
-[AZURE。包括 [创建-帐户-和-网站-注意](../includes/create-account-and-websites-note.md)]
+[AZURE.INCLUDE [create-account-and-websites-note](../includes/create-account-and-websites-note.md)]
 
-## Python 的 web 和工人的作用是什么?
+## What are Python web and worker roles?
 
-Azure 提供三个计算模型用于运行应用程序: [蔚蓝的网站][execution model-web sites], [蔚蓝的虚拟机][execution model-vms]和 [Azure 的云服务][execution model-cloud services]. All three models support Python. Cloud Services, which include web and worker roles, provide *平台即服务 (PaaS)*.在云服务，web 角色提供专用的 Internet 信息服务 (IIS) web 服务器主机前端 web 应用程序，而工作者角色可以运行异步、 长时间运行或永久任务独立于用户交互或输入。
+Azure provides three compute models for running applications: [Azure Websites][execution model-web sites], [Azure Virtual Machines][execution model-vms], and [Azure Cloud Services][execution model-cloud services]. All three models support Python. Cloud Services, which include web and worker roles, provide *Platform as a Service (PaaS)*. Within a cloud service, a web role provides a dedicated Internet Information Services (IIS) web server to host front-end web applications, while a worker role can run asynchronous, long-running or perpetual tasks independent of user interaction or input.
 
-有关更多信息，请参见 [云服务是什么?].
+For more information, see [What is a Cloud Service?].
 
-> [AZURE。注意] **Looking to build a simple website?**
+> [AZURE.NOTE] **Looking to build a simple website?**
 If your scenario involves just a simple website front-end, consider using a lightweight Azure Website. You can easily upgrade to a Cloud Service as your website grows and your requirements change. See the <a href="/develop/python/">Python Developer Center</a> for articles that cover development of Azure Websites.
 <br />
 
 
 ## Project creation
 
-In Visual Studio, you can select **Azure Cloud Service** 在 **New Project** dialog, under **Python**.
+In Visual Studio, you can select **Azure Cloud Service** in the **New Project** dialog, under **Python**.
 
 ![New Project Dialog](./media/cloud-services-python-ptvs/new-project-cloud-service.png)
 
@@ -75,7 +75,7 @@ To debug your web and worker roles, you can set the role project as the startup 
 
 ## Publish to Azure
 
-To publish, right-click on the cloud service project in the solution and select **发布**.
+To publish, right-click on the cloud service project in the solution and select **Publish**.
 
 ![Microsoft Azure Publish Sign In](./media/cloud-services-python-ptvs/publish-sign-in.png)
 
@@ -91,7 +91,7 @@ It's also useful to enable remote desktop connections to the machine(s) for debu
 
 ![Remote Desktop Configuration Dialog](./media/cloud-services-python-ptvs/publish-remote-desktop-configuration.png)
 
-When you are done configuring settings, click **发布**.
+When you are done configuring settings, click **Publish**.
 
 Some progress will appear in the output window, then you'll see the Microsoft Azure Activity Log window.
 
@@ -99,7 +99,7 @@ Some progress will appear in the output window, then you'll see the Microsoft Az
 
 Deployment will take several minutes to complete, then your web and/or worker roles will be running on Azure!
 
-## 接下来的步骤
+## Next steps
 
 For more detailed information on working with web and worker roles in Python Tools for Visual Studio, see the PTVS documentation:
 

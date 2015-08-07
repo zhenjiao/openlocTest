@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Python Web and Worker Roles with Python Tools 2.1 for Visual Studio"
 	description="Overview of using Python Tools for Visual Studio to create Azure cloud services including web roles and worker roles."
 	services=""
@@ -19,26 +19,26 @@
 
 
 
-# Python の Web と Visual Studio の Python ツール 2.1 とワーカー ロール
+# Python Web and Worker Roles with Python Tools 2.1 for Visual Studio
 
-このガイドでは、Python web ロールおよびワーカー ロールを使用してを使用しての概要します。 [Visual Studio の Python ツール][].
+This guide provides an overview of using Python web and worker roles using [Python Tools for Visual Studio][].
 
-## 前提条件
+## Prerequisites
 
- - Visual Studio 2012 や 2013
- - [Python は、Visual Studio ツール 2.1][]
- - [対 2013 azure SDK ツール][] または [VS 2012 年の azure SDK ツール][]
- - [Python 2.7 32 ビット][] または [Python 3.4 32 ビット][]
+ - Visual Studio 2012 or 2013
+ - [Python Tools 2.1 for Visual Studio][]
+ - [Azure SDK Tools for VS 2013][] or [Azure SDK Tools for VS 2012][]
+ - [Python 2.7 32-bit][] or [Python 3.4 32-bit][]
 
-[AZURE。含まれます [-アカウント-と-ウェブサイト-メモの作成](../includes/create-account-and-websites-note.md)]
+[AZURE.INCLUDE [create-account-and-websites-note](../includes/create-account-and-websites-note.md)]
 
-## Python web ロールとワーカー ロールは何ですか。
+## What are Python web and worker roles?
 
-Azure では、3 台の計算アプリケーションを実行するためのモデルを提供します。 [紺碧のウェブサイト][execution model-web sites], [Azure バーチャル マシン][execution model-vms]、と [Azure クラウド サービス][execution model-cloud services]. All three models support Python. Cloud Services, which include web and worker roles, provide *(PaaS) サービスとしてのプラットフォーム*.クラウド サービス内では、web ロールは、ワーカー ロールは、ユーザーの操作や入力の独立した非同期の実行時間の長いまたは恒久的なタスクを実行できる一方にフロント エンド web アプリケーションをホストする専用のインターネット インフォメーション サービス (IIS) web サーバーを提供します。
+Azure provides three compute models for running applications: [Azure Websites][execution model-web sites], [Azure Virtual Machines][execution model-vms], and [Azure Cloud Services][execution model-cloud services]. All three models support Python. Cloud Services, which include web and worker roles, provide *Platform as a Service (PaaS)*. Within a cloud service, a web role provides a dedicated Internet Information Services (IIS) web server to host front-end web applications, while a worker role can run asynchronous, long-running or perpetual tasks independent of user interaction or input.
 
-詳細については、次を参照してください。 [クラウド サービスとは何ですか。].
+For more information, see [What is a Cloud Service?].
 
-> [AZURE。メモ] **Looking to build a simple website?**
+> [AZURE.NOTE] **Looking to build a simple website?**
 If your scenario involves just a simple website front-end, consider using a lightweight Azure Website. You can easily upgrade to a Cloud Service as your website grows and your requirements change. See the <a href="/develop/python/">Python Developer Center</a> for articles that cover development of Azure Websites.
 <br />
 
@@ -99,7 +99,7 @@ Some progress will appear in the output window, then you'll see the Microsoft Az
 
 Deployment will take several minutes to complete, then your web and/or worker roles will be running on Azure!
 
-## 次のステップ
+## Next steps
 
 For more detailed information on working with web and worker roles in Python Tools for Visual Studio, see the PTVS documentation:
 

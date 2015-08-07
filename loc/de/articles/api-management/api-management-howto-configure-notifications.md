@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to configure notifications and email templates in Azure API Management" 
 	description="Learn how to configure notifications and email templates in Azure API Management." 
 	services="api-management" 
@@ -28,7 +28,7 @@ To configure notifications, click **Manage** in the Azure Portal for your API Ma
 
 >If you have not yet created an API Management service instance, see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
-Click **Notifications** aus der **API-Management** menu on the left to view the available notifications.
+Click **Notifications** from the **API Management** menu on the left to view the available notifications.
 
 ![Publisher notifications][api-management-publisher-notifications]
 
@@ -73,7 +73,7 @@ API Management provides email templates for the email messages that are sent in 
 
 These templates can be modified as desired.
 
-To view and configure the email templates for your API Management instance, click **Notifications** aus der **API-Management** menu on the left, and select the **Email Templates** tab.
+To view and configure the email templates for your API Management instance, click **Notifications** from the **API Management** menu on the left, and select the **Email Templates** tab.
 
 ![Email templates][api-management-email-templates]
 
@@ -85,9 +85,9 @@ Each email template has a subject in plain text, and a body definition in HTML f
 
 ![Email template editor][api-management-email-template]
 
-Die **Parameters** list contains a list of parameters, which when inserted into the subject or body, will be replaced the designated value when the email is sent. To insert a parameter, place the cursor where you wish the parameter to go, and click the arrow to the left of the parameter name.
+The **Parameters** list contains a list of parameters, which when inserted into the subject or body, will be replaced the designated value when the email is sent. To insert a parameter, place the cursor where you wish the parameter to go, and click the arrow to the left of the parameter name.
 
-Click **Preview** oder **Send a test** to see how the email will look or send a test email.
+Click **Preview** or **Send a test** to see how the email will look or send a test email.
 
 >Note that the parameters are not replaced with actual values when previewing or sending a test.
 >

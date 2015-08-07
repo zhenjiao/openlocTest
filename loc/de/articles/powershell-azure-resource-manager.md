@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Using Azure PowerShell with Azure Resource Manager" 
 	description="Use Azure PowerShell to deploy multiple resources as a resource group to Azure." 
 	services="azure-resource-manager" 
@@ -16,32 +16,32 @@
 	ms.date="07/15/2015" 
 	ms.author="tomfitz"/>
 
-# Verwendung von himmelblau PowerShell mit himmelblau-Systemressourcen-Manager
+# Using Azure PowerShell with Azure Resource Manager
 
-> [AZURBLAU. SELEKTOR]
-- [Azurblaue PowerShell](powershell-azure-resource-manager.md)
-- [Azurblaue CLI](xplat-cli-azure-resource-manager.md)
+> [AZURE.SELECTOR]
+- [Azure PowerShell](powershell-azure-resource-manager.md)
+- [Azure CLI](xplat-cli-azure-resource-manager.md)
 
-Himmelblau-Ressourcen-Manager stellt eine völlig neue Art des Denkens über die Azure Ressourcen. Anstatt zu erstellen und Verwalten von individuellen Ressourcen, beginnen Sie durch die Vorstellung von eines komplexen Dienstes wie ein Blog, eine Fotogalerie, ein SharePoint-Portal oder ein Wiki. Sie verwenden eine Vorlage--ein Ressourcenmodell des Dienstes--eine Ressourcengruppe Ressourcen erstellen, die Sie benötigen, um den Service zu unterstützen. Dann können Sie verwalten und Bereitstellen dieser Ressourcengruppe als logische Einheit. 
+Azure Resource Manager introduces an entirely new way of thinking about your Azure resources. Instead of creating and managing individual resources, you begin by imagining a complex service, such as a blog, a photo gallery, a SharePoint portal, or a wiki. You use a template -- a resource model of the service --  to create a resource group with the resources that you need to support the service. Then, you can manage and deploy that resource group as a logical unit. 
 
-In diesem Lernprogramm erfahren Sie, wie mithilfe von Azure PowerShell mit Azure-Ressourcen-Manager für Microsoft Azure. Es führt Sie durch den Prozess der Erstellung und Bereitstellung von einer Ressourcengruppe für eine Azure gehostete Web-app mit einer SQL-Datenbank, komplett mit allen Ressourcen, die Sie benötigen, zu unterstützen.
+In this tutorial, you learn how to use Azure PowerShell with Azure Resource Manager for Microsoft Azure. It walks you through the process of creating and deploying a resource group for an Azure-hosted web app with a SQL database, complete with all of the resources that you need to support it.
 
-## Voraussetzungen
+## Prerequisites
 
-Um dieses Tutorial zu vervollständigen, muss man Azure PowerShell Version 0.8.0 oder höher. Um die neueste Version installieren und verknüpfen ihn mit Ihrem azurblauen Abonnement, siehe [Zum Installieren und Konfigurieren von Azure PowerShell](powershell-install-configure.md).
+To complete this tutorial, you must have Azure PowerShell version 0.8.0 or later. To install the latest version and associate it with your Azure subscription, see [How to install and configure Azure PowerShell](powershell-install-configure.md).
 
-Dieses Tutorial richtet sich an PowerShell-Anfänger, aber es wird davon ausgegangen, dass Sie die grundlegenden Konzepte, wie Module, Cmdlets und Sitzungen verstehen. Weitere Informationen zu Windows PowerShell finden Sie unter [Erste Schritte mit Windows PowerShell](http://technet.microsoft.com/library/hh857337.aspx).
+This tutorial is designed for PowerShell beginners, but it assumes that you understand the basic concepts, such as modules, cmdlets, and sessions. For more information about Windows PowerShell, see [Getting Started with Windows PowerShell](http://technet.microsoft.com/library/hh857337.aspx).
 
-Um ausführliche Hilfe für jedes Cmdlet zu erhalten, die Sie in diesem Tutorial zu sehen, verwenden Sie das Cmdlet Get-Help. 
+To get detailed help for any cmdlet that you see in this tutorial, use the Get-Help cmdlet. 
 
 	Get-Help <cmdlet-name> -Detailed
 
-Geben Sie beispielsweise, um Hilfe für das Cmdlet Add-AzureAccount zu erhalten:
+For example, to get help for the Add-AzureAccount cmdlet, type:
 
 	Get-Help Add-AzureAccount -Detailed
 
-## Über den azurblauen PowerShell-Module
-Ab Version 0.8.0 enthält Azure PowerShell-Installation mehr als ein PowerShell-Modul. Sie müssen explizit entscheiden, ob die Befehle verwendet, die in der Azure-Modul oder das Azure-Ressourcen-Manager-Modul zur Verfügung stehen. Damit problemlos zwischen ihnen wechseln können, haben wir einen neuen Cmdlets hinzugefügt, **Switch-AzureMode**, to the Azure Profile module.
+## About the Azure PowerShell Modules
+Beginning in version 0.8.0, the Azure PowerShell installation includes more than one PowerShell module. You must explicitly decide whether to use the commands that are available in the Azure module or the Azure Resource Manager module. To make it easy to switch between them, we have added a new cmdlet, **Switch-AzureMode**, to the Azure Profile module.
 
 When you use Azure PowerShell, the cmdlets in the Azure module are imported by default. To switch to the Azure Resource Manager module, use the Switch-AzureMode cmdlet. It removes the Azure module from your session and imports the Azure Resource Manager and Azure Profile modules.
 
@@ -90,7 +90,7 @@ You don't need to be an expert in Azure, SQL, web apps, or resource management t
 ### Step 1: Switch to Azure Resource Manager 
 1. Start PowerShell. You can use any host program that you like, such as the Azure PowerShell console or Windows PowerShell ISE.
 
-2. Nutzung der **Switch-AzureMode** cmdlet to import the cmdlets in the AzureResourceManager and AzureProfile modules. 
+2. Use the **Switch-AzureMode** cmdlet to import the cmdlets in the AzureResourceManager and AzureProfile modules. 
 
         PS C:\> Switch-AzureMode AzureResourceManager
 
@@ -102,7 +102,7 @@ The cmdlet prompts you for the login credentials for your Azure account. After l
 
 The account settings expire, so you need to refresh them occasionally. To refresh the account settings, run **Add-AzureAccount** again. 
 
->[AZURBLAU. HINWEIS] The AzureResourceManager module requires Add-AzureAccount. A Publish Settings file is not sufficient.     
+>[AZURE.NOTE] The AzureResourceManager module requires Add-AzureAccount. A Publish Settings file is not sufficient.     
 
 ### Step 2: Select a gallery template
 
@@ -139,9 +139,9 @@ Save-AzureResourceGroupGalleryTemplate saves the template and returns the path a
 	C:\Azure\Templates\New_WebSite_And_Database.json
 
 
-You can view the template file in a text editor, such as Notepad. Each template has a **parameters** section and a **resources** Abschnitt.
+You can view the template file in a text editor, such as Notepad. Each template has a **parameters** section and a **resources** section.
 
-Die **parameters** section of the template is a collection of the parameters that are defined in all of the resources. It includes property values you can provide when setting up your resource group.
+The **parameters** section of the template is a collection of the parameters that are defined in all of the resources. It includes property values you can provide when setting up your resource group.
 
     "parameters": {
       "siteName": {
@@ -183,7 +183,7 @@ Note that the **administratorLoginPassword** parameter uses a secure string, not
       "type": "securestring"
     },
 
-Die **resources** section of the template lists the resources that the template creates. This template creates a SQL database server and SQL database, a server farm and website, and several management settings.
+The **resources** section of the template lists the resources that the template creates. This template creates a SQL database server and SQL database, a server farm and website, and several management settings.
   
 The definition of each resource includes its properties, such as name, type and location, and parameters for user-defined values. For example, this section of the template defines the SQL database. It includes parameters for the database name ([parameters('databaseName')]), the database server location [parameters('serverLocation')], and the collation property [parameters('collation')].
 
@@ -373,7 +373,7 @@ The AzureResourceManager module includes cmdlets that help you to prevent errors
 - **Your Azure credentials have not been set up or have expired**:  To refresh the credentials in your Windows PowerShell session, use the Add-AzureAccount cmdlet. The credentials in a publish settings file are not sufficient for the cmdlets in the AzureResourceManager module.
 
 
-## Die nächsten Schritte
+## Next Steps
 Getting Started
 
 - [Azure Resource Manager Overview](./resource-group-overview.md)

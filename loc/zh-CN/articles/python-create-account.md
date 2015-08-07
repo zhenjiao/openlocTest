@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Python create account" 
 	description="Create an account on Azure." 
 	documentationCenter="python" 
@@ -16,6 +16,6 @@
     ms.date="06/03/2015"
 	ms.author="huvalo"/>
 
-# 创建 Azure 的帐户并启用预览功能
+# Create an Azure account and enable preview features
 
-[AZURE。包括 [创建-安-azure-帐户](../includes/create-an-azure-account.md)]
+[AZURE.INCLUDE [create-an-azure-account](../includes/create-an-azure-account.md)]

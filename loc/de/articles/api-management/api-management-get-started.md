@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Manage your first API in Azure API Management"
 	description="Learn how to create APIs, operations, and get started with API Management."
 	services="api-management"
@@ -18,7 +18,7 @@
 
 # Manage your first API in Azure API Management
 
-## <a name="overview"> </a>Übersicht
+## <a name="overview"> </a>Overview
 
 This guide shows you how to quickly get started using API Management and make your first API call.
 
@@ -35,7 +35,7 @@ Common scenarios include:
 
 The system is made-up of the following components:
 
-* Die **API gateway** is the endpoint that:
+* The **API gateway** is the endpoint that:
   * accepts API calls and routes them to your backends
   * verifies API keys, JWT tokens, certificates and other credentials
   * enforces usage quotas and rate limits
@@ -43,14 +43,14 @@ The system is made-up of the following components:
   * caches backend responses where setup
   * logs call metadata for analytics purposes
 
-* Die **publisher portal** is the administrative interface where you set-up your API program:
+* The **publisher portal** is the administrative interface where you set-up your API program:
 	* define or import API schema
 	* package APIs into products
 	* set-up policies like quotas or transformations on the APIs
 	* get insights from analytics
 	* manage users
 
-* Die **developer portal** serves as the main web presence for developers where they can:
+* The **developer portal** serves as the main web presence for developers where they can:
 	* read API documentation
 	* try out an API via the interactive console
 	* create an account and subscribe to get API keys
@@ -61,13 +61,13 @@ The system is made-up of the following components:
 
 > To complete this tutorial, you need an Azure account. If you don't have an account, you can create a free trial account in just a couple of minutes. For details, see [Azure Free Trial][].
 
-The first step in working with API Management is to create a service instance. Log in to the [Verwaltungsportal][] and click **New**, **App Services**, **API-Management**, **Create**.
+The first step in working with API Management is to create a service instance. Log in to the [Management Portal][] and click **New**, **App Services**, **API Management**, **Create**.
 
 ![API Management new instance][api-management-create-instance-menu]
 
 For **URL**, specify a unique sub-domain name to use for the service URL.
 
-Choose the desired **Subscription** und **Region** for your service instance. After making your selections, click the next button.
+Choose the desired **Subscription** and **Region** for your service instance. After making your selections, click the next button.
 
 ![New API Management service][api-management-create-instance-step1]
 
@@ -93,13 +93,13 @@ An API consists of a set of operations that can be invoked from a client applica
 
 APIs can be created and operations added manually, or they can be imported. In this tutorial we will import a the API for a sample calculator web service provided by Microsoft and hosted on Azure.
 
->For guidance on creating an API and manually adding operations, see [How to create APIs](api-management-howto-create-apis.md) und [How to add operations to an API](api-management-howto-add-operations.md).
+>For guidance on creating an API and manually adding operations, see [How to create APIs](api-management-howto-create-apis.md) and [How to add operations to an API](api-management-howto-add-operations.md).
 
 APIs are configured from the API publisher portal, which is accessed through the Azure management portal. To reach the publisher portal, click **Manage** in the Azure Portal for your API Management service.
 
 ![Publisher portal][api-management-management-console]
 
-To import the calculator API, click **APIs** aus der **API-Management** menu on the left, and then click **Import API**.
+To import the calculator API, click **APIs** from the **API Management** menu on the left, and then click **Import API**.
 
 ![Import API button][api-management-import-api]
 
@@ -116,7 +116,7 @@ Once the API is imported, the summary page for the API is displayed in the publi
 
 ![API summary][api-management-imported-api-summary]
 
-The API section has several tabs. The **Zusammenfassung** tab display basic metrics and information about the API. The [Settings](api-management-howto-create-apis.md#configure-api-settings) tab is used to view and edit the configuration for an API. The [Operations](api-management-howto-add-operations.md) tab is used to manage the API's operations. The **Sicherheit** tab can be used to configure proxy authentication for the backend server using Basic authentication or [mutual certificate authentication](api-management-howto-mutual-certificates.md), and to configure [user authorization using OAuth 2.0](api-management-howto-oauth2.md).  The The **Issues** tab is used to view issues reported by the developers using your APIs, and the **Products** tab is used to configure the products that contain this API.
+The API section has several tabs. The **Summary** tab display basic metrics and information about the API. The [Settings](api-management-howto-create-apis.md#configure-api-settings) tab is used to view and edit the configuration for an API. The [Operations](api-management-howto-add-operations.md) tab is used to manage the API's operations. The **Security** tab can be used to configure proxy authentication for the backend server using Basic authentication or [mutual certificate authentication](api-management-howto-mutual-certificates.md), and to configure [user authorization using OAuth 2.0](api-management-howto-oauth2.md).  The The **Issues** tab is used to view issues reported by the developers using your APIs, and the **Products** tab is used to configure the products that contain this API.
 
 By default, each API Management instance comes with two sample products:
 
@@ -147,7 +147,7 @@ You can enter some values for the parameters or keep the defaults, and click **S
 
 ![HTTP Get][api-management-invoke-get]
 
-After an operation is invoked, the developer portal displays the **Response status**, die **Response headers**, and any **Response content**.
+After an operation is invoked, the developer portal displays the **Response status**, the **Response headers**, and any **Response content**.
 
 ![Response][api-management-invoke-get-response]
 
@@ -169,20 +169,20 @@ Hover the mouse over the chart for **Basic Calculator** to see the specific metr
 
 Click **View Details** to view the summary page for the API, including a larger version of the displayed metrics.
 
-![Zusammenfassung][api-management-api-summary-metrics]
+![Summary][api-management-api-summary-metrics]
 
-For detailed metrics and reports, click **Analytics** aus der **API-Management** menu on the left.
+For detailed metrics and reports, click **Analytics** from the **API Management** menu on the left.
 
-![Übersicht][api-management-analytics-overview]
+![Overview][api-management-analytics-overview]
 
-Die **Analytics** section has the following four tabs.
+The **Analytics** section has the following four tabs.
 
--	**Auf einen Blick** provides overall usage and health metrics as well as the top developers, top products, top APIs, and top operations.
--	**Verwendung** provides in-depth look at API calls and bandwidth including a geographical representation.
--	**Gesundheit** focuses on status codes, cache success rates, response times, and API and service response times.
--	**Aktivität** provides reports that drill down on the specific activity by developer, product, API, and operation.
+-	**At a glance** provides overall usage and health metrics as well as the top developers, top products, top APIs, and top operations.
+-	**Usage** provides in-depth look at API calls and bandwidth including a geographical representation.
+-	**Health** focuses on status codes, cache success rates, response times, and API and service response times.
+-	**Activity** provides reports that drill down on the specific activity by developer, product, API, and operation.
 
-## <a name="next-steps"> </a>Die nächsten Schritte
+## <a name="next-steps"> </a>Next steps
 
 -	Check out the other topics in the [Get started with advanced API configuration][] tutorial.
 

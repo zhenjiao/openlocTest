@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="API Management key concepts" 
 	description="Learn about APIs, products, roles, groups, and other API Management key concepts." 
 	services="api-management" 
@@ -26,7 +26,7 @@ To use API Management, administrators create APIs. Each API consists of one or m
 
 This topic provides an overview of API Management key concepts.
 
->[AZURE. REMARQUE] Pour plus d'informations, consultez le [Cloud-based API Management: Harnessing the Power of APIs](http://j.mp/ms-apim-whitepaper) PDF whitepaper. This introductory whitepaper on API Management by CITO Research covers: 
+>[AZURE.NOTE] For more information, see the [Cloud-based API Management: Harnessing the Power of APIs](http://j.mp/ms-apim-whitepaper) PDF whitepaper. This introductory whitepaper on API Management by CITO Research covers: 
 >
 > - Common API requirements and challenges
 >     - Decoupling APIs and presenting facades
@@ -41,16 +41,16 @@ This topic provides an overview of API Management key concepts.
 
 APIs are the foundation of an API Management service instance. Each API represents  a set of operations available to developers. Each API contains a reference to the back-end service that implements the API, and its operations map to the operations implemented by the back-end service. Operations in API Management are highly configurable, with control over URL mapping, query and path parameters, request and response content, and operation response caching. Rate limit, quotas, and IP restriction policies can also be implemented at the API or individual operation level.
 
-Pour plus d'informations, consultez [How to create APIs][] et [How to add operations to an API][].
+For more information, see [How to create APIs][] and [How to add operations to an API][].
 
 
 ## <a name="products"> </a> Products
 
-Products are how APIs are surfaced to developers. Products in API Management have one or more APIs, and are configured with a title, description, and terms of use. Products can be **Open** ou **Protected**. Protected products must be subscribed to before they can be used, while open products can be used without a subscription. When a product is ready for use by developers it can be published. Once it is published, it can be viewed (and in the case of protected products subscribed to) by developers. Subscription approval is configured at the product level and can either require administrator approval, or be auto-approved.
+Products are how APIs are surfaced to developers. Products in API Management have one or more APIs, and are configured with a title, description, and terms of use. Products can be **Open** or **Protected**. Protected products must be subscribed to before they can be used, while open products can be used without a subscription. When a product is ready for use by developers it can be published. Once it is published, it can be viewed (and in the case of protected products subscribed to) by developers. Subscription approval is configured at the product level and can either require administrator approval, or be auto-approved.
 
 Groups are used to manage the visibility of products to developers. Products grant visibility to groups, and developers can view and subscribe to the products that are visible to the groups in which they belong. 
 
-Pour plus d'informations, consultez [How to create and publish a product][] and the following video.
+For more information, see [How to create and publish a product][] and the following video.
 
 > [AZURE.VIDEO using-products]
 
@@ -64,7 +64,7 @@ Groups are used to manage the visibility of products to developers. API Manageme
 
 In addition to these system groups, administrators can create custom groups or [leverage external groups in associated Azure Active Directory tenants](api-management-howto-aad.md/#how-to-add-an-external-azure-active-directory-group). Custom and external groups can be used alongside system groups in giving developers visibility and access to API products. For example, you could create one custom group for developers affiliated with a specific partner organization and allow them access to the APIs from a product containing relevant APIs only. A user can be a member of more than one group.
 
-Pour plus d'informations, consultez  [How to create and use groups][].
+For more information, see  [How to create and use groups][].
 
 ## <a name="developers"> </a> Developers
 
@@ -72,13 +72,13 @@ Developers represent the user accounts in an API Management service instance. De
 
 When developers subscribe to a product they are granted the primary and secondary key for the product. This key is used when making calls into the product's APIs.
 
-Pour plus d'informations, consultez [How to create or invite developers][] et [How to associate groups with developers][].
+For more information, see [How to create or invite developers][] and [How to associate groups with developers][].
 
-## <a name="policies"> </a> Politiques
+## <a name="policies"> </a> Policies
 
 Policies are a powerful capability of API Management that allow the publisher to change the behavior of the API through configuration. Policies are a collection of statements that are executed sequentially on the request or response of an API. Popular statements include format conversion from XML to JSON and call rate limiting to restrict the amount of incoming calls from a developer, and many other policies are available.
 
-Policy expressions can be used as attribute values or text values in any of the API Management policies, unless the policy specifies otherwise. Some policies such as the [Control flow][] et [Set variable][] policies are based on policy expressions. For more information, see [Advanced policies][], [Policy expressions][], and watch the following video.
+Policy expressions can be used as attribute values or text values in any of the API Management policies, unless the policy specifies otherwise. Some policies such as the [Control flow][] and [Set variable][] policies are based on policy expressions. For more information, see [Advanced policies][], [Policy expressions][], and watch the following video.
 
 > [AZURE.VIDEO policy-expressions-in-azure-api-management]
 

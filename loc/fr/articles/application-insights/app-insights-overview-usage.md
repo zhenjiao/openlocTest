@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Usage analysis with Application Insights"
 	description="Overview of usage analytics with Application Insights"
 	services="application-insights"
@@ -23,7 +23,7 @@ Application Insights can provide a clear view of your application's usage, helpi
 
 ## Analytics out of the box
 
-Add [Aperçus de l'application][start] to your project, and without further effort you get charts showing you how many users you have and more.
+Add [Application Insights][start] to your project, and without further effort you get charts showing you how many users you have and more.
 
 ![In Azure, Browse > Application Insights > your project and scroll down](./media/app-insights-overview-usage/01-overview.png)
 

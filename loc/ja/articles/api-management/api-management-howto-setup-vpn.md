@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="How to setup VPN connections in Azure API Management"
 	description="Learn how to setup a VPN connection in Azure API Management and access web services through it."
 	services="api-management"
@@ -22,9 +22,9 @@ API Management's VPN support allows you to connect your API Management proxy to 
 
 ## <a name="enable-vpn"> </a>Enable VPN connections
 
->VPN connectivity is only available in the **Premium** tier. To switch to it, open your API Management service in the [管理ポータル][] and then open the **Scale** tab. Under the **General** section select the Premium tier and click Save.
+>VPN connectivity is only available in the **Premium** tier. To switch to it, open your API Management service in the [Management Portal][] and then open the **Scale** tab. Under the **General** section select the Premium tier and click Save.
 
-To enable VPN connectivity, open your API Management service in the [管理ポータル][] and switch to the **Configure** tab. 
+To enable VPN connectivity, open your API Management service in the [Management Portal][] and switch to the **Configure** tab. 
 
 Under the VPN section, switch **VPN connection** to **On**.
 

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Detect and diagnose failures and exceptions in web apps" 
 	description="Detect and diagnose failures and exceptions in web apps" 
 	services="application-insights" 

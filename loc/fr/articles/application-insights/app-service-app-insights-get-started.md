@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Monitor your app's performance and usage with Application Insights" 
 	description="Analyze usage, availability and performance of your on-premises or Microsoft Azure web application with Application Insights." 
 	services="application-insights" 
@@ -20,7 +20,7 @@
 *Application Insights is in preview*
 
 
-Visual Studio Application Insights monitors your live application to help you [detect and diagnose performance issues and exceptions][detect], et [discover how your app is used][knowUsers]. It can be used with a wide variety of application types: ASP.NET and Java web apps; iOS, Android, Windows and other device apps; HTML+JavaScript apps.
+Visual Studio Application Insights monitors your live application to help you [detect and diagnose performance issues and exceptions][detect], and [discover how your app is used][knowUsers]. It can be used with a wide variety of application types: ASP.NET and Java web apps; iOS, Android, Windows and other device apps; HTML+JavaScript apps.
 
 In this article we'll focus on types of app that are developed in Visual Studio. There are also Application Insights extensions for other IDEs.
 
@@ -94,7 +94,7 @@ When you run in debug mode, telemetry is expedited through the pipeline, so that
 * See [Troubleshooting][qna].
 
 
-## Prochaines étapes
+## Next steps
 
 Now that you're sending data from the server side of your app, here are some steps to get a more 360-degree view:
 

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to create and use groups to manage developer accounts in Azure API Management" 
 	description="Learn how to manage developer accounts using groups in Azure API Management" 
 	services="api-management" 
@@ -38,7 +38,7 @@ To create a new group, click **Manage** in the Azure Portal for your API Managem
 
 >If you have not yet created an API Management service instance, see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
-Click **Groups** de la **Gestion de l'API** menu on the left, and then click **Add Group**.
+Click **Groups** from the **API Management** menu on the left, and then click **Add Group**.
 
 ![Add new group][api-management-add-group]
 
@@ -46,7 +46,7 @@ Enter a unique name for the group and an optional description, and click **Save*
 
 ![Add new group][api-management-add-group-window]
 
-The new group is displayed in the groups tab. To edit the **Name** ou **Description** of the group, click the name of the group in the list. To delete the group, click **Delete**.
+The new group is displayed in the groups tab. To edit the **Name** or **Description** of the group, click the name of the group in the list. To delete the group, click **Delete**.
 
 ![Group added][api-management-new-group]
 
@@ -54,7 +54,7 @@ Now that the group is created, it can be associated with products and developers
 
 ## <a name="associate-group-product"> </a>Associate a group with a product
 
-To associate a group with a product, click **Products** de la **Gestion de l'API** menu on the left, and then click the name of the desired product.
+To associate a group with a product, click **Products** from the **API Management** menu on the left, and then click the name of the desired product.
 
 ![Set visibility][api-management-add-group-to-product]
 
@@ -62,7 +62,7 @@ Select the **Visibility** tab to add and remove groups, and to view the current 
 
 ![Set visibility][api-management-add-group-to-product-visibility]
 
->[AZURE. REMARQUE] To add Azure Active Directory groups, see [How to authorize developer accounts using Azure Active Directory in Azure API Management](api-management-howto-aad.md).
+>[AZURE.NOTE] To add Azure Active Directory groups, see [How to authorize developer accounts using Azure Active Directory in Azure API Management](api-management-howto-aad.md).
 >
 >To configure groups from the **Visibility** tab for a product, click **Manage Groups**.
 
@@ -70,7 +70,7 @@ Once a product is associated with a group, developers in that group can view and
 
 ## <a name="associate-group-developer"> </a>Associate groups with developers
 
-To associate groups with developers, click **Users** de la **Gestion de l'API** menu on the left, and then check the box beside the developers you wish to associate with a group.
+To associate groups with developers, click **Users** from the **API Management** menu on the left, and then check the box beside the developers you wish to associate with a group.
 
 ![Add developer to group][api-management-add-group-to-developer]
 
@@ -80,7 +80,7 @@ Once the desired developers are checked, click the desired group in the **Add to
 
 Once the association is added between the developer and the group, you can view it in the **Users** tab.
 
-## <a name="next-steps"> </a>Prochaines étapes
+## <a name="next-steps"> </a>Next steps
 
 Once a developer is added to a group, they can view and subscribe to the products associated with that group. For more information, see [How create and publish a product in Azure API Management][],
 

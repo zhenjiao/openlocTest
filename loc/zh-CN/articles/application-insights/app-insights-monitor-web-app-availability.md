@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Monitor availability and responsiveness of any web site" 
 	description="Set up web tests in Application Insights. Get alerts if a website becomes unavailable or responds slowly." 
 	services="application-insights" 
@@ -17,7 +17,7 @@
  
 # Monitor availability and responsiveness of any web site
 
-[AZURE。包括 [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
+[AZURE.INCLUDE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
 
 After you've deployed your web application, you can set up web tests to monitor its availability and responsiveness. Application Insights will send web requests at regular intervals from points around the world, and can alert you if your application responds slowly or not at all.
 
@@ -65,7 +65,7 @@ In your Application Insights resource, look for the Availability tile. Click it 
     **Content match**: a string, like "Welcome!" We'll test that it occurs in every response. It must be a plain string, without wildcards. Don't forget that if your page content changes you might have to update it.
 
 
-- **警报** are, by default, sent to you if there are repeated failures over 15 minutes. But you can change it to be more or less sensitive, and you can also change the notified email addresses.
+- **Alerts** are, by default, sent to you if there are repeated failures over 15 minutes. But you can change it to be more or less sensitive, and you can also change the notified email addresses.
 
 #### Test more URLs
 
@@ -211,7 +211,7 @@ You might want to disable web tests while you are performing maintenance on your
 
 > [AZURE.VIDEO monitoring-availability-with-application-insights]
 
-## <a name="next"></a>接下来的步骤
+## <a name="next"></a>Next steps
 
 [Search diagnostic logs][diagnostic]
 

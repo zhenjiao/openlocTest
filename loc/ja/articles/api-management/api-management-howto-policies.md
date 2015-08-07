@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Policies in Azure API Management" 
 	description="Learn how to create, edit, and configure policies in API Management." 
 	services="api-management" 
@@ -25,10 +25,10 @@ See the [Policy Reference][] for a full list of policy statements and their sett
 
 Policies are applied inside the proxy which sits between the API consumer and the managed API. The proxy receives all requests and usually forwards them unaltered to the underlying API. However a policy can apply changes to both the inbound request and outbound response.
 
-Policy expressions can be used as attribute values or text values in any of the API Management policies, unless the policy specifies otherwise. Some policies such as the [Control flow][] と [Set variable][] policies are based on policy expressions. For more information, see [Advanced policies][] と [Policy expressions][].
+Policy expressions can be used as attribute values or text values in any of the API Management policies, unless the policy specifies otherwise. Some policies such as the [Control flow][] and [Set variable][] policies are based on policy expressions. For more information, see [Advanced policies][] and [Policy expressions][].
 
 ## <a name="scopes"> </a>How to configure policies
-Policies can be configured globally or at the scope of a [Product][], [API][] または [Operation][]. To configure a policy, navigate to the Policies editor in the Publisher Portal.
+Policies can be configured globally or at the scope of a [Product][], [API][] or [Operation][]. To configure a policy, navigate to the Policies editor in the Publisher Portal.
 
 ![Policies menu][policies-menu]
 
@@ -38,7 +38,7 @@ The policies editor consists of three main sections: the policy scope (top), the
 
 To begin configuring a policy you must first select the scope at which the policy should apply. In the screenshot below the Starter product is selected. Note that the square symbol next to the policy name indicates that a policy is already applied at this level.
 
-![スコープ][policies-scope]
+![Scope][policies-scope]
 
 Since a policy has already been applied, the configuration is shown in the definition view.
 
@@ -104,7 +104,7 @@ In the example policy definition above, the cross-domain statement would execute
 
 Note: A global policy has no parent policy and using the `<base>` element in it has no effect. 
 
-## 次のステップ
+## Next steps
 
 Check out following video on policy expressions.
 

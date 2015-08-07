@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Add Caching to improve performance in Azure API Management"
 	description="Learn how to improve the latency, bandwidth consumption, and web service load for API Management service calls."
 	services="api-management"
@@ -23,7 +23,7 @@ Operations in API Management can be configured for response caching. Response ca
 This guide shows you how to add response caching for your API and configure policies for the sample Echo Api operations. You can then call the operation from the developer portal to verify caching in action.
 
 
-## 前提条件
+## Prerequisites
 
 Before following the steps in this this guide you must have an API Management service instance with an API and a Product configured. If you have not yet created an API Management service instance, please see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
@@ -31,13 +31,13 @@ Before following the steps in this this guide you must have an API Management se
 
 In this step, you will review the caching settings of the **GET Resource (cached)** operation of the sample Echo Api.
 
->[AZURE。メモ] Each API Management service instance comes pre-configured with an Echo API that can be used to experiment with and learn about API Management. For more information, see [Get started with Azure API Management][].
+>[AZURE.NOTE] Each API Management service instance comes pre-configured with an Echo API that can be used to experiment with and learn about API Management. For more information, see [Get started with Azure API Management][].
 
 To get started, click **Manage** in the Azure Portal for your API Management service. This takes you to the API Management publisher portal.
 
 ![Publisher portal][api-management-management-console]
 
-Click **APIs** から、 **API の管理** menu on the left, and click **Echo API**.
+Click **APIs** from the **API Management** menu on the left, and click **Echo API**.
 
 ![Echo API][api-management-echo-api]
 
@@ -51,7 +51,7 @@ Select the **Caching** tab to view the caching settings for this operation.
 
 To enable caching for an operation, check the **Enable** checkbox. In this example caching is enabled.
 
-Each operation response is keyed based on the values in the **Vary by query string parameters** と **Vary by headers** fields. If you want to cache multiple responses based on query string parameters or headers, you can configure them in these two fields.
+Each operation response is keyed based on the values in the **Vary by query string parameters** and **Vary by headers** fields. If you want to cache multiple responses based on query string parameters or headers, you can configure them in these two fields.
 
 **Duration** specifies the expiration interval of the cached responses. In this example the interval is **3600** seconds, which is equivalent to one hour.
 
@@ -63,7 +63,7 @@ In this step, you will review the caching settings for the **GET Resource (cache
 
 When caching settings are configured for an operation on the **Caching** tab, caching policies are added for the operation. These policies can be viewed and edited in the policy editor.
 
-Click **ポリシー** から、 **API の管理** menu on the left, and select **Echo API / GET Resource (cached)** から、 **Operation** drop-down.
+Click **Policies** from the **API Management** menu on the left, and select **Echo API / GET Resource (cached)** from the **Operation** drop-down.
 
 ![Policy scope operation][api-management-operation-dropdown]
 
@@ -110,7 +110,7 @@ The console allows you to invoke operations directly from the developer portal.
 
 ![Console][api-management-console]
 
-Keep the default values for **param1** と **param2**.
+Keep the default values for **param1** and **param2**.
 
 Select the desired key from the **subscription-key** drop-down. If your account has only one subscription it will already be selected.
 
@@ -126,7 +126,7 @@ Enter **25** into the **param2** field, and click **HTTP Get**.
 
 Note that the value of **sampleheader** in the response is now **value2**. Because the operation results are keyed by query string, the previous cached response was not returned.
 
-## <a name="next-steps"> </a>次のステップ
+## <a name="next-steps"> </a>Next steps
 
 -	Check out the other topics in the [Get started with advanced API configuration][] tutorial.
 -	For more information on caching policies, see [Caching policies][] in the [API Management policy reference][].

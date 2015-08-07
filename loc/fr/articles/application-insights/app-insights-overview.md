@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="What is Application Insights?" 
 	description="Track usage and performance of your live web or device application.  Detect, triage and diagnose problems. Continuously monitor and improve success with your users." 
 	services="application-insights" 
@@ -45,7 +45,7 @@ Telemetry data collected from your application is stored and analysed in the Azu
 There are SDKs for a growing range of platforms. Currently the list includes:
 
  * [ASP.NET servers][greenbrown] on Azure or your IIS server
- * [Services en nuage bleu azur](app-insights-cloudservices.md)
+ * [Azure Cloud Services](app-insights-cloudservices.md)
  * [J2EE servers][java]
  * [Web pages][client]: HTML+JavaScript
  * [Windows Phone, Windows Store, Windows 10 universal apps, and direct integration with the Windows 10 developer portal][windows]
@@ -81,7 +81,7 @@ The impact on your performance is very small. Tracking calls non-blocking, and a
 
 1. You'll need a subscription to [Microsoft Azure](http://azure.com). It's free to sign up, and you can choose the free [pricing tier](https://azure.microsoft.com/pricing/details/application-insights/) of Application Insights.
 
-2. Sign into [Aperçu d'Azur portail](http://portal.azure.com)
+2. Sign into [Azure Preview Portal](http://portal.azure.com)
 3. Create an Application Insights resource. This is where you'll see data from your app.
 
     ![Add, Developer Services, Application Insights.](./media/app-insights-overview/11-new.png)

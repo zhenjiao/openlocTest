@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Move Resources to New Resource Group" 
 	description="Use Azure PowerShell or REST API to move resources to a new resource group for Azure Resource Manager." 
 	services="" 
@@ -30,7 +30,7 @@ There are some important considerations when moving a resource:
 not change the location of the resource.
 2. The destination resource group should contain only resources that share the same application lifecycle as the resources you are moving.
 3. If you are using Azure PowerShell, make sure you are using the latest version. The **Move-AzureResource** command is updated frequently. To update your version, run the Microsoft Web Platform Installer and check if a 
-new version is available. For more information, see [Zum Installieren und Konfigurieren von Azure PowerShell](powershell-install-configure.md).
+new version is available. For more information, see [How to install and configure Azure PowerShell](powershell-install-configure.md).
 4. The move operation can take a while to complete and during that time your PowerShell prompt will wait until the operation has completed.
 
 ## Supported Services
@@ -39,8 +39,8 @@ Not all services currently support the ability to move resources.
 
 For now, the services that support moving to both a new resource group and subscription are:
 
-- API-Management
-- Himmelblau-Suche
+- API Management
+- Azure Search
 - Data Factory
 - Key Vault
 - Mobile Engagement
@@ -78,7 +78,7 @@ To move existing resources to another resource group or subscription, run:
 
     POST https://management.azure.com/subscriptions/{source-subscription-id}/resourcegroups/{source-resource-group-name}/moveResources?api-version={api-version} 
 
-Replace **{source-subscription-id}** und **{source-resource-group-name}** with the subscription and resource group that currently contain the resources you wish to move. Use **2015-01-01** for {api-version}.
+Replace **{source-subscription-id}** and **{source-resource-group-name}** with the subscription and resource group that currently contain the resources you wish to move. Use **2015-01-01** for {api-version}.
 
 In the request, include a JSON object that defines the target resource group and the resources you wish to move.
 
@@ -91,7 +91,7 @@ In the request, include a JSON object that defines the target resource group and
         ]
     }
 
-## Die nächsten Schritte
+## Next Steps
 - [Using Azure PowerShell with Resource Manager](./powershell-azure-resource-manager.md)
 - [Using the Azure CLI with Resource Manager](./virtual-machines/xplat-cli-azure-resource-manager.md)
 - [Using the Azure Portal to manage resources](azure-portal/resource-group-portal.md)

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Set up billing alerts for your Microsoft Azure subscriptions" 
 	description="Describes how you can set up alerts on your Azure bill so you can avoid billing surprises." 
 	services="" 
@@ -16,31 +16,31 @@
 	ms.date="06/01/2015" 
 	ms.author="vikdesai"/>
 
-# Microsoft Azure サブスクリプションの課金通知の設定します。
+# Set up billing alerts for your Microsoft Azure subscriptions
 
-Azure サブスクリプションの毎月を費やしているどのくらいを懸念していますか。Azure 課金通知サービスを使用して、カスタマイズされた作成できます Azure サブスクリプション アカウントの管理者なら、請求に役立つアラートを監視し、Azure のアカウントの課金アクティビティを管理します。
+Are you concerned about how much you're spending each month for your Azure subscription? If you’re the account administrator for an Azure subscription, you can use the Azure Billing Alert Service to create customized billing alerts that help you monitor and manage billing activity for your Azure accounts.
 
-このサービスは、あなたが行う必要がある最初の事はそれにサインアップする - を参照してくださいプレビュー サービスです。 <a href="https://account.windowsazure.com/PreviewFeatures">プレビュー機能ページ </a> これを行うには Azure アカウント管理ポータル。
+This service is a preview service, so the first thing you have to do is sign up for it - visit <a href="https://account.windowsazure.com/PreviewFeatures">the Preview Features page </a> in the Azure account management portal to do this.
 
-## 警告のしきい値と電子メール受信者を設定します。
+## Set the alert threshold and email recipients
 
-サブスクリプションの課金サービスがオン確認メールを受け取ったら、訪問します。 <a href="https://account.windowsazure.com/Subscriptions">[サブスクリプション] ページ</a> アカウント ポータル。サブスクリプションの監視、および、クリックするをクリックします。 **アラート**.
+After you receive the email confirmation that the billing service is turned on for your subscription, visit <a href="https://account.windowsazure.com/Subscriptions">the Subscriptions page</a> in the account portal. Click the subscription you want to monitor, and then click **Alerts**.
 
 ![][Image1]
 
-次に、クリックします。 **通知を追加します。** -あなたの最初の 1 つを作成するのには、サブスクリプションでは、異なるしきい値と警告ごとに 2 つの電子メール受信者ごと 5 請求通知の合計を設定できます。
+Next, click **Add Alert** to create your first one - you can set up a total of five billing alerts per subscription, with a different threshold and up to two email recipients for each alert.
 
 ![][Image2]
 
-アラートを追加すると支出のしきい値を選択、通知の送信先電子メール アドレスを選択それに一意の名前を与えます。いずれかを選択することができますしきい値を設定する場合、 **[請求合計** または、 **金融クレジット** から、 **ための警告** リスト。請求合計サブスクリプション支出がしきい値を超えたときに警告が送信されます。金融クレジット金融クレジット制限を下回ったときに警告が送信されます。金銭債権は、通常無料トライアルと MSDN のアカウントに関連付けられているサブスクリプションに適用されます。
+When you add an alert, you give it a unique name, choose a spending threshold, and choose the email addresses where alerts will be sent. When setting up the threshold, you can choose either a **Billing Total** or a **Monetary Credit** from the **Alert For** list. For a billing total, an alert is sent when subscription spending exceeds the threshold. For a monetary credit, an alert is sent when monetary credits drop below the limit. Monetary credits usually apply to free trials and subscriptions associated with MSDN accounts.
 
 ![][Image3]
 
-Azure は任意のメール アドレスをサポートしていますが、電子メール アドレスの作品は、タイプミスを再確認を確認しません。
+Azure supports any email address but doesn’t verify that the email address works, so double-check for typos.
 
-## アラートを確認します。
+## Check on your alerts
 
-アラートを設定した後アカウント センターはそれらが一覧表示され、数以上を設定することを示します。各アラートの日付と合計請求や金銭債権の通知かどうか、それが送信された時間制限を設定するを参照します。日付と時間の形式は 24 時間世界協定時刻 (UTC)、日付は年年年年-月月形式。編集するリストの警告のプラス記号をクリックしてまたはそれを削除するのにはゴミ箱をクリックします。
+After you set up alerts, the Account Center lists them and shows how many more you can set up. For each alert, you see the date and time it was sent, whether it’s an alert for Billing Total or Monetary Credit, and the limit you set up. The date and time format is 24-hour Universal Time Coordinate (UTC) and the date is yyyy-mm-dd format. Click the plus sign for an alert in the list to edit it, or click the trash can to delete it.
 
 [Image1]: ./media/azure-billing-set-up-alerts/billingalert1.png
 [Image2]: ./media/azure-billing-set-up-alerts/billingalert2.png

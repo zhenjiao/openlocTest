@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Log in from the Azure Command-Line Interface (Azure CLI) | Microsoft Azure"
 	description="Connect to Azure subscription from the Azure Command-Line Interface (Azure CLI)"
 	editor="tysonn"
@@ -27,7 +27,7 @@ Most commands provided by the Azure CLI require a connection to an Azure account
 
 * Log in to Azure using a work or school account (also called an organizational account). This uses Azure Active Directory to authenticate the credentials.
 
-ou
+or
 
 * Download and use a publish settings file. This installs a certificate that allows you to perform management tasks for as long as the subscription and the certificate are valid.
 
@@ -35,13 +35,13 @@ For more information about authentication and subscription management, see ["Wha
 
 If you don't have an account, you can create a free trial account in just a couple of minutes. For details, see [Azure Free Trial][free-trial].
 
-> [AZURE. REMARQUE] The most flexible and advanced Azure services use the Azure Resource Manager or the [ARM mode](xplat-cli-azure-resource-manager.md). The ARM mode requires connecting to Azure using a work or school account, with the log in method described below.
+> [AZURE.NOTE] The most flexible and advanced Azure services use the Azure Resource Manager or the [ARM mode](xplat-cli-azure-resource-manager.md). The ARM mode requires connecting to Azure using a work or school account, with the log in method described below.
 
 ### Use the log in method
 
 The login method only works with a work or school account. This account is managed by your organization, and defined in your organization's Azure Active Directory.
 
-> [AZURE. REMARQUE] If you do not currently have a work or school account, and are using a personal account to log in to your Azure subscription, you can easily create one using the following steps.
+> [AZURE.NOTE] If you do not currently have a work or school account, and are using a personal account to log in to your Azure subscription, you can easily create one using the following steps.
 >
 > 1. Login to the [Azure Portal][portal], and select **Active Directory**.
 >
@@ -65,17 +65,17 @@ To log in from the Azure CLI using a work or school account, use the following c
 
 and enter your password when prompted for.
 
-> [AZURE. REMARQUE] If this is the first time you have logged in with these credentials, you will receive a prompt asking you to verify that you wish to cache an authentication token. This prompt will also occur if you have previously used the `azure logout` command described below. To bypass this prompt for automation scenarios, use the `-q` parameter with the `azure login` command.
+> [AZURE.NOTE] If this is the first time you have logged in with these credentials, you will receive a prompt asking you to verify that you wish to cache an authentication token. This prompt will also occur if you have previously used the `azure logout` command described below. To bypass this prompt for automation scenarios, use the `-q` parameter with the `azure login` command.
 
 To log out, use the following command:
 
 	azure logout -u <username>
 
-> [AZURE. REMARQUE] If the subscriptions associated with the account were only authenticated with Active Directory, logging out will delete the subscription information from the local profile. However, if a publish settings file had also been imported for the subscriptions, logging out will only delete the Active Directory related information from the local profile.
+> [AZURE.NOTE] If the subscriptions associated with the account were only authenticated with Active Directory, logging out will delete the subscription information from the local profile. However, if a publish settings file had also been imported for the subscriptions, logging out will only delete the Active Directory related information from the local profile.
 
 ### Use the publish settings file method
 
-> [AZURE. REMARQUE] If you connect using this method, you can only use the Azure Service Management (or the ASM mode) commands.
+> [AZURE.NOTE] If you connect using this method, you can only use the Azure Service Management (or the ASM mode) commands.
 
 To download the publish settings for your account, use the following command:
 
@@ -83,7 +83,7 @@ To download the publish settings for your account, use the following command:
 
 This will open your default browser and prompt you to sign in to the [Azure Portal][portal]. After signing in, a `.publishsettings` file will be downloaded. Make note of where this file is saved.
 
-> [AZURE. REMARQUE] If your account is associated with multiple Azure Active Directory tenants, you may be prompted to select which Active Directory you wish to download a publish settings file for.
+> [AZURE.NOTE] If your account is associated with multiple Azure Active Directory tenants, you may be prompted to select which Active Directory you wish to download a publish settings file for.
 >
 > Once selected using the download page, or by visiting the Azure Portal, the selected Active Directory becomes the default used by the portal and download page. Once a default has been established, you will see the text '__click here to return to the selection page__' at the top of the download page. Use the provided link to return to the selection page.
 
@@ -93,7 +93,7 @@ Next, import the `.publishsettings` file by running the following command:
 
 After importing your publish settings, you should delete the `.publishsettings` file, as it is no longer required by the Azure CLI and presents a security risk as it can be used to gain access to your subscription.
 
-> [AZURE. REMARQUE] Whether you login with a work or school account or import publish settings, the information for accessing your Azure subscription is stored in a `.azure` directory located in your `user` directory. Your `user` directory is protected by your operating system; however, it is recommended that you take additional steps to encrypt your `user` directory. You can do so in the following ways:
+> [AZURE.NOTE] Whether you login with a work or school account or import publish settings, the information for accessing your Azure subscription is stored in a `.azure` directory located in your `user` directory. Your `user` directory is protected by your operating system; however, it is recommended that you take additional steps to encrypt your `user` directory. You can do so in the following ways:
 >
 > * On Windows, modify the directory properties or use BitLocker.
 > * On Mac, turn on FileVault for the directory.
@@ -115,7 +115,7 @@ In the above list, the **Current** column indicates the current default subscrip
 
 This will change the default subscription to Azure-sub-2.
 
-> [AZURE. REMARQUE] Changing the default subscription takes effect immediately, and is a global change; new Azure CLI commands, whether you run them from the same command-line instance or a different instance, will use the new default subscription.
+> [AZURE.NOTE] Changing the default subscription takes effect immediately, and is a global change; new Azure CLI commands, whether you run them from the same command-line instance or a different instance, will use the new default subscription.
 
 If you wish to use a non-default subscription with the Azure CLI, but don't want to change the current default, you can use the `--subscription` option for the command and provide the name of the subscription you wish to use for the operation.
 

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Azure Government Image Gallery" 
    description="This article provides an overview of the Azure Government Image Gallery and the images included" 
    services="Azure-Government" 
@@ -17,14 +17,14 @@
    ms.author="john.harvey@microsoft.com"/>
 
 
-#  Microsoft Azure 政府イメージ ギャラリー
+#  Microsoft Azure Government Image Gallery
 
 <p> The Microsoft Azure Government image gallery is a similar experience to public Azure portal.  Customers can choose to deploy pre-built images from Microsoft and our partners, or upload their own VHDs.  This provides flexibility to deploy your own standardized images if needed.
 
-以下 Azure 政府イメージ ギャラリー内の使用可能なイメージの一覧を示します。 構築済みのイメージのいくつかはいくらいくら支払うことは、特定のソフトウェアのライセンスを含めないでください。 確認してください。 <a href="http://azure.microsoft.com/pricing/details/virtual-machines/">仮想マシンの価格</a> 指導し、マイクロソフト アカウント チームまたは Azure 政府特定価格の販売代理店の仕事のページです。
+The below provides a list of available images within the Azure Government image gallery.  Some of the prebuilt images do include pay as you go licensing for specific software.  Please review <a href="http://azure.microsoft.com/pricing/details/virtual-machines/">Virtual Machine Pricing</a> page for more guidance and work with your Microsoft account team or reseller for Azure Government specific pricing.
 
 
-## 紺碧の政府イメージ リスト
+## Azure Government Image list
 
 <table cellspacing="0" border="1">
 <tr>
@@ -106,21 +106,21 @@ Disk Size
 
 <!--Every topic should have next steps and links to the next logical set of content to keep the customer engaged -->
 
-## <a name="next"></a>次のステップ
+## <a name="next"></a>Next steps
 
-以下のリソース必要がありますについて詳しく説明しますイメージ ギャラリーからの導入や独自の VHD を作成します。 参照してください、 <a href="../azure-government-developer-guide">紺碧政府開発者ガイド</a> Azure 政府を操作する場合は、エンドポイントを持つプログラムによる違いを明らかにします。
+The below resources should provide more information on deploying from the image gallery or creating your own VHD.  Please reference the <a href="../azure-government-developer-guide">Azure Government Developer Guide</a> to uncover an programmatic differences with endpoints when working with Azure Government.
 
-## #Other リソース: 
+###Other Resources: 
 
-- <a href="virtual-machines/virtual-machines-windows-tutorial.md">Windows 仮想マシンを展開</a>
+- <a href="virtual-machines/virtual-machines-windows-tutorial.md">Deploying a Windows Virtual Machine</a>
 
-- <a href="../virtual-machines-linux-tutorial/">Linux 仮想マシンの展開</a>
+- <a href="../virtual-machines-linux-tutorial/">Deploying a Linux Virtual Machine</a>
 
-- <a href="http://msdn.microsoft.com/library/azure/dn683781.aspx">仮想マシンに関するよくある質問</A>
+- <a href="http://msdn.microsoft.com/library/azure/dn683781.aspx">Virtual Machine FAQ</A>
 
-- <a href="../virtual-machines-create-upload-vhd-windows-server/">作成し、独自の VHD をアップロード</a>
+- <a href="../virtual-machines-create-upload-vhd-windows-server/">Create and upload your own VHD</a>
 
-- <a href="../virtual-machines-linux-capture-image/">Linux VM イメージをキャプチャします。</a>
+- <a href="../virtual-machines-linux-capture-image/">Capture Linux VM Image</a>
 
 <!--- **<A href="/azure-government-service-description">Azure Government Service Descriptions</a>**-->
 

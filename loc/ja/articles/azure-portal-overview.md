@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Microsoft Azure preview portal overview"
 	description="Learn how to use the Microsoft Azure preview portal."
 	services=""
@@ -16,80 +16,80 @@
 	ms.date="04/28/2015"
 	ms.author="dwrede"/>
 
-# Microsoft Azure プレビュー ポータルの概要
+# Microsoft Azure preview portal overview
 
-Microsoft Azure プレビュー ポータルは中央の場所を提供し、Azure のリソースを管理できます。 このチュートリアルは、ポータルを理解して、これらの主要な機能の一部を使用する方法を示します。
-- A **包括的な市場** Microsoft と購入または準備することができます他のベンダーからのアイテムの数千をブラウズできます。
-- A **統合された、スケーラブルなブラウズ体験** 気にしてさまざまな管理操作を実行するリソースを見つけることが簡単します。
-- **一貫した管理ページ** (またはブレード) Azure のさまざまな設定、アクション、請求情報、健康監視および使用状況データ、および多くを公開するための一貫した方法でサービスを管理できる詳細。
-- A **個人的な経験** そのたびに見たい情報を表示するカスタマイズされたスタート画面を作成することができますログインします。 タイルを含む管理ブレードのいずれかをカスタマイズできます。
+The Microsoft Azure preview portal is a central place where you can provision and manage your Azure resources.  This tutorial will familiarize you with the portal and show you how to use some of these key capabilities:
+- A **comprehensive marketplace** that lets you browse through thousands of items from Microsoft and other vendors that can be purchased and/or provisioned.
+- A **unified and scalable browse experience** that makes it easy to find the resources you care about and perform various management operations.
+- **Consistent management pages** (or blades) that let you manage Azure’s wide variety of services through a consistent way of exposing settings, actions, billing information, health monitoring and usage data, and much more.
+- A **personal experience** that lets you create a customized start screen that shows the information that you want to see whenever you log in.  You can also customize any of the management blades that contain tiles.
 
- ![Azure ポータル UI の向き][UIOrientation]
+ ![Azure Portal UI Orientation][UIOrientation]
 
-## 始める前に
+## Before you get started
 
-このチュートリアルを通過する有効な Azure サブスクリプションを必要があります。 その後、1 つを持っていない場合 [無料試用版にサインアップします。](http://azure.microsoft.com/pricing/free-trial/) 今日のです。 サブスクリプションを作成したら、ポータルにアクセスできます。 [https://portal.azure.com].
+You will need a valid Azure subscription to go through this tutorial.  If you don’t have one, then [sign up for a free trial](http://azure.microsoft.com/pricing/free-trial/) today.  Once you have a subscription, you can access the portal at [https://portal.azure.com].
 
-## リソースを作成する方法
+## How to create a resource
 
-Azure には、1 つの場所から作成することができます項目の何千もの市場があります。 新しい Windows Server 2012 VM を作成したいとしましょう。 + 新しいハブは精選された一連の市場から注目カテゴリへのエントリ ポイントです。 各カテゴリは、すべてのカテゴリと検索を示しています完全市場のリンクと一緒に注目アイテムの小さなセットです。新しい Windows Server 2012 VM を作成、次の手順に従います。  
+Azure has a marketplace with thousands of items that you can create from one place.  Let’s say you want to create a new Windows Server 2012 VM.  The +NEW hub is your entry point into a curated set of featured categories from the marketplace.  Each category has a small set of featured items along with a link to the full marketplace that shows all categories and search. To create that new Windows Server 2012 VM, perform the following actions:  
 
-1.	Windows Server 2012 は、計算カテゴリから選択できるように紹介されています。  
-2.	いくつかの基本的な入力フォームに記入します。
-3.	'作成' とする VM がすぐに準備を開始しています。
+1.	Windows Server 2012 is featured, so you can select it from the Compute category.  
+2.	Fill out some basic inputs on a form.
+3.	Click ‘Create’ and you’re VM will begin to provision immediately.
 
-通知ハブが管理刃が開くし、リソースが作成された警告 (後できますリソースを常に参照する)。
+The notifications hub will alert you when your resource has been created and a management blade will open (you can always browse to resources later).
 
-![ポータルのカテゴリ][PortalCategories]
+![Portal Categories][PortalCategories]
 
 
-## あなたのリソースを検索する方法
+## How to find your resources
 
-常にあなたの startboard にピンを頻繁にアクセスするリソース可能ですが頻繁にアクセスしない何かを参照する必要があります。 以下に示す参照ハブは、すべてのリソースを取得する手段です。 サブスクリプションでフィルター、列の選択/リサイズして個々 のアイテムをクリックして管理ブレードに移動します。
+You can always pin frequently accessed resources to your startboard, but you might need to browse to something that you don’t frequently access.  The browse hub shown below is your way to get to all of your resources.  You can filter by subscription, choose/resize columns, and navigate to the management blades by clicking on individual items.
 
-![ハブを参照します。][BrowseHub]
+![Browse Hub][BrowseHub]
 
-## 管理およびリソースへのアクセスを委任する方法
+## How to manage and delegate access to a resource
 
-このブレードは、リモート デスクトップを使用して仮想マシンに接続することができますから主要なパフォーマンス指標を監視、ロールベース アクセス (RBAC) を使用してこの VM へのアクセス制御、VM を構成、その他の重要な管理タスクを実行します。 役割に基づくアクセスを委任する規模での管理に不可欠です。 クリックします。 [ここで](role-based-access-control-configure.md) それについての詳細を学ぶ。リソースへのアクセスを委任するには、次の手順に従います。
+From this blade you can connect to the virtual machine using remote desktop, monitor key performance metrics, control access to this VM using role based access (RBAC), configure the VM, and perform other important management tasks.  Delegating access based on role is critical to managing at scale.  Click [here](role-based-access-control-configure.md) to learn more about it. To delegate access to a resource, perform the following actions:
 
-1.	あなたのリソースを参照します。
-2.	必需品のセクションで「すべての設定」をクリックします。
-3.	[設定] リストで、'ユーザー' をクリックします。
-4.	コマンド バーの [追加] をクリックします。
-5.	ユーザーとロールを選択します。
+1.	Browse to your resource.
+2.	Click ‘All settings’ in the Essentials section.
+3.	Click ‘Users’ in the settings list.
+4.	Click ‘Add’ in the command bar.
+5.	Choose a user and a role.
 
-![リソースの管理][ManageResource]
+![Managing a Resource][ManageResource]
 
-## リソースのブレードをカスタマイズする方法
+## How to customize a resource blade
 
-Azure はあらかじめ、リソースのブレードがこれらのブレード上のタイルはあなたのコントロールします。 カスタマイズ モードを追加、削除、サイズ変更、またはタイルを再配置を簡単に行くことができます。ブレードをカスタマイズするには、次の操作を実行します。
+Azure preconfigures the blades for your resources, but the tiles on these blades are yours to control.  You can easily go into customize mode to add, remove, resize, or re-arrange the tiles. To customize a blade, perform the following actions:
 
-1.	あなたのリソースを参照します。
-2.	カスタマイズするブレードの上部に「...」をクリックします。
-3.	「部品を追加」をクリックします。
-4.	ドラッグ アンド ドロップの部分を開始します。  
+1.	Browse to your resource.
+2.	Click the ‘…’ at the top of the blade you want to customize.
+3.	Click ‘Add parts’.
+4.	Start dragging and dropping parts.  
 
-![ブレードのカスタマイズ][CustomizeBlades]
+![Customizing Blades][CustomizeBlades]
 
-## ヘルプを表示する方法
+## How to get help
 
-今まで問題があれば、我々 はあなたのためここにいます。 ポータルは、ヘルプとサポート ページが正しい方向にあなたを指すことができます。 によって、 [サポート プラン](http://azure.microsoft.com/support/plans/)、ポータルで直接サポート チケットを作成することもできます。 サポート チケットを作成した後は、ポータル内でのチケットのライフ サイクルを管理できます。ヘルプとサポート ページは、参照ヘルプ + サポート-> に移動してもらうことができます。  
+If you ever have a problem, we’re here for you.  The portal has a help and support page that can point you in the right direction.  Depending on your [support plan](http://azure.microsoft.com/support/plans/), you can also create support tickets directly in the portal.  After creating a support ticket, you can manage the lifecycle of the ticket from within the portal. You can get to the help and support page by navigating to Browse -> Help + support.  
 
-![ヘルプとサポート][HelpSupport]
+![Help and support][HelpSupport]
 
-## 概要
+## Summary
 
-このチュートリアルで学習したことを確認してみましょう。
-- サインアップ、サブスクリプションを取得し、ポータルを参照する方法を学びました
-- ポータル UI 志向になったし、作成およびリソースを参照する方法を学んだ
-- リソースを作成し、リソースを参照する方法を学びました
-- 構造や管理のブレードと一貫して異なる種類のリソースを管理する方法について説明します
-- 情報ポータルをカスタマイズする方法を学びました、フロントとセンターを気にします。
-- ロールベース アクセス (RBAC) を使用してリソースへのアクセスを制御する方法を学びました
-- ヘルプとサポートを取得する方法を学びました
+Let’s review what you learned in this tutorial:
+- You learned how to sign up, get a subscription, and browse to the portal
+- You got oriented with the portal UI and learned how to create and browse resources
+- You learned how to create a resource and browse resources
+- You learned about the structure or management blades and how you can consistently manage different types of resources
+- You learned how to customize the portal to bring the information you care about to the front and center
+- You learned how to control access to resources using role based access (RBAC)
+- You learned how to get help and support
 
-Microsoft Azure プレビュー ポータル構築とクラウド内のアプリケーションの管理を大幅に合理化します。 見て、 [管理ブログ](http://azure.microsoft.com/blog/topics/management/) われわれは常に、最新の状態を維持するには [フィードバックに耳を傾け](http://feedback.azure.com/forums/223579-azure-preview-portal) 改善を行います。  [ScottGu のブログ](http://weblogs.asp.net/scottgu) すべての紺碧の更新を検索する別の偉大な場所です。
+The Microsoft Azure preview portal radically simplifies building and managing your applications in the cloud.  Take a look at the [management blog](http://azure.microsoft.com/blog/topics/management/) to keep up to date as we’re constantly [listening to feedback](http://feedback.azure.com/forums/223579-azure-preview-portal) and making improvements.  [ScottGu’s blog](http://weblogs.asp.net/scottgu) is another great place to look for all Azure updates.
 
 [UIOrientation]: ./media/azure-portal-how-to-use/azure_portal_1.png
 [PortalCategories]: ./media/azure-portal-how-to-use/azure_portal_2.png

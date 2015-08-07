@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Create a new Azure Service Principal using the Azure portal"
    description="Describes how to create a new Azure service principal that can be used with the role-based access control in Azure Resource Manager to manage access to resources."
    services="azure-resource-manager"
@@ -18,14 +18,14 @@
 
 # Create a new Azure Service Principal using the Azure portal
 
-## 概述
+## Overview
 A service principal is an automated processes, application or service that needs to access other resources. Using Azure Resource Manager, you can grant access
 to a service principal and authenticate it so it can perform the permitted management actions on resources that exist in 
 the subscription or as a tenant. 
 
 This topic shows you how to create a new service principal using the Azure portal. Currently, you must use the Microsoft Azure portal to create a new service principal. This ability will be added to the Azure preview portal in a later release.
 
-## 概念
+## Concepts
 1. Azure Active Directory (AAD) - an identity and access management service build for the cloud. For more details see: [What is Azure active Directory](./active-directory-whatis/)
 2. Service Principal - an instance of an application in a directory.
 3. AD Application - a directory record in AAD that identifies an application to AAD. For more details see [Basics of Authentication in Azure AD](https://msdn.microsoft.com/library/azure/874839d9-6de6-43aa-9a5c-613b0c93247e#BKMK_Auth).
@@ -34,7 +34,7 @@ This topic shows you how to create a new service principal using the Azure porta
 ## Create Active Directory application
 1. Login to your Azure Account through the [classic portal](https://manage.windowsazure.com/).
 
-2. Select **活动目录** from the left pane.
+2. Select **Active Directory** from the left pane.
 
    ![select Active Directory][1]
 
@@ -63,7 +63,7 @@ This topic shows you how to create a new service principal using the Azure porta
    ![name application][9]
 
 7. Fill in the properties for your app. For **SIGN-ON URL**, provide the URI to a web-site that describes your application. The existence of the web-site is not validated. 
-For **APP ID URI**, provide the URI that identifies your application. The uniqueness or existence of the endpoint is not validated. Click the **完成** to create you AAD Application.
+For **APP ID URI**, provide the URI that identifies your application. The uniqueness or existence of the endpoint is not validated. Click the **Complete** to create you AAD Application.
 
    ![application properties][4]
 
@@ -80,7 +80,7 @@ The portal should now have your application selected.
 
 3. Select **Save** to create your key.
 
-   ![保存][13]
+   ![save][13]
 
    The saved key is displayed and you can copy it.
 
@@ -96,11 +96,11 @@ Your application is now ready and the service principal created on your tenant. 
 * **CLIENT ID** - as your user name.
 * **KEY** - as your password.
 
-## 接下来的步骤
+## Next Steps
 Getting Started  
 
 - [Azure Resource Manager Overview](./resource-group-overview.md)  
-- [使用 Azure PowerShell 与蔚蓝的资源管理器](./powershell-azure-resource-manager.md)
+- [Using Azure PowerShell with Azure Resource Manager](./powershell-azure-resource-manager.md)
 - [Using the Azure CLI for Mac, Linux, and Windows with Azure Resource Management](virtual-machines/xplat-cli-azure-resource-manager.md)  
 - [Using the Azure Portal to manage your Azure resources](azure-portal/resource-group-portal.md)  
   

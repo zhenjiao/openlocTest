@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Scale pricing tier in Azure App Service" 
 	description="Learn how to scale web, mobile, api and logic apps in Azure App Service, including autoscaling." 
 	services="app-service" 
@@ -18,15 +18,15 @@
 
 # Scale pricing tier in Azure App Service
 
-For increased performance and throughput for your apps on Microsoft Azure, you can use the [Azure Portal](https://portal.azure.com/) to scale up your App Service plan from **Free** to **Shared**, **Basic**, **Standard**, ou **Premium**. 
+For increased performance and throughput for your apps on Microsoft Azure, you can use the [Azure Portal](https://portal.azure.com/) to scale up your App Service plan from **Free** to **Shared**, **Basic**, **Standard**, or **Premium**. 
 
-The level of service your App Service plan has is based on the [*Pricing tier* for the plan](/pricing/details/app-service/). Higher pricing tiers, like **Standard** et **Premium**, offer greater robustness and flexibility in determining how your resources on Azure are used. Changing the pricing tier affects the number of cores and amount of memory your service has, and this is referred to as *Scaling up* (or *Scaling down*).
+The level of service your App Service plan has is based on the [*Pricing tier* for the plan](/pricing/details/app-service/). Higher pricing tiers, like **Standard** and **Premium**, offer greater robustness and flexibility in determining how your resources on Azure are used. Changing the pricing tier affects the number of cores and amount of memory your service has, and this is referred to as *Scaling up* (or *Scaling down*).
 
-In addition to scaling up the pricing tier, you can increase the number of instances that you service has. This is referred to as *Scaling out* ou *Scaling in*. See the article on [Scale instance count manually or automatically](../insights-how-to-scale.md) to learn more about *Scale out* et *Scale in*.
+In addition to scaling up the pricing tier, you can increase the number of instances that you service has. This is referred to as *Scaling out* or *Scaling in*. See the article on [Scale instance count manually or automatically](../insights-how-to-scale.md) to learn more about *Scale out* and *Scale in*.
 
-For information about App Service plans, see [What is an App Service Plan?](../web-sites-web-hosting-plan-overview.md) et [Azure App Service Plans In-Depth Overview](azure-web-sites-web-hosting-plans-in-depth-overview.md). For information the pricing and features of individual App Service plans, see [App Service Pricing Details](/pricing/details/app-service/).  
+For information about App Service plans, see [What is an App Service Plan?](../web-sites-web-hosting-plan-overview.md) and [Azure App Service Plans In-Depth Overview](azure-web-sites-web-hosting-plans-in-depth-overview.md). For information the pricing and features of individual App Service plans, see [App Service Pricing Details](/pricing/details/app-service/).  
 
-> [AZURE. REMARQUE] Before switching a from the **Free** mode to **Basic**, **Standard**, ou **Premium** mode, you must first remove the spending caps in place for your Azure App Service subscription. To view or change options for your Microsoft Azure App Service subscription, see [Microsoft Azure Subscriptions][azuresubscriptions].
+> [AZURE.NOTE] Before switching a from the **Free** mode to **Basic**, **Standard**, or **Premium** mode, you must first remove the spending caps in place for your Azure App Service subscription. To view or change options for your Microsoft Azure App Service subscription, see [Microsoft Azure Subscriptions][azuresubscriptions].
 
 <a name="scalingsharedorbasic"></a>
 <a name="scalingstandard"></a>
@@ -43,7 +43,7 @@ For information about App Service plans, see [What is an App Service Plan?](../w
 	
 4. Once you choose your tier, click **Select**.
 	
-	Le **Notifications** tab will flash a green **SUCCESS** once the operation is complete. 
+	The **Notifications** tab will flash a green **SUCCESS** once the operation is complete. 
 		
 <a name="ScalingSQLServer"></a>
 ##Scaling related resources
@@ -51,7 +51,7 @@ If your app depends on other services, such as SQL or Storage, you can also scal
 
 1. In the **Essentials**, click the **Resource group** link.
 
-2. Then, in the **Résumé** part of the resource group blade, clicked one of the databases (or any other resource you want to scale).
+2. Then, in the **Summary** part of the resource group blade, clicked one of the databases (or any other resource you want to scale).
 
 	![Linked database](./media/app-service-scale/ResourceGroup.png)
 	
@@ -69,23 +69,23 @@ Depending on the pricing tier, the following developer-oriented features are ava
 
 ### Bitness ###
 
-- Le **Basic**, **Standard**, et **Premium** tiers support 64-bit and 32-bit applications.
-- Le **Free** et **Shared** plan tier support 32-bit applications only.
+- The **Basic**, **Standard**, and **Premium** tiers support 64-bit and 32-bit applications.
+- The **Free** and **Shared** plan tier support 32-bit applications only.
 
 ### Debugger Support ###
 
-- Debugger support is available for the **Free**, **Shared**, et **Basic** modes at 1 concurrent connection per App Service plan.
-- Debugger support is available for the **Standard** et **Premium** modes at 5 concurrent connections per App Service plan.
+- Debugger support is available for the **Free**, **Shared**, and **Basic** modes at 1 concurrent connection per App Service plan.
+- Debugger support is available for the **Standard** and **Premium** modes at 5 concurrent connections per App Service plan.
 
 <a name="OtherFeatures"></a>
 ## Other Features
 
 - For detailed information about all of the remaining features in the App Service plans, including pricing and features of interest to all users (including developers), see [App Service Pricing Details](/pricing/details/web-sites/).
 
->[AZURE. REMARQUE] If you want to get started with Azure App Service before signing up for an Azure account, go to [Try App Service](http://go.microsoft.com/fwlink/?LinkId=523751), where you can immediately create a short-lived starter web app in App Service. No credit cards required; no commitments.
+>[AZURE.NOTE] If you want to get started with Azure App Service before signing up for an Azure account, go to [Try App Service](http://go.microsoft.com/fwlink/?LinkId=523751), where you can immediately create a short-lived starter web app in App Service. No credit cards required; no commitments.
 
 <a name="Next Steps"></a>	
-## Prochaines étapes
+## Next Steps
 
 - To get started with Azure, see [Microsoft Azure Free Trial](/pricing/free-trial/).
 - For information on pricing, support, and SLA, visit the following links.

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Diagnose failures and exceptions in ASP.NET apps with Application Insights" 
 	description="Configure your app to get a compelling diagnostic experience by capturing exceptions along with request telemetry." 
 	services="application-insights" 
@@ -177,7 +177,7 @@ But if you have active redirects, add the following lines to the Application_Err
 
 ## MVC
 
-場合は、 [CustomErrors](https://msdn.microsoft.com/library/h0hfz6fc.aspx) configuration is `Off`, then exceptions will be available for the [HTTP Module](https://msdn.microsoft.com/library/ms178468.aspx) to collect. However, if it is `RemoteOnly` (default), or `On`, then the exception will be cleared and not available for Application Insights to automatically collect. You can fix that by overriding the [System.Web.Mvc.HandleErrorAttribute class](http://msdn.microsoft.com/library/system.web.mvc.handleerrorattribute.aspx), and applying the overridden class as shown for the different MVC versions below ([github source](https://github.com/AppInsightsSamples/Mvc2UnhandledExceptions/blob/master/MVC2App/Controllers/AiHandleErrorAttribute.cs)):
+If the [CustomErrors](https://msdn.microsoft.com/library/h0hfz6fc.aspx) configuration is `Off`, then exceptions will be available for the [HTTP Module](https://msdn.microsoft.com/library/ms178468.aspx) to collect. However, if it is `RemoteOnly` (default), or `On`, then the exception will be cleared and not available for Application Insights to automatically collect. You can fix that by overriding the [System.Web.Mvc.HandleErrorAttribute class](http://msdn.microsoft.com/library/system.web.mvc.handleerrorattribute.aspx), and applying the overridden class as shown for the different MVC versions below ([github source](https://github.com/AppInsightsSamples/Mvc2UnhandledExceptions/blob/master/MVC2App/Controllers/AiHandleErrorAttribute.cs)):
 
     using System;
     using System.Web.Mvc;
@@ -298,9 +298,9 @@ You could add this overridden attribute to specific controllers, or add it to th
 
 There are a number of cases that the exception filters cannot handle. For example:
 
-* コント ローラーのコンス トラクターからスローされた例外。 
-* メッセージ ハンドラーからスローされた例外。 
-* ルーティング中にスローされた例外。 
+* Exceptions thrown from controller constructors. 
+* Exceptions thrown from message handlers. 
+* Exceptions thrown during routing. 
 * Exceptions thrown during response content serialization. 
 
 ## Web API 2.x

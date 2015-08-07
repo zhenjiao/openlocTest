@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="API Management key concepts" 
 	description="Learn about APIs, products, roles, groups, and other API Management key concepts." 
 	services="api-management" 
@@ -25,19 +25,19 @@ APIs and their operations can be imported using the following formats.
 -	WADL
 -	Swagger
 
-This guide shows how create a new API and import its operations in one step. For information on manually creating an API and adding operations, see [How to create APIs][] 和 [How to add operations to an API][].
+This guide shows how create a new API and import its operations in one step. For information on manually creating an API and adding operations, see [How to create APIs][] and [How to add operations to an API][].
 
 ## <a name="import-api"> </a>Import an API
 
-APIs are created and configured in the publisher portal. To access the publisher portal, click **Manage** in the Azure Portal for your API Management service. If you have not yet created an API Management service instance, see [Create an API Management service instance][] 在 [Get started with Azure API Management][] tutorial.
+APIs are created and configured in the publisher portal. To access the publisher portal, click **Manage** in the Azure Portal for your API Management service. If you have not yet created an API Management service instance, see [Create an API Management service instance][] in the [Get started with Azure API Management][] tutorial.
 
 ![Publisher portal][api-management-management-console]
 
-Click **APIs** 从 **API 管理** menu on the left, and then click **import API**.
+Click **APIs** from the **API Management** menu on the left, and then click **import API**.
 
 ![Import API][api-management-import-apis]
 
-的 **Import API** window has three tabs that correspond to the three ways to provide the API specification.
+The **Import API** window has three tabs that correspond to the three ways to provide the API specification.
 
 -	**From clipboard** allows you to paste the API specification into the designated text box.
 -	**From file** allows you to browse to and select the file that contains the API specification.
@@ -54,11 +54,11 @@ Next, enter a **Web API URL suffix**. This is appended to the base URL for your 
 
 Once all values are entered, click **Save** to create the API and the associated operations. 
 
->[AZURE。注意] For a tutorial of importing a basic calculator API in Swagger format, see [Manage your first API in Azure API Management](api-management-get-started.md).
+>[AZURE.NOTE] For a tutorial of importing a basic calculator API in Swagger format, see [Manage your first API in Azure API Management](api-management-get-started.md).
 
 ## <a name="export-api"> </a> Export an API
 
-In addition to importing new APIs, you can export the definitions of your APIs from the publisher portal. To do so, click **Export API** 从 **Summary tab** of your **API**.
+In addition to importing new APIs, you can export the definitions of your APIs from the publisher portal. To do so, click **Export API** from the **Summary tab** of your **API**.
 
 ![Export API][api-management-export-api]
 
@@ -66,7 +66,7 @@ APIs can be exported using WADL or Swagger. Select the desired format, click **S
 
 ![Export API format][api-management-export-api-format]
 
-## <a name="next-steps"> </a>接下来的步骤
+## <a name="next-steps"> </a>Next steps
 
 Once an API is created and the operations imported, you can review and configure any additional settings, add the API to a Product, and publish it so that it is available for developers. For more information, see the following guides.
 

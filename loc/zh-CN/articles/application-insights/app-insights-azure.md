@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Application Insights for Microsoft Azure apps" 
 	description="Analyze usage and performance of your Azure app with Application Insights." 
 	services="application-insights" 

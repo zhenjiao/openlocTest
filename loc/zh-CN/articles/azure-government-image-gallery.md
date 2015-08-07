@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Azure Government Image Gallery" 
    description="This article provides an overview of the Azure Government Image Gallery and the images included" 
    services="Azure-Government" 
@@ -17,14 +17,14 @@
    ms.author="john.harvey@microsoft.com"/>
 
 
-#  微软 Azure 政府图像画廊
+#  Microsoft Azure Government Image Gallery
 
 <p> The Microsoft Azure Government image gallery is a similar experience to public Azure portal.  Customers can choose to deploy pre-built images from Microsoft and our partners, or upload their own VHDs.  This provides flexibility to deploy your own standardized images if needed.
 
-下面列出了可用的图像在 Azure 政府图像廊内。 一些预构建的图像包括收现付牌为特定软件。 请查看 <a href="http://azure.microsoft.com/pricing/details/virtual-machines/">虚拟机定价</a> 更多的指导和工作与您的 Microsoft 帐户团队或转销商 Azure 政府具体定价页。
+The below provides a list of available images within the Azure Government image gallery.  Some of the prebuilt images do include pay as you go licensing for specific software.  Please review <a href="http://azure.microsoft.com/pricing/details/virtual-machines/">Virtual Machine Pricing</a> page for more guidance and work with your Microsoft account team or reseller for Azure Government specific pricing.
 
 
-## 蔚蓝的政府图像列表
+## Azure Government Image list
 
 <table cellspacing="0" border="1">
 <tr>
@@ -106,21 +106,21 @@ Disk Size
 
 <!--Every topic should have next steps and links to the next logical set of content to keep the customer engaged -->
 
-## <a name="next"></a>接下来的步骤
+## <a name="next"></a>Next steps
 
-以下资源应该提供更多的信息从图像库部署或创建您自己的 VHD。 请参考 <a href="../azure-government-developer-guide">天青政府开发人员指南</a> 当使用 Azure 政府揭露方案差异与终结点。
+The below resources should provide more information on deploying from the image gallery or creating your own VHD.  Please reference the <a href="../azure-government-developer-guide">Azure Government Developer Guide</a> to uncover an programmatic differences with endpoints when working with Azure Government.
 
-# # #Other 资源: 
+###Other Resources: 
 
-- <a href="virtual-machines/virtual-machines-windows-tutorial.md">部署 Windows 虚拟机</a>
+- <a href="virtual-machines/virtual-machines-windows-tutorial.md">Deploying a Windows Virtual Machine</a>
 
-- <a href="../virtual-machines-linux-tutorial/">部署 Linux 虚拟机</a>
+- <a href="../virtual-machines-linux-tutorial/">Deploying a Linux Virtual Machine</a>
 
-- <a href="http://msdn.microsoft.com/library/azure/dn683781.aspx">虚拟机常见问题</A>
+- <a href="http://msdn.microsoft.com/library/azure/dn683781.aspx">Virtual Machine FAQ</A>
 
-- <a href="../virtual-machines-create-upload-vhd-windows-server/">创建和上传您自己的 VHD</a>
+- <a href="../virtual-machines-create-upload-vhd-windows-server/">Create and upload your own VHD</a>
 
-- <a href="../virtual-machines-linux-capture-image/">捕获 Linux VM 映像</a>
+- <a href="../virtual-machines-linux-capture-image/">Capture Linux VM Image</a>
 
 <!--- **<A href="/azure-government-service-description">Azure Government Service Descriptions</a>**-->
 

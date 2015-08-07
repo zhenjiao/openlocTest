@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="How to use Blitline for image processing - Azure feature guide" 
 	description="Learn how to use the Blitline service to process images within an Azure application." 
 	services="" 
@@ -25,14 +25,14 @@
 
 This guide will explain how to access Blitline services and how to submit jobs to Blitline.
 
-## 表的内容
+## Table of contents
 
 [What is Blitline?][]
 [What Blitline is NOT][]
 [Create a Blitline account][]
 [How to create a Blitline job][]
 [How to save an image to your Azure Storage][]
-[接下来的步骤][]
+[Next steps][]
 
 ## <a id="whatis"></a>What is Blitline?
 
@@ -40,7 +40,7 @@ Blitline is a cloud-based image processing service that provides enterprise leve
 
 The fact is that image processing has been done over and over again, usually rebuilt from the ground up for each and every website. We realize this because we’ve built them a million times too. One day we decided that perhaps it‘s time we just do it for everyone. We know how to do it, to do it fast and efficiently, and save everyone work in the meantime.
 
-有关更多信息，请参见 [http://www.blitline.com](http://www.blitline.com).
+For more information, see [http://www.blitline.com](http://www.blitline.com).
 
 ## <a id="whatisnot"></a>What Blitline is NOT...
 
@@ -56,7 +56,7 @@ To clarify what Blitline is useful for, it is often easier to identify what Blit
 
 ## <a id="createaccount"></a>Create a Blitline account
 
-[AZURE。包括 [blitline-signup](../includes/blitline-signup.md)]
+[AZURE.INCLUDE [blitline-signup](../includes/blitline-signup.md)]
 
 ## <a id="createjob"></a>How to create a Blitline job
 
@@ -76,7 +76,7 @@ The simplest example is as follows:
 
 Here we have JSON that will take a "src" image "...boys.jpeg" and then resize that image to 240x140.
 
-The Application ID is something you can find in your **CONNECTION INFO** 或 **MANAGE** tab on Azure. It is your secret identifier that allows you to run jobs on Blitline.
+The Application ID is something you can find in your **CONNECTION INFO** or **MANAGE** tab on Azure. It is your secret identifier that allows you to run jobs on Blitline.
 
 The "save" parameter identifies information about where you want to put the image once we have processed it. In this trivial case, we haven't defined one. If no location is defined Blitline will store it locally (and temporarily) at a unique cloud location. You will be able to get that location from the JSON returned by Blitline when you make the Blitline. The "image" identifier is required and is returned to you when to identify this particular saved image.
 
@@ -136,10 +136,10 @@ Example:
     http://blitline.blob.core.windows.net/sample/image.jpg?sr=b&sv=2012-02-12&st=2013-04-12T03%3A18%3A30Z&se=2013-04-12T04%3A18%3A30Z&sp=w&sig=Bte2hkkbwTT2sqlkkKLop2asByrE0sIfeesOwj7jNA5o%3D
 
 
-You can also read the latest edition of Blitline's Azure Storage docs [在这里](http://www.blitline.com/docs/azure_storage).
+You can also read the latest edition of Blitline's Azure Storage docs [here](http://www.blitline.com/docs/azure_storage).
 
 
-## <a id="nextsteps"></a>接下来的步骤
+## <a id="nextsteps"></a>Next Steps
 
 Visit blitline.com to read about all our other features:
 

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Using tags to organize your Azure resources" 
 	description="Shows how to apply tags to organize resources for billing and managing." 
 	services="azure-resource-manager" 
@@ -30,7 +30,7 @@ Group resources by team, project, or even environment to focus on exactly what y
 
 Tagging resources and resource groups in the portal is easy. Use the Browse hub to navigate to the resource or resource group you’d like to tag and click the Tags part in the Overview section at the top of the blade. 
 
-![Markierungen-Teil auf Ressourcen- und Ressource Gruppe klingen](./media/resource-group-using-tags/rgblade.png)
+![Tags part on resource and resource group blades](./media/resource-group-using-tags/rgblade.png)
 
 This will open a blade with the list of tags that have already been applied. If this is your first tag, the list will be empty. To add a tag, simply specify a name and value and press Enter. After you've added a few tags, you'll notice autocomplete options based on pre-existing tag names and values to better ensure a consistent taxonomy across your resources and to avoid common mistakes, like misspellings.
 
@@ -43,11 +43,11 @@ From here, you can click on each individual tag to view a list of all the resour
 
 First thing's first, grab the latest [Azure PowerShell module](./install-configure-powershell.md). If this is your first time using the Azure PowerShell module, [read the documentation](./install-configure-powershell.md) to get up to speed. For the purposes of this article, we'll assume you've already added an account and selected a subscription with the resources you want to tag.
 
-Tagging is only available for resources and resource groups available from [Resource Manager](http://msdn.microsoft.com/library/azure/dn790568.aspx), so the next thing we need to do is switch to use Resource Manager. For more information, see [Verwendung von himmelblau PowerShell mit himmelblau-Systemressourcen-Manager](powershell-azure-resource-manager.md).
+Tagging is only available for resources and resource groups available from [Resource Manager](http://msdn.microsoft.com/library/azure/dn790568.aspx), so the next thing we need to do is switch to use Resource Manager. For more information, see [Using Azure PowerShell with Azure Resource Manager](powershell-azure-resource-manager.md).
 
     Switch-AzureMode AzureResourceManager
 
-Tags exist directly on resources and resource groups, so to see what tags are already applied, we can simply get a resource or resource group with `Get-AzureResource` oder `Get-AzureResourceGroup`, respectively. Let's start with a resource group.
+Tags exist directly on resources and resource groups, so to see what tags are already applied, we can simply get a resource or resource group with `Get-AzureResource` or `Get-AzureResourceGroup`, respectively. Let's start with a resource group.
 
 ![Getting tags with Get-AzureResourceGroup in PowerShell](./media/resource-group-using-tags/Get-AzureResourceGroup-in-PowerShell.png)
 
@@ -57,7 +57,7 @@ This cmdlet returns several bits of metadata on the resource group including wha
 
 Remember that tags are updated as a whole, so if you are adding one tag to a resource that's already been tagged, you'll need to use an array with all the tags you want to keep. To remove one, simply save the array without the one you want to remove. 
 
-The process is the same for resources, except you'll use the `Get-AzureResource` und `Set-AzureResource` cmdlets. To get resources or resource groups with a specific tag, use `Get-AzureResource` oder `Get-AzureResourceGroup` cmdlet with the `-Tag` parameter.
+The process is the same for resources, except you'll use the `Get-AzureResource` and `Set-AzureResource` cmdlets. To get resources or resource groups with a specific tag, use `Get-AzureResource` or `Get-AzureResourceGroup` cmdlet with the `-Tag` parameter.
 
 ![Getting tagged resources and resource groups with Get-AzureResource and Get-AzureResourceGroup in PowerShell](./media/resource-group-using-tags/Get-AzureResourceGroup-with-tags-in-PowerShell.png)
 
@@ -78,7 +78,7 @@ To get a list of all tags within a subscription using PowerShell, use the `Get-A
 
 You may see tags that start with "hidden-" and "link:". These are internal tags, which you should ignore and avoid changing. 
 
-Nutzung der `New-AzureTag` cmdlet to add new tags to the taxonomy. These tags will be included in the autocomplete even though they haven't been applied to any resources or resource groups, yet. To remove a tag name/value, first remove the tag from any resources it may be used with and then use the `Remove-AzureTag` cmdlet to remove it from the taxonomy.
+Use the `New-AzureTag` cmdlet to add new tags to the taxonomy. These tags will be included in the autocomplete even though they haven't been applied to any resources or resource groups, yet. To remove a tag name/value, first remove the tag from any resources it may be used with and then use the `Remove-AzureTag` cmdlet to remove it from the taxonomy.
 
 To view your taxonomy of tags in the portal, use the Browse hub to view Everything and then select Tags.
 
@@ -95,17 +95,17 @@ you to define and apply tags to organize the billing usage for virtual machines.
 You can also use tags to categorize costs by runtime environment; such as, the billing usage for VMs running in production environment.
 
 You can retrieve information about tags through the [usage api](billing-usage-rate-card-overview.md) or the usage comma-separated values (CSV) file that you can download from 
-the [Azure accounts portal](https://account.windowsazure.com/) oder [EA portal](https://ea.azure.com).
+the [Azure accounts portal](https://account.windowsazure.com/) or [EA portal](https://ea.azure.com).
 
 When you download the usage CSV for services that support tags with billing, the tags will appear in the **Tags** column. For more details, see [Understand your bill for Microsoft Azure](billing-understand-your-bill.md).
 
 ![See tags in billing](./media/resource-group-using-tags/billing_csv.png)
 
-## Die nächsten Schritte
+## Next Steps
 Getting Started  
 
 - [Azure Resource Manager Overview](./resource-group-overview.md)  
-- [Verwendung von himmelblau PowerShell mit himmelblau-Systemressourcen-Manager](./powershell-azure-resource-manager.md)
+- [Using Azure PowerShell with Azure Resource Manager](./powershell-azure-resource-manager.md)
 - [Using the Azure CLI for Mac, Linux, and Windows with Azure Resource Management](./xplat-cli-azure-resource-manager.md)  
 - [Using the Azure Portal to manage your Azure resources](./resource-group-portal.md)  
   

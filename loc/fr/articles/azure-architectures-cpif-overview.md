@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Cloud Platform Integration Framework - Azure Architecture Patterns" 
    description="The Cloud Platform Integration Framework provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution consisting of architectural patterns for Microsoft Azure" 
    services="" 
@@ -17,44 +17,44 @@
    ms.author="arynes"/>
 
 
-# Cadres d'intégration Cloud plate-forme (modèles d'Architecture d'Azur)
+# Cloud Platform Integration Framework (Azure Architecture Patterns)
 
-Le Cloud plate-forme Integration Framework (FIPC) apporte son intégration la charge de travail pour l'intégration des applications dans une Solution de Cloud de Microsoft. 
+The Cloud Platform Integration Framework (CPIF) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution. 
 
-FIPC décrit comment les organisations, les clients et les partenaires doivent concevoir et déployer des charges de travail axés sur le Cloud grâce aux capacités hybrid cloud plate-forme et de la gestion d'Azure, System Center et Windows Server. Les domaines de la FIPC ont été décomposées en les fonctions suivantes :
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. The CPIF domains have been decomposed into the following functions:
 
-![Partie de Tags sur les ressources et lames de groupe de ressources](./media/azure-architecture-cpif-overview/overview.png)
+![Tags part on resource and resource group blades](./media/azure-architecture-cpif-overview/overview.png)
 
-##  Architecture de la FIPC
+##  CPIF Architecture
 
-Ces deux environnements de cloud publics et privés fournissent des éléments communs pour soutenir le fonctionnement des charges de travail complexes. Alors que ces architectures sont relativement bien connus dans les environnements physiques et virtuels locaux traditionnels, les constructions dans le Microsoft Azure exigent une planification supplémentaire rationaliser les capacités d'infrastructure et de la plate-forme trouvées dans des environnements de cloud public. Pour soutenir le développement d'un service ou une application hébergée dans Azure, une série de motifs sont nécessaires décrivant les différents composants nécessaires pour composer une Solution de charge de travail donnée.  
+Both public and private cloud environments provide common elements to support the running of complex workloads. While these architectures are relatively well understood in traditional on-premises physical and virtualized environments, the constructs found within the Microsoft Azure require additional planning to rationalize the infrastructure and platform capabilities found within public cloud environments. To support the development of a hosted application or service in Azure, a series of patterns are required outlining the various components required to compose a given workload Solution.  
 
-Ces modèles architecturaux entrent dans les catégories suivantes :
+These architectural patterns fall within the following categories:
 
-- **Infrastructure**– Microsoft Azure est une Solution d'Infrastructure - et Platform-as-a-Service, constitué de plusieurs services et capacités sous-jacentes.  Ces services peuvent largement être décomposées en services de calcul, de stockage et de réseau, mais il existe plusieurs possibilités qui peuvent tomber en dehors de ces définitions.  Modèles d'infrastructure en détail une zone fonctionnelle donnée d'Azure de Microsoft qui est tenu de fournir un service donné à une ou plusieurs Solutions hébergées dans un abonnement Azur donné. 
-- **Fondation** – Lorsque vous composez une application multi-niveaux ou un service dans Azure, plusieurs composants doivent être utilisés en combinaison pour fournir un environnement d'hébergement adapté.  Patrons de la Fondation composent un ou plusieurs services de Microsoft Azure pour soutenir une couche donnée de fonctionnalités dans une application. Cela peut nécessiter l'utilisation d'un ou plusieurs composants décrits dans les modèles d'infrastructure décrites ci-dessus. Par exemple, la couche de présentation d'une application multi-tiers nécessite des capacités de calcul, de réseau et de stockage dans Azure pour devenir fonctionnels.  Patrons de la Fondation visent à se composer avec d'autres modèles dans le cadre d'une Solution donnée.
-- **Solution** – Modèles de solution sont composées de profils infrastructure et/ou Fondation de représenter une demande de fin ou de service en cours d'élaboration.  Il est prévu que des solutions complexes ne seraient pas élaborées indépendamment des autres modèles.  Au contraire, ils devraient utiliser les composants et les interfaces définies dans chacune des catégories de configuration décrites ci-dessus.    
+- **Infrastructure**– Microsoft Azure is an Infrastructure- and Platform-as-a-Service Solution which is comprised of several underlying services and capabilities.  These services largely can be decomposed into compute, storage and network services, however there are several capabilities which may fall outside of these definitions.  Infrastructure patterns detail a given functional area of Microsoft Azure which is required to provide a given service to one or more Solutions hosted within a given Azure subscription. 
+- **Foundation** – When composing a multi-tiered application or service within Azure, several components must be used in combination to provide a suitable hosting environment.  Foundation patterns compose one or more services from Microsoft Azure to support a given layer of functionality within an application. This may require the use of one or more components described in the infrastructure patterns outlined above. For example, the presentation layer of a multi-tier application requires compute, network and storage capabilities within Azure to become functional.  Foundation patterns are meant to be composed with other patterns as part of a given Solution.
+- **Solution** – Solution patterns are composed of infrastructure and/or foundation patterns to represent an end application or service being developed.  It is envisioned that complex solutions would not be developed independently of other patterns.  Rather, they should utilize the components and interfaces defined in each of the pattern categories outlined above.    
 
-## Concepts de modèle Architectural bleu azur
+## Azure Architectural Pattern Concepts
 
-Pour soutenir le développement d'architectures de Solution dans Azure, une série de guides de modèle sont fournis pour des scénarios courants.   Alors que ces guides de scénario seront construites au fil du temps, envisagé de types inclure :
+To support the development of Solution architectures within Azure, a series of pattern guides are provided for common scenarios.   While these scenario guides will be constructed over time, envisioned patterns include:
 
-- Charge globale équilibrée Web Tier 
-- Charger la couche données équilibrée
-- Niveau de traitement par lots
-- Réseaux hybrides
-- Recherche d'Azur 
+- Global Load Balanced Web Tier 
+- Load Balanced Data Tier
+- Batch Processing Tier
+- Hybrid Networking
+- Azure Search 
 
-##  Ressources supplémentaires
-[FIPC Architecture (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+##  Additional Resources
+[CPIF Architecture (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-## Voir aussi
-[Charge globale équilibrée Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+## See Also
+[Global Load Balanced Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-[Charger la couche données équilibrée](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+[Load Balanced Data Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-[Niveau de traitement par lots](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
 
-[Mise en réseau d'Azur](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Azure Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[Recherche d'Azur](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d)
+[Azure Search](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d)

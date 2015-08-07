@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Manage Azure API Management using Azure Automation"
 	description="Learn about how the Azure Automation service can be used to manage Azure API Management."
 	services="api-management, automation"
@@ -36,7 +36,7 @@ Reduce operational overhead and free up IT and DevOps staff to focus on work tha
 API Management can be managed in Azure Automation by using the [API Management REST API](https://msdn.microsoft.com/library/azure/dn776326.aspx). Within Azure Automation you can write PowerShell workflow scripts to perform many of your API Management tasks using the REST API. You can also pair these REST API calls in Azure Automation with the cmdlets for other Azure services, to automate complex tasks across Azure services and 3rd party systems.
 
 
-## 次のステップ
+## Next Steps
 
 Now that you've learned the basics of Azure Automation and how it can be used to manage Azure API Management, follow these links to learn more.
 

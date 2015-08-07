@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Create a new Application Insights resource" 
 	description="Set up for a new application and get a new instrumentation key. Application Insights monitors the performance and usage of live applications." 
 	services="application-insights" 
@@ -19,7 +19,7 @@
 
 
 
-[AZURE. INCLURE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
+[AZURE.INCLUDE [app-insights-selector-get-started](../../includes/app-insights-selector-get-started.md)]
 
 Visual Studio Application Insights displays data about your application in a Microsoft Azure *resource*. Creating a new resource is therefore part of [setting up Application Insights to monitor a new application][start]. In many cases, this can be done automatically by the IDE, and that's the recommended way where it's available. But in some cases, you create a resource manually.
 

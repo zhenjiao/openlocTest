@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="Managing Role-Based Access Control with the Azure CLI for Mac, Linux, and Windows"
 	description="Managing role-based access control with Azure CLI."
 	services=""
@@ -26,7 +26,7 @@ In this tutorial, you'll learn how to use the Azure CLI to manage RBAC. It walks
 
 **Estimated time to complete:** 15 minutes
 
-## Conditions préalables ##
+## Prerequisites ##
 
 Before you can use Azure CLI to manage RBAC, you must have the following:
 
@@ -39,7 +39,7 @@ Before you can use Azure CLI to manage RBAC, you must have the following:
 * [Check existing role assignments](#check)
 * [Create a role assignment](#create)
 * [Verify permissions](#verify)
-* [Prochaines étapes](#next)
+* [Next steps](#next)
 
 ## <a id="connect"></a>Connect to your subscriptions ##
 
@@ -135,7 +135,7 @@ These two cmdlets will only return the resource groups or resources where you ha
 
 Then when you try to run other cmdlet like `azure group create`, you will get an access denied error if you don't have the permission.
 
-## <a id="next"></a>Prochaines étapes ##
+## <a id="next"></a>Next steps ##
 
 To learn more about managing role-based access control with Azure CLI and related topics:
 

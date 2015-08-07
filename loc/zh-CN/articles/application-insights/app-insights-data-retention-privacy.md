@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Data retention and storage in Application Insights" 
 	description="Retention and privacy policy statement" 
 	services="application-insights" 
@@ -19,7 +19,7 @@
 
 *Application Insights is in preview.*
 
-## 概述
+## Overview
 
 This article answers questions about the data collected by  [Visual Studio Application Insights][start] and how it is processed and stored.
 
@@ -41,7 +41,7 @@ Application Insights SDKs and agents that you combine with your application send
 
 A *data point* is an item of telemetry, such as:
 
-* API `Track...` calls such as `TrackEvent` 或 `trackPageView`.
+* API `Track...` calls such as `TrackEvent` or `trackPageView`.
 * Telemetry items sent by SDK modules, for example to report a request or crash.
 * Performance counter data - one point for each measurement.
 
@@ -89,7 +89,7 @@ Microsoft uses the data only in order to provide the service to you.
 
 * Not yet. 
 
-## 安全 
+## Security 
 
 #### How secure is my data? 
 
@@ -208,7 +208,7 @@ This product includes GeoLite2 data created by MaxMind, available from [http://w
 
 ## <a name="video"></a>Videos
 
-#### 介绍
+#### Introduction
 
 > [AZURE.VIDEO application-insights-introduction]
 

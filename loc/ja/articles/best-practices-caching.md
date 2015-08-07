@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Caching guidance | Microsoft Azure"
    description="Guidance on caching to improve performance and scalability."
    services=""
@@ -17,593 +17,593 @@
    ms.date="04/28/2015"
    ms.author="masashin"/>
 
-# キャッシング ガイド
+# Caching guidance
 
 ![](media/best-practices-caching/pnp-logo.png)
 
-キャッシュは、パフォーマンスを向上させることを目的とする一般的な手法、
-アクセスされるデータを一時的に頻繁にコピーすることによってシステムのスケーラビリティ
-高速なストレージ アプリケーションの近くに位置します。もしこの高速データ ストレージ
-元のキャッシュよりアプリケーションに近い方には、します。
-提供することによってクライアント アプリケーションの応答時間を改善することができます。
-データより迅速に。キャッシュは、クライアントが繰り返しインスタンスする場合最も効果的です
-データが比較的静的なまま場合は特に同じデータを読み取り、
-元のデータ ストア キャッシュの速度に比べて遅いが、
-や遠く離れたときネットワーク ・ レーテンシーは、高レベルの競合の対象
-遅くなる可能性があります。
-
-## 分散アプリケーションでキャッシュ
-
-分散アプリケーションは、通常の一方または両方を実装、
-次の戦略データをキャッシュする場合:
-
-- アプリケーションまたはサービスのインスタンスを実行しているコンピューター上でのデータのローカルの開催するプライベート キャッシュを使用してください。
-- 複数のプロセスまたは複数のコンピューターでアクセスできる一般的なソースとして、共有キャッシュを使用します。
-
-両方のケースでキャッシングすることができます (プロセスを提供することによって実行されるクライアント側
-web ブラウザーやデスクトップ アプリケーションなど、システムのユーザインターフェイス)
-サーバー側 (ビジネス サービスの提供プロセスによっておよび/または
-リモートで実行する)。
-
-### プライベート キャッシュ
-
-キャッシュの最も基本的なタイプはアドレスで開催されたメモリ内ストアです。
-1 つのプロセスの空間、実行するコードで直接アクセス
-そのプロセス。このタイプのキャッシュは非常に迅速にアクセスでき
-適度な量を格納するための非常に効果的な戦略を提供します。
-静的なデータをキャッシュのサイズとして通常拘束されて、
-プロセスをホストするコンピューターで利用できるメモリの量。場合します。
-メモリで物理的に可能であるより多くの情報をキャッシュする必要があります。
-ローカル ファイル システムにキャッシュされているデータを記述できます。これは、します。
-必ずしもデータ メモリ内に保持する必要がありますよりアクセスが遅くなります。
-速くより信頼性の高いネットワーク経由でデータを取得するがあります。
-
-このモデルを使用してアプリケーションの複数のインスタンスがある場合
-同時に実行して、各アプリケーション インスタンスがあります独自
-独立したキャッシュ データの独自のコピーを保持します。
-
-いくつかの元のデータのスナップショットとしてキャッシュの考える必要があります。
-過去にポイントします。そうだこのデータは静的ではない場合、
-別のアプリケーションのインスタンスの異なるバージョンを保持する、
-それらのキャッシュ内のデータ。これらによって実行されるため、同じクエリ
-図 1 に示すように、インスタンスは、異なる結果を返すことができます。
-
-![アプリケーションの別のインスタンスのメモリ内キャッシュを使用してください。](media/best-practices-caching/Figure1.png)
-
-_図 1: アプリケーションの別のインスタンスのメモリ内キャッシュを使用してください。_
-
-### 共有キャッシュ
-
-共有キャッシュを使用して、データ可能性があります懸念を軽減するために助けることができます。
-各キャッシュに異なるメモリ内キャッシュで発生することができます。共有
-キャッシュにより別のアプリケーション インスタンスが、同じを参照してください。
-別の場所にキャッシュを配置することによってキャッシュされたデータのビュー
-図 2 に示すように、別のサービスの一部としてホスト通常。
-
-![共有キャッシュを使用_](media/best-practices-caching/Figure2.png)
-
-_図 2: 共有キャッシュを使用_
-
-共有キャッシュのアプローチを使用しての重要な利点は、
-スケーラビリティを提供することができます。多くの共有キャッシュ サービスします。
-サーバーのクラスターを使用してによって実装されており、ソフトウェアを利用します。
-透過的な方法でクラスターにデータを分散します。、
-アプリケーション インスタンスは、単にキャッシュ サービスに要求を送信します。
-基盤となるインフラストラクチャが判断して、
-クラスター内のキャッシュされたデータの場所です。容易に拡張できる、
-多くのサーバーを追加してキャッシュします。
-
-共有キャッシュの不利な点に近づくキャッシュは、
-それもはやローカル各を開催ですので、アクセスに時間がかかります
-アプリケーション インスタンス、および別を実装するための要件
-キャッシュ サービスは、複雑さをソリューションに追加できます。
-
-## キャッシュの使用に関する考慮事項
-
-以下は考慮事項の詳細について説明します。
-設計およびキャッシュを使用しています。
-
-### データがキャッシュされるとき
-
-キャッシュは、パフォーマンス、スケーラビリティ、および可用性を飛躍的に向上することができます。多くのデータ
-なとより大きい、このデータにアクセスする必要があるユーザー数が大きい
-なる遅延や処理に関連する競合を減らすことによってキャッシュの利点
-大量の元データの同時実行要求を格納します。たとえば、データベース
-同時接続が、共有から取得するデータの限られた数をサポート可能性があります。
-基になるデータベースではなくキャッシュ データにアクセスするクライアント アプリケーションをことができます。
-場合でも、利用可能な接続数は現在使い果たされます。さらに、もし、
-データベースが使用できなくなると、クライアント アプリケーションを使用して続行することができるかもしれない、
-データがキャッシュに保持されます。
-
-よく、それは頻繁に変更が読み取られるデータのキャッシュを検討してください。
-(データ書き込み操作と読み取り操作の割合が高いを持っている)。ただし、
-重要な情報の信頼できるストアとして、キャッシュを使用しないでください。必要があります。
-あなたのアプリケーションを失うことができないすべての変更に常に保存されることを確認します。
-永続的なデータ ストア。これで、キャッシュが利用できない場合、アプリケーションことができます。
-データ ストアを使用して動作するように引き続き、重要な失われません
-情報。
-
-### データ ・ キャッシュの人口戦略の種類
-
-キャッシュを効果的に使用する鍵は最も適切なデータを決定します。
-キャッシュ、およびキャッシュを適切なタイミングで。キャッシュにデータを追加することがあります。
-アプリケーションによって取得された最初の時間を要求するアプリケーションに必要なので、
-データ ストアとそれ以降のアクセスが満たされる 1 回だけデータをフェッチします。
-キャッシュを使用します。
-
-また、キャッシュが部分的または完全にデータを設定する、事前に
-通常、アプリケーションの起動時 (シードと呼ばれるアプローチ)。しかし、それは可能性があります。
-このアプローチが課すことができる、大容量のキャッシュのシードを実装することをお勧めではないです。
-元のデータ ストア、アプリケーションの実行開始時に突然、高負荷。
-
-使用パターンの分析が決定する助けることができる多くの場合するかどうか完全にまたは部分的に
-あらかじめしておくキャッシュとキャッシュすべきデータを選択します。たとえば、
-静的なユーザー プロファイル データとキャッシュをシードする有用でしょう
-(多分毎日)、定期的にアプリケーションをご利用のお客様が、
-週に 1 回だけアプリケーションをご使用のお客様。
-
-データには変更または変更されるとうまく動作通常キャッシュ
-頻度が低い。リファレンス情報については、製品と価格設定などがあります。
-e コマース アプリケーション、または高価な共有の静的リソースの情報
-構築します。このデータの一部またはすべてのアプリケーションをキャッシュに読み込むことができます。
-起動時のリソースに対する要求を最小限に抑えるため、パフォーマンスを向上させる。あります。
-参照データを定期的に更新するバック グラウンド プロセスを持つことが適当
-それは日付、またはキャッシュを更新するようにキャッシュを参照する場合
-データの変更。
-
-キャッシュは動的データのためあまり有用ことがありますいくつかの例外がありますが
-この考察 (後述の非常に動的なデータのキャッシュ」を参照してください。
-詳細についてはガイダンス)。時元のデータを定期的に変更、どちらか
-キャッシュされた情報はすぐに古くなることができるまたは維持のオーバーヘッド
-元のデータ ストアと同期してキャッシュの有効性が低下します。
-キャッシュ。キャッシュがへの完全なデータが含まれていないことに注意してください、
-エンティティ。たとえば、データ項目は、銀行などの複数値を持つオブジェクトを表します
-名前、アドレス、およびアカウントの残高を持つ顧客、これらの要素のいくつかの可能性があります。
-まま静的 (名前とアドレス)、他 (口座残高) など
-ダイナミックながあります。これらの状況では、静的をキャッシュすると便利かもしれません
-データの一部のみを取得 (または計算) として残りの情報と
-それが必要な場合。
-
-決定するためのパフォーマンス テストと利用状況分析が行われるべきかどうか
-キャッシュ、またはその両方の組み合わせの前の人口やオンデマンドの読み込みが
-適切です。ボラティリティの組み合わせに基づいて決定をする必要がありますが、
-データの使用パターン。キャッシュの使用率とパフォーマンスの分析は
-重い負荷が発生しする必要がありますアプリケーションでは特に重要
-拡張性の高い。たとえば、拡張性の高いシナリオでそれに意味をなさない可能性があります。
-ピーク時にデータ ストアの負荷を減らすためにキャッシュをシードします。
-
-キャッシュも、アプリケーションが計算を繰り返しを避けるために使用できます。
-実行しています。操作データを変換または複雑な計算を実行する場合
-それは、キャッシュの操作の結果を保存できます。もし同じ計算
-アプリケーションことができますから結果を取得して単にその後、必要です。
-キャッシュ。
-
-アプリケーションは、キャッシュに保持されているデータを変更できますが、考慮する必要があります、
-いつでも消えることができる一時的なデータ ストアとしてキャッシュします。保存しません。
-貴重なデータ、キャッシュでのみが、情報を維持することを確認します。
-オリジナルのデータ ストアにも。これで、キャッシュする必要がありますになる場合
-利用できない場合、あなたはデータを失う可能性を最小限に抑えます。
-
-### 非常に動的なデータのキャッシュ
-
-永続的なデータ ストアで急速に変更を課すことができる情報を格納します。
-システムのオーバーヘッドです。たとえば、常にレポートされるデバイス
-ステータスまたはいくつかの他の測定。これをキャッシュにしないアプリケーションを選択した場合
-データに基づいて、キャッシュされた情報がほぼ常に時代遅れになる、
-同じ意識を保存して、この情報を取得する場合は true かもしれない
-データ ストアから保存し、このデータを取得するのにかかる時間にそれがあります。
-変更。このような動的に格納する利点を考慮します。
-永続的なデータ ストアではなくキャッシュに直接情報です。場合は、
-データが重要ではない、監査することを必要としないし、それは問題ではないです。
-場合は、時折変更失われます。
-
-### キャッシュ データの有効期限を管理します。
-
-ほとんどの場合、キャッシュに保持されているデータは元のデータのデータのコピー
-格納します。引き起こして、それがキャッシュされた後に元のデータ ストア内のデータを変更可能性があります。
-キャッシュされたデータが古くなるを。多くのキャッシング システムを構成することを有効にする、
-キャッシュ データを有効期限が切れるし、データが期限切れである期間を短縮します。
-
-キャッシュされたデータの有効期限が切れるキャッシュから削除され、アプリケーションにする必要があります。
-(置くことが新しくフェッチ元のデータ ストアからデータを取得します。
-情報キャッシュに戻す)。既定の有効期限ポリシーを設定することができますとあなた
-キャッシュを構成します。多くのキャッシュ サービスで、有効期限を決めることも
-プログラムによってキャッシュにそれらを格納する個々 のオブジェクトの期間
-(いくつかのキャッシュを有効にすると、絶対値として有効期限を指定すること、または
-スライド値として原因じゃない場合、キャッシュから削除するアイテム
-指定した時間内にアクセス。この設定は、任意のキャッシュ全体
-指定したオブジェクトに対してだけ有効期限ポリシー。
-
-> [AZURE。メモ] キャッシュと慎重に含まれているオブジェクトの有効期間を検討します。短すぎるとして、オブジェクトが余りにすぐに切れるし、キャッシュを使用する利点が減少します。あまりにも長い期間を加えると、データが古くなって危険があります。
-
-可能維持するデータが許可されている場合は、キャッシュがいっぱいです。
-長い時間の居住者。この場合、いずれかをする新しい項目を追加する要求、
-キャッシュと呼ばれるプロセスで、強制的に削除されるいくつかの項目があります。
-立ち退き。キャッシュ サービスは、通常最も最近使用 (LRU) 上のデータを削除します。
-基礎が通常このポリシーをオーバーライドして、できます項目を防ぐ
-削除。しかし、このアプローチを採用する場合、あなたはキャッシュを超える危険性、
-メモリには項目を追加しようと、使用可能なアプリケーションがあります。
-キャッシュには、例外で失敗します。
-
-一部のキャッシュの実装は、追加削除ポリシーにあります。これら
-通常最も最近使用されたポリシーを含める (期待する、
-データ必要はありませんもう一度)、(最も古いデータは、先入れ先出しのポリシー
-削除最初)、またはトリガーされたイベントに基づいて明示的な削除 (など、
-変更されるデータ)。
-
-### クライアント側キャッシュ内のデータを無効化
-
-クライアント側のキャッシュに保持されたデータはおおむねの外
-クライアントにデータを提供するサービスの後援サービス
-情報を追加、削除するクライアントを強制的ことはできません直接、
-クライアント側のキャッシュ。つまり、それはクライアントを使用することが可能
-構成が不十分なキャッシュ (たとえば、有効期限ポリシーがないです。
-キャッシュされた古い情報を使用し続けるに適切に実装)
-ローカル元のデータ ソース内の情報が変更されたとします。
-
-HTTP を介してデータを提供する web アプリケーションを構築する場合
-接続、暗黙的に web クライアントを強制的ことができます (ブラウザーなどや
-web プロキシ) リソースが更新された場合、最新の情報を取得するには
-そのリソースの URI を変更します。Web クライアントは、通常、URI を使用してください。
-クライアント側のキャッシュのキーとしてリソースの URI を変更するので
-により、web クライアントのすべてのキャッシュ済みバージョンを無視する、
-リソース、代わりに新しいバージョンを取得します。
-
-## キャッシュ内の同時実行の管理
-
-キャッシュは、頻繁の複数のインスタンスで共有するために設計されている、
-アプリケーション。各アプリケーション インスタンスが読み書きのデータの変更
-キャッシュ。その結果、同じ同時実行の問題が発生します。
-任意の共有データ ストアのキャッシュにも当てはまります。状況で
-アプリケーションがキャッシュに保持されているデータを変更する必要がある場合があります。
-アプリケーションの 1 つのインスタンスで更新が行われるようにする必要があります。
-盲目的に別のインスタンスで行った変更を上書きしません。
-
-データの性質との衝突の可能性に応じてください。
-同時実行する 2 つの方法のいずれかを採用することができます。
-
-- __楽観的。__ アプリケーションは、キャッシュ内のデータはすぐにそれを更新する前に、それが取得されてから変わったかどうかを確認します。データが同じでも変更は可能です。それ以外の場合、アプリケーションが (この決定を行うビジネス ロジックは特定のアプリケーションになります) それを更新するかどうかを決定します。この方法は、更新が頻繁に、または衝突が発生する可能性が状況に適しています。
-- __悲観的。__ アプリケーションは、別のインスタンスがデータを変更するを防ぐためにそれを取得するときに、キャッシュ内のデータをロックします。このプロセスにより、衝突は発生することはできませんが、同じデータを処理する必要があります他のインスタンスをブロック可能性があります。ペシミスティック同時実行制御ソリューションのスケーラビリティに影響を与えることができるし、短時間の操作にのみ使用する必要があります。このアプローチは、アプリケーション キャッシュ内の複数の項目を更新し、これらの変更が一貫して適用されていることを確認する必要がある場合は特に、衝突が本当らしい、状況に適した可能性があります。
-
-### 高い可用性とスケーラビリティを実装してパフォーマンスを向上させる
-
-キャッシュは、データのプライマリ ・ リポジトリをしないでください。これはロールです。
-キャッシュの設定を元のデータ ストア。、
-元のデータ ストアの永続性を確保するための責任は、
-データ。
-
-可用性の重要な依存関係を導入することに注意してください。
-ソリューションに共有キャッシュ サービス。アプリケーションする必要があります。
-場合は、機能を継続することができる共有のキャッシュを提供するサービス
-無効です。アプリケーションがハングするか待っている間失敗しません。
-キャッシュ サービスの再開します。したがって、アプリケーション必要があります。
-キャッシュ サービスの可用性を検出し、フォールバックする準備
-元のデータの保存、キャッシュにアクセスできない場合。、
-[回路ブレーカーのパターン](http://msdn.microsoft.com/library/dn589784.aspx) このシナリオを処理するために便利です。、
-キャッシュを回復することができますと一度それになりますを提供するサービスします。
-利用可能なキャッシュ再作成できます読み取りフォーム、
-元のデータ ストアは、次の戦略など、 [キャッシュ アサイド パターン](http://msdn.microsoft.com/library/dn589799.aspx).
-
-ただし、フォールバック元のデータ ストアにキャッシュがある場合
-一時的にはシステムのスケーラビリティの影響を持つかもしれない
-データ ストアがされて回収元のデータ ストア
-タイムアウトの結果データの要求が殺到することが、
-接続に失敗しました。考慮すべき戦略は、します。
-アプリケーションの各インスタンスでローカルのプライベート キャッシュを実装します。
-一緒に共有キャッシュがアプリケーションのすべてのインスタンス
-アクセスします。それが最初にチェックすることができますアプリケーションでは、アイテムを取得するとき
-で、ローカル キャッシュ、共有キャッシュ、最終的に元
-データ ストア。データを使用してローカル キャッシュを設定できます、
-共有キャッシュまたはデータベース共有キャッシュが利用できない場合。
-ローカルを防ぐために構成に注意が必要です。
-共有キャッシュが、それに関してあまりにも古くなってキャッシュ
-共有キャッシュに到達できない場合は、バッファーとして機能します。図 3
-この構造を示しています。
-
-![ローカル、プライベート キャッシュを用いた共有キャッシュ_](media/best-practices-caching/Caching3.png)
-_図 3: 共有キャッシュとローカルの専用のキャッシュを使用してください。_
-
-いくつか比較的長命のデータを保持する大規模なキャッシュをサポートするには
-キャッシュ サービスを実装する高可用性オプションを提供します。
-自動フェールオーバー キャッシュができなくなった場合。このアプローチ
-通常は、主に保存されているキャッシュのデータをレプリケートします。
-キャッシュ サーバーはセカンダリ キャッシュ サーバー、およびへの切り替え、
-プライマリ サーバーが失敗した場合はセカンダリ サーバーまたは接続が
-失った。複数への書き込みに伴う待ち時間を減らすために
-目的地、プライマリ キャッシュにデータが書き込まれる
-サーバー、セカンダリ サーバーへのレプリケーションが発生します。
-非同期的にします。 このアプローチは、いくつかの可能性につながる
-キャッシュされた情報が、障害時に失われるが、
-このデータの割合は、全体と比較して小さくなるはず
-キャッシュのサイズ。
-
-パーティションに有益な共有キャッシュが大きい場合があります、
-キャッシュされたデータの競合の可能性を減らすためにノード間で、
-スケーラビリティが向上します。多くの共有キャッシュ機能をサポートします。
-動的に追加 (および削除) ノード間でデータを再配分と
-パーティション。このアプローチは、それによってクラスタ リングを伴うことがあります、
-ノードのコレクションとしてクライアント アプリケーションに提示します。
-シームレスに 1 つのキャッシュが内部的にデータを分散します。
-次のいくつかのノード間流通戦略を定義済み
-これは均等に負荷を分散させます。、 [データのパーティション分割のガイダンス文書](http://msdn.microsoft.com/library/dn589795.aspx)
-マイクロソフトのウェブサイトはできるだけの詳細についてを提供します。
-パーティション分割の方法。
-
-クラスタ リング追加することも一層キャッシュの可用性場合は、
-ノードが失敗した場合、キャッシュの残りの部分は、まだアクセス可能です。
-レプリケーションと連動で多用されるクラスタ リング
-フェイル オーバー。各ノードを複製することができますとレプリカ
-迅速にオンラインにノードが失敗する場合。
-
-多くと書き込み操作が 1 つのデータを含む可能性が高い
-値またはオブジェクト。ただしがある場合があるかもしれません
-必要に応じて保存または大量のデータを迅速に取得します。
-たとえば、何百もの書き込み含むことができるキャッシュをシードまたは
-キャッシュ、またはアプリケーションへのアイテムの何千もする必要があります。
-としてキャッシュから多数の関連アイテムを取得します。
-同じ要求の一部です。多くの大規模なキャッシュを提供するバッチ
-これらの目的は、クライアント アプリケーションの操作
-大量の 1 つの要求にアイテムをパッケージ化し、
-多数の実行に伴うオーバーヘッドを削減
-小さな要求。
-
-## キャッシュおよび最終的な一貫性
-
-キャッシュ アサイド パターンは、アプリケーションのインスタンスに依存します。
-最も最近にアクセス キャッシュへの読み込みと
-データの一貫性のあるバージョンです。実装するシステムで
-イベンチュアル ・ コンシステンシー (レプリケートされたデータ ストア) などが
-ケースではないです。アプリケーションの 1 つのインスタンスを変更します。
-データ項目し、その項目のキャッシュされたバージョンを無効にします。もう一つ
-アプリケーションのインスタンスからこの項目を読むしようとする可能性があります。
-キャッシュはキャッシュ ・ ミスが発生するからデータを読み取るので、
-データ保存し、それをキャッシュに追加します。ただし、データ ストアの場合
-他のレプリカと完全に同期されていない、
-アプリケーション インスタンスが読み取りできをキャッシュに設定、
-古い値。
-
-データの整合性の処理の詳細についてを参照してください、
-Microsoft の web サイト上のデータの一貫性指導のページ。
-
-### キャッシュされたデータの保護
-
-関係なく、キャッシュ サービスを使用して、検討してください。
-不正からキャッシュで保持されるデータを保護する方法
-アクセスします。2 つの主な懸念があります。
-
-- キャッシュ内のデータのプライバシー。
-- キャッシュ間のデータのプライバシーの流れと、
-  アプリケーション キャッシュを使用します。
-
-キャッシュ内のデータを保護するためにキャッシュ サービスを実装する場合があります。
-要求する認証メカニズムのアプリケーション
-、自分自身を識別し、承認スキーム
-どの id が、キャッシュ内のデータにアクセスできるを指定しますと
-これらの id は操作 (読み取りと書き込み)
-実行を許可します。関連するオーバーヘッドを削減するには
-一度 id が付与されたデータの読み書き
-書き込みや識別に使用できるキャッシュへの読み取りアクセス
-キャッシュ内のデータ。アクセスを制限する必要がある場合
-キャッシュされたデータのサブセットは、次の操作を実行できます。
-
-- (別のキャッシュを使用して、キャッシュをパーティション分割します。
-  サーバー) の id にアクセスのみを許可し、
-  パーティションを使用して、許可する必要がありますか
-- 別のキーを使用して、各サブセットのデータを暗号化します。
-  のみ id に暗号化キーを提供して
-  各サブセットへのアクセスが必要です。クライアント アプリケーション
-  キャッシュ内のデータのすべてを取得することができます。
-  だけそれのデータを復号化できるようになりますが、
-  鍵を持っています。
-
-それはデータを保護するためにフロー キャッシュに出入りします。
-ネットワークで提供されるセキュリティ機能に依存しています。
-インフラストラクチャに接続するクライアント アプリケーションを使用している、
-キャッシュ。敷地内のサーバーを使用して、キャッシュを実装する場合
-クライアント アプリケーションをホストする同じ組織内
-その後、ネットワーク自体の分離をしないする必要があります。
-任意の追加の手順を実行します。キャッシュがリモートにある場合、
-(このようなパブリック ネットワークを介して TCP または HTTP 接続が必要です。
-・ インターネットとして SSL を実装することを検討してください。
-
-## Microsoft Azure のキャッシュを実装するための考慮事項
-
-Azure では、Azure Redis キャッシュを提供します。これは実装です。
-オープン ソースのサービスとして実行される Redis のキャッシュ、
-Azure のデータ センターです。それはすることができますキャッシュ サービスを提供します
-かどうか、任意の Azure アプリケーションからアクセス アプリケーション
-クラウド サービス、web サイト、または内部として実装は、
-Azure の仮想マシンです。キャッシュは、クライアントによって共有することができます。
-適切なアクセス キーを持つアプリケーション。
-
-Redis は高性能のキャッシュ ソリューションを提供します。
-可用性、スケーラビリティおよびセキュリティ。それは通常実行します。
-1 つまたは複数の専用マシンに分散サービスとして、
-メモリにできるだけ多くの情報を格納しようとしました。
-高速アクセスを確保します。このアーキテクチャを使用すると、
-低レーテンシーとする必要性を減らすことによる高スループット
-遅い I/O 操作を実行します。
-
-Azure Redis キャッシュは多くの様々 な互換性のあります。
-クライアント アプリケーションで使用する Api。既存がある場合
-Redis 社内の実行を既に使用しているアプリケーション、
-紺碧 Redis キャッシュ キャッシュへの迅速な移行パスを提供します。
-クラウドで。
-
-> [AZURE。メモ] Azure には、キャッシュの管理サービスも提供します。これ
-  サービスは、Microsoft の AppFabric キャッシュ エンジンに基づきます。それ
-  共有できる分散キャッシュを作成することができます。
-  疎結合アプリケーション。キャッシュ上でホストされて
-  Azure のデータ センターで実行されている高性能サーバー。
-  ただし、このオプションは推奨されません、だけ
-  構築されている既存のアプリケーションをサポートします。
-  それを使用します。すべての新しい開発のため使用する Azure Redis
-  代わりにキャッシュします。
+Caching is a common technique that aims to improve the performance and
+scalability of a system by temporarily copying frequently accessed data
+to fast storage located close to the application. If this fast data storage
+is located closer to the application than the original source then caching
+can significantly improve response times for client applications by serving
+data more quickly. Caching is most effective when a client instance repeatedly
+reads the same data, especially if the data remains relatively static and
+the original data store is slow relative to the speed of the cache, is
+subject to a high level of contention, or is far away when network latency
+can cause access to be slow.
+
+## Caching in distributed applications
+
+Distributed applications typically implement either or both of the
+following strategies when caching data:
+
+- Using a private cache, where data is held locally on the computer running an instance of an application or service.
+- Using a shared cache, serving as a common source which can be accessed by multiple processes and/or machines.
+
+In both cases, caching could be performed client-side (by the process providing
+the user interface for a system, such as a web browser or desktop application),
+and/or server-side (by the process providing the business services
+running remotely).
+
+### Private caching
+
+The most basic type of cache is an in-memory store, held in the address
+space of a single process and accessed directly by the code that runs
+in that process. This type of cache is very quick to access, and it can
+provide an extremely effective strategy for storing modest amounts of
+static data as the size of a cache is typically constrained by the
+volume of memory available on the machine hosting the process. If you
+need to cache more information than is physically possible in memory,
+you can write cached data to the local file system. This will
+necessarily be slower to access than data held in-memory, but should
+still be faster and more reliable than retrieving data across a network.
+
+If you have multiple instances of an application that uses this model
+running concurrently, each application instance will have its own
+independent cache holding its own copy of data.
+
+You should think of a cache as a snapshot of the original data at some
+point in the past. If this data is not static, it is likely that
+different application instances will hold different versions of the
+data in their caches. Therefore, the same query performed by these
+instances could return different results, as shown in Figure 1.
+
+![Using an in-memory cache in different instances of an application](media/best-practices-caching/Figure1.png)
+
+_Figure 1: Using an in-memory cache in different instances of an application_
+
+### Shared Caching
+
+Using a shared cache can help to alleviate the concern that data may
+differ in each cache, as can occur with in-memory caching. Shared
+caching ensures that different application instances see the same
+view of cached data by locating the cache in a separate location,
+typically hosted as part of a separate service, as shown in Figure 2.
+
+![Using a shared cache_](media/best-practices-caching/Figure2.png)
+
+_Figure 2: Using a shared cache_
+
+An important benefit of using the shared caching approach is the
+scalability it can help to provide. Many shared cache services are
+implemented by using a cluster of servers, and utilize software that
+distributes the data across the cluster in a transparent manner. An
+application instance simply sends a request to the cache service,
+and the underlying infrastructure is responsible for determining the
+location of the cached data in the cluster. You can easily scale the
+cache by adding more servers.
+
+The disadvantages of the shared caching approach are that the cache
+is slower to access because it is no longer held locally to each
+application instance, and the requirement to implement a separate
+cache service may add complexity to the solution.
+
+## Considerations for using caching
+
+The following sections describe in more detail the considerations
+for designing and using a cache.
+
+### When should data be cached?
+
+Caching can dramatically improve performance, scalability, and availability. The more data
+that you have and the larger the number of users that need to access this data, the greater
+the benefits of caching become by reducing latency and contention associated with handling
+large volumes of concurrent requests in the original data store. For example, a database
+may support a limited number of concurrent connections, but retrieving data from a shared
+cache rather than the underlying database allows a client application to access this data
+even if the number of available connections is currently exhausted. Additionally, if the
+database becomes unavailable, client applications may be able to continue by using the
+data held in the cache.
+
+You should consider caching data that is read frequently but that is modified infrequently
+(the data has a high proportion of read operations compared to write operations). However,
+you should not use the cache as the authoritative store of critical information; you should
+ensure that all changes that your application cannot afford to lose are always saved to a
+persistent data store. In this way, if the cache is unavailable, your application can
+still continue to operate by using the data store and you will not lose important
+information.
+
+### Types of data and cache population strategies
+
+The key to using a cache effectively lies in determining the most appropriate data to
+cache, and caching it at the appropriate time. The data may be added to the cache on
+demand the first time it is retrieved by an application, so that the application needs
+fetch the data only once from the data store and subsequent accesses can be satisfied
+by using the cache.
+
+Alternatively, a cache may be partially or fully populated with data in advance,
+typically when the application starts (an approach known as seeding). However, it may
+not be advisable to implement seeding for a large cache as this approach can impose
+a sudden, high load on the original data store when the application starts running.
+
+Often an analysis of usage patterns can help to decide whether to fully or partially
+prepopulate a cache, and to choose the data that should be cached. For example, it
+would probably be useful to seed the cache with the static user profile data for
+customers who use the application regularly (perhaps every day), but not for
+customers who use the application only once a week.
+
+Caching typically works well with data that is immutable or that changes
+infrequently. Examples include reference information such as product and pricing
+information in an ecommerce application, or shared static resources that are costly
+to construct. Some or all of this data can be loaded into the cache at application
+startup to minimize demand on resources and to improve performance. It may also be
+appropriate to have a background process that periodically updates reference data
+in the cache to ensure it is up to date, or refreshes the cache when reference
+data changes.
+
+Caching may be less useful for dynamic data, although there are some exceptions to
+this consideration (see the section Caching Highly Dynamic Data later in this
+guidance for more information). When the original data regularly changes, either
+the cached information can become stale very quickly or the overhead of keeping
+the cache synchronized with the original data store reduces the effectiveness of
+caching. Note that a cache does not have to include the complete data for an
+entity. For example, if a data item represents a multivalued object such as a bank
+customer with a name, address, and account balance, some of these elements may
+remain static (the name and address), while others (such as the account balance)
+may be more dynamic. In these situations, it could be useful to cache the static
+portions of the data and only retrieve (or calculate) the remaining information as
+and when it is required.
+
+Performance testing and usage analysis should be carried out to determine whether
+pre-population or on-demand loading of the cache, or a combination of both, is
+appropriate. The decision should be based on a combination of the volatility and
+usage pattern of the data. Cache utilization and performance analysis is
+particularly important in applications that encounter heavy loads and must be
+highly scalable. For example, in highly scalable scenarios it may make sense to
+seed the cache to reduce the load on the data store at peak times.
+
+Caching can also be used to avoid repeating computations as the application is
+running. If an operation transforms data or performs a complicated calculation,
+it can save the results of the operation in the cache. If the same calculation
+is required subsequently, the application can simply retrieve the results from
+the cache.
+
+An application can modify data held in a cache, but you should consider the
+cache as a transient data store that could disappear at any time. Do not store
+valuable data only in the cache, but make sure that you maintain the information
+in the original data store as well. In this way, if the cache should become
+unavailable, you minimize the chance of losing data.
+
+### Caching highly dynamic data
+
+Storing information that changes rapidly in a persistent data store can impose
+an overhead on the system. For example, consider a device that continually reports
+status or some other measurement. If an application chooses not to cache this
+data on the basis that the cached information will nearly always be outdated, then
+the same consideration could be true when storing and retrieving this information
+from the data store; in the time taken to save and fetch this data it may have
+changed. In a situation such as this, consider the benefits of storing the dynamic
+information directly in the cache instead of the persistent data store. If the
+data is non-critical and does not require to be audited, then it does not matter
+if the occasional change is lost.
+
+### Managing data expiration in a cache
+
+In most cases, data held in a cache is a copy of the data held in the original data
+store. The data in the original data store might change after it was cached, causing
+the cached data to become stale. Many caching systems enable you to configure the
+cache to expire data and reduce the period for which data may be out of date.
+
+When cached data expires it is removed from the cache, and the application must
+retrieve the data from the original data store (it can put the newly-fetched
+information back into cache). You can set a default expiration policy when you
+configure the cache. In many cache services you can also stipulate the expiration
+period for individual objects when you store them programmatically in the cache
+(some caches enable you to specify the expiration period as an absolute value, or
+as a sliding value that causes the item to be removed from cache if it is not
+accessed within the specified time. This setting overrides any cache-wide
+expiration policy, but only for the specified objects.
+
+> [AZURE.NOTE] Consider the expiration period for the cache and the objects that it contains carefully. If you make it too short, objects will expire too quickly and you will reduce the benefits of using the cache. If you make the period too long, you risk the data becoming stale.
+
+It is also possible that the cache might fill up if data is allowed to remain
+resident for a long time. In this case, any requests to add new items to the
+cache might cause some items to be forcibly removed, in a process known as
+eviction. Cache services typically evict data on a least-recently-used (LRU)
+basis, but you can usually override this policy and prevent items from being
+evicted. However, if you adopt this approach you risk your cache exceeding the
+memory that it has available, and an application that attempts to add an item
+to the cache will fail with an exception.
+
+Some caching implementations may provide additional eviction policies. These
+typically include the most-recently-used policy (in the expectation that the
+data will not be required again), first-in-first-out policy (oldest data is
+evicted first), or explicit removal based on a triggered event (such as the
+data being modified).
+
+### Invalidating data in a client-side cache
+
+Data held in a client-side cache is generally considered to be outside of
+the auspices of the service providing the data to the client; a service
+cannot directly force a client to add or remove information from a
+client-side cache. This means that it is possible for a client that uses
+a poorly configured cache (for example, expiration policies are not
+properly implemented) to continue using outdated information cached
+locally when the information in the original data source has changed.
+
+If you are building a web application that serves data over an HTTP
+connection, you can implicitly force a web client (such as a browser or
+web proxy) to fetch the most recent information if a resource is updated
+by changing the URI of that resource. Web clients typically use the URI
+of a resource as the key in the client-side cache, so changing the URI
+causes the web client to ignore any previously cached version of a
+resource and fetch the new version instead.
+
+## Managing concurrency in a cache
+
+Caches are often designed to be shared by multiple instances of an
+application. Each application instance can read and modify data in
+the cache. Consequently, the same concurrency issues that arise with
+any shared data store are also applicable to a cache. In a situation
+where an application needs to modify data held in the cache, you may
+need to ensure that updates made by one instance of the application
+do not blindly overwrite the changes made by another instance.
+
+Depending on the nature of the data and the likelihood of collisions,
+you can adopt one of two approaches to concurrency:
+
+- __Optimistic.__ The application checks to see whether the data in the cache has changed since it was retrieved, immediately prior to updating it. If the data is still the same, the change can be made. Otherwise, the application has to decide whether to update it (the business logic that drives this decision will be application-specific). This approach is suitable for situations where updates are infrequent, or where collisions are unlikely to occur.
+- __Pessimistic.__ The application locks the data in the cache when it retrieves it to prevent another instance from changing the data. This process ensures that collisions cannot occur, but could block other instances that need to process the same data. Pessimistic concurrency can affect the scalability of the solution and should be used only for short-lived operations. This approach may be appropriate for situations where collisions are more likely, especially if an application updates multiple items in the cache and must ensure that these changes are applied consistently.
+
+### Implementing high availability, and scalability, and improving performance
+
+A cache should not be the primary repository of data; this is the role
+of the original data store from which the cache is populated. The
+original data store is responsible for ensuring the persistence of the
+data.
+
+Be careful not to introduce critical dependencies on the availability
+of a shared cache service into your solutions. An application should be
+able to continue functioning if the service providing the shared cache
+is unavailable; the application should not hang or fail while waiting
+for the cache service to resume. Therefore, the application must be
+prepared to detect the availability of the cache service and fall back
+to the original data store if the cache is inaccessible. The
+[Circuit-Breaker Pattern](http://msdn.microsoft.com/library/dn589784.aspx) is useful for handling this scenario. The
+service providing the cache can be recovered, and once it becomes
+available the cache can be repopulated as data is read form the
+original data store, following a strategy such as the [Cache-Aside pattern](http://msdn.microsoft.com/library/dn589799.aspx).
+
+However, falling back to the original data store if the cache is
+temporarily unavailable may have a scalability impact on the system;
+while the data store is being recovered the original data store
+could be swamped with requests for data, resulting in timeouts and
+failed connections. A strategy that you should consider is to
+implement a local, private cache in each instance of an application
+together with the shared cache that all application instances
+access. When the application retrieves an item, it can check first
+in its local cache, then the shared cache, and finally the original
+data store. The local cache can be populated using the data in the
+shared cache, or the database if the shared cache is unavailable.
+This approach requires careful configuration to prevent the local
+cache becoming too stale with respect to the shared cache, but it
+acts as a buffer if the shared cache is unreachable. Figure 3
+shows this structure.
+
+![Using a local, private cache with a shared cache_](media/best-practices-caching/Caching3.png)
+_Figure 3: Using a local, private cache with a shared cache_
+
+To support large caches that hold relatively long-lived data, some
+cache services provide a high-availability option that implements
+automatic failover if the cache becomes unavailable. This approach
+typically involves replicating the cached data stored on a primary
+cache server to a secondary cache server, and switching to the
+secondary server if the primary server fails or connectivity is
+lost. To reduce the latency associated with writing to multiple
+destinations, when data is written to the cache on the primary
+server, the replication to the secondary server may occur
+asynchronously.  This approach leads to the possibility that some
+cached information may be lost in the event of a failure, but the
+proportion of this data should be small compared to the overall
+size of the cache.
+
+If a shared cache is large, it may be beneficial to partition the
+cached data across nodes to reduce the chances of contention and
+improve scalability. Many shared caches support the ability to
+dynamically add (and remove) nodes and rebalance the data across
+partitions. This approach may involve clustering whereby the
+collection of nodes is presented to client applications as a
+seamless, single cache, but internally the data is dispersed
+between nodes following some predefined distribution strategy
+which balances the load evenly. The [Data Partitioning Guidance document](http://msdn.microsoft.com/library/dn589795.aspx)
+on the Microsoft website provides more information about possible
+partitioning strategies.
+
+Clustering can also add further availability of the cache; if a
+node fails, the remainder of the cache is still accessible.
+Clustering is frequently used in conjunction with replication
+and failover; each node can be replicated and the replica
+quickly brought online if the node fails.
+
+Many read and write operations will likely involve single data
+values or objects. However, there may be times when it is
+necessary to store or retrieve large volumes of data quickly.
+For example, seeding a cache could involve writing hundreds or
+thousands of items to the cache, or an application may need to
+retrieve a large number of related items from the cache as
+part of the same request. Many large-scale caches provide batch
+operations for these purposes, enabling a client application to
+package up a large volume of items into a single request and
+reducing the overhead associated with performing a large number
+of small requests.
+
+## Caching and eventual consistency
+
+The Cache-Aside pattern depends on the instance of the application
+populating the cache having access to the most recent and
+consistent version of the data. In a system that implements
+eventual consistency (such as a replicated data store) this may
+not be the case. One instance of an application could modify a
+data item and invalidate the cached version of that item. Another
+instance of the application may attempt to read this item from
+cache which causes a cache-miss, so it reads the data from the
+data store and adds it to the cache. However, if the data store
+has not been fully synchronized with the other replicas the
+application instance could read and populate the cache with the
+old value.
+
+For more information about handling data consistency, see the
+Data Consistency Guidance page on the Microsoft website.
+
+### Protecting cached data
+
+Irrespective of the cache service you use, you should consider
+how to protect the data held in the cache from unauthorized
+access. There are two main concerns:
+
+- The privacy of the data in the cache.
+- The privacy of data as it flows between the cache and the
+  application using the cache.
+
+To protect data in the cache, the cache service may implement
+an authentication mechanism requiring that applications
+identify themselves, and an authorization scheme that
+specifies which identities can access data in the cache, and
+the operations (read and write) that these identities are
+allowed to perform. To reduce overheads associated with
+reading and writing data, once an identity has been granted
+write and/or read access to the cache, that identity can use
+any data in the cache. If you need to restrict access to
+subsets of the cached data, you can:
+
+- Split the cache into partitions (by using different cache
+  servers) and only grant access to identities for the
+  partitions that they should be allowed to use, or
+- Encrypt the data in each subset by using different keys
+  and only provide the encryption keys to identities that
+  should have access to each subset. A client application
+  may still be able to retrieve all of the data in the cache,
+  but it will only be able to decrypt the data for which it
+  has the keys.
+
+To protect the data as it flows into and out of the cache you
+are dependent on the security features provided by the network
+infrastructure that client applications use to connect to the
+cache. If the cache is implemented using an on-site server
+within the same organization that hosts the client applications,
+then the isolation of the network itself may not require you to
+take any additional steps. If the cache is located remotely and
+requires a TCP or HTTP connection over a public network (such
+as the Internet), you should consider implementing SSL.
+
+## Considerations for implementing caching with Microsoft Azure
+
+Azure provides the Azure Redis Cache. This is an implementation
+of the open source Redis Cache that runs as a service in an
+Azure datacenter. It provides a caching service that can be
+accessed from any Azure application, whether the application
+is implemented as a cloud service, a website, or inside an
+Azure virtual machine. Caches can be shared by client
+applications that have the appropriate access key.
+
+Redis is a high-performance caching solution that provides
+availability, scalability and security. It typically runs
+as a service spread across one or more dedicated machines and
+attempts to store as much information as it can in memory to
+ensure fast access. This architecture is intended to provide
+low latency and high throughput by reducing the need to
+perform slow I/O operations.
+
+The Azure Redis cache is compatible with many of the various
+APIs used by client applications. If you have existing
+applications that already use Redis running on-premises, the
+Azure Redis cache provides a quick migration path to caching
+in the cloud.
+
+> [AZURE.NOTE] Azure also provides the Managed Cache Service. This
+  service is based on the Microsoft AppFabric Cache engine. It
+  enables you to create a distributed cache that can be shared
+  by loosely-coupled applications. The cache is hosted on
+  high-performance servers running in an Azure datacenter.
+  However, this option is no longer recommended and is only
+  provided to support existing applications that have been built
+  to use it. For all new development, use the Azure Redis
+  Cache instead.
 >
-> さらに、Azure は、ロールのキャッシュをサポートしています。この機能
-  クラウド サービスに固有のキャッシュを作成できます。
-  キャッシュが web またはワーカー ロールのインスタンスによってホストされていると
-  同じの一部として操作の役割によってのみアクセスできます。
-  クラウド サービス展開単位 (デプロイメント ユニットがセット
-  ロール インスタンスの特定の提供するクラウド サービスとして展開
-  地域)。キャッシュがクラスター化されると、すべてのインスタンスの
-  キャッシュをホストする同一の配置単位内の役割
-  同じキャッシュ クラスターの一部となります。既存のアプリケーション
-  、そうし続ける役割でキャッシュを使用することができますが、
-  Azure Redis キャッシュへの移行より多くの利益をもたらす可能性があります。
-  Azure Redis キャッシュを使用するかどうかの詳細について
-  または、ロール内の-キャッシュ、ページをご覧ください
-  [Azure キャッシュ サービスは私にとって正しいですか。](http://msdn.microsoft.com/library/azure/dn766201.aspx) Microsoft の web サイト。
+> Additionally, Azure supports in-role caching. This feature
+  enables you to create a cache specific to a cloud service.
+  The cache is hosted by instances of a web or worker role, and
+  can only be accessed by roles operating as part of the same
+  cloud service deployment unit (a deployment unit is the set
+  of role instances deployed as a cloud service to a specific
+  region). The cache is clustered, and all instances of the
+  role within the same deployment unit that host the cache
+  become part of the same cache cluster. Existing applications
+  that use in-role caching can continue to do so, but
+  migrating to the Azure Redis Cache may bring more benefits.
+  For more information about whether to use Azure Redis Cache
+  or an in-role cache, visit the page
+  [Which Azure Cache offering is right for me?](http://msdn.microsoft.com/library/azure/dn766201.aspx) on the Microsoft website.
 
 
-### Redis の特徴
+### Features of Redis
 
-Redis は簡単なキャッシュ サーバー; より分散メモリを提供します。
-多くの一般的なシナリオをサポートする豊富なコマンド セットを備えたデータベース
-使用例で説明したよう Redis 後述のキャッシュ
-ドキュメント。このセクションは Redis 主要な機能のいくつかをまとめたもの
-提供します。
+Redis is more than a simple cache server; it provides a distributed in-memory
+database with an extensive command set that supports many common scenarios,
+as described in the section Use-cases for Redis caching later in this
+document. This section summarizes some of the key features that Redis
+provides.
 
-### メモリ内データベースとして redis します。
+### Redis as an in-memory database
 
-Redis では、読み取りと書き込み操作の両方をサポートしています。(これは一時的なデータ ストアとして考慮されるべき) 多くのキャッシュとは異なり書き込みはいずれかに定期的にローカル スナップショット ファイルまたは追加のみのログ ファイルに格納される、システム障害から保護できます。すべての書き込みは非同期であり、クライアントの読み取りとデータの書き込みをブロックしません。とき Redis 実行を開始、スナップショットまたはログ ファイルからデータを読み取り、使用してメモリ内にキャッシュを構築します。詳細については、次を参照してください。 [REDIS の永続性](http://redis.io/topics/persistence) Redis のウェブサイト。
+Redis supports both reading and writing operations. Unlike many caches (which should be considered as transitory data stores), writes can be protected from system failure either by being stored in periodically in a local snapshot file or in an append-only log file. All writes are asynchronous and do not block clients reading and writing data. When Redis starts running, it reads the data from the snapshot or log file and uses it to construct the in-memory cache. For more information, see [Redis Persistence](http://redis.io/topics/persistence) on the Redis website.
 
-> [AZURE。メモ] Redis はすべての書き込みがイベントログに保存されることを保証しません
-  のみいくつかの秒を失う必要があります最悪の時が、致命的な障害の
-  データの価値があります。キャッシュとして機能する意図しないことを覚えて、
-  権限のあるデータ ソース、およびそれがアプリケーションの責任
-  正常に保存が重要なデータを確実にキャッシュを使用して、
-  適切なデータ ストア。詳細については、キャッシュ アサイド パターンを参照してください。
+> [AZURE.NOTE] Redis does not guarantee that all writes will be saved in the event
+  of a catastrophic failure, but at worst you should only lose a few-seconds
+  worth of data. Remember that a cache is not intended to act as an
+  authoritative data source, and it is the responsibility of the applications
+  using the cache to ensure that critical data is saved successfully to an
+  appropriate data store. For more information, see the Cache-Aside pattern.
 
-#### Redis データ型
+#### Redis data types
 
-Redis 値が単純型またはリスト、ハッシュなどの複雑なデータ構造を含めることができますキーおよび値のストア、および設定します。これらのデータ型の分割不可能な操作のセットをサポートしています。キーは永続的またはその時点でキーと対応する値は自動的にキャッシュから削除されますに住む限られた時間でタグ付けすることができます。Redis キーと値の詳細については、ページを参照してください。 [Redis データ型および抽象化の導入](http://redis.io/topics/data-types-intro) Redis のウェブサイト。
+Redis is a key-value store, where values can contain simple types or complex data structures such as hashes, lists, and sets. It supports a set of atomic operations on these data types. Keys can be permanent or tagged with a limited time to live at which point the key and its corresponding value are automatically removed from the cache. For more information about redis keys and values, visit the page [An Introduction to Redis data types and abstractions](http://redis.io/topics/data-types-intro) on the Redis website.
 
-#### Redis レプリケーションとクラスタ リング
+#### Redis replication and clustering
 
-Redis は、マスターと下位の可用性を確保し、スループットを維持するためにレプリケーションをサポートしていますRedis マスター ノードへの書き込み操作が 1 つにレプリケートまたはより多くの従属ノード、および読み取り操作は、マスターまたは下位図形のいずれかによって提供できます。ネットワーク パーティションが発生した場合は、部下がデータを提供して、透過的に再同期マスターとの接続が再確立されたときに続行できます。詳細についてを参照してください、 [レプリケーション](http://redis.io/topics/replication) Redis ウェブサイトのページ。
+Redis supports master/subordinate replication to help ensure availability and maintain throughput; write operations to a Redis master node are replicated to one or more subordinate nodes, and read operations can be served by the master or any of the subordinates. In the event of a network partition, subordinates can continue to serve data and then transparently resynchronize with the master when the connection is reestablished. For further details, visit the [Replication](http://redis.io/topics/replication) page on the Redis website.
 
-Redis では、クラスタ リング、透過的に破片にサーバー間でデータを分割し、負荷分散することができる提供しています。この機能は、Redis の新しいサーバーを追加することができ、データ キャッシュのサイズに従って増加のスケーラビリティを向上させます。さらに、クラスター内の各サーバーは、クラスター内の各ノード間で可用性を確保するマスターと下位のレプリケーションを使用してレプリケートできます。クラスタ リングと分割の詳細についてを参照してください、 [Redis クラスター チュートリアル ページ](http://redis.io/topics/cluster-tutorial) Redis のウェブサイト。
+Redis also provides clustering, enabling you to transparently partition data into shards across servers and spread the load. This feature improves scalability as new Redis servers can be added and the data repartitioned as the size of the cache increases. Furthermore, each server in the cluster can be replicated by using master/subordinate replication to ensure availability across each node in the cluster. For more information about clustering and sharding, visit the [Redis Cluster Tutorial page](http://redis.io/topics/cluster-tutorial) on the Redis website.
 
-> [AZURE。メモ] 紺碧 Redis キャッシュは現在クラスタ リングをサポートしていません。Redis クラスターを作成する場合は、カスタム Redis サーバーを構築できます。詳細については、このドキュメントの後半のカスタム Redis キャッシュを構築を参照してください。
+> [AZURE.NOTE] Azure Redis Cache does not currently support clustering. If you wish to create a Redis cluster you can build your own custom Redis server. For more information, see the section Building a Custom Redis Cache later in this document.
 
-### メモリの使用量を redis します。
+### Redis memory use
 
-Redis キャッシュは、ホスト コンピューターで利用可能なリソースに応じて有限サイズを持ちます。Redis サーバーを構成するときは、使用できるメモリの最大量を指定できます。Redis キャッシュ内のキーは、有効期間、その後自動的にキャッシュから削除で構成できます。この機能は、メモリ内キャッシュが古いまたは古いデータで満たされているを防ぐことができます。
+A Redis cache has a finite size depending on the resources available on the host computer. When you configure a Redis server, you can specify the maximum amount of memory it can use. A key in a Redis cache can be configured with an expiration time, after which it is automatically removed from the cache. This feature can help prevent the in-memory cache from being filled with old or stale data.
 
-メモリがいっぱいになりました、Redis できます自動的にポリシーの数に従って、キーとその値を削除します。既定では (少なくとも最近使用)、LRU が選択することも、ランダムにキーを削除または削除をオフにするなど他の政策全体で (その場合、項目をキャッシュに追加するのには失敗しますがいっぱいの場合)。ページ [LRU キャッシュとして Redis を使用してください。](http://redis.io/topics/lru-cache) 多くの情報を提供します。
+As memory fills up, Redis can automatically evict keys and their values by following a number of policies. The default is LRU (least recently used), but you can also select other policies such as evicting keys at random, or turning off eviction altogether (in which case, attempts to add items to the cache will fail if it is full). The page [Using Redis as an LRU Cache](http://redis.io/topics/lru-cache) provides more information.
 
-### Redis トランザクションとバッチ
+### Redis transactions and batches
 
-Redis enables a client application to submit a series of operations that read and write data in the cache as an atomic transaction. All of the commands in the transaction are guaranteed to be executed sequentially and no commands issued by other concurrent clients will be interwoven between them. However, these are not true transactions as a relational database would perform them. Transaction processing consists of two stages; command queuing and command execution. During the command queuing stage, the commands that comprise the transaction are submitted by the client. If some sort of error occurs at this point (such as a syntax error, or the wrong number of parameters) then Redis will refuse to process the entire transaction and discard it. During the execution phase, Redis performs each queued command in sequence. If a command fails during this phase Redis will continue with the next queued command and it does not roll back the effects of any commands that have already been executed. This simplified form of transaction helps to maintain performance and avoid performance problems caused by contention. Redis does implement a form of optimistic locking to assist in maintaining consistency. For detailed information about transactions and locking with Redis, visit the [取引ページ](http://redis.io/topics/transactions) Redis のウェブサイト。
+Redis enables a client application to submit a series of operations that read and write data in the cache as an atomic transaction. All of the commands in the transaction are guaranteed to be executed sequentially and no commands issued by other concurrent clients will be interwoven between them. However, these are not true transactions as a relational database would perform them. Transaction processing consists of two stages; command queuing and command execution. During the command queuing stage, the commands that comprise the transaction are submitted by the client. If some sort of error occurs at this point (such as a syntax error, or the wrong number of parameters) then Redis will refuse to process the entire transaction and discard it. During the execution phase, Redis performs each queued command in sequence. If a command fails during this phase Redis will continue with the next queued command and it does not roll back the effects of any commands that have already been executed. This simplified form of transaction helps to maintain performance and avoid performance problems caused by contention. Redis does implement a form of optimistic locking to assist in maintaining consistency. For detailed information about transactions and locking with Redis, visit the [Transactions page](http://redis.io/topics/transactions) on the Redis website.
 
-Redis では、要求の非トランザクション バッチ処理もサポートしています。Redis サーバーにコマンドを送信するクライアントを使用して Redis プロトコルでは、同じ要求の一部として一連の操作を送信するクライアントをできます。これは、ネットワーク上のパケットの断片化を減らすために助けることができます。バッチを処理すると、各コマンドが実行されます。トランザクションとは異なり、これらのコマンドのいずれかが不正な場合拒否されますが、残りのコマンドが実行されます。また、バッチ内のコマンドが処理される順序の保証はありません。
+Redis also supports non-transactional batching of requests. The Redis protocol that clients use to send commands to a Redis server enables a client to send a series of operations as part of the same request. This can help to reduce packet fragmentation on the network. When the batch is processed, each command is performed. Unlike a transaction, if any of these commands are malformed they will be rejected but the remaining commands will be performed. There is also no guarantee on the order in which the commands in the batch will be processed.
 
-### Redis セキュリティ
+### Redis security
 
-Redis は、データへの高速アクセスを提供することに取り組むし、信頼された環境内で実行し、信頼されたクライアントのみがアクセスするように設計。Redis (これは推奨されませんが認証を完全に削除することが可能です) パスワード認証に基づいて制限されたセキュリティ モデルのみをサポートします。すべての認証されたクライアントは、同じグローバル パスワードを共有し、同じリソースへのアクセスがあります。包括的なログインのセキュリティが必要な場合 Redis サーバーの前にあなた自身のセキュリティ レイヤーを実装する必要があります、すべてのクライアント要求が通ればこのレイヤーを追加。Redis いない、信頼されていないまたは認証されていないクライアントに直接公開するべき。
+Redis is focused purely on providing fast access to data, and is designed to run inside a trusted environment and be accessed only by trusted clients. Redis only supports a limited security model based on password authentication (it is possible to remove authentication completely, although this is not recommended). All authenticated clients share the same global password, and have access to the same resources. If you need more comprehensive login security, you must implement your own security layer in front of the Redis server and all client requests should pass through this additional layer; Redis should not be directly exposed to untrusted or unauthenticated clients.
 
-コマンドを無効にすることまたは名前を変更して (とだけ新しい名前と特権クライアントを提供する) でアクセスを制限できます。
+You can restrict access to commands by disabling them or renaming them (and only providing privileged clients with the new names).
 
-Redis は何らかのデータの暗号化、クライアント アプリケーションによってすべてのエンコードを行う必要がありますので直接はサポートしていません。さらに、SSL プロキシを実装する必要がある場合はネットワークを経由するデータを保護する必要がありますので、Redis ではトランスポートのセキュリティの任意のフォームを提供しません。
+Redis does not directly support any form of data encryption, so all encoding must be performed by client applications. Additionally, Redis does not provide any form of transport security, so if you need to protect data as it flows across the network you should implement an SSL proxy.
 
-詳細についてを参照してください、 [Redis セキュリティ](http://redis.io/topics/security) Redis ウェブサイトのページ。
+For more information, visit the [Redis Security](http://redis.io/topics/security) page on the Redis website.
 
-> [AZURE。メモ] 紺碧 Redis キャッシュ クライアントが接続する際、独自のセキュリティ層を提供します。基になる Redis
-  サーバーはパブリック ネットワークに公開されません。
+> [AZURE.NOTE] Azure Redis Cache provides its own security layer through which clients connect; the underlying Redis
+  servers are not exposed to the public network.
 
-### Azure Redis キャッシュを使用
+### Using the Azure Redis cache
 
-Azure Redis キャッシュで Azure のデータ センターにホスト サーバーで実行されている Redis サーバーにアクセスを提供します。それは、アクセス制御とセキュリティ ファサードとして機能します。Azure 管理ポータルを使用して、キャッシュをプロビジョニングすることができます。ポータルは、(プライバシー) の SSL 通信と 250 MB まで、99.9% の可用性の SLA を持つマスターと下位レプリケーション レプリケーション (可用性保証のない) 共有ハードウェア上で実行することがなくキャッシュをサポートする専用のサービスとして実行されている 53 GB キャッシュに至る、定義済みの構成の数を提供します。
+The Azure Redis Cache provides access to Redis servers running on servers hosted at an Azure datacenter; it acts as a façade that provides access control and security. You can provision a cache by using the Azure Management portal. The portal provides a number of predefined configurations, ranging from a 53GB cache running as a dedicated service that supports SSL communications (for privacy) and master/subordinate replication with an SLA of 99.9% availability, down to a 250MB cache without replication (no availability guarantees) running on shared hardware.
 
-Azure 管理ポータルを使用しても、キャッシュの削除ポリシーを構成して提供ロールにユーザーを追加するキャッシュへのアクセスを制御所有者、寄稿者、読者。これらのロールのメンバーが実行できる操作を定義します。たとえば、所有者ロールのメンバー (セキュリティを含む) キャッシュとその内容を完全に制御がある、共同作成者ロールのメンバーが、キャッシュ内で情報を読み書きできるし、読者の役割のメンバーのみ、キャッシュからデータを取得できます。
+Using the Azure Management portal you can also configure the eviction policy of the cache, and control access to the cache by adding users to the roles provided; Owner, Contributor, Reader. These roles define the operations that members can perform. For example, members of the Owner role have complete control over the cache (including security) and its contents, members of the Contributor role can read and write information in the cache, and members of the Reader role can only retrieve data from the cache.
 
-ほとんどの管理タスクは Azure 管理ポータルを通じて実行され、Redis の標準バージョンで使用できる管理コマンドの多くが利用できない場合は、プログラムを使用して、構成を変更する機能を含むため Redis サーバーをシャット ダウン構成追加の奴隷、または強制的にデータをディスクに保存します。
+Most administrative tasks are performed through the Azure Management portal, and for this reason many of the administrative commands available in the standard version of Redis are not available, including the ability to modify the configuration programmatically, shutdown the Redis server, configure additional slaves, or forcibly save data to disk.
 
 The Azure management portal includes a convenient graphical display that enables you to monitor the performance of the cache. For example, you can view the number of connections being made, the number of requests performed, the volume of reads and writes, and the number of cache hits versus cache misses. Using this information you can determine the effectiveness of the cache and if necessary switch to a different configuration or change the eviction policy. Additionally, you can create alerts that send email messages to an administrator if one or more critical metrics fall outside of an expected range. For example, if the number of cache misses exceeds a specified value in the last hour, an administrator could be alerted as the cache may be too small or data may be being evicted too quickly.
 
-CPU、メモリ、およびキャッシュのネットワーク使用率を監視することも。
+You can also monitor CPU, memory, and network usage for the cache.
 
-> [AZURE。メモ] 紺碧 Redis キャッシュのデータベースではなくキャッシュとして純粋に行動するものです。その結果、現在 Redis の永続化を実装しません。
+> [AZURE.NOTE] Azure Redis Cache is intended to act purely as a cache rather than a database. As a result, it does not currently implement Redis persistence.
 
-詳細については、作成し、Azure Redis のキャッシュを構成する方法を示す例を参照してくださいページ [紺碧 Redis キャッシュの周りにラップ](http://azure.microsoft.com/blog/2014/06/04/lap-around-azure-redis-cache-preview/) 紺碧のブログ。
+For further information and examples showing how to create and configure an Azure Redis Cache, visit the page [Lap around Azure Redis Cache](http://azure.microsoft.com/blog/2014/06/04/lap-around-azure-redis-cache-preview/) on the Azure blog.
 
-## キャッシュ セッション状態と HTML 出力
+## Caching session state and HTML output
 
-Azure の web ロールを使用して実行すると、保存できることセッション状態情報と HTML 出力の Azure Redis キャッシュ内のアプリケーションを web ASP.NET を構築するかどうか。Azure Redis キャッシュ セッション状態プロバイダーは、ASP.NET web アプリケーションの異なるインスタンス間でセッション情報を共有することができます、クライアント-サーバ アフィニティが使用できないし、セッション データをメモリ内のキャッシュは適切でない web ファーム場合に非常に便利です。
+If you building ASP.NET web applications that run by using Azure web roles, you can save session state information and HTML output in an Azure Redis Cache. The Session State Provider for Azure Redis Cache enables you to share session information between different instances of an ASP.NET web application, and is very useful in web farm situations where client-server affinity is not available and caching session data in-memory would not be appropriate.
 
-Azure Redis キャッシュ提供のセッション状態プロバイダーを使用してを含むいくつかの利点。
+Using the Session State Provider with Azure Redis Cache delivers several benefits, including:
 
-- それは多数のスケーラビリティの向上を提供する、ASP.NET web アプリケーションのインスタンス間でセッション状態を共有できます。
-- 複数のリーダーと単一ライターの同じセッション状態データへの制御、同時アクセスをサポートしていて、
-- 圧縮を使用してメモリを節約し、ネットワーク パフォーマンスを向上させることできます。
+- It can share session state amongst a large number of instances of an ASP.NET web application, providing improved scalability,
+- It supports controlled, concurrent access to the same session state data for multiple readers and a single writer, and
+- It can use compression to save memory and improve network performance.
 
-詳細については"を参照してください、 [Azure の ASP.NET のセッション状態プロバイダーは、キャッシュを Redis します。](http://msdn.microsoft.com/library/azure/dn690522.aspx) Microsoft の web サイト上のページ。
+For more information visit the [ASP.NET Session State Provider for Azure Redis Cache](http://msdn.microsoft.com/library/azure/dn690522.aspx) page on the Microsoft website.
 
-> [AZURE。メモ] Azure 環境の外部で実行する ASP.NET アプリケーションに、Azure Redis キャッシュ セッション状態プロバイダーを使わない。Azure の外部からキャッシュへのアクセスの待機時間は、データ キャッシュのパフォーマンス上の利点をなくすことができます。
+> [AZURE.NOTE] Do not use the Session State Provider for Azure Redis Cache for ASP.NET applications that run outside of the Azure environment. The latency of accessing the cache from outside of Azure can eliminate the performance benefits of caching data.
 
-同様に、Azure Redis キャッシュに出力キャッシュ プロバイダーは ASP.NET web アプリケーションによって生成される HTTP 応答を保存することができます。複雑な HTML 出力をレンダリングするアプリケーションの応答時間を短縮することができます Azure Redis キャッシュと出力キャッシュ プロバイダーを使用してあらためて出力この HTML を生成するのではなく、キャッシュに共有出力のフラグメントのアプリケーション インスタンスを生成するような反応をすることができますを使用します。 詳細については"を参照してください、 [Azure の ASP.NET 出力キャッシュ プロバイダーは、キャッシュを Redis します。](http://msdn.microsoft.com/library/azure/dn798898.aspx) Microsoft の web サイト上のページ。
+Similarly, the Output Cache Provider for Azure Redis Cache enables you to save the HTTP responses generated by an ASP.NET web application. Using the Output Cache Provider with Azure Redis Cache can improve the response times of applications that render complex HTML output; application instances generating similar responses can make use of the shared output fragments in the cache rather than generating this HTML output afresh.  For more information visit the [ASP.NET Output Cache Provider for Azure Redis Cache](http://msdn.microsoft.com/library/azure/dn798898.aspx) page on the Microsoft website.
 
-## カスタム Redis キャッシュを構築
+## Building a custom Redis cache
 
-The Azure Redis cache acts as a façade to the underlying Redis servers. Currently it supports a fixed set of configurations but does not provide for Redis clustering. If you require an advanced configuration that is not covered by the Azure Redis cache (such as a cache bigger than 53GB) you can build and host your own Redis servers by using Azure virtual machines. This is a potentially complex process as you may need to create several VMs to act as master and subordinate nodes if you want to implement replication. Furthermore, if you wish to create a cluster, then you will need multiple masters and subordinate servers; a minimal clustered, replication topology that provides a high degree of availability and scalability comprises at least 6 VMs organized as 3 pairs of master/subordinate servers (a cluster must contain at least 3 master nodes). Each master/subordinate pair should be located close together to minimize latency, but each set of pairs can be running in different Azure datacenters located in different regions if you wish to locate cached data close to the applications that are most likely to use it. The page [Azure の CentOS Linux VM 上 Redis で実行](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) マイクロソフトの web サイトの構築し、Azure の VM として実行している Redis ノードを構成する方法を示す例について説明します。
+The Azure Redis cache acts as a façade to the underlying Redis servers. Currently it supports a fixed set of configurations but does not provide for Redis clustering. If you require an advanced configuration that is not covered by the Azure Redis cache (such as a cache bigger than 53GB) you can build and host your own Redis servers by using Azure virtual machines. This is a potentially complex process as you may need to create several VMs to act as master and subordinate nodes if you want to implement replication. Furthermore, if you wish to create a cluster, then you will need multiple masters and subordinate servers; a minimal clustered, replication topology that provides a high degree of availability and scalability comprises at least 6 VMs organized as 3 pairs of master/subordinate servers (a cluster must contain at least 3 master nodes). Each master/subordinate pair should be located close together to minimize latency, but each set of pairs can be running in different Azure datacenters located in different regions if you wish to locate cached data close to the applications that are most likely to use it. The page [Running Redis on a CentOS Linux VM in Azure](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) on the Microsoft website walks through an example showing how to build and configure a Redis node running as an Azure VM.
 
-この方法で Redis キャッシュを実装する場合あなたが監視、管理、およびサービスの保護を担当に注意してください。
+Note that if you implement your own Redis cache in this way, you are responsible for monitoring, managing, and securing the service.
 
-## Redis キャッシュのパーティション分割
+## Partitioning a Redis cache
 
-キャッシュをパーティションでは、複数のコンピューターにわたってキャッシュを分割します。この構造体は、いくつかの利点を含む、1 つのキャッシュ サーバーを使用しています。
+Partitioning the cache involves splitting the cache across multiple computers. This structure gives you several advantages over using a single cache server, including:
 
-- キャッシュを作成する 1 つのサーバーに格納できるよりもはるかに大きいです。
-- 可用性を向上させるサーバ間でデータを配布します。保持するデータのみが利用可能なは 1 つのサーバーが失敗したまたはアクセスできなくなったり、残りのサーバー上のデータをアクセスもできます。キャッシュこのキャッシュされたデータとして重要ななっていないデータの一時的なコピーのみ、データベースに保持されて、アクセスできなくなったサーバー上のキャッシュされたデータを別のサーバーに代わりにキャッシュできます。
-- パフォーマンスとスケーラビリティが向上、サーバーに負荷を分散します。
-- Geolocating データ遅延を削減でき、それにアクセスするユーザーの近くに配置。
+- Creating a cache that is much bigger than can be stored on a single server.
+- Distributing data across servers, improving availability. If one server fails or becomes inaccessible, only the data that it holds is unavailable; the data on the remaining servers can still be accessed. For a cache, this is not crucial as the cached data is only a transient copy of the data held in a database, and cached data on a server that becomes inaccessible can be cached on a different server instead.
+- Spreading the load across servers, thereby improving performance and scalability.
+- Geolocating data close to the users that access it, reducing latency.
 
-パーティション分割の最も一般的な形式は、キャッシュ、シャーディングです。この戦略では、各パーティション (または破片) は、独自の権利で Redis キャッシュです。データは、特定のパーティションにデータを分散するさまざまなアプローチを使用することができます分割ロジックを使用してによって監督されます。、 [分割パターン](http://msdn.microsoft.com/library/dn589797.aspx) 分割の実装の詳細を提供します。
+For a cache, the most common form of partitioning is sharding. In this strategy each partition (or shard) is a Redis cache in its own right. Data is directed to a specific partition by using sharding logic, which can use a variety of approaches to distribute the data. The [Sharding Pattern](http://msdn.microsoft.com/library/dn589797.aspx) provides more information on implementing sharding.
 
-Redis キャッシュのパーティション分割を実装するには、次の方法のいずれかを採用します。
+To implement partitioning in a Redis cache, you can adopt one of the following approaches:
 
-- _サーバー側のクエリをルーティングします。_ この手法では、クライアント アプリケーションのいずれかに要求を送信、
-  Redis サーバー キャッシュ (おそらく最も近いサーバー) を構成します。各 Redis サーバー格納します。
-  それを保持していると、これに関する情報も格納パーティションを記述するメタデータ
-  パーティションは、他のサーバーに配置されます。Redis サーバー クライアント要求を調べ、そして、もしそれ
-  それは要求された操作、それ以外の場合、転送を実行をローカルで解決することができます、
-  適切なサーバーに要求します。このモデルは Redis クラスタ リングによって実装され、
-  詳細について、 [Redis クラスター チュートリアル](http://redis.io/topics/cluster-tutorial) Redis ウェブサイトのページ。Redis クラスタ リング
-  クライアント アプリケーションは、サーバーをクラスターに追加することができます追加 Redis に対して透過的です。
-  (と再分割データ) クライアントを再構成することを必要とせず。
+- _Server-side query routing._ In this technique, a client application sends a request to any of the
+  Redis servers that comprise the cache (probably the closest server). Each Redis server stores
+  metadata that describes the partition that it holds, and also contains information about which
+  partitions are located on other servers. The Redis server examines the client request and if it
+  can be resolved locally it will perform the requested operation, otherwise it will forward the
+  request on to the appropriate server. This model is implemented by Redis clustering, and is
+  described in more detail on the [Redis cluster tutorial](http://redis.io/topics/cluster-tutorial) page on the Redis website. Redis clustering
+  is transparent to client applications, and additional Redis servers can be added to the cluster
+  (and the data re-partitioned) without requiring that you reconfigure the clients.
 
-  > [AZURE。重要です] 紺碧 Redis キャッシュは現在 Redis のクラスタ リングをサポートしていません。たい場合
-  このアプローチを実装し、前述のようにカスタム Redis キャッシュを構築する必要があります。
+  > [AZURE.IMPORTANT] Azure Redis Cache does not currently support Redis clustering. If you wish to
+  implement this approach then you should build a custom Redis cache as described earlier.
 
-- _クライアント側のパーティション分割。_ このモデルでは、クライアント アプリケーションには (おそらくのロジックが含まれています
-  ライブラリのフォーム) Redis の適切なサーバーに要求をルーティングします。このアプローチ
-  Azure Redis キャッシュで使用できます。複数 Azure Redis のキャッシュ (1 つ各データの作成します。
-  パーティション)、要求を適切にルーティング クライアント側ロジックを実装
-  キャッシュ。(追加 Azure Redis キャッシュを作成する場合、パーティション構成が変更された場合
-  たとえば)、クライアント アプリケーションを再構成する必要があります。
+- _Client-side partitioning._ In this model, the client application contains logic (possibly in
+  the form of a library) that routes requests to the appropriate Redis server. This approach
+  can be used with Azure Redis Cache; create multiple Azure Redis Caches (one for each data
+  partition) and implement the client-side logic that routes the requests to the correct
+  cache. If the partitioning scheme changes (if additional Azure Redis Caches are created,
+  for example), client applications may need to be reconfigured.
 
-- _プロキシによる分割します。_ この方式では、クライアント アプリケーションは、要求を送信します。
-  仲介プロキシ サービス データのパーティション分割方法を理解して、ルート
-  Redis の適切なサーバーに要求します。このアプローチは、Azure で使用もできます。
-  Redis キャッシュ;プロキシ サービスは、Azure クラウド サービスとして実装することができます。これ
-  アプローチはサービスの導入における複雑さの追加レベルを必要とし、
-  要求は、クライアント側のパーティション分割を使用するよりも実行に時間がかかります。
+- _Proxy-assisted partitioning._ In this scheme, client applications send requests to an
+  intermediary proxy service which understands how the data is partitioned and then routes
+  the request to the appropriate Redis server. This approach can also be used with Azure
+  Redis Cache; the proxy service could be implemented as an Azure cloud service. This
+  approach requires an additional level of complexity to implement the service, and
+  requests may take longer to perform than using client-side partitioning.
 
-ページ [Redis の複数のインスタンス間でデータを分割する方法の分割。](http://redis.io/topics/partitioning)
-Redis のウェブサイトは Redis でパーティショニングの実装に関する詳細を提供します。
+The page [Partitioning: how to split data among multiple Redis instances](http://redis.io/topics/partitioning)
+on the Redis website provides further information about implementing partitioning with Redis.
 
-### Redis キャッシュ クライアント アプリケーションを実装します。
+### Implementing Redis cache client applications
 
-Redis 多数のプログラミング言語で記述されたクライアント アプリケーションをサポートします。.NET Framework を使用して、新しいアプリケーションを構築する場合は、StackExchange.Redis クライアント ライブラリを使用することをお勧めします。このライブラリは、Redis サーバーへの接続、コマンドの送信と応答の受信の詳細を抽象化する .NET Framework オブジェクト モデルを提供します。NuGet パッケージと Visual Studio で利用可能です。この同じライブラリを使用すると、Azure Redis キャッシュまたは Redis のカスタム キャッシュの vm ホストに接続できます。
+Redis supports client applications written in numerous programming languages. If you are building new applications by using the .NET Framework, the recommended approach is to use the StackExchange.Redis client library. This library provides a .NET Framework object model that abstracts the details for connecting to a Redis server, sending commands, and receiving responses. It is available in Visual Studio as a NuGet package. You can use this same library to connect to an Azure Redis cache, or a custom Redis cache hosted on a VM.
 
-静的に使用する Redis サーバーに接続するには `Connect` 法、 `ConnectionMultiplexer` クラスです。このメソッドが作成する接続は、クライアント アプリケーションの有効期間全体にわたる使用設計されていますおよび複数の並行スレッドで同じ接続を使用することができます。再接続しないし、切断するたび Redis 操作を実行すると、パフォーマンスが低下することができます。アドレス Redis ホストおよび、パスワードなどの接続パラメーターを指定できます。Azure Redis キャッシュを使用する場合はこれがどちらかはパスワード プライマリまたはセカンダリ キーを生成 Azure Redis キャッシュの Azure 管理ポータルを使用しています。
+To connect to a Redis server you use the static `Connect` method of the `ConnectionMultiplexer` class. The connection that this method creates is designed to be used throughout the lifetime of the client application, and the same connection can be used by multiple concurrent threads; do not reconnect and disconnect each time you perform a Redis operation as this can degrade performance. You can specify the connection parameters, such as the address of the Redis host and the password. If you are using the Azure Redis cache, the password this is either the primary or secondary key generated for the Azure Redis Cache by using the Azure Management portal.
 
-Redis サーバーに接続すると、キャッシュとして機能する Redis データベースのハンドルを取得できます。Redis 接続を提供します、 `GetDatabase` これを行う方法。キャッシュから項目を取得し、キャッシュを使用してデータを格納、 `StringGet` と `StringSet` メソッド。これらのメソッドが要求するパラメーターとしてキーと一致する値 (キャッシュで項目を返すか`StringGet`) このキー (キャッシュに項目を追加または`StringSet`).
+After you have connected to the Redis server, you can obtain a handle on the Redis database that acts as the cache. The Redis connection provides the `GetDatabase` method to do this. You can then retrieve items from the cache and store data in the cache by using the `StringGet` and `StringSet` methods. These methods expect a key as a parameter, and either return the item in the cache that has a matching value (`StringGet`) or add the item to the cache with this key (`StringSet`).
 
-Redis サーバーの場所、によって多くの操作がサーバーに要求を送信し、応答がクライアントに返される、いくつかの遅延を負うかもしれない。StackExchange ライブラリは、多くのクライアント アプリケーションの応答性を維持に役立つに公開するメソッドの非同期バージョンを提供します。これらのメソッドをサポートします [タスク ベースの非同期パターン](http://msdn.microsoft.com/library/hh873175.aspx) .NET framework。
+Depending on the location of the Redis server, many operations may incur some latency while a request is transmitted to the server and a response returned to the client. The StackExchange library provides asynchronous versions of many of the methods that it exposes to help client applications remain responsive. These methods support the [Task-based Asynchronous Pattern](http://msdn.microsoft.com/library/hh873175.aspx) in the .NET Framework.
 
-次のコード スニペットは、という名前のメソッドを示しています。 `RetrieveItem` Redis と StackExchange ライブラリに基づくキャッシュ アサイド パターンの実装例を示します。メソッドは文字列キー値を受け取り、呼び出して Redis キャッシュから対応する項目を取得しようとすると、 `StringGetAsync` メソッド (非同期バージョン `StringGet`).使用して基になるデータ ソースからフェッチされる項目がない場合、 `GetItemFromDataSourceAsync` (これはローカル メソッドと StackExchange ライブラリの一部ではない) メソッドを使用してキャッシュに追加した、 `StringSetAsync` メソッドをそれを取得できますより迅速に次の時間。
+The following code snippet shows a method named `RetrieveItem` that illustrates an example of an implementation of the cache-aside pattern based on Redis and the StackExchange library. The method takes a string key value, and attempts to retrieve the corresponding item from the Redis cache by calling the `StringGetAsync` method (the asynchronous version of `StringGet`). If the item is not found, it is fetched from the underlying data source using the `GetItemFromDataSourceAsync` method (which is a local method and not part of the StackExchange library), and then added to the cache by using the `StringSetAsync` method so it can be retrieved more quickly next time.
 
 ```csharp
 // Connect to the Azure Redis cache
@@ -631,7 +631,7 @@ private async Task<string> RetrieveItem(string itemKey)
 }
 ```
 
-、 `StringGet` と `StringSet` メソッドで取得または文字列値を格納に制限はありません。任意の項目のバイトの配列としてシリアル化をとることができます。.NET オブジェクトを保存する必要がある場合は、バイト ストリームとしてシリアル化し、キャッシュへの書き込みに StringSet メソッドを使用できます。同様に、StringGet メソッドを使用して、キャッシュからオブジェクトを読み取るし、.NET オブジェクトとしてシリアル化できます。次のコードは、IDatabase インターフェイスの拡張メソッドのセットを示しています (Redis 接続の GetDatabase メソッドを返します、 `IDatabase` オブジェクト) とキャッシュに BlogPost オブジェクトを読み書きするこれらのメソッドを使用していくつかのサンプル コード。
+The `StringGet` and `StringSet` methods are not restricted to retrieving or storing string values; they can take any item serialized as an array of bytes. If you need to save a .NET object you can serialize it as a byte stream and use the StringSet method to write it to the cache. Similarly, you can read an object from cache by using the StringGet method and deserialize it as a .NET object. The following code shows a set of extension methods for the IDatabase interface (the GetDatabase method of a Redis connection returns an `IDatabase` object),  and some sample code that uses these methods to read and write a BlogPost object to the cache:
 
 ```csharp
 public static class RedisCacheExtensions
@@ -686,7 +686,7 @@ public static class RedisCacheExtensions
 }
 ```
 
-次のコードは、という名前のメソッドを示しています。 `RetrieveBlogPost` 読み取りと書き込み、シリアル化可能なこれらの拡張メソッドを使用します。 `BlogPost` キャッシュ アサイド パターンに従ってキャッシュするオブジェクト:
+The following code illustrates a method named `RetrieveBlogPost` that uses these extension methods to read and write a serializable `BlogPost` object to the cache following the cache-aside pattern:
 
 ```csharp
 // The BlogPost type
@@ -722,7 +722,7 @@ private async Task<BlogPost> RetrieveBlogPost(string blogPostKey)
 }
 ```
 
-Redis サポート コマンド パイプ ラインの場合、クライアント アプリケーションは、複数の非同期要求を送信します。Redis は、同じ接続を使用してよりもむしろ受信および厳密な順序でコマンドに応答して要求を多重することができます。この方法は、ネットワークをより効率的に使用することによって遅延を減らすのに役立ちます。次のコード スニペットは、同時に 2 人の顧客の詳細を取得する例を示します。このコードは 2 つの要求を送信し、いくつか他の処理を実行 (表示されていません) 結果の受信を待機する前に。キャッシュ オブジェクトの待機メソッドは .NET Framework Task.Wait メソッドに似ています。
+Redis supports command pipelining if a client application sends multiple asynchronous requests. Redis can multiplex the requests using the same connection rather than receiving and responding to commands in a strict sequence. This approach helps to reduce latency by making more efficient use of the network. The following code snippet shows an example that retrieves the details of two customers concurrently. The code submits two requests and then performs some other processing (not shown) before waiting to receive the results. The Wait method of the cache object is similar to the .NET Framework Task.Wait method:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -735,25 +735,25 @@ var customer1 = cache.Wait(task1);
 var customer2 = cache.Wait(task2);
 ```
 
-ページ [紺碧 Redis キャッシュのための開発します。](http://msdn.microsoft.com/library/azure/dn690520.aspx) マイクロソフトでは、ウェブサイトは、Azure Redis キャッシュを使用できるクライアント アプリケーションを作成する方法の詳細についてを提供します。追加情報は、 [基本的な使い方のページ](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Basics.md) StackExchange.Redis のウェブサイトのページ [パイプラインおよびマルチプレクサー](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/PipelinesMultiplexers.md) 同じ web サイトに非同期操作および Redis StackExchange ライブラリとパイプライン処理の詳細についてを提供します。 このガイダンスで後キャッシュ Redis でユース ケースは、Redis キャッシュで保持されるデータに適用することができますより高度な技術のいくつかの例を説明します。
+The page [Develop for Azure Redis Cache](http://msdn.microsoft.com/library/azure/dn690520.aspx) on the Microsoft website provides more information on how to write client applications that can use the Azure Redis cache. Additional information is available on the [Basic Usage page](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Basics.md) on the StackExchange.Redis website, and the page [Pipelines and Multiplexers](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/PipelinesMultiplexers.md) on the same website provides more information about asynchronous operations and pipelining with Redis and the StackExchange library.  The section Use-Cases for Redis Caching later in this guidance provides examples of some of the more advanced techniques that you can apply to data held in a Redis cache.
 
-## Redis キャッシュの使用例
+## Use-cases for Redis caching
 
 The simplest use of Redis for caching concerns storing key/value pairs where the value is an uninterpreted string of arbitrary length that can contain any binary data (it is essentially  an array of bytes that can be treated as a string). This scenario was illustrated in the section Implementing Redis Cache Client Applications earlier in this guidance. You should note that keys also contain uninterpreted data, so you can use any binary information as the key, although the longer the key is the more space it will take to store, and the longer it will take to perform lookup operations. For usability and ease of maintenance design your keyspace carefully and use meaningful (but not verbose) keys. For example, use structured keys such as "customer:100" to represent the key for the customer with ID 100 rather than simply "100". This scheme enables you to easily distinguish between values that store different data types. For example, you could also use the key "orders:100" to represent the key for the order with ID 100.
 
-バイナリ文字列は 1 次元から離れて Redis のキー/値ペア内の値はより構造化されたリストを含む情報 (ソートし、ソートなし) を設定しますとハッシュも保持できます。これらのコマンドの多くは redis これらのタイプを操作することができます包括的なコマンド セットを提供します、StackExchange などのクライアント ライブラリを .NET Framework アプリケーションで使用できます。ページ [Redis データ型および抽象化の導入](http://redis.io/topics/data-types-intro) Redis のウェブサイトは、これらの種類とそれらを操作するために使用できるコマンドの詳細な概要を提供します。
+Apart from one-dimensional binary strings, a value in a Redis key/value pair can also hold more structured information, including lists, sets (sorted and unsorted), and hashes. Redis provides a comprehensive command set that can manipulate these types, and many of these commands are available to .NET Framework applications through a client library such as StackExchange. The page [An introduction to Redis data types and abstractions](http://redis.io/topics/data-types-intro) on the Redis website provides a more detailed overview of these types and the commands that you can use to manipulate them.
 
-このセクションでは、これらのデータ型やコマンドのいくつかの一般的な使用例をまとめたものです。
+This section summarizes some common use-cases for these data types and commands.
 
-### アトミック実行とバッチ処理
+### Performing atomic and batch operations
 
-Redis では、文字列の値を取得および設定しますアトミックオペレーションのシリーズをサポートしています。これらの操作は別を使用するときに発生する可能性があります可能なレースの危険性を削除します。 `GET` と `SET` コマンド。使用可能な操作が含まれます。
+Redis supports a series of atomic get-and-set operations on string values. These operations remove the possible race hazards that might occur when using separate `GET` and `SET` commands. The operations available include:
 
-- `INCR`, `INCRBY`, `DECR`、と `DECRBY` インクリメントを実行し操作をデクリメント
-  整数の数値データの値。StackExchange ライブラリのオーバー ロードされたバージョンを提供します、
-  `IDatabase.StringIncrementAsync` と `IDatabase.StringDecrementAsync` 実行するメソッド
-  これらの操作と、キャッシュに格納されている結果値を返します。次のコード
-  スニペットは、これらのメソッドを使用する方法を示しています。
+- `INCR`, `INCRBY`, `DECR`, and `DECRBY` which perform atomic increment and decrement operations on
+  integer numeric data values. The StackExchange library provides overloaded versions of the
+  `IDatabase.StringIncrementAsync` and `IDatabase.StringDecrementAsync` methods to perform
+  these operations and return the resulting value stored in the cache. The following code
+  snippet illustrates how to use these methods:
 
   ```csharp
   ConnectionMultiplexer redisHostConnection = ...;
@@ -770,11 +770,11 @@ Redis では、文字列の値を取得および設定しますアトミック�
   // newValue should be 50
   ```
 
-- `GETSET` キーに関連付けられている値を取得し、新しい値に変更します。、
-  StackExchange ライブラリ、この操作を利用できるように、 `IDatabase.StringGetSetAsync`
-  メソッドです。次のコード スニペットでは、このメソッドの例を示します。このコードを返します現在
-  値「データ: カウンター」は、前の例のキーに関連付けられている、値をリセットします
-  同じ操作の一部としてすべてのゼロに戻ってこのキー。
+- `GETSET` which retrieves the value associated with a key and changes it to a new value. The
+  StackExchange library makes this operation available through the `IDatabase.StringGetSetAsync`
+  method. The code snippet below shows an example of this method. This code returns the current
+  value associated with the key "data:counter" from the previous example and resets the value
+  for this key back to zero, all as part of the same operation:
 
   ```csharp
   ConnectionMultiplexer redisHostConnection = ...;
@@ -783,9 +783,9 @@ Redis では、文字列の値を取得および設定しますアトミック�
   string oldValue = await cache.StringGetSetAsync("data:counter", 0);
   ```
 
-- `MGET` と `MSET`、返すまたは単一の操作として文字列値のセットを変更できます。、
-  `IDatabase.StringGetAsync` と `IDatabase.StringSetAsync` メソッドはオーバー ロードをサポートするには
-  この機能を使用すると、次の例に示すように:
+- `MGET` and `MSET`, which can return or change a set of string values as a single operation. The
+  `IDatabase.StringGetAsync` and `IDatabase.StringSetAsync` methods are overloaded to support
+  this functionality, as shown in the following example:
 
   ```csharp
   ConnectionMultiplexer redisHostConnection = ...;
@@ -810,9 +810,9 @@ Redis では、文字列の値を取得および設定しますアトミック�
   // values should contain { "value1", "value2", "value3" }
   ```
 
-このガイドで Redis トランザクションとバッチのセクションの説明に従っても単一 Redis トランザクションに複数の操作を組み合わせることができます。StackExchange ライブラリは、取引をサポートします `ITransaction` インターフェイス。IDatabase.CreateTransaction メソッドを使用して ITransaction オブジェクトを作成でき、提供されるメソッドを使用して、トランザクションにコマンドを呼び出す `ITransaction` オブジェクト。、 `ITransaction` インターフェイスは、メソッドとしての同じようなセットへのアクセスを提供します、 `IDatabase` インターフェイスのすべてのメソッドが非同期です。彼らは、のみ実行、 `ITransaction.Execute` メソッドが呼び出されます。Execute メソッドによって返される値は、トランザクションが正常に作成されたかどうかを示す (true) または失敗 (false)。
+You can also combine multiple operations into a single Redis transaction as described in the Redis Transactions and Batches section in this guidance. The StackExchange library provides support for transactions through the `ITransaction` interface. You can create an ITransaction object by using the IDatabase.CreateTransaction method, and invoke commands to the transaction by using the methods provided `ITransaction` object. The `ITransaction` interface provides access to a similar set of methods as the `IDatabase` interface except that all the methods are asynchronous; they are only performed when the `ITransaction.Execute` method is invoked. The value returned by the execute method indicates whether the transaction was created successfully (true) or it failed (false).
 
-次のコード スニペットは同じトランザクションの一部としてインクリメントおよびデクリメントします 2 つのカウンターの例を示します。
+The following code snippet shows an example that increments and decrements two counters as part of the same transaction:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -827,11 +827,11 @@ Console.WriteLine("Result of increment: {0}", tx1.Result);
 Console.WriteLine("Result of decrement: {0}", tx2.Result);
 ```
 
-Redis トランザクションがリレーショナル データベースでのトランザクションとは異なりことを覚えてください。Execute メソッドは単に、実行するためのトランザクションを構成するすべてのコマンドをキューし、それらのいずれかが正しくない場合は、トランザクションは中止されます。すべてのコマンドは正常にキューに置かれたが、各コマンドは非同期的に実行されます。任意のコマンドが失敗した場合、他の人はまだ、処理を続行しますコマンドが正常に完了したことを確認する必要がある場合は、上記の例で示すように、対応するタスクの Result プロパティを使用してコマンドの結果をフェッチしなければなりません。プロパティは、タスクが完了するまでブロックされます結果を読み取る。
+Remember that Redis transactions are unlike transactions in relational databases. The Execute method simply queues all the commands that comprise the transaction for execution, and if any of them is malformed then the transaction is aborted. If all the commands have been queued successfully, each command will be run asynchronously. If any command fails, the others will still continue processing. If you need to verify that a command has completed successfully you must fetch the results of the command by using the Result property of the corresponding task, as shown in the example above. Reading the Result property will block until the task has completed.
 
-詳細についてを参照してください、 [Redis のトランザクション](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Transactions.md) StackExchange.Redis のウェブサイトのページ。
+For more information, see the [Transactions in Redis](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Transactions.md) page on the StackExchange.Redis website.
 
-バッチ操作を実行すると、StackExchange ライブラリの IBatch インタ フェースを使用できます。このインターフェイスは、ことを除いてすべてのメソッドが非同期 IDatabase インターフェイスとして同じような一連のメソッドへのアクセスを提供します。IDatabase.CreateBatch メソッドを使用して、IBatch オブジェクトを作成し、次の例に示すように、IBatch.Execute メソッドを使用して、バッチを実行します。このコードは、単に文字列値とインクリメントおよびデクリメントします前の例で使用される同じカウンターを設定し、結果が表示されます。
+For performing batch operations, you can use the IBatch interface of the StackExchange library. This interface provides access to a similar set of methods as the IDatabase interface except that all the methods are asynchronous. You create an IBatch object by using the IDatabase.CreateBatch method and then run the batch by using the IBatch.Execute method, as shown in the following example. This code simply sets a string value, and increments and decrements the same counters used in the previous example and displays the results:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -846,11 +846,11 @@ Console.WriteLine("{0}", t1.Result);
 Console.WriteLine("{0}", t2.Result);
 ```
 
-それは、トランザクションとは異なり不正な形式だから、バッチ内のコマンドが失敗した場合は他のコマンドがまだ実行を理解することが重要IBatch.Execute メソッドは、成功または失敗の兆候を返しません。
+It is important to understand that unlike a transaction, if a command in a batch fails because it is malformed the other commands may still run; the IBatch.Execute method does not return any indication of success or failure.
 
-### 火災を忘れてキャッシュ操作を実行します。
+### Performing fire-and-forget cache operations
 
-Redis は、コマンドのフラグを使用して、火災を忘れて操作をサポートしています。このような状況でクライアントだけ操作を開始、結果に興味を持たないし、コマンドの完了を待機しません。次の例は、火災を忘れて操作として INCR コマンドを実行する方法を示しています。
+Redis supports fire-and-forget operations by using command flags. In this situation, the client simply initiates an operation but has no interest in the result and does not wait for the command to be completed. The example below shows how to perform the INCR command as a fire-and-forget operation:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -861,11 +861,11 @@ await cache.StringSetAsync("data:key1", 99);
 cache.StringIncrement("data:key1", flags: CommandFlags.FireAndForget);
 ```
 
-### 自動的にキーの有効期限
+### Automatically expiring keys
 
-Redis キャッシュに項目を保存すると、アイテムを後キャッシュから自動的に削除されますがタイムアウトを指定できます。どのように多くの時間、キーを使用して期限切れになる前に検索することも、 `TTL` コマンド;このコマンドは、IDatabase.KeyTimeToLive メソッドを使用して StackExchange アプリケーションで利用可能です。
+When you store an item in a Redis cache, you can specify a timeout after which the item will be automatically removed from the cache. You can also query how much more time a key has before it expires by using the `TTL` command; this command is available to StackExchange applications by using the IDatabase.KeyTimeToLive method.
 
-次のコード スニペットは、キーに 20 秒の有効期限を設定し、キーの残りの有効期間を照会する例を示します。
+The following code snippet shows an example of setting an expiration time of 20 seconds on a key, and querying the remaining lifetime of the key:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -879,7 +879,7 @@ await cache.StringSetAsync("data:key1", 99, TimeSpan.FromSeconds(20));
 TimeSpan? expiry = cache.KeyTimeToLive("data:key1");
 ```
 
-KeyExpireAsync メソッドと StackExchange ライブラリで利用できる有効期限コマンドを使用して特定の日付と時刻に有効期限を設定することもできます。
+You can also set the expiration time to a specific date and time by using the EXPIRE command, available in the StackExchange library as the KeyExpireAsync method:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -892,13 +892,13 @@ await cache.KeyExpireAsync("data:key1",
 ...
 ```
 
-> _ヒント:_ IDatabase.KeyDeleteAsync メソッドと StackExchange ライブラリを介して入手可能です・ デル ・ コマンドを使用してキャッシュからアイテムを手動で削除することができます。
+> _Tip:_ You can manually remove an item from the cache by using the DEL command, which is available through the StackExchange library as the IDatabase.KeyDeleteAsync method.
 
-### タグを使用して、キャッシュされたアイテムを相互に関連付け
+### Using tags to cross-correlate cached items
 
-Redis セットは、1 つのキーを共有する複数の項目のコレクションです。・ サッド コマンドを使用してセットを作成できます。SMEMBERS コマンドを使用して、セット内の項目を取得できます。StackExchange ライブラリは、IDatabase.SetMembersAsync メソッドと IDatabase.SetAddAsync メソッドを介してサッド コマンドと SMEMBERS コマンドを実装します。また SDIFF (差集合)、焼結 (積集合)、および SUNION (和集合) コマンドを使用して新しいセットを作成する既存のセットを組み合わせることができます。StackExchange ライブラリは、IDatabase.SetCombineAsync メソッドでこれらの操作を統一します。このメソッドの最初のパラメーターは、設定操作を実行するを指定します。
+A Redis set is a collection of multiple items that share a single key. You can create a set by using the SADD command. You can retrieve the items in a set by using the SMEMBERS command. The StackExchange library implements the SADD command through the IDatabase.SetAddAsync method, and the SMEMBERS command with the IDatabase.SetMembersAsync method. You can also combine existing sets to create new sets by using the SDIFF (set difference), SINTER (set intersection), and SUNION (set union) commands. The StackExchange library unifies these operations in the IDatabase.SetCombineAsync method; the first parameter to this method specifies the set operation to perform.
 
-次のコード スニペットは、セットが迅速に格納および関連項目のコレクションを取得する便利なことができる方法を表示します。このコードは、セクション Redis キャッシュ クライアント アプリケーションの実装に記述された BlogPost タイプを使用します。BlogPost オブジェクトには、4 つのフィールドが含まれています-ID、タイトル、ランキング スコア、およびタグのコレクション。次の最初のコード スニペットは、BlogPost オブジェクトの c# 一覧の作成に使用するサンプル データを示しています。
+The following code snippets show how sets can be useful for quickly storing and retrieving collections of related items. This code uses the BlogPost type described in the section Implementing Redis Cache Client Applications. A BlogPost object contains four fields—an ID, a title, a ranking score, and a collection of tags. The first code snippet below shows the sample data used for populating a C# list of BlogPost objects:
 
 ```csharp
 List<string[]> tags = new List<string[]>()
@@ -933,7 +933,7 @@ for (int i = 0; i < numberOfPosts; i++)
 }
 ```
 
-Redis キャッシュのセットとして BlogPost オブジェクトごとにタグを格納し、BlogPost の ID 各セットに関連付けることができます。これにより、迅速に特定のブログ記事に属するすべてのタグを検索するアプリケーション。逆方向で検索を有効にして、特定のタグを共有しているすべてのブログの記事を検索、ブログの記事を参照キーにタグ ID を保持している別のセットを作成します。
+You can store the tags for each BlogPost object as a set in a Redis cache and associate each set with the ID of the BlogPost. This enables an application to quickly find all the tags belonging to a specific blog post. To enable searching in the opposite direction and find all blog posts that share a specific tag, you can create another set that holds the blog posts referencing the tag ID in the key:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -957,7 +957,7 @@ foreach (BlogPost post in posts)
 }
 ```
 
-これらの構造は、多くの一般的なクエリを非常に効率的に実行することができます。たとえば、検索およびすべてのこのようなブログの記事 1 のタグを表示できます。
+These structures enable you to perform many common queries very efficiently. For example, you can find and display all of the tags for blog post 1 like this:
 
 ```csharp
 // Show the tags for blog post #1
@@ -967,7 +967,7 @@ foreach (var value in await cache.SetMembersAsync("blog:posts:1:tags"))
 }
 ```
 
-積集合演算を次のように実行することによって 1、ブログ記事 2 を投稿ブログに共通するすべてのタグを検索できます。
+You can find all tags that are common to blog post 1 and blog post 2 by performing a set intersection operation, as follows:
 
 ```csharp
 // Show the tags in common for blog posts #1 and #2
@@ -978,7 +978,7 @@ foreach (var value in await cache.SetCombineAsync(SetOperation.Intersect, new Re
 }
 ```
 
-特定のタグが含まれているすべてのブログの記事を見つけることができます。
+And you can find all blog posts that contain a specific tag:
 
 ```csharp
 // Show the ids of the blog posts that have the tag "iot".
@@ -988,9 +988,9 @@ foreach (var value in await cache.SetMembersAsync("tag:iot:blog:posts"))
 }
 ```
 
-### 最近アクセスしたアイテム
+### Finding recently accessed items
 
-A common problem required by many applications is to find the most recently accessed items. For example, a blogging site might want to display information about the most recently read blog posts. You can implement this functionality by using a Redis list. A Redis list contains multiple items that share the same key, but the list acts as a double-ended queue. You can push items on to either end of the list by using the LPUSH (left push) and RPUSH (right push) commands. You can retrieve items from either end of the list by using the LPOP and RPOP commands.  You can also return a set of elements by using the LRANGE and RRANGE commands. The code snippets below show how you can perform these operations by using the StackExchange library. This code uses the BlogPost type from the previous examples. As a blog post is read by a user, the title of the blog post is pushed onto a list associated with the key "blog:recent_IDatabase.ListLeftPushAsync 法を用いた Redis キャッシュ"を投稿します。
+A common problem required by many applications is to find the most recently accessed items. For example, a blogging site might want to display information about the most recently read blog posts. You can implement this functionality by using a Redis list. A Redis list contains multiple items that share the same key, but the list acts as a double-ended queue. You can push items on to either end of the list by using the LPUSH (left push) and RPUSH (right push) commands. You can retrieve items from either end of the list by using the LPOP and RPOP commands.  You can also return a set of elements by using the LRANGE and RRANGE commands. The code snippets below show how you can perform these operations by using the StackExchange library. This code uses the BlogPost type from the previous examples. As a blog post is read by a user, the title of the blog post is pushed onto a list associated with the key "blog:recent_posts" in the Redis cache by using the IDatabase.ListLeftPushAsync method:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -1002,7 +1002,7 @@ await cache.ListLeftPushAsync(
     redisKey, blogPost.Title); // push the blog post onto the list
 ```
 
-多くのブログの記事を読んで、そのタイトルが同じリストにプッシュされます。リストの順序は、追加されていない; 順最も最近のブログ投稿は、リストの左の端の方 (1 回、それ以上は一覧に複数のエントリを持っている同じブログの記事を読む) を読みます。IDatabase.ListRange メソッドを使用して、最も最近読まれた記事のタイトルを表示できます。このメソッドは、リスト、開始点と終了点を含むキーを受け取ります。次のコードは、リストの一番左の端に 10 のブログ記事 (項目 0 から 9 に) のタイトルを取得します。
+As more blog posts are read, their titles are pushed onto the same list. The list is ordered by the sequence in which they have been added; the most recently read blog posts are towards the left end of the list (if the same blog post is read more than once, it will have multiple entries in the list). You can display the titles of the most recently read posts by using the IDatabase.ListRange method. This method takes the key that contains the list, a starting point, and an ending point. The following code retrieves the titles of the 10 blog posts (items from 0 to 9) at the left-most end of the list:
 
 ```csharp
 // Show latest ten posts
@@ -1012,17 +1012,17 @@ foreach (string postTitle in await cache.ListRangeAsync(redisKey, 0, 9))
 }
 ```
 
-ListRangeAsync はリストから項目を削除することに注意してください。これを行うには、IDatabase.ListLeftPopAsync および IDatabase.ListRightPopAsync メソッドを使用できます。
+Note that ListRangeAsync does not remove items from the list; to do this you can use the IDatabase.ListLeftPopAsync and IDatabase.ListRightPopAsync methods.
 
-一覧が無限に増大するを防ぐため一覧をトリミングすることによってアイテムを定期的に処分することができます。、下記のコード スニペットは、すべてを削除しますが、5 の一番左のアイテム一覧から。
+To prevent the list from growing indefinitely, you can periodically cull items by trimming the list. The code snippet below, removes all but the 5 left-most items from the list:
 
 ```csharp
 await cache.ListTrimAsync(redisKey, 0, 5);
 ```
 
-### リーダー ボードの実装
+### Implementing a leader board
 
-既定では、セット内のアイテムは任意の特定の順序で保持されません。ZADD コマンド (StackExchange ライブラリ内の IDatabase.SortedSetAdd メソッド) を使用して、順序付けされたセットを作成できます。コマンドへのパラメーターとして提供されるスコアと呼ばれる数値を使用してのオーダーです。次のコード スニペットは、順序付きリストにブログ記事のタイトルを追加します。例では、各ブログの記事は、ブログの記事のランキングを含むスコア フィールドに記入しています。
+By default the items in a set are not held in any specific order. You can create an ordered set by using the ZADD command (the IDatabase.SortedSetAdd method in the StackExchange library). The items are ordered by using a numeric value called a score provided as a parameter to the command. The following code snippet adds the title of a blog post to an ordered list. In the example, each blog post also has a score field that contains the ranking of the blog post.
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -1033,7 +1033,7 @@ BlogPost blogPost = ...; // reference to a blog post that has just been rated
 await cache.SortedSetAddAsync(redisKey, blogPost.Title, blogpost.Score);
 ```
 
-ブログ記事のタイトルと IDatabase.SortedSetRangeByRankWithScores メソッドを使用してスコアを昇順でスコアを取得できます。
+You can retrieve the blog post titles and scores in ascending score order by using the IDatabase.SortedSetRangeByRankWithScores method:
 
 ```csharp
 foreach (var post in await cache.SortedSetRangeByRankWithScoresAsync(redisKey))
@@ -1042,9 +1042,9 @@ foreach (var post in await cache.SortedSetRangeByRankWithScoresAsync(redisKey))
 }
 ```
 
-> [AZURE。メモ] StackExchange ライブラリには、スコア順にデータを返しますが、スコアを返さない IDatabase.SortedSetRangeByRankAsync メソッドも提供します。
+> [AZURE.NOTE] The StackExchange library also provides the IDatabase.SortedSetRangeByRankAsync method which returns the data in score order, but does not return the scores.
 
-またスコアの降順でアイテムを取得し、IDatabase.SortedSetRangeByRankWithScoresAsync メソッドに追加のパラメーターを提供することによって返されるアイテムの数を制限できます。次の例は、タイトルとスコアのトップ 10 ランク付けされたブログの記事を表示します。
+You can also retrieve items in descending order of scores, and limit the number of items returned by providing additional parameters to the IDatabase.SortedSetRangeByRankWithScoresAsync method. The next example displays the titles and scores of the top 10 ranked blog posts:
 
 ```csharp
 foreach (var post in await cache.SortedSetRangeByRankWithScoresAsync(
@@ -1054,7 +1054,7 @@ foreach (var post in await cache.SortedSetRangeByRankWithScoresAsync(
 }
 ```
 
-次の例は、与えられたスコア内に返される項目数を制限するために使用できる IDatabase.SortedSetRangeByScoreWithScoresAsync メソッドを使用して範囲。
+The next example uses the IDatabase.SortedSetRangeByScoreWithScoresAsync method which you can use to limit the items returned to those that fall within a given score range:
 
 ```csharp
 // Blog posts with scores between 5000 and 100000
@@ -1065,11 +1065,11 @@ foreach (var post in await cache.SortedSetRangeByScoreWithScoresAsync(
 }
 ```
 
-### チャネルを使用するメッセージング
+### Messaging by using channels
 
-データ キャッシュとして機能する高性能パブリッシャー/サブスクライバー メカニズムを介したメッセージング Redis サーバーを提供します。クライアント アプリケーションが、チャネルをサブスクライブすることができ、他のアプリケーションまたはサービスがチャネルにメッセージをパブリッシュできます。サブスクライブしているアプリケーションは、これらのメッセージを受信し、それらを処理できます。
+Apart from acting as a data cache, a Redis server provides messaging through a high-performance publisher/subscriber mechanism. Client applications can subscribe to a channel, and other applications or services can publish messages to the channel. Subscribing applications will then receive these messages and can process them.
 
-Redis のチャネルにサブスクライブ SUBSCRIBE コマンドを提供します。このコマンドは、1 つ以上のチャネルをアプリケーションで受け入れるメッセージの名を見込んでいます。StackExchange ライブラリには、購読してチャネルにパブリッシュする .NET Framework アプリケーションを可能にする ISubscription インターフェイスが含まれています。Redis サーバーへの接続の GetSubscriber メソッドを使用して、ISubscription オブジェクトを作成し、このオブジェクトの SubscribeAsync メソッドを使用してチャネル メッセージをリッスンし。次のコード例は、「メッセージ: ブログ記事」という名前のチャネルにサブスクライブする方法を示しています。
+To subscribe to channel, Redis provides the SUBSCRIBE command. This command expects the name of one or more channels on which the application will accept messages. The StackExchange library includes the ISubscription interface which enables a .NET Framework application to subscribe and publish to channels. You create an ISubscription object by using the GetSubscriber method of the connection to the Redis server, and then listen for messages on a channel by using the SubscribeAsync method of this object. The following code example shows how to subscribe to a channel named "messages:blogPosts":
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -1081,11 +1081,11 @@ await subscriber.SubscribeAsync("messages:blogPosts", (channel, message) =>
 });
 ```
 
-Subscribe メソッドの最初のパラメーターは、チャネルの名前です。この名前は、キャッシュにあるキーで使用されるのと同じ規則に従います、良好なパフォーマンスと保守性を確保するために比較的短い、意味のある文字列を使用することをお勧めは、任意のバイナリ データを含めることができます。また、チャネルによって使用される名前空間は別に維持するために難しく、アプリケーション コードになるが、チャネルと同じ名前を持つキーを持つことができますので、キー、によって使用されるあることを注意してください。
+The first parameter to the Subscribe method is the name of the channel. This name follows the same conventions as that used by keys in the cache, and can contain any binary data, although it is advisable to use relatively short, meaningful strings to help ensure good performance and maintainability. You should also note that the namespace used by channels is separate from that used by keys, so you can have channels and keys that have the same name, although this may make your application code more difficult to maintain.
 
-2 番目のパラメーターは、アクション デリゲートです。このデリゲートは、チャネルに新しいメッセージが表示されるたびに非同期的に実行されます。この例は単に (メッセージのブログ投稿のタイトルが含まれます) コンソールにメッセージを表示します。
+The second parameter is an Action delegate. This delegate runs asynchronously whenever a new message appears on the channel. This example simply displays the message on the console (the message will contain the title of a blog post).
 
-チャネルにパブリッシュするには、アプリケーションは Redis の発行コマンドを使用できます。StackExchange ライブラリは、この操作を実行するには、IServer.PublishAsync メソッドを提供します。次のコード スニペットは、「メッセージ: ブログ記事"チャネル メッセージをパブリッシュする方法を示しています。
+To publish to a channel, an application can use the Redis PUBLISH command. The StackExchange library provides the IServer.PublishAsync method to perform this operation. The next code snippet shows how to publish a message to the "messages:blogPosts" channel:
 
 ```csharp
 ConnectionMultiplexer redisHostConnection = ...;
@@ -1095,49 +1095,49 @@ BlogPost blogpost = ...;
 subscriber.PublishAsync("messages:blogPosts", blogPost.Title);
 ```
 
-パブリッシュ/サブスクライブ メカニズムについて理解する必要がありますいくつかのポイントがあります。
+There are several points you should understand about the publish/subscribe mechanism:
 
-- 複数のサブスクライバーが同じチャネルに購読することができます、彼らはすべてのチャネルにパブリッシュされたメッセージを受け取ります。
-- 加入者は、彼らを購読するが後に公開されているメッセージのみを受信します。チャンネルは、バッファリングされていないと Redis インフラストラクチャ メッセージを各サブスクライバーにプッシュし、削除するメッセージを発行します。
-- 既定では、メッセージは送信される順序でサブスクライバーによって受信されます。数が多いと非常にアクティブなシステムで
-  メッセージ、多くのサブスクライバーとパブリッシャーの保証されたシーケンシャル メッセージ配信システムのパフォーマンスが低下することができます。場合
-  各メッセージは独立しており、順序が材料 Redis システムを助けることができる並行処理を有効にできます
-  応答性を向上させます。StackExchange クライアントによって使用される接続の PreserveAsyncOrder を設定することによってこれを実現できます。
-  false にサブスクライバー:
+- Multiple subscribers can subscribe to the same channel, and they will all receive the messages published to that channel.
+- Subscribers only receive messages that have been published after they have subscribed. Channels are not buffered, and once a message is published the Redis infrastructure pushes the message to each subscriber and then removes it.
+- By default, messages are received by subscribers in the order in which they are sent. In a highly active system with a large number
+  of messages and many subscribers and publishers, guaranteed sequential delivery of messages can slow performance of the system. If
+  each message is independent and the order is immaterial you can enable concurrent processing by the Redis system which can help to
+  improve responsiveness. You can achieve this in a StackExchange client by setting the PreserveAsyncOrder of the connection used by
+  the subscriber to false:
   ```csharp
   ConnectionMultiplexer redisHostConnection = ...;
   redisHostConnection.PreserveAsyncOrder = false;
   ISubscriber subscriber = redisHostConnection.GetSubscriber();
   ```
 
-## 関連するパターンと指導
+## Related Patterns and Guidance
 
-次のパターンは、アプリケーションでキャッシュを実装する際のシナリオに関連あります。
+The following pattern may also be relevant to your scenario when implementing caching in your applications:
 
-- [キャッシュ アサイド パターン](http://msdn.microsoft.com/library/dn589799.aspx): このパターンでは、データ ストアからキャッシュに読み込んで、データを要求する方法について説明します。このパターンは、キャッシュに保持されているデータと元のデータ ストア内のデータ間の一貫性を維持するためにも役立ちます。
-- 、 [分割パターン](http://msdn.microsoft.com/library/dn589797.aspx) 格納して、大量のデータにアクセスするときのスケーラビリティを向上させる水平パーティション分割の実装について説明します。
+- [Cache-Aside Pattern](http://msdn.microsoft.com/library/dn589799.aspx): This pattern describes how to load data on-demand into a cache from a data store. This pattern also helps to maintain consistency between data held in the cache and the data in the original data store.
+- The [Sharding Pattern](http://msdn.microsoft.com/library/dn589797.aspx) provides information on implementing horizontal partitioning to help improve scalability when storing and accessing large volumes of data.
 
-## 詳細については
+## More Information
 
-- 、 [MemoryCache クラス](http://msdn.microsoft.com/library/system.runtime.caching.memorycache.aspx) Microsoft の web サイト上のページ。
-- 、 [Microsoft Azure キャッシュ](http://msdn.microsoft.com/library/windowsazure/gg278356.aspx) Microsoft の web サイト上のページ。
-- 、 [Azure キャッシュ サービスは私にとって正しいですか。](http://msdn.microsoft.com/library/azure/dn766201.aspx) Microsoft の web サイト上のページ。
-- 、 [構成モデル](http://msdn.microsoft.com/library/windowsazure/hh914149.aspx) Microsoft の web サイト上のページ。
-- 、 [タスク ベースの非同期パターン](http://msdn.microsoft.com/library/hh873175.aspx) Microsoft の web サイト上のページ。
-- 、 [パイプラインおよびマルチプレクサー](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/PipelinesMultiplexers.md) StackExchange.Redis GitHub レポのページ。
-- 、 [REDIS の永続性](http://redis.io/topics/persistence) Redis ウェブサイトのページ。
-- 、 [レプリケーション ページ](http://redis.io/topics/replication) Redis のウェブサイト。
-- 、 [Redis クラスター チュートリアル](http://redis.io/topics/cluster-tutorial) Redis ウェブサイトのページ。
-- 、 [Redis の複数のインスタンス間でデータを分割する方法の分割。](http://redis.io/topics/partitioning) Redis ウェブサイトのページ。
-- ページ [LRU キャッシュとして Redis を使用してください。](http://redis.io/topics/lru-cache) Redis のウェブサイト。
-- 、 [取引ページ](http://redis.io/topics/transactions) Redis のウェブサイト。
-- 、 [Redis セキュリティ](http://redis.io/topics/security) Redis ウェブサイトのページ。
-- ページ [紺碧 Redis キャッシュの周りにラップ](http://azure.microsoft.com/blog/2014/06/04/lap-around-azure-redis-cache-preview/) 紺碧のブログ。
-- ページ [Redis CentOS Linux VM 上で実行](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) Microsoft の web サイトに azure。
-- 、 [Azure の ASP.NET のセッション状態プロバイダーは、キャッシュを Redis します。](http://msdn.microsoft.com/library/azure/dn690522.aspx) Microsoft の web サイト上のページ。
-- 、 [Azure の ASP.NET 出力キャッシュ プロバイダーは、キャッシュを Redis します。](http://msdn.microsoft.com/library/azure/dn798898.aspx) Microsoft の web サイト上のページ。
-- ページ [紺碧 Redis キャッシュのための開発します。](http://msdn.microsoft.com/library/azure/dn690520.aspx) 紺碧のサイトです。
-- ページ [Redis データ型および抽象化の導入](http://redis.io/topics/data-types-intro) Redis のウェブサイト。
-- 、 [基本的な使用法](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Basics.md) StackExchange.Redis のウェブサイトのページ。
-- 、 [Redis のトランザクション](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Transactions.md) StackExchange.Redis レポのページ。
-- 、 [データ パーティション分割ガイド](http://msdn.microsoft.com/library/dn589795.aspx) Microsoft の web サイト。
+- The [MemoryCache Class](http://msdn.microsoft.com/library/system.runtime.caching.memorycache.aspx) page on the Microsoft website.
+- The [Microsoft Azure Cache](http://msdn.microsoft.com/library/windowsazure/gg278356.aspx) page on the Microsoft website.
+- The [Which Azure Cache offering is right for me?](http://msdn.microsoft.com/library/azure/dn766201.aspx) page on the Microsoft website.
+- The [Configuration Model](http://msdn.microsoft.com/library/windowsazure/hh914149.aspx) page on the Microsoft website.
+- The [Task-based Asynchronous Pattern](http://msdn.microsoft.com/library/hh873175.aspx) page on the Microsoft website.
+- The [Pipelines and Multiplexers](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/PipelinesMultiplexers.md) page on the StackExchange.Redis GitHub repo.
+- The [Redis Persistence](http://redis.io/topics/persistence) page on the Redis website.
+- The [Replication page](http://redis.io/topics/replication) on the Redis website.
+- The [Redis Cluster Tutorial](http://redis.io/topics/cluster-tutorial) page on the Redis website.
+- The [Partitioning: how to split data among multiple Redis instances](http://redis.io/topics/partitioning) page on the Redis website.
+- The page [Using Redis as an LRU Cache](http://redis.io/topics/lru-cache) on the Redis website.
+- The [Transactions page](http://redis.io/topics/transactions) on the Redis website.
+- The [Redis Security](http://redis.io/topics/security) page on the Redis website.
+- The page [Lap around Azure Redis Cache](http://azure.microsoft.com/blog/2014/06/04/lap-around-azure-redis-cache-preview/) on the Azure blog.
+- The page [Running Redis on a CentOS Linux VM](http://blogs.msdn.com/b/tconte/archive/2012/06/08/running-redis-on-a-centos-linux-vm-in-windows-azure.aspx) in Azure on the Microsoft website.
+- The [ASP.NET Session State Provider for Azure Redis Cache](http://msdn.microsoft.com/library/azure/dn690522.aspx) page on the Microsoft website.
+- The [ASP.NET Output Cache Provider for Azure Redis Cache](http://msdn.microsoft.com/library/azure/dn798898.aspx) page on the Microsoft website.
+- The page [Develop for Azure Redis Cache](http://msdn.microsoft.com/library/azure/dn690520.aspx) on the Azure site.
+- The page [An Introduction to Redis data types and abstractions](http://redis.io/topics/data-types-intro) on the Redis website.
+- The [Basic Usage](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Basics.md) page on the StackExchange.Redis website.
+- The [Transactions in Redis](https://github.com/StackExchange/StackExchange.Redis/blob/master/Docs/Transactions.md) page on the StackExchange.Redis repo.
+- The [Data Partitioning Guide](http://msdn.microsoft.com/library/dn589795.aspx) on the Microsoft website.

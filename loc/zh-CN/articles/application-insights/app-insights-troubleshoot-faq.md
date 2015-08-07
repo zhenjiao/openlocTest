@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Troubleshooting and Questions about Application Insights" 
 	description="Something in Visual Studio Application Insights unclear or not working? Try here." 
 	services="application-insights" 
@@ -95,7 +95,7 @@ The details depend on the type of project. For a web application:
 ####<a name="NuGetBuild"></a> I get "NuGet package(s) are missing" on my build server, though everything builds OK on my dev machines
 
 Please see [NuGet Package Restore](http://docs.nuget.org/Consume/Package-Restore)
-和 [Automatic Package Restore](http://docs.nuget.org/Consume/package-restore/migrating-to-automatic-package-restore).
+and [Automatic Package Restore](http://docs.nuget.org/Consume/package-restore/migrating-to-automatic-package-restore).
 
 ####<a name="FailUpdate"></a> I get "project references NuGet package(s) that are missing on my computer" when attempting to build after updating to 0.17 or newer of the NuGet packages.
 
@@ -178,7 +178,7 @@ In Solution Explorer, right-click `ApplicationInsights.config` and choose **Upda
 
 #### <a name="q06"></a>On the Microsoft Azure Preview home screen, does that map show the status of my application?
 
-不! It shows the status of the Azure service. To see your web test results, choose Browse > Application Insights > (your application) and then look at the web test results. 
+No! It shows the status of the Azure service. To see your web test results, choose Browse > Application Insights > (your application) and then look at the web test results. 
 
 
 #### <a name="q07"></a>When I use add Application Insights to my application and open the Application Insights portal, it all looks completely different from your screenshots.
@@ -191,13 +191,13 @@ The help pages you're looking at refer to [Application Insights for Microsoft Az
 
 Take a look at [Data Retention and Privacy][data].
 
-## 日志记录
+## Logging
 
 #### <a name="post"></a>How do I see POST data in Diagnostic search?
 
 We don't log POST data automatically, but you can use a TrackTrace call: put the data in the message parameter. This has a longer size limit than the limits on string properties, though you can't filter on it. 
 
-## 安全
+## Security
 
 #### Is my data secure in the portal? How long is it retained?
 

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Multi-Site Data Tier (Azure Architecture Patterns)" 
    description="The Multi-Site Data Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document." 
    services="" 
@@ -16,42 +16,42 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# 多站点数据层 (Azure 架构模式)
+# Multi-Site Data Tier (Azure Architecture Patterns)
 
-的 [云平台集成框架 (奖励)](azure-architectures-cpif-overview.md) 提供入职到微软云计算解决方案的应用程序的工作量集成指导。 
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution. 
 
-奖励介绍如何组织、 客户和合作伙伴应设计和部署云有针对性的工作负载，利用 Azure、 系统中心和 Windows 服务器的混合云平台和管理能力。 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-的 **多站点数据层** 模式是的一部分 **基础** 地区，奖励体系结构文档中详尽地说明了。 
+The **Multi-Site Data Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-## 多站点数据层
+## Multi-Site Data Tier
 
-多站点数据层设计图案细节的蔚蓝功能和提供可以跨越地理边界提供可预测的性能和高可用性的数据层服务所需的服务。这种设计模式用于数据层被定义作为传统数据平台在提供服务或孤立的地服务层或多层应用程序的一部分。 此模式中负载平衡的数据层被提供两局部区域内和跨区域。   
+The Multi-Site Data Tier design pattern details the Azure features and services required to deliver data tier services that can provide predictable performance and high availability across geographic boundaries. For the purposes of this design pattern a data tier is defined as a tier of service providing traditional data platform services in either an isolated manner or as part of a multi-tiered application.  Within this pattern, load balancing of the data tier is provided both locally within the region and across regions.   
 
-介绍了 SQL Server 2012，AlwaysOn 可用性组是完全支持在 Azure 基础设施服务的高可用性和灾难恢复功能。 AlwaysOn 可用性组文章中，可以发现详细的信息和官方支持 AlwaysOn 可用性组对 Windows Azure 基础设施服务的通告。   
+Introduced with SQL Server 2012, AlwaysOn Availability Groups is a high-availability and disaster-recovery feature that is fully supported on Azure Infrastructure Services.  Detailed information and the official support announcement for AlwaysOn Availability Groups on Windows Azure Infrastructure Service can be found in the article AlwaysOn Availability Groups.   
 
-本文档提供在 Azure 的多站点数据层建筑概述利用 SQL AlwaysOn 可用性组。与可选只读辅助节点在额外的 Azure 数据中心的附加功能和灾难恢复。在 Azure 中使用 SQL AlwaysOn 提供可以消耗的 web 或应用程序层的高可用性数据层。  
+This document provides an architectural overview of a Multi-Site Data Tier in Azure utilizing SQL AlwaysOn Availability Groups. With an optional read-only secondary node in an additional Azure datacenter for additional functionality and disaster recovery. Using SQL AlwaysOn in Azure provides a high-availability data tier that can be consumed by web or application tiers.  
 
-本文档重点建筑模式和做法，可以在官方的教程中，其中简要说明了 Azure AlwaysOn 可用性组的配置和配置的 AlwaysOn 可用性组侦听器发现全面部署指导。 
+While this document focuses on architectural patterns and practices, full deployment guidance can be found in the official tutorials, which outline the configuration of AlwaysOn Availability Groups in Azure and the configuration of the AlwaysOn Availability Group Listener. 
 
-## 建筑模式概述 
+## Architectural Pattern Overview 
 
-本文档描述的可用性和冗余目的为在多个地域提供对微软 SQL 服务器内容的访问模式。 关键服务都没有注意到应用程序或 web 层将访问数据本身，如下所示。 下面的图表是一个简单的例子，有关的服务和他们如何使用这种模式的一部分。   
+This document describes a pattern for providing access to Microsoft SQL Server content over multiple geographies for the purposes of availability and redundancy.  Critical services are illustrated below without attention to the application or web tier that will access the data itself.  The diagram below is a simple illustration of the relevant services and how they are used as part of this pattern.   
 
-每个主要服务领域概述了更多的细节图。 
+Each of the main service areas are outlined in more detail following the diagram. 
  
-![资源和资源组叶片的标签部分](./media/azure-architectures-cpif-foundation-multi-site-data-tier/overview.png)
+![Tags part on resource and resource group blades](./media/azure-architectures-cpif-foundation-multi-site-data-tier/overview.png)
 
-##  更多的资源
-[负载平衡数据层 (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+##  Additional Resources
+[Load Balanced Data Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-## 请参见
-[奖励的体系结构](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[全局负载平衡的 Web 层](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+[Global Load Balanced Web Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-[混合网络](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[蔚蓝搜索层](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+[Azure Search Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-[批量处理层](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)

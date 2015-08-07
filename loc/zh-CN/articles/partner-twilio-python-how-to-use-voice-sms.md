@@ -1,4 +1,4 @@
-<properties
+﻿<properties
 	pageTitle="How to Use Twilio for Voice and SMS (PHP) - Azure"
 	description="Learn how to make a phone call and send a SMS message with the Twilio API service on Azure. Code samples written in PHP."
 	services=""
@@ -20,21 +20,21 @@
 
 
 
-# 如何为语音和短信功能在 PHP 中的使用应答
-本指南说明如何执行常见的编程任务，与应答 API 服务在 Azure 上。所包含的方案包括打电话和发送短消息服务 (SMS) 消息。应答和在应用程序中使用语音和短信的详细信息，请参阅 [接下来的步骤](#NextSteps) 第一节。
+# How to Use Twilio for Voice and SMS Capabilities in PHP
+This guide demonstrates how to perform common programming tasks with the Twilio API service on Azure. The scenarios covered include making a phone call and sending a Short Message Service (SMS) message. For more information on Twilio and using voice and SMS in your applications, see the [Next Steps](#NextSteps) section.
 
-## <a id="WhatIs"></a>应答是什么?
-应答业务通信，使开发人员能够将嵌入的声音、 VoIP 和消息传递到应用程序的未来提供了动力。他们虚拟化在云为基础的全球环境中，公开通过应答通信 API 平台所需的所有基础设施。应用程序是简单打造和可扩展。享受与薪酬作为您的灵活性去定价，并受益于云计算的可靠性。
+## <a id="WhatIs"></a>What is Twilio?
+Twilio is powering the future of business communications, enabling developers to embed voice, VoIP, and messaging into applications. They virtualize all infrastructure needed in a cloud-based, global environment, exposing it through the Twilio communications API platform. Applications are simple to build and scalable. Enjoy flexibility with pay-as-you go pricing, and benefit from cloud reliability.
 
-**应答的声音** 允许您的应用程序来拨打和接收电话。 **短信应答** 使您的应用程序发送和接收文本消息。 **应答客户端** 允许您将 VoIP 呼叫从任何手机，平板电脑，或者浏览器和支持 WebRTC。
+**Twilio Voice** allows your applications to make and receive phone calls. **Twilio SMS** enables your application to send and receive text messages. **Twilio Client** allows you to make VoIP calls from any phone, tablet, or browser and supports WebRTC.
 
-## <a id="Pricing"></a>应答定价和特别优惠
+## <a id="Pricing"></a>Twilio Pricing and Special Offers
 
-蔚蓝的客户收到 [特价优惠] $ 10 的应答信用当您升级应答帐户。此应答信用可以应用于任何应答用法 ($10 信贷相当于多达 1000 SMS 封邮件的发送或接收声音入站的达 1000年分钟，取决于您的电话号码和消息或呼叫目的地的位置)。赎回此应答信贷和由此开始: [ahoy.twilio.com/azure].
+Azure customers receive a [special offer] $10 of Twilio Credit when you upgrade your Twilio Account. This Twilio Credit can be applied to any Twilio usage ($10 credit equivalent to sending as many as 1,000 SMS messages or receiving up to 1000 inbound Voice minutes, depending on the location of your phone number and message or call destination). Redeem this Twilio credit and get started at: [ahoy.twilio.com/azure].
 
-应答是现收现付的服务。有没有安装费，你可以在任何时候关闭您的帐户。你可以找到更多详情 [应答定价] [twilio_pricing].
+Twilio is a pay-as-you-go service. There are no set-up fees and you can close your account at any time. You can find more details at [Twilio Pricing] [twilio_pricing].
 
-## <a id="Concepts"></a>概念
+## <a id="Concepts"></a>Concepts
 The Twilio API is a RESTful API that provides voice and SMS functionality for applications. Client libraries are available in multiple languages; for a list, see [Twilio API Libraries] [twilio_libraries].
 
 Key aspects of the Twilio API are Twilio verbs and Twilio Markup Language (TwiML).
@@ -58,7 +58,7 @@ The following is a list of Twilio verbs. Learn about the other verbs and capabil
 ### <a id="TwiML"></a>TwiML
 TwiML is a set of XML-based instructions based on the Twilio verbs that inform Twilio of how to process a call or SMS.
 
-As an example, the following TwiML would convert the text **世界您好** to speech.
+As an example, the following TwiML would convert the text **Hello World** to speech.
 
     <?xml version="1.0" encoding="UTF-8" ?>
     <Response>
@@ -72,12 +72,12 @@ For more information about Twilio verbs, their attributes, and TwiML, see [TwiML
 ## <a id="CreateAccount"></a>Create a Twilio Account
 When you are ready to get a Twilio account, sign up at [Try Twilio] [try_twilio]. You can start with a free account, and upgrade your account later.
 
-When you sign up for a Twilio account, you receive an account ID and an authentication token. Both will be needed to make Twilio API calls. To prevent unauthorized access to your account, keep your authentication token secure. Your account ID and authentication token are viewable at the [Twilio account page] [twilio_account], in the fields labeled **ACCOUNT SID** 和 **AUTH TOKEN**, respectively.
+When you sign up for a Twilio account, you receive an account ID and an authentication token. Both will be needed to make Twilio API calls. To prevent unauthorized access to your account, keep your authentication token secure. Your account ID and authentication token are viewable at the [Twilio account page] [twilio_account], in the fields labeled **ACCOUNT SID** and **AUTH TOKEN**, respectively.
 
 ## <a id="create_app"></a>Create a PHP Application
 A PHP application that uses the Twilio service and is running in Azure is no different than any other PHP application that uses the Twilio service. While Twilio services are REST-based and can be called from PHP in several ways, this article will focus on how to use Twilio services with [Twilio library for PHP from GitHub][twilio_php]. For more information about using the Twilio library for PHP, see [http://readthedocs.org/docs/twilio-php/en/latest/index.html][twilio_lib_docs].
 
-Detailed instructions for building and deploying a Twilio/PHP application to Azure are available at [如何使在 Azure 上的 PHP 应用程序中使用应答电话呼叫][howto_phonecall_php].
+Detailed instructions for building and deploying a Twilio/PHP application to Azure are available at [How to Make a Phone Call Using Twilio in a PHP Application on Azure][howto_phonecall_php].
 
 ## <a id="configure_app"></a>Configure Your Application to Use Twilio Libraries
 You can configure your application to use the Twilio library for PHP in two ways:
@@ -95,10 +95,10 @@ Once you have installed the Twilio library for PHP, you can then add a **require
 
     	require_once 'Services/Twilio.php';
 
-有关更多信息，请参见 [https://github.com/twilio/twilio-php/blob/master/README.md][twilio_github_readme].
+For more information, see [https://github.com/twilio/twilio-php/blob/master/README.md][twilio_github_readme].
 
 ## <a id="howto_make_call"></a>How to: Make an outgoing call
-The following shows how to make an outgoing call using the **Services_Twilio** class. This code also uses a Twilio-provided site to return the Twilio Markup Language (TwiML) response. Substitute your values for the **From** 和 **To** phone numbers, and ensure that you verify the **From** phone number for your Twilio account prior to running the code.
+The following shows how to make an outgoing call using the **Services_Twilio** class. This code also uses a Twilio-provided site to return the Twilio Markup Language (TwiML) response. Substitute your values for the **From** and **To** phone numbers, and ensure that you verify the **From** phone number for your Twilio account prior to running the code.
 
 	// Include the Twilio PHP library.
 	require_once 'Services/Twilio.php';
@@ -182,7 +182,7 @@ When your application initiates a call to the Twilio API, Twilio will send your 
 
 Instead of relying on the Twilio-provided URL, you can create your own site that returns HTTP responses. You can create the site in any language that returns XML responses; this topic assumes you will be using PHP to create the TwiML.
 
-The following PHP page results in a TwiML response that says **世界您好** on the call.
+The following PHP page results in a TwiML response that says **Hello World** on the call.
 
     <?php
 		header("content-type: text/xml");
@@ -230,12 +230,12 @@ Once you have your PHP page set up to provide TwiML responses, use the URL of th
 		echo 'Error: ' . $e->getMessage();
 	}
 
-For additional information about using Twilio in Azure with PHP, see [如何使在 Azure 上的 PHP 应用程序中使用应答电话呼叫][howto_phonecall_php].
+For additional information about using Twilio in Azure with PHP, see [How to Make a Phone Call Using Twilio in a PHP Application on Azure][howto_phonecall_php].
 
 ## <a id="AdditionalServices"></a>How to: Use Additional Twilio Services
 In addition to the examples shown here, Twilio offers web-based APIs that you can use to leverage additional Twilio functionality from your Azure application. For full details, see the [Twilio API documentation] [twilio_api_documentation].
 
-## <a id="NextSteps"></a>接下来的步骤
+## <a id="NextSteps"></a>Next Steps
 Now that you have learned the basics of the Twilio service, follow these links to learn more:
 
 * [Twilio Security Guidelines] [twilio_security_guidelines]

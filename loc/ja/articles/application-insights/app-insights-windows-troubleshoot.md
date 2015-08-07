@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Troubleshoot Application Insights in a Windows devices" 
 	description="Troubleshooting guide and question and answer." 
 	services="application-insights" 
@@ -92,7 +92,7 @@ Assuming you [already set up your app for Application Insights][windows], click 
 
 See [Data retention and privacy][data].
 
-## 次のステップ
+## Next steps
 
 *I set up Application Insights for my Java server app. What else can I do?*
 

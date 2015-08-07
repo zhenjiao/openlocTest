@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Explore .NET trace logs in Application Insights" 
 	description="Search logs generated with Trace, NLog, or Log4Net." 
 	services="application-insights" 
@@ -80,7 +80,7 @@ You can, for example:
 * Save the configuration of this page as a Favorite
 
 
-## 次のステップ
+## Next steps
 
 [Diagnose failures and exceptions in ASP.NET][exceptions]
 
@@ -104,7 +104,7 @@ It can sometimes take a while for all the events and requests to get through the
 
 Up to 500 events per second from each application. Events are retained for seven days.
 
-## <a name="add"></a>次のステップ
+## <a name="add"></a>Next steps
 
 * [Set up availability and responsiveness tests][availability]
 * [Troubleshooting][qna]

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
 	pageTitle="Intro to Azure - Azure fundamentals" 
 	description="New to Microsoft Azure? Get a basic overview of the services it offers with examples of how they are useful." 
 	services=" " 
@@ -16,30 +16,30 @@
 	ms.date="06/30/2015"  
 	ms.author="robb"/>
 
-# Introduction de Microsoft Azure
+# Introducing Microsoft Azure
 
-Azure de Microsoft est la plate-forme applicative de Microsoft pour le cloud public.  L'objectif de cet article est de vous donner une Fondation pour comprendre les principes fondamentaux d'Azur, même si vous ne savez rien sur cloud computing.
+Microsoft Azure is Microsoft's application platform for the public cloud.  The goal of this article is to give you a foundation for understanding the fundamentals of Azure, even if you don't know anything about cloud computing.
 
-**Comment lire cet article**
+**How to read this article**
 
-Azur augmente tout le temps donc il est facile d'obtenir surchargé.  Les services de base sont répertoriées plus haut dans le document. Commencez avec seulement ceux, puis passer par les services supplémentaires. Qui ne signifie pas que vous ne pouvez pas utiliser juste des services additionnels par eux-mêmes, mais les services de base constituent le noyau d'une application s'exécutant dans Azure. 
+Azure is growing all the time so it's easy to get overloaded.  The basic services are listed earlier in the paper. Start with just those, then go through the additional services. That doesn't mean you can't use just the additional services by themselves, but the basic services make up the core of an application running in Azure. 
 
-**Donner une rétroaction**
+**Give feedback**
 
-Votre rétroaction est importante. Cet article devrait vous donner un aperçu efficace d'Azur. Si ce n'est pas, dites-nous dans la section de commentaires au bas de la page. Donner quelques détails sur ce que vous attendiez à voir et à améliorer l'article.  
+Your feedback is important. This article should give you an effective overview of Azure. If it does not, tell us in the comments section at the bottom of the page. Give some detail on what you expected to see and how to improve the article.  
    
 
-## Les composants d'Azur
+## The Components of Azure
 
-Azur groupes services en catégories dans le portail de gestion et sur différents supports visuels comme le [Ce qui est d'Azur infographique](http://azure.microsoft.com/documentation/infographics/azure/) . Le portail de gestion, c'est ce qui vous permet de gérer la plupart (mais pas tous) des services dans Azure. 
+Azure groups services into categories in the Management Portal and on various visual aids like the [What Is Azure Infographic](http://azure.microsoft.com/documentation/infographics/azure/) . The Management Portal is what you use to manage most (but not all) services in Azure. 
 
-Cette étude utilisera un **autre organisation** pour parler de services basés sur une fonction similaire et d'annoncer les sous-services importants qui font partie des plus grands.  
+This paper will use a **different organization** to talk about services based on similar function, and to call out important sub-services that are part of larger ones.  
 
-![Composants d'Azur](./media/fundamentals-introduction-to-azure/AzureComponentsIntroNew780.png)   
- *Figure : Azure fournit des services d'application accessible par Internet en cours d'exécution dans les datacenters d'Azur.*
+![Azure components](./media/fundamentals-introduction-to-azure/AzureComponentsIntroNew780.png)   
+ *Figure: Azure provides Internet-accessible application services running in Azure datacenters.*
 
-## Portail de gestion
-Azure est une interface web appelée la [Portail de gestion](http://manage.windowsazure.com) qui permet aux administrateurs d'accéder et d'administrer la plupart, mais pas toutes les caractéristiques d'Azur.  Microsoft publie généralement le portail de l'interface utilisateur plus récent en version bêta avant de se retirer d'une autre plus ancienne. Le plus récent est appelé le [« Aperçu d'Azur portail »](https://portal.azure.com/). 
+## Management Portal
+Azure has a web interface called the [Management Portal](http://manage.windowsazure.com) that allows administrators to access and administer most, but not all Azure features.  Microsoft typically releases the newer UI portal in beta before retiring an older one. The newer one is called the ["Azure Preview Portal"](https://portal.azure.com/). 
 
 There is typically a long overlap when both portals are active. While core services will appear in both portals, not all functionality may be available in both. Newer services may show up in the newer portal first and older services and functionality may only exist in the older one.  The message here is that if you don't find something in the older portal, check the newer one and vice-versa. 
 
@@ -52,9 +52,9 @@ One of the most basic things a cloud platform does is execute applications. Each
 You can use these technologies separately or combine them as needed to create the right foundation for your application. The approach you choose depends on what problems you're trying to solve.
 
 
-### Azur des Machines virtuelles
+### Azure Virtual Machines
 
-![Azur des Machines virtuelles](./media/fundamentals-introduction-to-azure/mscsiart_VirtualMachinesIntroNew_12345.png)   
+![Azure Virtual Machines](./media/fundamentals-introduction-to-azure/mscsiart_VirtualMachinesIntroNew_12345.png)   
 *Figure: Azure Virtual Machines gives you full control over virtual machine instances in the cloud.* 
 
 The ability to create a virtual machine on demand, whether from a standard image or from one you supply, can be very useful. This approach, commonly known as Infrastructure as a Service (IaaS), is what Azure Virtual Machines provides. Figure 2 shows a combination of how an Virtual Machine (VM) runs and how to create one from a VHD.  
@@ -91,7 +91,7 @@ For development, Web Apps supports .NET, PHP, Node.js, Java and Python along wit
 
 Web Apps is intended to be useful for corporations, developers, and web design agencies. For corporations, it's an easy-to-manage, scalable, highly secure, and highly available solution for running presence websites. When you need to set up a Website, it’s best to start with Azure Web Apps and proceed to Cloud Services once you need a feature that’s not available. See the end of the "Compute" section for more links that can help you to choose between the options. 
 
-### Services Cloud
+### Cloud Services
 ![Azure Cloud Service](./media/fundamentals-introduction-to-azure/CloudServicesIntroNew.png)   
 *Figure: Azure Cloud Services provides a place to run highly scalable custom code on a Platform as a Service (PaaS) environment*
 
@@ -110,7 +110,7 @@ You have two roles to choose from when you create an instance, both based on Win
 Cloud Services are ideal to support massive scale out when you need more control over the platform than provided by Azure Web Apps but don’t need control over the underlying operating system. 
 
 #### Choosing a Compute Model
-La page [Azure Web Apps, Cloud Services and Virtual Machines comparison](choose-web-site-cloud-service-vm.md) provides more detailed information on how to choose a Compute model.
+The page [Azure Web Apps, Cloud Services and Virtual Machines comparison](choose-web-site-cloud-service-vm.md) provides more detailed information on how to choose a Compute model.
 
 
 
@@ -125,7 +125,7 @@ The ability to run SQL Server or another DBMS in a VM created with Azure Virtual
 Again, the state of the Virtual Machine and any additional data disk you create or upload are backed by blob storage (which we talk about later).  
 
 
-### Base de données SQL Azure
+### Azure SQL Database
 ![Azure Storage SQL Database](./media/fundamentals-introduction-to-azure/StorageAzureSQLDatabaseIntroNew.png)   
 
 *Figure: Azure SQL Database provides a managed relational database service in the cloud.*
@@ -287,7 +287,7 @@ Automation uses "runbooks", which uses Windows PowerShell workflows (vs. just re
 Azure Automation is a good choice to automate the manual, long-running, error-prone, and frequently repeated tasks in Azure.
 
 
-### Gestion de l'API
+### API Management
 
 Creating and publishing Application Programmer Interfaces (APIs) on the internet is a common way to provide services to applications. If those services are resellable (for example, weather data), an organization can allow other third parties to access those same services for a fee. As you scale to more partners, you'll usually need to optimize and control access.  Some partners may even need the data in a different format. 
 
@@ -317,7 +317,7 @@ Another capability of this service, Azure Active Directory Access Control, makes
 
 Directory services are a core underpinning of on-premises computing. It shouldn't be surprising that they're also important in the cloud.
 
-### Authentification à facteurs multiples
+### Multi-Factor Authentication
 ![Azure Multi-Factor Authentication](./media/fundamentals-introduction-to-azure/MFAIntroNew.png)   
 
 *Figure: Multi-Factor Authentication provides the functionality for your application to verify more than one form of identification*
@@ -433,7 +433,7 @@ Structuring an application in this way allows asynchronous processing, and it al
 You can use this same pattern between many different parts of your application even if they don't use web and worker roles.  It allows you to scale the parts on either side of the queue up and down as demand and processing time requires. 
 
 
-### Bus de service
+### Service Bus
 Whether they run in the cloud, in your data center, on a mobile device, or somewhere else, applications need to interact. The goal of Azure Service Bus is to let applications running pretty much anywhere exchange data.
 
 In addition to the queues (one-to-one) described earlier, Service Bus also provides to other communication methods. 
@@ -475,7 +475,7 @@ Business-to-Business (B2B) interactions commonly require this type of translatio
 ## Compute Assistance
 Azure provides assistance for services that do not need to run all the time.  
 
-### Planificateur de
+### Scheduler
 
 ![Azure Scheduler](./media/fundamentals-introduction-to-azure/SchedulerIntroNew.png)   
 *Figure: Azure Scheduler provides a way to schedule jobs at a specific time for a specific duration.*
@@ -497,7 +497,7 @@ The Scheduler API allows you to create, update, delete, view, and manage job col
 
 
 
-## Performances
+## Performance
 
 Performance is always important for an application. Applications tend to access the same data over and over. One way to improve performance is to keep a copy of that data closer to the application, minimizing the time needed to retrieve it. Azure provides different services for doing this.
 
@@ -587,7 +587,7 @@ For a more visual view of how Media Services works, download the [Azure Media Se
 
 ## Commerce
 
-The rise of Software as a Service is transforming how we create applications. It's also transforming how we sell applications. Since a SaaS application lives in the cloud, it makes sense that its potential customers should look for solutions online. And this change applies to data as well as to applications. Why shouldn't people look to the cloud for commercially available datasets? Microsoft addresses both of these concerns with [Azure Marketplace](http://datamarket.azure.com/) et [Azure Store](../articles/overview.md).
+The rise of Software as a Service is transforming how we create applications. It's also transforming how we sell applications. Since a SaaS application lives in the cloud, it makes sense that its potential customers should look for solutions online. And this change applies to data as well as to applications. Why shouldn't people look to the cloud for commercially available datasets? Microsoft addresses both of these concerns with [Azure Marketplace](http://datamarket.azure.com/) and [Azure Store](../articles/overview.md).
 
 ![Azure Commerce](./media/fundamentals-introduction-to-azure/CommerceIntroNew.png)   
  **Figure: Azure Marketplace and Azure Store let you find and buy Azure applications and commercial datasets and use them as part of your Azure applications.**

@@ -1,4 +1,4 @@
-<properties 
+﻿<properties 
    pageTitle="Global Load Balanced Web Tier (Azure Architecture Patterns)" 
    description="The Global Load Balanced Web Tier pattern is part of the Foundation area, which is described extensively in the CPIF Architecture document." 
    services="" 
@@ -16,36 +16,36 @@
    ms.date="03/25/2015"
    ms.author="arynes"/>
 
-# Globale Belastung ausgeglichen Webebene (himmelblau Architektur Muster)
+# Global Load Balanced Web Tier (Azure Architecture Patterns)
 
-Die [Wolke Plattform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) Arbeitslast Integration-Anleitungen für Onboarding-Anwendungen in eine Cloud-Lösung von Microsoft. 
+The [Cloud Platform Integration Framework (CPIF)](azure-architectures-cpif-overview.md) provides workload integration guidance for onboarding applications into a Microsoft Cloud Solution. 
 
-CPIF beschreibt, wie Organisationen, Kunden und Partnern sollten entwerfen und Bereitstellen von Cloud-bezogene Arbeitslasten, die Nutzung der Hybrid Wolke Plattform und Verwaltungsfunktionen von Azure, System Center und Windows Server. 
+CPIF describes how organizations, customers and partners should design and deploy Cloud-targeted workloads utilizing the hybrid cloud platform and management capabilities of Azure, System Center and Windows Server. 
 
-Die **Ausgewogene Webebene Global Load** Muster ist Teil der **Stiftung** Fläche, die im Dokument CPIF Architektur ausführlich beschrieben wird. 
+The **Global Load Balanced Web Tier** pattern is part of the **Foundation** area, which is described extensively in the CPIF Architecture document. 
 
-##  Ausgewogene Webebene Global Load
+##  Global Load Balanced Web Tier
 
-Die Global Load Balanced Web-Tier design Muster Informationen die Azure Features und Dienste benötigt, um die Dienste von Web-Ebene zu erschließen, die vorhersagbare Performance und hohe Verfügbarkeit über geografische Grenzen hinweg bieten können. 
+The Global Load Balanced Web Tier design pattern details the Azure features and services required to deliver web tier services that can provide predictable performance and high availability across geographic boundaries. 
 
-Für die Zwecke dieses Entwurfsmuster ein Web ist Ebene als Ebene des Dienstes die traditionelle HTTP/HTTPS Inhalte bereitstellen oder Anwendungsdienste entweder eine isolierte Weise oder als Teil einer mehrstufigen Webanwendung definiert.  Innerhalb dieses Musters ist Load balancing von der Webebene sowohl lokal innerhalb der Region und über die verschiedenen Regionen zur Verfügung gestellt. Aus Sicht des Compute können diese Dienste über Microsoft Azure virtuelle Maschinen, Websites oder einer Kombination aus beidem erfolgen.  Virtuelle Maschinen, die Bereitstellung von Web-Services können Inhalte über alle unterstützten Microsoft Windows oder Linux Verteilung Gastbetriebssystem innerhalb Microsoft Azure hosten. 
+For the purposes of this design pattern a web tier is defined as a tier of service providing traditional HTTP/HTTPS content or application services in either an isolated manner or as part of a multi-tiered web application.  Within this pattern, load balancing of the web tier is provided both locally within the region and across regions. From a compute perspective, these services can be provided through Microsoft Azure virtual machines, web sites or a combination of both.  Virtual machines providing web services can host content using any supported Microsoft Windows or Linux distribution guest operating system within Microsoft Azure. 
 
 
-## Architekturmuster Überblick 
+## Architectural Pattern Overview 
 
-Dieses Dokument beschreibt ein Muster für den Zugriff auf Webservices oder Web-Server-Inhalte über mehrere Regionen im Sinne der Verfügbarkeit und Redundanz.  Wichtige Dienste sind im folgenden ohne Aufmerksamkeit zu Web-Plattform-Einschränkungen oder Entwicklungsmethodik innerhalb des Web-Dienstes selbst dargestellt.  Es gibt zwei Varianten dieses Muster – eine, die die Webinhalte oder Dienste auf virtuellen Computern gehostet (mit Azure unterstützten Betriebssysteme und Familien) und die Azure-Websites verwendet.  Das folgende Diagramm ist eine einfache Darstellung von den entsprechenden Diensten und wie sie im Rahmen dieses Musters am Beispiel der virtuellen Maschinen verwendet werden.   
+This document describes a pattern for providing access to web services or web server content over multiple geographies for the purposes of availability and redundancy.  Critical services are illustrated below without attention to web platform constraints or development methodology within the web service itself.  There are two variations to this pattern – one which hosts the web content or services on virtual machines (using Azure supported operating systems and families) and one which uses Azure Websites.  The diagram below is a simple illustration of the relevant services and how they are used as part of this pattern using the example of virtual machines.   
 
-##  Zusätzliche Ressourcen
-[Globales Load Balanced Webebene (Pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
+##  Additional Resources
+[Global Load Balanced Web Tier (pdf)](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-2c3c663a) 
 
-## Siehe auch
-[CPIF Architektur](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
+## See Also
+[CPIF Architecture](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-bd1e434a) 
 
-[Ausgewogene Datenebene zu laden](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
+[Load Balanced Data Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-dfb09e41)
 
-[Hybrid-Vernetzung](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
+[Hybrid Networking](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-5e401f38)
 
-[Himmelblau-Suche-Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
+[Azure Search Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-e581d65d) 
 
-[Batch-Verarbeitung-Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
+[Batch Processing Tier](https://gallery.technet.microsoft.com/Cloud-Platform-Integration-0bc3f8b1)
 

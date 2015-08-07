@@ -1,4 +1,4 @@
-<properties
+﻿<properties
    pageTitle="Authenticating a Service Principal with Azure Resource Manager"
    description="Describes how to grant access to a Service Principal through role-based access control and authenticate it. Shows how to perform these tasks with PowerShell and Azure CLI."
    services="azure-resource-manager"
@@ -21,14 +21,14 @@
 This topic shows you how to permit a service principal (such as an automated process, application, or service) to access other resources in your subscription. With Azure Resource Manager, you can use role-based access control to grant permitted actions to a service principal, and authenticate that service principal. This topic shows you how to use PowerShell and Azure CLI to assign a role to service prinicpal and authenticate the serivce principal.
 
 
-## 概念
+## Concepts
 1. Azure Active Directory (AAD) - an identity and access management service for the cloud. For more information, see [What is Azure active Directory](active-directory/active-directory-whatis.md)
 2. Service Principal - An instance of an application in a directory that needs to access other resources.
 3. AD Application - Directory record that identifies an application to AAD. For more information, see [Basics of Authentication in Azure AD](https://msdn.microsoft.com/library/azure/874839d9-6de6-43aa-9a5c-613b0c93247e#BKMK_Auth).
 
 ## Grant access to and authenticate a service principal using PowerShell
 
-If you do not have Azure PowerShell installed, see [如何安装和配置 Azure PowerShell](./powershell-install-configure.md).
+If you do not have Azure PowerShell installed, see [How to install and configure Azure PowerShell](./powershell-install-configure.md).
 
 You will start by creating a service principal. To do this we must use create an application in the directory. This section will walk through creating a new application in the directory.
 
@@ -72,7 +72,7 @@ You will start by creating a service principal. To do this we must use create an
 
      You have now created a service principal in the directory, but the service does not have any permissions or scope assigned. You will need to explicitly grant the service principal permissions to perform operations at some scope.
 
-3. Grant the service principal permissions on your subscription. In this sample you will grant the service principal the permission to Read all resources in the subscription. For the **ServicePrincipalName** parameter, provie either the **ApplicationId** 或 **IdentifierUris** that you used when creating the application. For more information on role-based access control, see [Managing and Auditing Access to Resources](azure-portal/resource-group-rbac.md)
+3. Grant the service principal permissions on your subscription. In this sample you will grant the service principal the permission to Read all resources in the subscription. For the **ServicePrincipalName** parameter, provie either the **ApplicationId** or the **IdentifierUris** that you used when creating the application. For more information on role-based access control, see [Managing and Auditing Access to Resources](azure-portal/resource-group-rbac.md)
 
         PS C:\> New-AzureRoleAssignment -RoleDefinitionName Reader -ServicePrincipalName $azureAdApplication.ApplicationId
 
@@ -80,7 +80,7 @@ You will start by creating a service principal. To do this we must use create an
 
         PS C:\> $subscription = Get-AzureSubscription | where { $_.IsCurrent }
 
-     If you created the role assignment in a subscription other than the currently selected subscription, you can specify the **SubscriptoinId** 或 **SubscriptionName** parameters to retrive a different subscription.
+     If you created the role assignment in a subscription other than the currently selected subscription, you can specify the **SubscriptoinId** or **SubscriptionName** parameters to retrive a different subscription.
 
 5. Create a new **PSCredential** object which contains your credentials by running the **Get-Credential** command.
 
@@ -90,7 +90,7 @@ You will start by creating a service principal. To do this we must use create an
 
      ![][1]
 
-     For the user name, use the **ApplicationId** 或 **IdentifierUris** that you used when creating the application. For the password, use the one you specified when creating the account.
+     For the user name, use the **ApplicationId** or **IdentifierUris** that you used when creating the application. For the password, use the one you specified when creating the account.
 
 6. Use the credentials that you entered as an input to the **Add-AzureAccount** cmdlet, which will sign the service principal in:
 
@@ -134,7 +134,7 @@ If you do not have Azure CLI for Mac, Linux and Windows installed, see [Install 
 
     You have now created a service principal in the directory, but the service does not have any permissions or scope assigned. You will need to explicitly grant the service principal permissions to perform operations at some scope.
 
-3. Grant the service principal permissions on your subscription. In this sample you will grant the service principal the permission to Read all resources in the subscription. For the **ServicePrincipalName** parameter, provie either the **ApplicationId** 或 **IdentifierUris** that you used when creating the application. For more information on role-based access control, see [Managing and Auditing Access to Resources](azure-portal/resource-group-rbac.md)
+3. Grant the service principal permissions on your subscription. In this sample you will grant the service principal the permission to Read all resources in the subscription. For the **ServicePrincipalName** parameter, provie either the **ApplicationId** or the **IdentifierUris** that you used when creating the application. For more information on role-based access control, see [Managing and Auditing Access to Resources](azure-portal/resource-group-rbac.md)
 
         azure role assignment create --objectId 47193a0a-63e4-46bd-9bee-6a9f6f9c03cb -o Reader -c /subscriptions/{subscriptionId}/
 
@@ -148,11 +148,11 @@ If you do not have Azure CLI for Mac, Linux and Windows installed, see [Install 
 
     You should now be authenticated as the service principal for the AAD application that you created.
 
-## 接下来的步骤
+## Next Steps
 Getting Started  
 
 - [Azure Resource Manager Overview](./resource-group-overview.md)  
-- [使用 Azure PowerShell 与蔚蓝的资源管理器](./powershell-azure-resource-manager.md)
+- [Using Azure PowerShell with Azure Resource Manager](./powershell-azure-resource-manager.md)
 - [Using the Azure CLI for Mac, Linux, and Windows with Azure Resource Management](virtual-machines/xplat-cli-azure-resource-manager.md)  
 - [Using the Azure Portal to manage your Azure resources](azure-portal/resource-group-portal.md)
 
